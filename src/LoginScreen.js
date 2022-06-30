@@ -4,12 +4,12 @@ import {Ionicons} from '@expo/vector-icons'
 
 export default class LoginScreen extends Component{
     state={
-        name:"",
+        username:"",
         password:""
     }
 
     continue = () =>{
-        this.props.navigation.navigate("Chat", { name:this.state.name})
+        this.props.navigation.navigate("MessagesScreen", { name:this.state.username})
     }
 
     render(){
@@ -21,7 +21,7 @@ export default class LoginScreen extends Component{
                 </View>
                 <View style={{marginHorizontal:32}}>
                     <Text style={styles.header}>Login</Text>
-                    <TextInput style={styles.input} placeholder="Username" onChangeText={name => {this.setState({name})}} value = {this.state.name}/>
+                    <TextInput style={styles.input} placeholder="Username" onChangeText={username => {this.setState({username})}} value = {this.state.username}/>
                    
                 </View>
                 <View style={{marginHorizontal:32}}>
@@ -31,7 +31,7 @@ export default class LoginScreen extends Component{
                     <View style={{display:'flex', marginTop:64, flexDirection:'row'}}>
                     <Text onPress={ ()=> this.props.navigation.navigate("Signup")} style={{color:'blue'}}>Create Account</Text>
                     <View style={{flexGrow:1}}/>
-                        <TouchableOpacity style={styles.continue} onPress={this.continue}>
+                        <TouchableOpacity style={styles.continue} onPress={this.continue} disabled={this.state.username==="" || this.state.password==="" ? true : false}>
                             <Ionicons name = "md-arrow-forward" size = {24} color = 'white'/>
                         </TouchableOpacity>
                     </View>
