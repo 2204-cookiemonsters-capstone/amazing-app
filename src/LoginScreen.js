@@ -27,7 +27,10 @@ export default class LoginScreen extends Component{
                 <View style={{marginHorizontal:32}}>
 
                     <TextInput style={styles.input} placeholder="Password" onChangeText={password => {this.setState({password})}} value = {this.state.password}/>
-                    <View style={{alignItems: 'flex-end', marginTop:64}}>
+                   
+                    <View style={{display:'flex', marginTop:64, flexDirection:'row'}}>
+                    <Text onPress={ ()=> this.props.navigation.navigate("Signup")} style={{color:'blue'}}>Create Account</Text>
+                    <View style={{flexGrow:1}}/>
                         <TouchableOpacity style={styles.continue} onPress={this.continue}>
                             <Ionicons name = "md-arrow-forward" size = {24} color = 'white'/>
                         </TouchableOpacity>
