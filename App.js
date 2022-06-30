@@ -1,20 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {createAppContainer} from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
+import 'react-native-gesture-handler';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.jssfsfsdfsdfsd to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import LoginScreen from './src/LoginScreen'
+import ChatScreen from './src/ChatScreen'
+import Signup from './src/Signup';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+
+
+const AppNavigator = createStackNavigator(
+  {
+    Login:LoginScreen,
+    Chat:ChatScreen
   },
-});
+  {
+    headerMode:'none'
+  }
+);
+
+export default createAppContainer(AppNavigator)
