@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable } from 'react-native'
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable, ScrollView } from 'react-native'
 import React, { Component } from 'react'
 import {Ionicons} from '@expo/vector-icons'
 
@@ -6,6 +6,7 @@ export default class Signup extends Component{
     state={
         name:"",
         password:"",
+        confirmpw:'',
         firstName:'',
         lastName:'',
         email:''
@@ -18,6 +19,7 @@ export default class Signup extends Component{
     render(){
         return (
             <View style={styles.container}>
+                <ScrollView>
                 <View style={styles.circle}/>
                 <View style={{marginTop:64}}>
                     <Image source = {require('../assets/favicon.png')} style={{width:100, height:100, alignSelf:'center'}}/>
@@ -42,12 +44,19 @@ export default class Signup extends Component{
 
                 <View style={{marginHorizontal:32}}>
                     <TextInput style={styles.input} placeholder="Password" onChangeText={password => {this.setState({password})}} value = {this.state.password}/>
-                    <View style={{alignItems: 'flex-end', marginTop:64}}>
+                </View>
+
+                <View style={{marginHorizontal:32}}>
+                    <TextInput style={styles.input} placeholder="Confirm Password" onChangeText={confirmpw => {this.setState({confirmpw})}} value = {this.state.confirmpw}/>
+                    <View style={{display:'flex', marginTop:64, flexDirection:'row'}}>
+                    <Text onPress={ ()=> this.props.navigation.navigate("Login")} style={{color:'blue'}}>Login</Text>
+                    <View style={{flexGrow:1}}/>
                         <TouchableOpacity style={styles.continue} onPress={this.continue}>
                             <Ionicons name = "md-arrow-forward" size = {24} color = 'white'/>
                         </TouchableOpacity>
                     </View>
                 </View>
+                </ScrollView>
             </View>
         )
     }
