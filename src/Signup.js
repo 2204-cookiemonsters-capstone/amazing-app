@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import React, { Component } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { auth, createUserWithEmailAndPassword } from '../firebase';
 
 export default class Signup extends Component {
   state = {
@@ -25,12 +26,21 @@ export default class Signup extends Component {
     this.props.navigation.navigate('MessagesScreen', { name: this.state.name });
   };
 
+  handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, this.state.email, this.state.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+      })
+      .then(this.continue) //moves user forward if signup was successful, DID NOT TEST IF IT WORKS YET -JACK
+      .catch((error) => alert(error.message));
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <ScrollView>
           <View style={styles.circle} />
-          <View style={{ marginTop: 64 }}>
+          <View style={{ marginTop: 30 }}>
             <Image
               source={require('../assets/favicon.png')}
               style={{ width: 100, height: 100, alignSelf: 'center' }}
@@ -114,7 +124,7 @@ export default class Signup extends Component {
               <View style={{ flexGrow: 1 }} />
               <TouchableOpacity
                 style={styles.continue}
-                onPress={this.continue}
+                onPress={this.handleSignUp}
                 disabled={
                   this.state.name === '' ||
                   this.state.password === '' ||

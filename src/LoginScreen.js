@@ -9,15 +9,28 @@ import {
 } from 'react-native';
 import React, { Component } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { auth, signInWithEmailAndPassword } from '../firebase';
 
 export default class LoginScreen extends Component {
   state = {
-    username: '',
+    email: '',
     password: '',
   };
 
   continue = () => {
-    this.props.navigation.navigate('Chat');
+    this.props.navigation.navigate('MessagesScreen', {
+      name: this.state.email,
+    });
+  };
+
+  handleLogin = () => {
+    signInWithEmailAndPassword(auth, this.state.email, this.state.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('Login successful');
+        //UPDATE THIS TO MOVE SCREEN FORWARD IF LOGIN SUCCESSFUL
+      })
+      .catch((error) => alert(error.message));
   };
 
   render() {
@@ -34,11 +47,11 @@ export default class LoginScreen extends Component {
           <Text style={styles.header}>Login</Text>
           <TextInput
             style={styles.input}
-            placeholder='Username'
-            onChangeText={(username) => {
-              this.setState({ username });
+            placeholder='Email'
+            onChangeText={(email) => {
+              this.setState({ email });
             }}
-            value={this.state.username}
+            value={this.state.email}
           />
         </View>
         <View style={{ marginHorizontal: 32 }}>
@@ -63,9 +76,9 @@ export default class LoginScreen extends Component {
             <View style={{ flexGrow: 1 }} />
             <TouchableOpacity
               style={styles.continue}
-              onPress={this.continue}
+              onPress={() => this.handleLogin}
               disabled={
-                this.state.username === '' || this.state.password === ''
+                this.state.email === '' || this.state.password === ''
                   ? true
                   : false
               }
@@ -82,7 +95,6 @@ export default class LoginScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: '#F4F5F7',
   },
   circle: {
