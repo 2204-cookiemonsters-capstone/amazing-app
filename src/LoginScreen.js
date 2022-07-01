@@ -1,15 +1,26 @@
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable } from 'react-native'
 import React, { Component } from 'react'
 import {Ionicons} from '@expo/vector-icons'
+import { auth, signInWithEmailAndPassword } from "../firebase";
 
 export default class LoginScreen extends Component{
     state={
-        username:"",
+        email:"",
         password:""
     }
 
     continue = () =>{
-        this.props.navigation.navigate("MessagesScreen", { name:this.state.username})
+        this.props.navigation.navigate("MessagesScreen", { name:this.state.email})
+    }
+
+    handleLogin = () => {
+        signInWithEmailAndPassword(auth, this.state.email, this.state.password)
+            .then(userCredential => {
+                const user = userCredential.user;
+                console.log("Login successful")
+                //UPDATE THIS TO MOVE SCREEN FORWARD IF LOGIN SUCCESSFUL
+            })
+            .catch(error => alert(error.message))
     }
 
     render(){
@@ -21,17 +32,17 @@ export default class LoginScreen extends Component{
                 </View>
                 <View style={{marginHorizontal:32}}>
                     <Text style={styles.header}>Login</Text>
-                    <TextInput style={styles.input} placeholder="Username" onChangeText={username => {this.setState({username})}} value = {this.state.username}/>
-                   
+                    <TextInput style={styles.input} placeholder="Email" onChangeText={email => {this.setState({email})}} value = {this.state.email}/>
+
                 </View>
                 <View style={{marginHorizontal:32}}>
 
                     <TextInput style={styles.input} placeholder="Password" onChangeText={password => {this.setState({password})}} value = {this.state.password}/>
-                   
+
                     <View style={{display:'flex', marginTop:64, flexDirection:'row'}}>
                     <Text onPress={ ()=> this.props.navigation.navigate("Signup")} style={{color:'blue'}}>Create Account</Text>
                     <View style={{flexGrow:1}}/>
-                        <TouchableOpacity style={styles.continue} onPress={this.continue} disabled={this.state.username==="" || this.state.password==="" ? true : false}>
+                        <TouchableOpacity style={styles.continue} onPress={this.handleLogin} disabled={this.state.email==="" || this.state.password==="" ? true : false}>
                             <Ionicons name = "md-arrow-forward" size = {24} color = 'white'/>
                         </TouchableOpacity>
                     </View>
@@ -44,13 +55,12 @@ export default class LoginScreen extends Component{
 const styles = StyleSheet.create({
     container: {
         flex:1,
-       
         backgroundColor:"#F4F5F7"
     },
     circle:{
         width:500,
         height:500,
-        borderRadius:500 / 2, 
+        borderRadius:500 / 2,
         backgroundColor:'white',
         position: "absolute",
         left:120,
