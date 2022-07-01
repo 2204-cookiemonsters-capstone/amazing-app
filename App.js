@@ -1,23 +1,24 @@
-import {createAppContainer} from 'react-navigation'
-import { createStackNavigator } from 'react-navigation-stack'
+import React from 'react';
 import 'react-native-gesture-handler';
 
-import LoginScreen from './src/LoginScreen'
-import ChatScreen from './src/ChatScreen'
-import Signup from './src/Signup';
-import Messages from './src/Messages';
+import Routes from './navigation/Routes';
 
+const App = () => {
+  return <Routes />;
+};
 
-const AppNavigator = createStackNavigator(
-  {
-    Login:LoginScreen,
-    Signup:Signup,
-    Chat:ChatScreen,
-    MessagesScreen:Messages
-  },
-  {
-    headerMode:'none'
-  }
-);
+export default App;
 
-export default createAppContainer(AppNavigator)
+// const AppNavigator = createStackNavigator(
+//   {
+//     Login: LoginScreen,
+//     Signup: Signup,
+//     Chat: ChatScreen,
+//     MessagesScreen: Messages,
+//   },
+//   {
+//     headerMode: 'none',
+//   }
+// );
+
+// export default createAppContainer(AppNavigator);
