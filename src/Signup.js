@@ -1,96 +1,87 @@
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable, ScrollView } from 'react-native'
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import {Ionicons} from '@expo/vector-icons';
 import { auth, createUserWithEmailAndPassword } from "../firebase";
 
-export default class Signup extends Component{
-    state={
-        name:"",
-        password:"",
-        confirmpw:'',
-        firstName:'',
-        lastName:'',
-        email:''
-    }
+const Signup = (props) => {
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmpw, setConfirmPw] = useState('');
+    const [email, setEmail] = useState('');
+    const [isValid, setIsValid] = useState(true);
 
-    continue = () =>{
-        this.props.navigation.navigate("MessagesScreen", { name:this.state.name})
-    }
-
-    handleSignUp = () => {
-        createUserWithEmailAndPassword(auth, this.state.email, this.state.password)
+    const handleSignUp = () => {
+        createUserWithEmailAndPassword(auth, email, password)
             .then(userCredential => {
                 const user = userCredential.user;
+                console.log("Signup successful")
             })
             .catch(error => alert(error.message))
     }
 
-    render(){
-        return (
-            <View style={styles.container}>
-                <ScrollView>
-                <View style={styles.circle}/>
-                <View style={{marginTop:64}}>
-                    <Image source = {require('../assets/favicon.png')} style={{width:100, height:100, alignSelf:'center'}}/>
-                </View>
+//  const continue = () =>{
+//         this.props.navigation.navigate("MessagesScreen", { name:this.state.name})
+//  }
 
-                <View style={{marginHorizontal:32}}>
+    return (
+        <View style={styles.container}>
+            <ScrollView>
                 <Text style={styles.header}>Signup</Text>
-                    <TextInput style={styles.input} placeholder="First Name" onChangeText={firstName => {this.setState({firstName})}} value = {this.state.firstName}/>
-                </View>
-
-                <View style={{marginHorizontal:32}}>
-                    <TextInput style={styles.input} placeholder="Last Name" onChangeText={lastName => {this.setState({lastName})}} value = {this.state.lastName}/>
-                </View>
-
-                <View style={{marginHorizontal:32}}>
-                    <TextInput style={styles.input} placeholder="Email" onChangeText={email => {this.setState({email})}} value = {this.state.email}/>
-                </View>
-
-                <View style={{marginHorizontal:32}}>
-                    <TextInput style={styles.input} placeholder="Username" onChangeText={name => {this.setState({name})}} value = {this.state.name}/>
-                </View>
-
-                <View style={{marginHorizontal:32}}>
-                    <TextInput style={styles.input} placeholder="Password" onChangeText={password => {this.setState({password})}} value = {this.state.password}/>
-                </View>
-
-                <View style={{marginHorizontal:32}}>
-                    <TextInput style={styles.input} placeholder="Confirm Password" onChangeText={confirmpw => {this.setState({confirmpw})}} value = {this.state.confirmpw}/>
-                    <View style={{display:'flex', marginTop:64, flexDirection:'row'}}>
-                    <Text onPress={ ()=> this.props.navigation.navigate("Login")} style={{color:'blue'}}>Login</Text>
-                    <View style={{flexGrow:1}}/>
-                        <TouchableOpacity style={styles.continue} onPress={this.handleSignUp}>
-                            <Ionicons name = "md-arrow-forward" size = {24} color = 'white'/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                </ScrollView>
-            </View>
-        )
-    }
+                <TextInput
+                    style={styles.input}
+                    placeholder="Username"
+                    value={username}
+                    onChangeText={(username) => setUsername(username.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').replace(/[^a-z0-9]/gi, ''))}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Name"
+                    onChangeText={(name) => setName(name)}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    onChangeText={(email) => setEmail(email)}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Password"
+                    secureTextEntry={true}
+                    onChangeText={(password) => setPassword(password)}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirm Password"
+                    secureTextEntry={true}
+                    onChangeText={(confirmpw) => setConfirmPw(confirmpw)}
+                />
+                <TouchableOpacity style={styles.submitButton} title="Signup" onPress={() => handleSignUp()}>
+                    <Text>Sign up</Text>
+                </TouchableOpacity>
+                <Text onPress={ ()=> props.navigation.navigate("Login")} style={styles.loginMessage}>Already have an account? SignIn.</Text>
+            </ScrollView>
+        </View>
+    )
 }
+
+export default Signup;
 
 const styles = StyleSheet.create({
     container: {
         flex:1,
-
-        backgroundColor:"#F4F5F7"
-    },
-    circle:{
-        width:500,
-        height:500,
-        borderRadius:500 / 2,
-        backgroundColor:'white',
-        position: "absolute",
-        left:120,
-        top:-20
+        paddingTop: 50,
+        padding: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white'
     },
     header:{
         fontWeight: "800", //font weight is the only number that needs to be in quotes or or it crashes expo
         fontSize:30,
         color:'black',
-        marginTop:32
+        marginTop:32,
+        textAlign: 'center'
     },
     input:{
         marginTop:32,
@@ -100,15 +91,23 @@ const styles = StyleSheet.create({
         borderRadius:30,
         paddingHorizontal:16,
         color:'black',
-        fontWeight:'600'
+        fontWeight:'600',
+        width: 280
     },
-    continue:{
-        width:70,
-        height:70,
-        borderRadius:70/2,
-        backgroundColor:'#9075E3',
-        alignItems:'center',
-        justifyContent:'center'
+    submitButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#9075E3',
+        width: 280,
+        height: 50,
+        marginTop: 32,
+        borderRadius: 30,
+    },
+    loginMessage: {
+        marginTop: 20,
+        textAlign: 'center',
+        color: 'blue'
     }
 });
+
 
