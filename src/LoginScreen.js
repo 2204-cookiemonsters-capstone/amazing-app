@@ -1,20 +1,14 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable } from 'react-native'
-import React, { Component } from 'react'
-import {Ionicons} from '@expo/vector-icons'
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { Component, useState } from 'react';
 import { auth, signInWithEmailAndPassword } from "../firebase";
 
-export default class LoginScreen extends Component{
-    state={
-        email:"",
-        password:""
-    }
+const LoginScreen = (props) => {
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [isValid, setIsValid] = useState(true);
 
-    continue = () =>{
-        this.props.navigation.navigate("MessagesScreen", { name:this.state.email})
-    }
-
-    handleLogin = () => {
-        signInWithEmailAndPassword(auth, this.state.email, this.state.password)
+    const handleLogin = () => {
+        signInWithEmailAndPassword(auth, email, password)
             .then(userCredential => {
                 const user = userCredential.user;
                 console.log("Login successful")
@@ -23,54 +17,49 @@ export default class LoginScreen extends Component{
             .catch(error => alert(error.message))
     }
 
-    render(){
-        return (
-            <View style={styles.container}>
-                <View style={styles.circle}/>
-                <View style={{marginTop:64}}>
-                    <Image source = {require('../assets/favicon.png')} style={{width:100, height:100, alignSelf:'center'}}/>
-                </View>
-                <View style={{marginHorizontal:32}}>
-                    <Text style={styles.header}>Login</Text>
-                    <TextInput style={styles.input} placeholder="Email" onChangeText={email => {this.setState({email})}} value = {this.state.email}/>
-
-                </View>
-                <View style={{marginHorizontal:32}}>
-
-                    <TextInput style={styles.input} placeholder="Password" onChangeText={password => {this.setState({password})}} value = {this.state.password}/>
-
-                    <View style={{display:'flex', marginTop:64, flexDirection:'row'}}>
-                    <Text onPress={ ()=> this.props.navigation.navigate("Signup")} style={{color:'blue'}}>Create Account</Text>
-                    <View style={{flexGrow:1}}/>
-                        <TouchableOpacity style={styles.continue} onPress={this.handleLogin} disabled={this.state.email==="" || this.state.password==="" ? true : false}>
-                            <Ionicons name = "md-arrow-forward" size = {24} color = 'white'/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        )
-    }
+    return (
+        <View style={styles.container}>
+            <ScrollView>
+                <Text style={styles.header}>Sign In</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    autoCapitalize='none'
+                    onChangeText={(email) => setEmail(email)}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Password"
+                    autoCapitalize='none'
+                    secureTextEntry={true}
+                    onChangeText={(password) => setPassword(password)}
+                />
+                <TouchableOpacity style={styles.submitButton} title="Signup" onPress={() => handleLogin()}>
+                    <Text>Log In</Text>
+                </TouchableOpacity>
+                <Text onPress={ ()=> props.navigation.navigate("Signup")} style={styles.loginMessage}>Don't have an account? Sign up.</Text>
+            </ScrollView>
+        </View>
+    )
 }
+
+export default LoginScreen;
 
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        backgroundColor:"#F4F5F7"
-    },
-    circle:{
-        width:500,
-        height:500,
-        borderRadius:500 / 2,
-        backgroundColor:'white',
-        position: "absolute",
-        left:120,
-        top:-20
+        paddingTop: 50,
+        padding: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white'
     },
     header:{
         fontWeight: "800", //font weight is the only number that needs to be in quotes or or it crashes expo
         fontSize:30,
         color:'black',
-        marginTop:32
+        marginTop:32,
+        textAlign: 'center'
     },
     input:{
         marginTop:32,
@@ -80,15 +69,21 @@ const styles = StyleSheet.create({
         borderRadius:30,
         paddingHorizontal:16,
         color:'black',
-        fontWeight:'600'
+        fontWeight:'600',
+        width: 280
     },
-    continue:{
-        width:70,
-        height:70,
-        borderRadius:70/2,
-        backgroundColor:'#9075E3',
-        alignItems:'center',
-        justifyContent:'center'
+    submitButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#9075E3',
+        width: 280,
+        height: 50,
+        marginTop: 32,
+        borderRadius: 30,
+    },
+    loginMessage: {
+        marginTop: 20,
+        textAlign: 'center',
+        color: 'blue'
     }
 });
-

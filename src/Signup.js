@@ -1,6 +1,5 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable, ScrollView } from 'react-native'
-import React, { Component, useState } from 'react'
-import {Ionicons} from '@expo/vector-icons';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable, ScrollView } from 'react-native';
+import React, { Component, useState } from 'react';
 import { auth, createUserWithEmailAndPassword } from "../firebase";
 
 const Signup = (props) => {
@@ -27,11 +26,12 @@ const Signup = (props) => {
     return (
         <View style={styles.container}>
             <ScrollView>
-                <Text style={styles.header}>Signup</Text>
+                <Text style={styles.header}>Sign Up</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Username"
                     value={username}
+                    autoCapitalize='none'
                     onChangeText={(username) => setUsername(username.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').replace(/[^a-z0-9]/gi, ''))}
                 />
                 <TextInput
@@ -42,24 +42,27 @@ const Signup = (props) => {
                 <TextInput
                     style={styles.input}
                     placeholder="Email"
+                    autoCapitalize='none'
                     onChangeText={(email) => setEmail(email)}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Password"
+                    autoCapitalize='none'
                     secureTextEntry={true}
                     onChangeText={(password) => setPassword(password)}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Confirm Password"
+                    autoCapitalize='none'
                     secureTextEntry={true}
                     onChangeText={(confirmpw) => setConfirmPw(confirmpw)}
                 />
                 <TouchableOpacity style={styles.submitButton} title="Signup" onPress={() => handleSignUp()}>
                     <Text>Sign up</Text>
                 </TouchableOpacity>
-                <Text onPress={ ()=> props.navigation.navigate("Login")} style={styles.loginMessage}>Already have an account? SignIn.</Text>
+                <Text onPress={ ()=> props.navigation.navigate("Login")} style={styles.loginMessage}>Already have an account? Sign in.</Text>
             </ScrollView>
         </View>
     )
@@ -109,5 +112,3 @@ const styles = StyleSheet.create({
         color: 'blue'
     }
 });
-
-
