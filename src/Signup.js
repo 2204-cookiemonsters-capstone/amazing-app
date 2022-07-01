@@ -1,6 +1,9 @@
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable, ScrollView } from 'react-native'
 import React, { Component } from 'react'
 import {Ionicons} from '@expo/vector-icons'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+const auth = getAuth();
 
 export default class Signup extends Component{
     state={
@@ -16,6 +19,14 @@ export default class Signup extends Component{
         this.props.navigation.navigate("MessagesScreen", { name:this.state.name})
     }
 
+    handleSignUp = () => {
+        createUserWithEmailAndPassword(auth, this.state.email, this.state.password)
+            .then(userCredential => {
+                const user = userCredential.user;
+            })
+            .catch(error => alert(error.message))
+    }
+
     render(){
         return (
             <View style={styles.container}>
@@ -24,7 +35,7 @@ export default class Signup extends Component{
                 <View style={{marginTop:64}}>
                     <Image source = {require('../assets/favicon.png')} style={{width:100, height:100, alignSelf:'center'}}/>
                 </View>
-              
+
                 <View style={{marginHorizontal:32}}>
                 <Text style={styles.header}>Signup</Text>
                     <TextInput style={styles.input} placeholder="First Name" onChangeText={firstName => {this.setState({firstName})}} value = {this.state.firstName}/>
@@ -51,7 +62,7 @@ export default class Signup extends Component{
                     <View style={{display:'flex', marginTop:64, flexDirection:'row'}}>
                     <Text onPress={ ()=> this.props.navigation.navigate("Login")} style={{color:'blue'}}>Login</Text>
                     <View style={{flexGrow:1}}/>
-                        <TouchableOpacity style={styles.continue} onPress={this.continue}>
+                        <TouchableOpacity style={styles.continue} onPress={this.handleSignUp}>
                             <Ionicons name = "md-arrow-forward" size = {24} color = 'white'/>
                         </TouchableOpacity>
                     </View>
@@ -65,13 +76,13 @@ export default class Signup extends Component{
 const styles = StyleSheet.create({
     container: {
         flex:1,
-       
+
         backgroundColor:"#F4F5F7"
     },
     circle:{
         width:500,
         height:500,
-        borderRadius:500 / 2, 
+        borderRadius:500 / 2,
         backgroundColor:'white',
         position: "absolute",
         left:120,
