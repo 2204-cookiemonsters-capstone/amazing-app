@@ -1,9 +1,7 @@
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable, ScrollView } from 'react-native'
 import React, { Component } from 'react'
-import {Ionicons} from '@expo/vector-icons'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
-const auth = getAuth();
+import {Ionicons} from '@expo/vector-icons';
+import { auth, createUserWithEmailAndPassword } from "../firebase";
 
 export default class Signup extends Component{
     state={
