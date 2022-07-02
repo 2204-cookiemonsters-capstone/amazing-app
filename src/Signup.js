@@ -8,9 +8,9 @@ const Signup = (props) => {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmpw, setConfirmPw] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [isValid, setIsValid] = useState(true);
+    const [isValid, setIsValid] = useState(false);
 
     const handleSignUp = () => {
         if (username.length == 0) {
@@ -29,7 +29,7 @@ const Signup = (props) => {
             setIsValid({ bool: true, boolSnack: true, message: "Passwords must be at least 6 characters" })
             return;
         }
-        if (password !== confirmpw) {
+        if (password !== confirmPassword) {
             setIsValid({ bool: true, boolSnack: true, message: "Passwords must match" })
             return;
         }
@@ -75,7 +75,7 @@ const Signup = (props) => {
                     placeholder="Confirm Password"
                     autoCapitalize='none'
                     secureTextEntry={true}
-                    onChangeText={(confirmpw) => setConfirmPw(confirmpw)}
+                    onChangeText={(confirmpw) => setConfirmPassword(confirmpw)}
                 />
                 <TouchableOpacity style={authStyle.submitButton} title="Signup" onPress={() => handleSignUp()}>
                     <Text>Sign up</Text>
