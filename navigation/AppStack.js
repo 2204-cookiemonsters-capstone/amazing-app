@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -71,6 +71,7 @@ const ProfileStack = ({ navigation }) => (
 
 const AppStack = () => {
   const getTabBarVisibility = (route) => {
+    //not show navbar in chat component, follow this format for other components. console.log(route.getState() to see object)
     console.log(route.getState());
 
     const routeName = route.getState().routes[0].state //need .routes[0].state or else will return error when switching between auth stack and app stack
@@ -79,33 +80,201 @@ const AppStack = () => {
         ]
       : '';
 
-    if (routeName === 'ChatScreen') return false;
-    return true;
+    if (routeName === 'ChatScreen') {
+      return {
+        display: 'none',
+      };
+    }
+    return {
+      position: 'absolute',
+      backgroundColor: '#ffffff',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      height: 60,
+    };
   };
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarStyle: [
+          {
+            position: 'absolute',
+            backgroundColor: '#ffffff',
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            height: 60,
+          },
+        ],
+      }}
+    >
       <Tab.Screen
         name='Messages'
         component={MessagesStack}
-        options={({ navigation }) =>
-          getTabBarVisibility(navigation)
-            ? {
-                tabBarStyle: {
-                  display: 'flex',
-                },
-              }
-            : {
-                tabBarStyle: {
-                  display: 'none',
-                },
-              }
-        }
+        options={({ navigation }) => ({
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                top: 5,
+              }}
+            >
+              <Image
+                source={require('../assets/chat.png')}
+                resizeMode='contain'
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#e32f45' : '#748c94', //outline of the icon, red or grey
+                }}
+              />
+              <Text
+                style={{
+                  color: focused ? '#e32f45' : '#748c94',
+                  fontSize: 12,
+                }}
+              >
+                Chat
+              </Text>
+            </View>
+          ),
+          tabBarStyle: getTabBarVisibility(navigation), //does not show navbar on chat
+        })}
       />
-      <Tab.Screen name='Tasks' component={TasksStack} />
-      <Tab.Screen name='AddTask' component={AddTaskStack} />
-      <Tab.Screen name='List' component={ListStack} />
-      <Tab.Screen name='Profile' component={ProfileStack} />
+      <Tab.Screen
+        name='Tasks'
+        component={TasksStack}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                top: 5,
+              }}
+            >
+              <Image
+                source={require('../assets/28.png')}
+                resizeMode='contain'
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#e32f45' : '#748c94',
+                }}
+              />
+              <Text
+                style={{
+                  color: focused ? '#e32f45' : '#748c94',
+                  fontSize: 12,
+                }}
+              >
+                Tasks
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='AddTask'
+        component={AddTaskStack}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                top: 5,
+              }}
+            >
+              <Image
+                source={require('../assets/plus.png')}
+                resizeMode='contain'
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#e32f45' : '#748c94',
+                }}
+              />
+              <Text
+                style={{
+                  color: focused ? '#e32f45' : '#748c94',
+                  fontSize: 12,
+                }}
+              >
+                Add
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='List'
+        component={ListStack}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                top: 5,
+              }}
+            >
+              <Image
+                source={require('../assets/list.png')}
+                resizeMode='contain'
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#e32f45' : '#748c94',
+                }}
+              />
+              <Text
+                style={{
+                  color: focused ? '#e32f45' : '#748c94',
+                  fontSize: 12,
+                }}
+              >
+                Lists
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='Profile'
+        component={ProfileStack}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                top: 5,
+              }}
+            >
+              <Image
+                source={require('../assets/profile.png')}
+                resizeMode='contain'
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#e32f45' : '#748c94',
+                }}
+              />
+              <Text
+                style={{
+                  color: focused ? '#e32f45' : '#748c94',
+                  fontSize: 12,
+                }}
+              >
+                Profile
+              </Text>
+            </View>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

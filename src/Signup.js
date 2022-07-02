@@ -31,7 +31,7 @@ export default class Signup extends Component {
       .then((userCredential) => {
         const user = userCredential.user;
       })
-      .then(this.continue) //moves user forward if signup was successful, DID NOT TEST IF IT WORKS YET -JACK
+      //moves user forward if signup was successful, DID NOT TEST IF IT WORKS YET -JACK
       .catch((error) => alert(error.message));
   };
 
