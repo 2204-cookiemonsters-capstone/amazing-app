@@ -92,6 +92,9 @@ const Messages = (props) => {
         keyExtractor={(message) => message.id}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: 80, //fix navbar does not block the last item
+        }}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={{ width: '100%' }}
