@@ -1,133 +1,63 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  Touchable,
-} from 'react-native';
-import React, { Component } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { auth, signInWithEmailAndPassword } from '../firebase';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { Component, useState } from 'react';
+import { auth, signInWithEmailAndPassword } from "../firebase";
+import { Snackbar } from "react-native-paper";
+import { authStyle } from "../styles";
 
-export default class LoginScreen extends Component {
-  state = {
-    email: '',
-    password: '',
-  };
+const LoginScreen = (props) => {
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [isValid, setIsValid] = useState(true);
 
-  continue = () => {
-    this.props.navigation.navigate('MessagesScreen', {
-      name: this.state.email,
-    });
-  };
+    const handleLogin = () => {
+        if (email.length == 0) {
+            setIsValid({ bool: true, boolSnack: true, message: "Please enter an email address" })
+            return;
+        }
+        if (password.length < 6) {
+            setIsValid({ bool: true, boolSnack: true, message: "Passwords must be at least 6 characters" })
+            return;
+        }
+        signInWithEmailAndPassword(auth, email, password)
+            .then(userCredential => {
+                const user = userCredential.user;
+                console.log("Login successful")
+                //UPDATE THIS TO MOVE SCREEN FORWARD IF LOGIN SUCCESSFUL
+            })
+            .catch((error) => {setIsValid({ bool: true, boolSnack: true, message: error.message })})
+    }
 
-  handleLogin = () => {
-    signInWithEmailAndPassword(auth, this.state.email, this.state.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log('Login successful');
-        //UPDATE THIS TO MOVE SCREEN FORWARD IF LOGIN SUCCESSFUL
-      })
-      .catch((error) => alert(error.message));
-  };
-
-  render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.circle} />
-        <View style={{ marginTop: 64 }}>
-          <Image
-            source={require('../assets/favicon.png')}
-            style={{ width: 100, height: 100, alignSelf: 'center' }}
-          />
+        <View style={authStyle.container}>
+            <ScrollView>
+                <Text style={authStyle.header}>Sign In</Text>
+                <TextInput
+                    style={authStyle.input}
+                    placeholder="Email"
+                    autoCapitalize='none'
+                    onChangeText={(email) => setEmail(email)}
+                />
+                <TextInput
+                    style={authStyle.input}
+                    placeholder="Password"
+                    autoCapitalize='none'
+                    secureTextEntry={true}
+                    onChangeText={(password) => setPassword(password)}
+                />
+                <TouchableOpacity style={authStyle.submitButton} title="Signup" onPress={() => handleLogin()}>
+                    <Text>Log In</Text>
+                </TouchableOpacity>
+                <Text onPress={ ()=> props.navigation.navigate("Signup")} style={authStyle.loginMessage}>Don't have an account? Sign up.</Text>
+                <Snackbar
+                    visible={isValid.boolSnack}
+                    style={authStyle.snackbarError}
+                    duration={2000}
+                    onDismiss={() => { setIsValid({ boolSnack: false }) }}>
+                    {isValid.message}
+                </Snackbar>
+            </ScrollView>
         </View>
-        <View style={{ marginHorizontal: 32 }}>
-          <Text style={styles.header}>Login</Text>
-          <TextInput
-            style={styles.input}
-            placeholder='Email'
-            onChangeText={(email) => {
-              this.setState({ email });
-            }}
-            value={this.state.email}
-          />
-        </View>
-        <View style={{ marginHorizontal: 32 }}>
-          <TextInput
-            style={styles.input}
-            placeholder='Password'
-            onChangeText={(password) => {
-              this.setState({ password });
-            }}
-            value={this.state.password}
-          />
-
-          <View
-            style={{ display: 'flex', marginTop: 64, flexDirection: 'row' }}
-          >
-            <Text
-              onPress={() => this.props.navigation.navigate('Signup')}
-              style={{ color: 'blue' }}
-            >
-              Create Account
-            </Text>
-            <View style={{ flexGrow: 1 }} />
-            <TouchableOpacity
-              style={styles.continue}
-              onPress={() => this.handleLogin}
-              disabled={
-                this.state.email === '' || this.state.password === ''
-                  ? true
-                  : false
-              }
-            >
-              <Ionicons name='md-arrow-forward' size={24} color='white' />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  }
+    )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F4F5F7',
-  },
-  circle: {
-    width: 500,
-    height: 500,
-    borderRadius: 500 / 2,
-    backgroundColor: 'white',
-    position: 'absolute',
-    left: 120,
-    top: -20,
-  },
-  header: {
-    fontWeight: '800', //font weight is the only number that needs to be in quotes or or it crashes expo
-    fontSize: 30,
-    color: 'black',
-    marginTop: 32,
-  },
-  input: {
-    marginTop: 32,
-    height: 50,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#BAB7C3',
-    borderRadius: 30,
-    paddingHorizontal: 16,
-    color: 'black',
-    fontWeight: '600',
-  },
-  continue: {
-    width: 70,
-    height: 70,
-    borderRadius: 70 / 2,
-    backgroundColor: '#9075E3',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default LoginScreen;
