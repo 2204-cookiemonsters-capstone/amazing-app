@@ -3,34 +3,34 @@ import React, {useState, useEffect} from 'react';
 import { Text, TextInput, View, StyleSheet, ScrollView, Image, ImageBackground } from 'react-native';
 
 const dummyUserTasks = [
-  {id: 1, userId: 1, taskId:1, title: "read a book", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on the book I read. I recommend this book because...", postImgUrl: "https://imgur.com/BxZS95D", endDate: "July 30"},
-  {id: 2, userId: 1, taskId:2, title: "meditate", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on meditating. I'm not good at meditation so this one was a challenge...etc", postImgUrl: "https://imgur.com/Ev7LLdE", endDate: "July 30"},
-  {id: 3, userId: 1, taskId:3, title: "spend an hour in nature", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on nature. It was nice to get outdoors.", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
-  {id: 4, userId: 1, taskId:4, title: "write a letter", description: "write and send a letter in the mail", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 5, userId: 1, taskId:5, title: "spend 30 minutes practicing deep breathing", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on deep breathing. I felt so much more relaxed after 30 minutes.", postImgUrl: "https://imgur.com/DsehfR6", endDate: "July 30"},
-  {id: 6, userId: 1, taskId:6, title: "complete an art project", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "Doodling is something I used to do a lot when I was younger. I picked up a pen and just started drawing and drew this...", postImgUrl: "https://imgur.com/xVtrThI", endDate: "July 30"},
-  {id: 7, userId: 1, taskId:7, title: "write a journal entry", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 8, userId: 1, taskId:8, title: "family past", description: "record a family story", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 9, userId: 1, taskId:9, title: "10 meaningful photos", description: "Take ten photos of important people, places or things in your life", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 10, userId: 1, taskId:10, title: "sit with water", description: "visit a pond, lake, river, ocean, or other body of water and observe the water", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 11, userId: 1, taskId:11, title: "walking meditation", description: "go on a walk, and focus on feeling the ground beneath your feet with each step", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 12, userId: 1, taskId:12, title: "watch a movie", description: "watch a movie", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 13, userId: 1, taskId:13, title: "be a critic", description: "write positive reviews for the locally owned places you love", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 14, userId: 1, taskId:14, title: "floss", description: "do it", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 16, userId: 1, taskId:16, title: "movement", description: "yoga, dance, martial arts. Move your body for 30 minutes.", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 17, userId: 1, taskId:17, title: "stretch", description: "from head to toe, stretch each part of your body", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 18, userId: 1, taskId:18, title: "relaxation", description: "lie down and spend 10 minutes relaxing your body without falling asleep", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 19, userId: 1, taskId:19, title: "new food", description: "eat something you've never tried before", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 15, userId: 1, taskId:15, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 1, userId: 1, taskId:1, title: "read a book", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on the book I read. I recommend this book because...", postImgUrl: "https://i.imgur.com/DsehfR6.jpg", endDate: "July 30"},
+  {id: 2, userId: 1, taskId:2, title: "meditate", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on meditating. I'm not good at meditation so this one was a challenge...etc", postImgUrl: "https://imgur.com/Ev7LLdE.jpg", endDate: "July 30"},
+  {id: 3, userId: 1, taskId:3, title: "spend an hour in nature", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on nature. It was nice to get outdoors.", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
+  {id: 4, userId: 1, taskId:4, title: "write a letter", description: "write and send a letter in the mail", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
+  {id: 5, userId: 1, taskId:5, title: "spend 30 minutes practicing deep breathing", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on deep breathing. I felt so much more relaxed after 30 minutes.", postImgUrl: "https://imgur.com/DsehfR6.jpg", endDate: "July 30"},
+  {id: 6, userId: 1, taskId:6, title: "complete an art project", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "Doodling is something I used to do a lot when I was younger. I picked up a pen and just started drawing and drew this...", postImgUrl: "https://imgur.com/xVtrThI.jpg", endDate: "July 30"},
+  {id: 7, userId: 1, taskId:7, title: "write a journal entry", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
+  {id: 8, userId: 1, taskId:8, title: "family past", description: "record a family story", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
+  {id: 9, userId: 1, taskId:9, title: "10 meaningful photos", description: "Take ten photos of important people, places or things in your life", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
+  {id: 10, userId: 1, taskId:10, title: "sit with water", description: "visit a pond, lake, river, ocean, or other body of water and observe the water", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 11, userId: 1, taskId:11, title: "walking meditation", description: "go on a walk, and focus on feeling the ground beneath your feet with each step", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 12, userId: 1, taskId:12, title: "watch a movie", description: "watch a movie", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 13, userId: 1, taskId:13, title: "be a critic", description: "write positive reviews for the locally owned places you love", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 14, userId: 1, taskId:14, title: "floss", description: "do it", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 16, userId: 1, taskId:16, title: "movement", description: "yoga, dance, martial arts. Move your body for 30 minutes.", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 17, userId: 1, taskId:17, title: "stretch", description: "from head to toe, stretch each part of your body", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 18, userId: 1, taskId:18, title: "relaxation", description: "lie down and spend 10 minutes relaxing your body without falling asleep", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 19, userId: 1, taskId:19, title: "new food", description: "eat something you've never tried before", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 15, userId: 1, taskId:15, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
   {id: 20, userId: 1, taskId:20, title: "volunteer", description: "volunteer", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 21, userId: 1, taskId:21, title: "task 21", description: "task 21", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 22, userId: 1, taskId:22, title: "task 22", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 23, userId: 1, taskId:23, title: "task 23", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 24, userId: 1, taskId:24, title: "task 24", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 25, userId: 1, taskId:25, title: "task 25", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 26, userId: 1, taskId:26, title: "task 26", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 27, userId: 1, taskId:27, title: "task 27", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
-  {id: 28, userId: 1, taskId:28, title: "task 28", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 21, userId: 1, taskId:21, title: "task 21", description: "task 21", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 22, userId: 1, taskId:22, title: "task 22", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 23, userId: 1, taskId:23, title: "task 23", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 24, userId: 1, taskId:24, title: "task 24", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 25, userId: 1, taskId:25, title: "task 25", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 26, userId: 1, taskId:26, title: "task 26", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 27, userId: 1, taskId:27, title: "task 27", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
+  {id: 28, userId: 1, taskId:28, title: "task 28", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
 
 ]
 
@@ -38,6 +38,7 @@ const Tasks = (props) => {
 const [allTasks, setAllTasks] = useState([])
 const [view, setView] = useState('tasks')
 const [open, setOpen] = useState(0)
+const [goalNum, setGoalNum] = useState("28")
 const [currentTask, setCurrentTask] = useState({})
 const [followerPosts, setFollowerPosts] = useState([])
 const [followerPost, setFollowerPost] = useState({})
@@ -77,6 +78,10 @@ const handleFeaturedPost = (id) => {
 setFeaturedPost(id)
 setView('featured')
 }
+
+const handleGoalNum = (num) => {
+  setGoalNum(num)
+  }
 
 const handleSubmit = (id) => {
   //update thru table to add photo, description, completeStatus, and redirect to posts page
@@ -124,8 +129,16 @@ console.log("useEffect2")}, [view, allTasks]
 <View>
   <View style={styles.twentyEightContainer}>
      <Text style={styles.twentyEightCount}>{completed.length}</Text>
-     <Text style={styles.twentyEight}>/ 28</Text>
+     <Text style={styles.twentyEight}>/ {goalNum}</Text>
   </View>
+  <Text style={[styles.goalNum, styles.center]}>set your goal:  
+  <Text onPress={() => handleGoalNum(7)}>  7  </Text>
+  <Text onPress={() => handleGoalNum(14)}>  14  </Text>
+  <Text onPress={() => handleGoalNum(21)}>  21  </Text>
+  <Text onPress={() => handleGoalNum(28)}>  28  </Text>
+
+  </Text>
+
   <Text style={styles.newList}><Text style={styles.about} onPress={()=>handleView('about')}>about  </Text> |   next: {allTasks.length > 0 ? allTasks[1].endDate : null}</Text>
   
   {allTasks.map((item) => (
@@ -151,9 +164,9 @@ console.log("useEffect2")}, [view, allTasks]
     <Text style={styles.subheading}>what</Text>
     <Text style={styles.aboutParagraph}>Every 28 days, we post a list of 28 tasks for all users to achieve. These tasks change each month, but always inspire our users to spend time connecting with nature, their community, and practicing and sharing activities proven to promote wellbeing. </Text>
     <Text style={styles.subheading}>why</Text>
-    <Text style={styles.aboutParagraph}>While social media can often promote endless scrolling and comparisons, these tasks are all intended to motivate our users to put their phone away for awhile and focus on small daily achievements, while still benefitting from the community aspect of social media.</Text>
+    <Text style={styles.aboutParagraph}> Lots of social media wants to suck users in-- endless scrolling, shopping, and comparisons. Our tasks are all intended to motivate our users to find a balance-- to put their phones down for awhile, to reflect, and to connect.</Text>
     <Text style={styles.subheading}>how</Text>
-    <Text style={styles.aboutParagraph}>All you have to do is choose a task and begin. To complete a task, simply click on that task and submit any photo and a short description or reflection on the activity.</Text>
+    <Text style={styles.aboutParagraph}>All you have to do is choose a task and begin. If 28 tasks is beyond your grasp, you can set your monthly goal to 7, 14, or 21 tasks. To complete a task, simply click on that task and submit any photo and a short description or reflection on the activity. </Text>
 
 </View>
 </ScrollView>
@@ -177,20 +190,17 @@ console.log("useEffect2")}, [view, allTasks]
 {/* users posts section */}
 {view === 'posts' ? (
       <View>    
-        <Text>***This page will be image posts***</Text>
+        <Text style={styles.subheading}>your post history</Text>
     {allTasks.map((item) => {
-  let image = {uri: item.postImgUrl}
+    console.log(item.postImgUrl, "image url")
+
   return (
         item.completed == true ? (
+          <View style={styles.postContainer}>
           
-          <View style={styles.imageContainer}>
-           
-            <Image
-             style={{width: "100%", height: "50%"}}
-              source={image}/>
+          <Image style={{width:"auto", height: 400}} source={item.postImgUrl ? {uri: item.postImgUrl} : null } />
             <Text style={styles.postTag}>{item.title}</Text>
             <Text>{item.postDescription}</Text>
-            <Text></Text>
             
           </View>) : null
     )})}
@@ -258,6 +268,9 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     marginBottom: 100
   },
+  center: {
+    textAlign: "center"
+  },
   topOptions:{
     flexDirection: "row",
     justifyContent: "space-between",
@@ -276,6 +289,10 @@ twentyEightContainer: {
   paddingTop: 20,
   paddingBottom: 10
 },
+goalNum:{
+  paddingBottom: 10
+}
+  ,
   newList:{
     textAlign: "center",
     paddingBottom: 30,
@@ -391,6 +408,13 @@ twentyEightContainer: {
 postTag : {
   fontWeight: "800"
 },
+postContainer:{
+  padding: 5,
+  borderBottomWidth: 1,
+  borderColor: "lightgray",
+  paddingBottom: 5,
+  marginBottom: 10
+}
 
 
 });
