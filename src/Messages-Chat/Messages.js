@@ -159,12 +159,12 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 14,
     fontWeight: 'bold',
-    fontFamily: 'serif',
+    // fontFamily: 'serif',
   },
   posttime: {
     fontSize: 12,
     color: '#666',
-    fontFamily: 'serif',
+    // fontFamily: 'serif',
     marginRight: 30,
   },
   messageText: {

@@ -1,6 +1,7 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, Touchable, ScrollView } from 'react-native';
-import React, { Component, useState } from 'react';
-import { auth, createUserWithEmailAndPassword } from "../firebase";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { auth, createUserWithEmailAndPassword, firestore } from "../firebase";
+import { setDoc, doc } from "firebase/firestore";
 import { Snackbar } from "react-native-paper";
 import { authStyle } from "../styles";
 
@@ -37,6 +38,11 @@ const Signup = (props) => {
             .then(userCredential => {
                 const user = userCredential.user;
                 console.log("Signup successful")
+            })
+            .then(() => {
+                setDoc(doc(firestore, 'users', auth.currentUser.uid), {
+                    username, name, email, score: 0
+                })
             })
             .catch((error) => {setIsValid({ bool: true, boolSnack: true, message: error.message })})
     }
