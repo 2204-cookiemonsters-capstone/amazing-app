@@ -11,15 +11,45 @@ const dummyUserTasks = [
   {id: 6, userId: 1, taskId:6, title: "complete an art project", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "Doodling is something I used to do a lot when I was younger. I picked up a pen and just started drawing and drew this...", postImgUrl: "https://imgur.com/xVtrThI", endDate: "July 30"},
   {id: 7, userId: 1, taskId:7, title: "write a journal entry", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
   {id: 8, userId: 1, taskId:8, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 9, userId: 1, taskId:9, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 10, userId: 1, taskId:10, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 11, userId: 1, taskId:11, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 12, userId: 1, taskId:12, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 13, userId: 1, taskId:13, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 14, userId: 1, taskId:14, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 16, userId: 1, taskId:16, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 17, userId: 1, taskId:17, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 18, userId: 1, taskId:18, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 19, userId: 1, taskId:19, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 15, userId: 1, taskId:15, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 20, userId: 1, taskId:20, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 21, userId: 1, taskId:21, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 22, userId: 1, taskId:22, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 23, userId: 1, taskId:23, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 24, userId: 1, taskId:24, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 22, userId: 1, taskId:22, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 25, userId: 1, taskId:25, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 26, userId: 1, taskId:26, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 27, userId: 1, taskId:27, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+  {id: 28, userId: 1, taskId:28, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
+
 ]
 
 const Tasks = (props) => {
 const [view, setView] = useState('tasks')
 const [open, setOpen] = useState(0)
+const [followerPosts, setFollowerPosts] = useState([])
+const [followerPost, setFollowerPost] = useState({})
+const [featuredPosts, setFeaturedPosts] = useState([])
+const [featuredPost, setFeaturedPost] = useState({})
 
 let completed = dummyUserTasks.filter((item) => item.completed === true)
 
 const handleView = (view) => {
+  if (view === 'tasks' || view === 'posts' || view === 'stories'){
+    setFeaturedPost({})
+    setFollowerPost({})
+  }
   setView(view)
   setOpen(0)
 }
@@ -28,6 +58,18 @@ const handleOpen = (taskId) => {
   if (open !== taskId) setOpen(taskId)
   else setOpen(0)
 }
+
+const handleFollowerPost = (id) => {
+setFollowerPost(id)
+setView('follower')
+}
+
+const handleFeaturedPost = (id) => {
+setFeaturedPost(id)
+setView('featured')
+}
+
+
   return (
   <ScrollView>
   <View style={styles.container}>
@@ -52,8 +94,7 @@ const handleOpen = (taskId) => {
      <Text style={styles.twentyEightCount}>{completed.length}</Text>
      <Text style={styles.twentyEight}>/ 28</Text>
   </View>
-  <Text style={styles.newList}>new list: {dummyUserTasks[1].endDate}</Text>
-
+  <Text style={styles.newList}><Text style={styles.about} onPress={()=>handleView('about')}>about  </Text> |   next: {dummyUserTasks[1].endDate}</Text>
   
   {dummyUserTasks.map((item) => (
         item.completed == false ? (
@@ -70,6 +111,20 @@ const handleOpen = (taskId) => {
 </View>
           ) : null } 
 
+{/* about tasks view */}
+{view === 'about' ? (
+  <View>
+    <Text style={styles.subheading}>the 28 tasks challenge</Text>
+    <Text style={styles.subheading}>what</Text>
+    <Text style={styles.about}>Every 28 days, we post a list of 28 tasks for all users to achieve. These tasks change each month, but always inspire our users to spend time connecting with nature, their community, and practicing and sharing activities proven to promote wellbeing. </Text>
+    <Text style={styles.subheading}>why</Text>
+    <Text>While social media can often promote endless scrolling and comparisons, these tasks are all intended to motivate our users to put their phone away for awhile and focus on small daily achievements, while still benefitting from the community aspect of social media.</Text>
+    <Text style={styles.subheading}>how</Text>
+    <Text>All you have to do is choose a task and begin. To complete a task, simply click on that task and submit any photo and a short description or reflection on the activity.</Text>
+
+</View>
+) : null}
+
 {/* submit a post section */}
 {view === 'submit' ? (
    <View>
@@ -81,61 +136,76 @@ const handleOpen = (taskId) => {
 </View>
 ) : null}
 
-{/* completed section */}
+{/* users posts section */}
 {view === 'posts' ? (
       <View>    
-    {dummyUserTasks.map((item) => (
-   
+        <Text>***This page will be image posts***</Text>
+    {dummyUserTasks.map((item) => {
+  let image = {uri: item.postImgUrl}
+  return (
         item.completed == true ? (
           
           <View style={styles.imageContainer}>
-            <ImageBackground 
-              source={{uri: item.postImgUrl}} 
-              style={styles.imageBackground}>
+           
+            <Image
+             style={{width: "100%", height: "50%"}}
+              source={image}/>
             <Text style={styles.postTag}>{item.title}</Text>
             <Text>{item.postDescription}</Text>
             <Text></Text>
-            </ImageBackground>
+            
           </View>) : null
-    ))}
+    )})}
 </View>) : null}
 
 {/* following section */}
 {view === 'stories' ? (
-  <View>
-    <Text style={styles.subheading}>Following</Text>
-    <ScrollView horizontal={true}>
-    <View style={styles.followingContainer}>
-     <Text style={styles.followingItem}>1</Text>
-     <Text style={styles.followingItem}>2</Text>
-     <Text style={styles.followingItem}>3</Text>
-     <Text style={styles.followingItem}>4</Text>
-     <Text style={styles.followingItem}>5</Text>
-     <Text style={styles.followingItem}>6</Text>
-     <Text style={styles.followingItem}>7</Text>
-     <Text style={styles.followingItem}>8</Text>
-     <Text style={styles.followingItem}>9</Text>
-     <Text style={styles.followingItem}>10</Text>
-   
-     </View> 
-     </ScrollView>
-    <Text></Text>
-    <View>
-    <Text style={styles.subheading}>Featured</Text>
-
-    <View style={styles.featuredContainer}>
-    <ScrollView horizontal={true}>
-     <Text style={styles.featuredItem}>Featured 1</Text>
-     <Text style={styles.featuredItem}>Featured 2</Text>
-     <Text style={styles.featuredItem}>Featured 3</Text>
-     <Text style={styles.featuredItem}>Featured 4</Text>
-     <Text style={styles.featuredItem}>Featured 5</Text>
-     </ScrollView>
+  <View style={styles.storiesContainer}>
+    <View style={styles.followingSectionContainer}>
+      <Text style={styles.subheading}>Following</Text>
+      <ScrollView horizontal={true}>
+      <View style={styles.followingItemsContainer}>
+       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(1)}>1</Text>
+       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(2)}>2</Text>
+       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(3)}>3</Text>
+       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(4)}>4</Text>
+       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(5)}>5</Text>
+       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(6)}>6</Text>
+  
+      </View> 
+      </ScrollView>
      </View>
 
-  </View>
+    <View style={styles.featuredSectionContainer}>
+     <Text style={styles.subheading}>Featured</Text>
+     <ScrollView>
+     <View style={styles.featuredItemsContainer}>
+      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(1)}>Featured 1</Text>
+      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(2)}>Featured 2</Text>
+      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(3)}>Featured 3</Text>
+      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(4)}>Featured 4</Text>
+      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(5)}>Featured 5</Text>
+      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(6)}>Featured 6</Text>
+     </View>
+     </ScrollView>
+    </View>
   </View>
 ) : null}
+
+
+{/* single follower post section */}
+{view === 'follower' ? (
+<View>
+  <Text>single follower post stack</Text>
+</View>) : null}
+
+
+{/* single follower post section */}
+{view === 'featured' ? (
+<View>
+  <Text>single featured post stack</Text>
+</View>) : null}
+
 
 
   </View>
@@ -211,9 +281,16 @@ twentyEightContainer: {
     textAlign: "center",
     padding: 50
   },
-  followingContainer:{
-    flexDirection: "row",
 
+  storiesContainer:{
+    flexDirection: "column",
+  },
+  followingSectionContainer:{
+    flex:1
+  },
+  followingItemsContainer:{
+    flexDirection: "row",
+    flex: 1,
   },
   followingItem:{
     width: 100,
@@ -229,23 +306,25 @@ twentyEightContainer: {
     borderStyle: "solid",
     borderRadius: 25
   },
-  featuredContainer:{
+  featuredSectionContainer:{
+    flex: 1
+  },
+  featuredItemsContainer:{
+    flex: 1,
     flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around"
   },
   featuredItem:{
-    width: 300,
+    width: "48%",
     height: 250,
     textAlign: "center",
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 40,
-    paddingBottom: 40,
-    marginRight: 5,
-    marginLeft: 5,
+    padding: "1%",
+    margin:"1%",
     borderColor: "black",
     borderWidth: 1,
     borderStyle: "solid",
-    borderRadius: 25  },
+    borderRadius: 25 },
 
   imageContainer:{
     flex: 1,
@@ -257,13 +336,13 @@ twentyEightContainer: {
 
   imageBackground:{
     flex: 1,
-    width:"100%",
     alignItems: "center",
     resizeMode:"contain"
 },
 postTag : {
   fontWeight: "800"
 },
+
 
 });
 
