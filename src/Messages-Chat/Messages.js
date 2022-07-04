@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const messages = [
   {
@@ -115,6 +116,22 @@ const Messages = (props) => {
           </TouchableOpacity>
         )}
       />
+      <TouchableOpacity
+        style={{
+          width: 60,
+          height: 60,
+          borderRadius: 30,
+          backgroundColor: '#ee6e73',
+          position: 'absolute',
+          bottom: 70,
+          right: 20,
+          borderRadius: 70 / 2,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Ionicons name='add' size={26} color='white' />
+      </TouchableOpacity>
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Signup from '../src/Signup';
