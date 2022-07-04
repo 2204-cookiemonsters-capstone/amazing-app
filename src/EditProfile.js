@@ -35,12 +35,6 @@ const Profile = ({ navigation }) => {
         >
           <AntDesign name='left' color='black' />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={userProfile.headerButtons}
-          onPress={() => navigation.navigate('EditProfile')}
-        >
-          <Image source={require('../assets/pencil.png')} style={{width: 30, height: 30}}/>
-        </TouchableOpacity>
       </View>
       <View style={userProfile.body}>
         <Image source={require('../assets/user-avatar.png')} style={{width: 100, height: 100}}/>
@@ -48,8 +42,8 @@ const Profile = ({ navigation }) => {
         <Text style={userProfile.text}>Score: {userData.score}</Text>
         <Text style={userProfile.text}>Email: {userData.email}</Text>
         <Text style={userProfile.text}>Username: {userData.username}</Text>
-        <TouchableOpacity style={authStyle.submitButton} title="Signout" onPress={() => handleSignOut()}>
-          <Text>Sign Out</Text>
+        <TouchableOpacity style={authStyle.submitButton} title="SaveUser">
+          <Text>Save</Text>
         </TouchableOpacity>
       </View>
     </View>

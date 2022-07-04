@@ -56,4 +56,39 @@ const authStyle = StyleSheet.create({
   },
 });
 
-export { authStyle };
+const userProfile = StyleSheet.create({
+  container: {
+    backgroundColor: color.background,
+    display: 'flex',
+  },
+  topNav: {
+    display: 'flex',
+    marginTop: 40,
+    marginLeft: 13,
+    marginRight: 13,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  headerButtons: {
+    backgroundColor: 'aqua', //random vibrant color for now, style our app later
+    borderRadius: 25,
+    height: 35,
+    width: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    marginTop: 10,
+    fontSize: 15,
+  },
+  body: {
+    // flex: 1,
+    paddingTop: 20,
+    padding: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: color.background,
+  }
+})
+
+export { authStyle, userProfile };
