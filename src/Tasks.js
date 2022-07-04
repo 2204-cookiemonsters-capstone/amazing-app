@@ -1,6 +1,7 @@
 import { CurrentRenderContext } from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
 import { Text, TextInput, View, StyleSheet, ScrollView, Image, ImageBackground } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const dummyUserTasks = [
   {id: 1, userId: 1, taskId:1, title: "read a book", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on the book I read. I recommend this book because...", postImgUrl: "https://i.imgur.com/DsehfR6.jpg", endDate: "July 30"},
@@ -24,21 +25,14 @@ const dummyUserTasks = [
   {id: 15, userId: 1, taskId:15, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
   {id: 20, userId: 1, taskId:20, title: "volunteer", description: "volunteer", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
   {id: 21, userId: 1, taskId:21, title: "task 21", description: "task 21", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
-  {id: 22, userId: 1, taskId:22, title: "task 22", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
-  {id: 23, userId: 1, taskId:23, title: "task 23", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
-  {id: 24, userId: 1, taskId:24, title: "task 24", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
-  {id: 25, userId: 1, taskId:25, title: "task 25", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
-  {id: 26, userId: 1, taskId:26, title: "task 26", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
-  {id: 27, userId: 1, taskId:27, title: "task 27", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
-  {id: 28, userId: 1, taskId:28, title: "task 28", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
 
 ]
 
 const Tasks = (props) => {
 const [allTasks, setAllTasks] = useState([])
-const [view, setView] = useState('tasks')
+const [view, setView] = useState('stories')
 const [open, setOpen] = useState(0)
-const [goalNum, setGoalNum] = useState("28")
+const [goalNum, setGoalNum] = useState("21")
 const [currentTask, setCurrentTask] = useState({})
 const [followerPosts, setFollowerPosts] = useState([])
 const [followerPost, setFollowerPost] = useState({})
@@ -137,6 +131,7 @@ console.log("useEffect2")}, [view, allTasks]
   <Text onPress={() => handleGoalNum(21)}>  21  </Text>
   <Text onPress={() => handleGoalNum(28)}>  28  </Text>
 
+
   </Text>
 
   <Text style={styles.newList}><Text style={styles.about} onPress={()=>handleView('about')}>about  </Text> |   next: {allTasks.length > 0 ? allTasks[1].endDate : null}</Text>
@@ -148,7 +143,10 @@ console.log("useEffect2")}, [view, allTasks]
              {open === item.id ?
              <View>
              <Text style={styles.taskDescription}>{item.description}</Text> 
+             <View style={styles.goToSubmitContainer}>
              <Text style={styles.goToSubmit} onPress={() => handleView('submit')}>submit your post</Text>
+             <Text style={styles.getInspired} onPress={() => handleView('featured')}>get inspired</Text>
+             </View>
              </View>
              : null}
           </View>
@@ -213,13 +211,27 @@ console.log("useEffect2")}, [view, allTasks]
       <Text style={styles.subheading}>Following</Text>
       <ScrollView horizontal={true}>
       <View style={styles.followingItemsContainer}>
-       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(1)}>1</Text>
-       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(2)}>2</Text>
-       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(3)}>3</Text>
-       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(4)}>4</Text>
-       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(5)}>5</Text>
-       <Text style={styles.followingItem} onPress={()=>handleFollowerPost(6)}>6</Text>
-  
+        <TouchableOpacity onPress={()=>handleFollowerPost(1)}>
+       <Image style={styles.followingItem} source={{uri: "https://i.imgur.com/DsehfR6.jpg"}} />
+       </TouchableOpacity>
+
+       <TouchableOpacity onPress={()=>handleFollowerPost(2)}>
+       <Image style={styles.followingItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} />
+       </TouchableOpacity>
+
+       <TouchableOpacity onPress={()=>handleFollowerPost(3)}>
+       <Image style={styles.followingItem} source={{uri: "https://imgur.com/xVtrThI.jpg"}} />
+       </TouchableOpacity>
+
+       <TouchableOpacity onPress={()=>handleFollowerPost(4)}>
+       <Image style={styles.followingItem} source={{uri:  "https://imgur.com/hZ4pnHI.jpg"}} />
+       </TouchableOpacity>
+
+       <TouchableOpacity onPress={()=>handleFollowerPost(5)}>
+       <Image style={styles.followingItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} />
+       </TouchableOpacity>
+
+
       </View> 
       </ScrollView>
      </View>
@@ -228,12 +240,31 @@ console.log("useEffect2")}, [view, allTasks]
      <Text style={styles.subheading}>Featured</Text>
      <ScrollView>
      <View style={styles.featuredItemsContainer}>
-      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(1)}>Featured 1</Text>
-      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(2)}>Featured 2</Text>
-      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(3)}>Featured 3</Text>
-      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(4)}>Featured 4</Text>
-      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(5)}>Featured 5</Text>
-      <Text style={styles.featuredItem} onPress={()=>handleFeaturedPost(6)}>Featured 6</Text>
+
+      <TouchableOpacity onPress={()=>handleFeaturedPost(1)}>
+      <Image style={styles.featuredItem} source={{uri: "https://i.imgur.com/DsehfR6.jpg"}} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={()=>handleFeaturedPost(2)}>
+      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={()=>handleFeaturedPost(3)}>
+      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/xVtrThI.jpg"}} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={()=>handleFeaturedPost(4)}>
+      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/hZ4pnHI.jpg"}}  />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={()=>handleFeaturedPost(5)}>
+      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} onPress={()=>handleFeaturedPost(5)} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={()=>handleFeaturedPost(6)}>
+      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} onPress={()=>handleFeaturedPost(6)} />
+     </TouchableOpacity>
+     
      </View>
      </ScrollView>
     </View>
@@ -301,7 +332,7 @@ goalNum:{
   subheading:{
     textAlign: "center", 
     paddingBottom: 20, 
-    paddingTop: 10, 
+    paddingTop: 20, 
     textTransform: 'capitalize', 
     letterSpacing: 1,
     paddingLeft: 10,
@@ -325,10 +356,28 @@ goalNum:{
   completed:{
     paddingBottom: 30
   },
-  goToSubmit: {
+  goToSubmitContainer: {
     textAlign: "center",
     paddingBottom: 20,
+    flexDirection: "row",
+    justifyContent: "center"
   },
+  goToSubmit:{   
+    padding: 5,
+    margin: 5,
+    borderWidth: 1,
+    color: "gray",
+    borderRadius: 5
+  },
+  getInspired:{   
+    padding: 5,
+    margin: 5,
+    borderWidth: 1,
+    color: "gray",
+    borderRadius: 5
+
+},
+
   submitPost: {
     textAlign: "center",
     padding: 50,
@@ -360,6 +409,7 @@ goalNum:{
   },
   followingItem:{
     width: 100,
+    height: 100,
     textAlign: "center",
     paddingLeft: 20,
     paddingRight: 20,
@@ -370,7 +420,7 @@ goalNum:{
     borderColor: "black",
     borderWidth: 1,
     borderStyle: "solid",
-    borderRadius: 25
+    borderRadius: 50,
   },
   featuredSectionContainer:{
     flex: 1
@@ -382,15 +432,14 @@ goalNum:{
     justifyContent: "space-around"
   },
   featuredItem:{
-    width: "48%",
+    width: 160,
     height: 250,
-    textAlign: "center",
-    padding: "1%",
-    margin:"1%",
+    padding: 1,
+    margin: 1,
     borderColor: "black",
     borderWidth: 1,
-    borderStyle: "solid",
     borderRadius: 25 },
+
 
   imageContainer:{
     flex: 1,
