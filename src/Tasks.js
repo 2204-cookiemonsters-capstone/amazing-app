@@ -34,18 +34,14 @@ const [view, setView] = useState('stories')
 const [open, setOpen] = useState(0)
 const [goalNum, setGoalNum] = useState("21")
 const [currentTask, setCurrentTask] = useState({})
-const [followerPosts, setFollowerPosts] = useState([])
-const [followerPost, setFollowerPost] = useState({})
-const [featuredPosts, setFeaturedPosts] = useState([])
-const [featuredPost, setFeaturedPost] = useState({})
+const [displayPost, setDisplayPost] = useState({})
 const [postDescription, setPostDescription] = useState("")
 
 let completed = allTasks.filter((item) => item.completed === true)
 
 const handleView = (view) => {
   if (view === 'tasks' || view === 'posts' || view === 'stories'){
-    setFeaturedPost({})
-    setFollowerPost({})
+    setDisplayPost({})
   }
   setView(view)
   setOpen(0)
@@ -63,14 +59,10 @@ const handleOpen = (taskId) => {
   } 
 }
 
-const handleFollowerPost = (id) => {
-setFollowerPost(id)
-setView('follower')
-}
-
-const handleFeaturedPost = (id) => {
-setFeaturedPost(id)
-setView('featured')
+const handleDisplayPost = (id) => {
+  let post = allTasks.filter((item => item.id === id))
+setDisplayPost(post[0])
+setView('postStack')
 }
 
 const handleGoalNum = (num) => {
@@ -88,6 +80,10 @@ const handleSubmit = (id) => {
   setPostDescription("")
   setCurrentTask(0)
   setView('posts')
+}
+
+const handleFollowNewPeople = () => {
+  setView("followNewPeople")
 }
 
 useEffect(() => {
@@ -160,9 +156,9 @@ console.log("useEffect2")}, [view, allTasks]
   <View>
     <Text style={styles.subheading}>the 28 tasks challenge</Text>
     <Text style={styles.subheading}>what</Text>
-    <Text style={styles.aboutParagraph}>Every 28 days, we post a list of 28 tasks for all users to achieve. These tasks change each month, but always inspire our users to spend time connecting with nature, their community, and practicing and sharing activities proven to promote wellbeing. </Text>
+    <Text style={styles.aboutParagraph}>Every 28 days, we post a list of 28 tasks for all users to achieve. These tasks change each month, but are intended to inspire our users to spend time in nature, connecting with their communities, and practicing activities proven to promote wellbeing. </Text>
     <Text style={styles.subheading}>why</Text>
-    <Text style={styles.aboutParagraph}> Lots of social media wants to suck users in-- endless scrolling, shopping, and comparisons. Our tasks are all intended to motivate our users to find a balance-- to put their phones down for awhile, to reflect, and to connect.</Text>
+    <Text style={styles.aboutParagraph}> Lots of social media wants to suck users in with endless scrolling, shopping, and comparisons. Our tasks are all intended to motivate our users to find a balance-- to put their phones down for awhile, to reflect, and to connect.</Text>
     <Text style={styles.subheading}>how</Text>
     <Text style={styles.aboutParagraph}>All you have to do is choose a task and begin. If 28 tasks is beyond your grasp, you can set your monthly goal to 7, 14, or 21 tasks. To complete a task, simply click on that task and submit any photo and a short description or reflection on the activity. </Text>
 
@@ -211,23 +207,28 @@ console.log("useEffect2")}, [view, allTasks]
       <Text style={styles.subheading}>Following</Text>
       <ScrollView horizontal={true}>
       <View style={styles.followingItemsContainer}>
-        <TouchableOpacity onPress={()=>handleFollowerPost(1)}>
+
+      <TouchableOpacity onPress={()=>handleFollowNewPeople()}>
+       <Text style={styles.followingItem}>+</Text> 
+       </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>handleDisplayPost(1)}>
        <Image style={styles.followingItem} source={{uri: "https://i.imgur.com/DsehfR6.jpg"}} />
        </TouchableOpacity>
 
-       <TouchableOpacity onPress={()=>handleFollowerPost(2)}>
+       <TouchableOpacity onPress={()=>handleDisplayPost(2)}>
        <Image style={styles.followingItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} />
        </TouchableOpacity>
 
-       <TouchableOpacity onPress={()=>handleFollowerPost(3)}>
+       <TouchableOpacity onPress={()=>handleDisplayPost(3)}>
        <Image style={styles.followingItem} source={{uri: "https://imgur.com/xVtrThI.jpg"}} />
        </TouchableOpacity>
 
-       <TouchableOpacity onPress={()=>handleFollowerPost(4)}>
+       <TouchableOpacity onPress={()=>handleDisplayPost(4)}>
        <Image style={styles.followingItem} source={{uri:  "https://imgur.com/hZ4pnHI.jpg"}} />
        </TouchableOpacity>
 
-       <TouchableOpacity onPress={()=>handleFollowerPost(5)}>
+       <TouchableOpacity onPress={()=>handleDisplayPost(5)}>
        <Image style={styles.followingItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} />
        </TouchableOpacity>
 
@@ -241,28 +242,28 @@ console.log("useEffect2")}, [view, allTasks]
      <ScrollView>
      <View style={styles.featuredItemsContainer}>
 
-      <TouchableOpacity onPress={()=>handleFeaturedPost(1)}>
+      <TouchableOpacity style={styles.featuredItemTouch} onPress={()=>handleDisplayPost(1)}>
       <Image style={styles.featuredItem} source={{uri: "https://i.imgur.com/DsehfR6.jpg"}} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>handleFeaturedPost(2)}>
+      <TouchableOpacity onPress={()=>handleDisplayPost(2)}>
       <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>handleFeaturedPost(3)}>
+      <TouchableOpacity onPress={()=>handleDisplayPost(3)}>
       <Image style={styles.featuredItem} source={{uri: "https://imgur.com/xVtrThI.jpg"}} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>handleFeaturedPost(4)}>
+      <TouchableOpacity onPress={()=>handleDisplayPost(4)}>
       <Image style={styles.featuredItem} source={{uri: "https://imgur.com/hZ4pnHI.jpg"}}  />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>handleFeaturedPost(5)}>
-      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} onPress={()=>handleFeaturedPost(5)} />
+      <TouchableOpacity onPress={()=>handleDisplayPost(5)}>
+      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}}  />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>handleFeaturedPost(6)}>
-      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} onPress={()=>handleFeaturedPost(6)} />
+      <TouchableOpacity onPress={()=>handleDisplayPost(6)}>
+      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}}  />
      </TouchableOpacity>
      
      </View>
@@ -273,19 +274,18 @@ console.log("useEffect2")}, [view, allTasks]
 
 
 {/* single follower post section */}
-{view === 'follower' ? (
+{view === 'postStack' ? 
+
 <View>
-  <Text>single follower post stack</Text>
-</View>) : null}
+  <Text>post {displayPost.title}</Text>
+</View> : null}
 
 
-{/* single follower post section */}
-{view === 'featured' ? (
+{/* follow new people  section */}
+{view === 'followNewPeople' ? (
 <View>
-  <Text>single featured post stack</Text>
+  <Text>follow new people</Text>
 </View>) : null}
-
-
 
   </View>
   </ScrollView>
@@ -418,7 +418,7 @@ goalNum:{
     marginRight: 5,
     marginLeft: 5,
     borderColor: "black",
-    borderWidth: 1,
+    borderWidth: 2,
     borderStyle: "solid",
     borderRadius: 50,
   },
@@ -429,16 +429,20 @@ goalNum:{
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    width: "100%"
+  },
+  featuredItemTouch:{
+    width: "100%"
   },
   featuredItem:{
-    width: 160,
+    width: 150,
     height: 250,
     padding: 1,
     margin: 1,
     borderColor: "black",
     borderWidth: 1,
-    borderRadius: 25 },
+    borderRadius: 10 },
 
 
   imageContainer:{
