@@ -1,15 +1,15 @@
 import { CurrentRenderContext } from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
 import { Text, TextInput, View, StyleSheet, ScrollView, Image, ImageBackground } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const dummyUserTasks = [
-  {id: 1, userId: 1, taskId:1, title: "read a book", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on the book I read. I recommend this book because...", postImgUrl: "https://i.imgur.com/DsehfR6.jpg", endDate: "July 30"},
-  {id: 2, userId: 1, taskId:2, title: "meditate", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on meditating. I'm not good at meditation so this one was a challenge...etc", postImgUrl: "https://imgur.com/Ev7LLdE.jpg", endDate: "July 30"},
-  {id: 3, userId: 1, taskId:3, title: "spend an hour in nature", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on nature. It was nice to get outdoors.", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
-  {id: 4, userId: 1, taskId:4, title: "write a letter", description: "write and send a letter in the mail", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
-  {id: 5, userId: 1, taskId:5, title: "spend 30 minutes practicing deep breathing", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on deep breathing. I felt so much more relaxed after 30 minutes.", postImgUrl: "https://imgur.com/DsehfR6.jpg", endDate: "July 30"},
-  {id: 6, userId: 1, taskId:6, title: "complete an art project", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "Doodling is something I used to do a lot when I was younger. I picked up a pen and just started drawing and drew this...", postImgUrl: "https://imgur.com/xVtrThI.jpg", endDate: "July 30"},
+  {id: 1, userId: 1, taskId:1, title: "read a book", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on the book I read. I recommend this book because...this is my reflection on the book I read. I recommend this book because...this is my reflection on the book I read. I recommend this book because...this is my reflection on the book I read. I recommend this book because...", postImgUrl: "https://i.imgur.com/DsehfR6.jpg", endDate: "July 30", featured: true},
+  {id: 2, userId: 1, taskId:2, title: "meditate", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on meditating. I'm not good at meditation so this one was a challenge...etc", postImgUrl: "https://imgur.com/Ev7LLdE.jpg", endDate: "July 30", featured: true},
+  {id: 3, userId: 1, taskId:3, title: "spend an hour in nature", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on nature. It was nice to get outdoors.", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30", featured: true},
+  {id: 4, userId: 1, taskId:4, title: "write a letter", description: "write and send a letter in the mail", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30", featured: true},
+  {id: 5, userId: 1, taskId:5, title: "spend 30 minutes practicing deep breathing", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on deep breathing. I felt so much more relaxed after 30 minutes.", postImgUrl: "https://imgur.com/DsehfR6.jpg", endDate: "July 30", featured: true},
+  {id: 6, userId: 1, taskId:6, title: "complete an art project", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "Doodling is something I used to do a lot when I was younger. I picked up a pen and just started drawing and drew this...", postImgUrl: "https://imgur.com/xVtrThI.jpg", endDate: "July 30", featured: true},
   {id: 7, userId: 1, taskId:7, title: "write a journal entry", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
   {id: 8, userId: 1, taskId:8, title: "family past", description: "record a family story", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
   {id: 9, userId: 1, taskId:9, title: "10 meaningful photos", description: "Take ten photos of important people, places or things in your life", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30"},
@@ -25,17 +25,27 @@ const dummyUserTasks = [
   {id: 15, userId: 1, taskId:15, title: "sample task ", description: "sample description for this task sample for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
   {id: 20, userId: 1, taskId:20, title: "volunteer", description: "volunteer", status: "current", completed: false, postDescription: "", postImgUrl: "", endDate: "July 30"},
   {id: 21, userId: 1, taskId:21, title: "task 21", description: "task 21", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI", endDate: "July 30"},
-
 ]
+
+
+const dummyFeaturedTasks = [ {id: 1, userId: 1, taskId:1, title: "read a book", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on the book I read. I recommend this book because...", postImgUrl: "https://i.imgur.com/DsehfR6.jpg", endDate: "July 30", featured: true},
+{id: 2, userId: 1, taskId:2, title: "meditate", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "this is my reflection on meditating. I'm not good at meditation so this one was a challenge...etc", postImgUrl: "https://imgur.com/Ev7LLdE.jpg", endDate: "July 30", featured: true},
+{id: 3, userId: 1, taskId:3, title: "spend an hour in nature", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on nature. It was nice to get outdoors.", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30", featured: true},
+{id: 4, userId: 1, taskId:4, title: "write a letter", description: "write and send a letter in the mail", status: "current", completed: false, postDescription: "", postImgUrl: "https://imgur.com/hZ4pnHI.jpg", endDate: "July 30", featured: true},
+{id: 5, userId: 1, taskId:5, title: "spend 30 minutes practicing deep breathing", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "This is my reflection on deep breathing. I felt so much more relaxed after 30 minutes.", postImgUrl: "https://imgur.com/DsehfR6.jpg", endDate: "July 30", featured: true},
+{id: 6, userId: 1, taskId:6, title: "complete an art project", description: "sample description for this task this is just a sample description for a task this is just a sample description for a task", status: "current", completed: true, postDescription: "Doodling is something I used to do a lot when I was younger. I picked up a pen and just started drawing and drew this...", postImgUrl: "https://imgur.com/xVtrThI.jpg", endDate: "July 30", featured: true}]
+
 
 const Tasks = (props) => {
 const [allTasks, setAllTasks] = useState([])
+const [featuredTasks, setFeaturedTasks] = useState([])
 const [view, setView] = useState('stories')
 const [open, setOpen] = useState(0)
 const [goalNum, setGoalNum] = useState("21")
 const [currentTask, setCurrentTask] = useState({})
 const [displayPost, setDisplayPost] = useState({})
 const [postDescription, setPostDescription] = useState("")
+const [displayPostText, setDisplayPostText] = useState(true)
 
 let completed = allTasks.filter((item) => item.completed === true)
 
@@ -61,8 +71,14 @@ const handleOpen = (taskId) => {
 
 const handleDisplayPost = (id) => {
   let post = allTasks.filter((item => item.id === id))
+  setDisplayPostText(true)
 setDisplayPost(post[0])
 setView('postStack')
+}
+
+const handleDisplayPostText = () => {
+  if (displayPostText) {setDisplayPostText(false)}
+  else {setDisplayPostText(true)}
 }
 
 const handleGoalNum = (num) => {
@@ -88,9 +104,10 @@ const handleFollowNewPeople = () => {
 
 useEffect(() => {
   setAllTasks(dummyUserTasks)
+  setFeaturedTasks(dummyFeaturedTasks)
+
   console.log("useEffect1")}, []
   )
-  
 
 useEffect(() => {
 console.log("useEffect2")}, [view, allTasks]
@@ -237,34 +254,22 @@ console.log("useEffect2")}, [view, allTasks]
       </ScrollView>
      </View>
 
+{/* featured section */}
+
     <View style={styles.featuredSectionContainer}>
      <Text style={styles.subheading}>Featured</Text>
+    
      <ScrollView>
      <View style={styles.featuredItemsContainer}>
 
-      <TouchableOpacity style={styles.featuredItemTouch} onPress={()=>handleDisplayPost(1)}>
-      <Image style={styles.featuredItem} source={{uri: "https://i.imgur.com/DsehfR6.jpg"}} />
+  {featuredTasks ? (
+  featuredTasks.map((item) => (
+    <View key={item.id}>
+      <TouchableOpacity style={styles.featuredItemTouch} onPress={()=>handleDisplayPost(item.id)}>
+      <Image style={styles.featuredItem} source={{uri: item.postImgUrl}} />
       </TouchableOpacity>
+      </View>))) : <text>nothing to display</text>}
 
-      <TouchableOpacity onPress={()=>handleDisplayPost(2)}>
-      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}} />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={()=>handleDisplayPost(3)}>
-      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/xVtrThI.jpg"}} />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={()=>handleDisplayPost(4)}>
-      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/hZ4pnHI.jpg"}}  />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={()=>handleDisplayPost(5)}>
-      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}}  />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={()=>handleDisplayPost(6)}>
-      <Image style={styles.featuredItem} source={{uri: "https://imgur.com/Ev7LLdE.jpg"}}  />
-     </TouchableOpacity>
      
      </View>
      </ScrollView>
@@ -273,15 +278,25 @@ console.log("useEffect2")}, [view, allTasks]
 ) : null}
 
 
-{/* single follower post section */}
+{/* display single posts as a stack to swipe thru section */}
 {view === 'postStack' ? 
 
-<View>
-  <Text>post {displayPost.title}</Text>
+<View style={styles.displayPostContainer}>
+
+  <TouchableWithoutFeedback onPress={() => handleDisplayPostText()}>
+  <ImageBackground style={styles.displayPostImage} source={{uri: displayPost.postImgUrl}}/>
+  </TouchableWithoutFeedback>
+
+  {displayPostText ?
+  <View style={styles.displayPostTextContainer}>
+    <Text style={styles.displayPostTitle}>{displayPost.title}</Text>
+    <Text style={styles.displayPostDescription}>{displayPost.postDescription}</Text>
+  </View> : null}
+
 </View> : null}
 
 
-{/* follow new people  section */}
+{/* follow new people section */}
 {view === 'followNewPeople' ? (
 <View>
   <Text>follow new people</Text>
@@ -467,7 +482,30 @@ postContainer:{
   borderColor: "lightgray",
   paddingBottom: 5,
   marginBottom: 10
-}
+},
+displayPostContainer:{
+  backgroundColor: "black",
+justifyContent: 'space-between',
+},
+displayPostImage:{
+width: "100%",
+height: 600,
+},
+displayPostTextContainer:{
+  padding: 10,
+  position: "absolute",
+  backgroundColor: "rgba(0,0,0,.7)",
+  bottom: 0
+},
+displayPostTitle:{
+  color: "#FFFFFF",
+  fontWeight:"700",
+ },
+displayPostDescription:{
+  lineHeight: 20,
+  color: "#FFFFFF",
+
+},
 
 
 });
