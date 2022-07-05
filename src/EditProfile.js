@@ -11,7 +11,7 @@ const EditProfile = ({ navigation }) => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(true);
   const [email, setEmail] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [hasNewEmail, setHasNewEmail] = useState(false);
@@ -81,10 +81,10 @@ const EditProfile = ({ navigation }) => {
             <TextInput
               style={userProfile.input}
               autoCapitalize='none'
-              secureTextEntry
+              secureTextEntry={passwordVisible}
               mode="outlined"
               label="Password"
-              right={<TextInput.Icon name="eye" />}
+              right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />}
               onChangeText={(password) => setPassword(password)}
             />
           </View>}
