@@ -172,6 +172,7 @@ const AppStack = ({ navigation, currentRoute }) => {
       currentRoute === 'ChatScreen' ||
       currentRoute === 'SearchScreen' ||
       currentRoute === 'ProfileMessages' ||
+      currentRoute === 'EditProfile' ||
       currentRoute === 'AddFriends'
     ) {
       return {
@@ -273,6 +274,7 @@ const AppStack = ({ navigation, currentRoute }) => {
       currentRoute === 'ChatScreen' ||
       currentRoute === 'SearchScreen' ||
       currentRoute === 'ProfileMessages' ||
+      currentRoute === 'EditProfile' ||
       currentRoute === 'AddFriends'
     ) {
       return false;

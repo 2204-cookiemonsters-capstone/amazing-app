@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import { auth, signOut, firestore } from "../firebase";
 import { authStyle } from "../styles";
 import { doc, getDoc } from "firebase/firestore";
 import { userProfile } from "../styles";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const Profile = ({ navigation }) => {
-  let [userData, setUserData] = useState('');
 
-  const handleSignOut = () => {
-    signOut(auth)
-  }
+const EditProfile = ({ navigation }) => {
+  let [userData, setUserData] = useState('');
 
   useEffect(() => {
     const getUser = async () => {
@@ -50,4 +47,5 @@ const Profile = ({ navigation }) => {
   );
 };
 
-export default Profile;
+
+export default EditProfile;

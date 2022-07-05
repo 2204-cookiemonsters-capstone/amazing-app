@@ -26,6 +26,7 @@ const Profile = ({ navigation }) => {
   }, [])
 
   console.log("USER Data", userData);
+
   return (
     <View style={userProfile.container}>
       <View style={userProfile.topNav}>
