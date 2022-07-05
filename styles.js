@@ -13,8 +13,7 @@ const color = {
 const authStyle = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
-    padding: 15,
+    padding: 30,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: color.background,
@@ -27,12 +26,7 @@ const authStyle = StyleSheet.create({
     textAlign: "center",
   },
   input: {
-    marginTop: 32,
-    height: 50,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: color.inputBorder,
-    borderRadius: 30,
-    paddingHorizontal: 16,
+    marginTop: 20,
     color: "black",
     fontWeight: "600",
     width: 280,
@@ -41,7 +35,7 @@ const authStyle = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: color.submit,
-    width: 280,
+    width: 200,
     height: 50,
     marginTop: 32,
     borderRadius: 30,
@@ -59,7 +53,6 @@ const authStyle = StyleSheet.create({
 const userProfile = StyleSheet.create({
   container: {
     backgroundColor: color.background,
-    display: 'flex',
   },
   topNav: {
     display: 'flex',
@@ -82,12 +75,17 @@ const userProfile = StyleSheet.create({
     fontSize: 15,
   },
   body: {
-    // flex: 1,
-    paddingTop: 20,
-    padding: 15,
+    display: 'flex',
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: color.background,
+    textAlign: 'center'
+  },
+  input: {
+    marginTop: 20,
+    color: "black",
+    fontWeight: "600",
+    width: 280,
   }
 })
 

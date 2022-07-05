@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { auth, signOut, firestore } from "../firebase";
-import { authStyle } from "../styles";
+import { authStyle, userProfile } from "../styles";
 import { doc, getDoc } from "firebase/firestore";
-import { userProfile } from "../styles";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Profile = ({ navigation }) => {

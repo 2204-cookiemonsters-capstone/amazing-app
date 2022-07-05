@@ -1,4 +1,5 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { TextInput } from "react-native-paper";
 import React, { useState } from 'react';
 import { auth, createUserWithEmailAndPassword, firestore } from "../firebase";
 import { setDoc, doc } from "firebase/firestore";
@@ -53,34 +54,41 @@ const Signup = (props) => {
                 <Text style={authStyle.header}>Sign Up</Text>
                 <TextInput
                     style={authStyle.input}
-                    placeholder="Username"
                     value={username}
                     autoCapitalize='none'
+                    mode="outlined"
+                    label="Username"
                     onChangeText={(username) => setUsername(username.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').replace(/[^a-z0-9]/gi, ''))}
                 />
                 <TextInput
                     style={authStyle.input}
-                    placeholder="Name"
+                    mode="outlined"
+                    label="Name"
                     onChangeText={(name) => setName(name)}
                 />
                 <TextInput
                     style={authStyle.input}
-                    placeholder="Email"
                     autoCapitalize='none'
+                    mode="outlined"
+                    label="Email"
                     onChangeText={(email) => setEmail(email)}
                 />
                 <TextInput
                     style={authStyle.input}
-                    placeholder="Password"
                     autoCapitalize='none'
-                    secureTextEntry={true}
+                    secureTextEntry
+                    mode="outlined"
+                    label="Password"
+                    right={<TextInput.Icon name="eye" />}
                     onChangeText={(password) => setPassword(password)}
                 />
                 <TextInput
                     style={authStyle.input}
-                    placeholder="Confirm Password"
                     autoCapitalize='none'
-                    secureTextEntry={true}
+                    secureTextEntry
+                    mode="outlined"
+                    label="Confirm Password"
+                    right={<TextInput.Icon name="eye" />}
                     onChangeText={(confirmpw) => setConfirmPassword(confirmpw)}
                 />
                 <TouchableOpacity style={authStyle.submitButton} title="Signup" onPress={() => handleSignUp()}>

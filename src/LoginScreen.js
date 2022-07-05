@@ -1,7 +1,7 @@
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import React, { Component, useState } from 'react';
 import { auth, signInWithEmailAndPassword } from "../firebase";
-import { Snackbar } from "react-native-paper";
+import { Snackbar, TextInput } from "react-native-paper";
 import { authStyle } from "../styles";
 
 const LoginScreen = (props) => {
@@ -33,15 +33,18 @@ const LoginScreen = (props) => {
                 <Text style={authStyle.header}>Sign In</Text>
                 <TextInput
                     style={authStyle.input}
-                    placeholder="Email"
                     autoCapitalize='none'
+                    mode="outlined"
+                    label="Email"
                     onChangeText={(email) => setEmail(email)}
                 />
                 <TextInput
                     style={authStyle.input}
-                    placeholder="Password"
                     autoCapitalize='none'
-                    secureTextEntry={true}
+                    secureTextEntry
+                    mode="outlined"
+                    label="Password"
+                    right={<TextInput.Icon name="eye" />}
                     onChangeText={(password) => setPassword(password)}
                 />
                 <TouchableOpacity style={authStyle.submitButton} title="Signup" onPress={() => handleLogin()}>
