@@ -14,6 +14,64 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 
+const dummyTasks = [
+  {
+    id: 1,
+    title: 'read a book',
+    description:
+      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
+    status: 'current',
+    defaultImgOne: 'https://i.imgur.com/DsehfR6.jpg',
+    defaultImgTwo: 'https://imgur.com/Ev7LLdE.jpg',
+    defaultImgThree: 'https://imgur.com/hZ4pnHI.jpg',
+    endDate: 'July 30',
+  },
+  {
+    id: 2,
+    title: 'meditate',
+    description:
+      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
+    status: 'current',
+    defaultImgOne: 'https://imgur.com/Ev7LLdE.jpg',
+    defaultImgTwo: 'https://i.imgur.com/DsehfR6.jpg',
+    defaultImgThree: 'https://imgur.com/hZ4pnHI.jpg',
+    endDate: 'July 30',
+  },
+  {
+    id: 3,
+    title: 'meditate',
+    description:
+      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
+    status: 'current',
+    defaultImgOne: 'https://imgur.com/Ev7LLdE.jpg',
+    defaultImgTwo: 'https://i.imgur.com/DsehfR6.jpg',
+    defaultImgThree: 'https://imgur.com/hZ4pnHI.jpg',
+    endDate: 'July 30',
+  },
+  {
+    id: 4,
+    title: 'meditate',
+    description:
+      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
+    status: 'current',
+    defaultImgOne: 'https://imgur.com/Ev7LLdE.jpg',
+    defaultImgTwo: 'https://i.imgur.com/DsehfR6.jpg',
+    defaultImgThree: 'https://imgur.com/hZ4pnHI.jpg',
+    endDate: 'July 30',
+  },
+  {
+    id: 5,
+    title: 'meditate',
+    description:
+      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
+    status: 'current',
+    defaultImgOne: 'https://imgur.com/Ev7LLdE.jpg',
+    defaultImgTwo: 'https://i.imgur.com/DsehfR6.jpg',
+    defaultImgThree: 'https://imgur.com/hZ4pnHI.jpg',
+    endDate: 'July 30',
+  },
+];
+
 const dummyUserTasks = [
   {
     id: 1,
@@ -383,8 +441,9 @@ const dummyFeaturedTasks = [
 ];
 
 const Tasks = (props) => {
-  const [allTasks, setAllTasks] = useState([]);
+  const [allUserTasks, setAllUserTasks] = useState([]);
   const [featuredTasks, setFeaturedTasks] = useState([]);
+  const [commonTasks, setCommonTasks] = useState([]);
   const [view, setView] = useState('stories');
   const [open, setOpen] = useState(0);
   const [goalNum, setGoalNum] = useState('21');
@@ -393,7 +452,7 @@ const Tasks = (props) => {
   const [postDescription, setPostDescription] = useState('');
   const [displayPostText, setDisplayPostText] = useState(true);
 
-  let completed = allTasks.filter((item) => item.completed === true);
+  let completed = allUserTasks.filter((item) => item.completed === true);
 
   const handleView = (view) => {
     if (view === 'tasks' || view === 'posts' || view === 'stories') {
@@ -406,7 +465,7 @@ const Tasks = (props) => {
   const handleOpen = (taskId) => {
     if (open !== taskId) {
       setOpen(taskId);
-      let userTask = allTasks.filter((item) => item.taskId === taskId);
+      let userTask = allUserTasks.filter((item) => item.taskId === taskId);
       setCurrentTask(userTask[0]);
       console.log(userTask);
     } else {
@@ -416,7 +475,7 @@ const Tasks = (props) => {
   };
 
   const handleDisplayPost = (id) => {
-    let post = allTasks.filter((item) => item.id === id);
+    let post = allUserTasks.filter((item) => item.id === id);
     setDisplayPostText(true);
     setDisplayPost(post[0]);
     setView('postStack');
@@ -436,7 +495,7 @@ const Tasks = (props) => {
 
   const handleSubmit = (id) => {
     //update thru table to add photo, description, completeStatus, and redirect to posts page
-    let newUserTasks = allTasks.map((item) =>
+    let newUserTasks = allUserTasks.map((item) =>
       item.id === id
         ? (item = {
             ...item,
@@ -446,7 +505,7 @@ const Tasks = (props) => {
         : item
     );
     console.log(newUserTasks);
-    setAllTasks(newUserTasks);
+    setAllUserTasks(newUserTasks);
     setPostDescription('');
     setCurrentTask(0);
     setView('posts');
@@ -457,15 +516,15 @@ const Tasks = (props) => {
   };
 
   useEffect(() => {
-    setAllTasks(dummyUserTasks);
+    setAllUserTasks(dummyUserTasks);
     setFeaturedTasks(dummyFeaturedTasks);
-
+    setCommonTasks(dummyTasks);
     console.log('useEffect1');
   }, []);
 
   useEffect(() => {
     console.log('useEffect2');
-  }, [view, allTasks]);
+  }, [view, allUserTasks]);
 
   return (
     <ScrollView>
@@ -507,10 +566,10 @@ const Tasks = (props) => {
               <Text style={styles.about} onPress={() => handleView('about')}>
                 about{' '}
               </Text>{' '}
-              | next: {allTasks.length > 0 ? allTasks[1].endDate : null}
+              | next: {allUserTasks.length > 0 ? allUserTasks[1].endDate : null}
             </Text>
 
-            {allTasks.map((item) =>
+            {allUserTasks.map((item) =>
               item.completed == false ? (
                 <View style={styles.uncompletedContainer}>
                   <Text
@@ -582,18 +641,27 @@ const Tasks = (props) => {
         {view === 'submit' ? (
           <View>
             <Text style={styles.subheading}>{currentTask.title}</Text>
-            <Text style={styles.addPhoto}>add a photo</Text>
+            <View style={styles.addPostContainer}>
+              <Image style={styles.submitImage} source={currentTask.imageOne} />
+              <Image style={styles.submitImage} source={currentTask.imageOne} />
+              <Image style={styles.submitImage} source={currentTask.imageOne} />
+              <Text style={styles.addPhoto}>^ upload photo</Text>
+              <Text style={styles.addPhoto}>+ take a photo</Text>
+            </View>
             <TextInput
               style={styles.addReflection}
               placeholder='add a reflection'
+              multiline={true}
+              textAlign={'left'}
+              maxLength={1000}
               onChangeText={(newText) => setPostDescription(newText)}
               defaultValue={postDescription}
             />
             <Text
-              style={styles.submitPost}
+              style={styles.submitCompletedTask}
               onPress={() => handleSubmit(currentTask.id)}
             >
-              submit
+              submit completed task
             </Text>
           </View>
         ) : null}
@@ -602,7 +670,7 @@ const Tasks = (props) => {
         {view === 'posts' ? (
           <View>
             <Text style={styles.subheading}>your post history</Text>
-            {allTasks.map((item) => {
+            {allUserTasks.map((item) => {
               console.log(item.postImgUrl, 'image url');
 
               return item.completed == true ? (
@@ -612,7 +680,9 @@ const Tasks = (props) => {
                     source={item.postImgUrl ? { uri: item.postImgUrl } : null}
                   />
                   <Text style={styles.postTag}>{item.title}</Text>
-                  <Text>{item.postDescription}</Text>
+                  <Text style={styles.postDescription}>
+                    {item.postDescription}
+                  </Text>
                 </View>
               ) : null;
             })}
@@ -814,9 +884,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 
-  submitPost: {
+  submitCompletedTask: {
     textAlign: 'center',
-    padding: 50,
+    padding: 10,
+    backgroundColor: 'white',
+    width: '60%',
+    marginLeft: '20%',
+    marginRight: '20%',
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: 'gray',
+    overflow: 'hidden',
   },
   addPhoto: {
     textAlign: 'center',
@@ -872,7 +950,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   featuredItem: {
-    width: 150,
+    width: 183,
     height: 250,
     padding: 1,
     margin: 1,
@@ -896,21 +974,28 @@ const styles = StyleSheet.create({
   },
   postTag: {
     fontWeight: '800',
+    paddingTop: 20,
+    paddingBottom: 10,
+  },
+  postDescription: {
+    paddingBottom: 20,
   },
   postContainer: {
-    padding: 5,
+    backgroundColor: 'white',
+    padding: 10,
     borderBottomWidth: 1,
     borderColor: 'lightgray',
     paddingBottom: 5,
     marginBottom: 10,
   },
   displayPostContainer: {
+    width: '100%',
     backgroundColor: 'black',
     justifyContent: 'space-between',
   },
   displayPostImage: {
     width: '100%',
-    height: 600,
+    height: 650,
   },
   displayPostTextContainer: {
     padding: 10,
