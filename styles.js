@@ -25,6 +25,13 @@ const authStyle = StyleSheet.create({
     marginTop: 32,
     textAlign: "center",
   },
+  body: {
+    display: 'flex',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: color.background,
+    textAlign: 'center'
+  },
   input: {
     marginTop: 20,
     color: "black",

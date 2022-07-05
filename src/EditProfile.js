@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { TextInput, Button } from "react-native-paper";
+import { TextInput, Button, Snackbar } from "react-native-paper";
 import { auth, signOut, firestore } from "../firebase";
 import { authStyle, userProfile } from "../styles";
 import { doc, getDoc } from "firebase/firestore";
@@ -92,6 +92,16 @@ const EditProfile = ({ navigation }) => {
             <Text>Save</Text>
           </TouchableOpacity>
       </View>
+      <Snackbar
+          visible={isValid.boolSnack}
+          style={authStyle.snackbarError}
+          duration={2000}
+          onDismiss={() => {
+            setIsValid({ boolSnack: false });
+          }}
+        >
+          {isValid.message}
+        </Snackbar>
       </ScrollView>
     </View>
   );

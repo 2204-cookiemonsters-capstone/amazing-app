@@ -10,7 +10,9 @@ const Signup = (props) => {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(true);
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(true);
     const [email, setEmail] = useState('');
     const [isValid, setIsValid] = useState(false);
 
@@ -51,6 +53,7 @@ const Signup = (props) => {
     return (
         <View style={authStyle.container}>
             <ScrollView>
+                <View style={authStyle.body}>
                 <Text style={authStyle.header}>Sign Up</Text>
                 <TextInput
                     style={authStyle.input}
@@ -76,25 +79,26 @@ const Signup = (props) => {
                 <TextInput
                     style={authStyle.input}
                     autoCapitalize='none'
-                    secureTextEntry
+                    secureTextEntry={passwordVisible}
                     mode="outlined"
                     label="Password"
-                    right={<TextInput.Icon name="eye" />}
+                    right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />}
                     onChangeText={(password) => setPassword(password)}
                 />
                 <TextInput
                     style={authStyle.input}
                     autoCapitalize='none'
-                    secureTextEntry
+                    secureTextEntry={confirmPasswordVisible}
                     mode="outlined"
                     label="Confirm Password"
-                    right={<TextInput.Icon name="eye" />}
+                    right={<TextInput.Icon name={confirmPasswordVisible ? "eye" : "eye-off"} onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)} />}
                     onChangeText={(confirmpw) => setConfirmPassword(confirmpw)}
                 />
                 <TouchableOpacity style={authStyle.submitButton} title="Signup" onPress={() => handleSignUp()}>
                     <Text>Sign up</Text>
                 </TouchableOpacity>
                 <Text onPress={ ()=> props.navigation.navigate("Login")} style={authStyle.loginMessage}>Already have an account? Sign in.</Text>
+                </View>
                 <Snackbar
                     visible={isValid.boolSnack}
                     style={authStyle.snackbarError}
