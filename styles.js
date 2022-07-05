@@ -13,8 +13,7 @@ const color = {
 const authStyle = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
-    padding: 15,
+    padding: 30,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: color.background,
@@ -26,13 +25,15 @@ const authStyle = StyleSheet.create({
     marginTop: 32,
     textAlign: "center",
   },
+  body: {
+    display: 'flex',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: color.background,
+    textAlign: 'center'
+  },
   input: {
-    marginTop: 32,
-    height: 50,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: color.inputBorder,
-    borderRadius: 30,
-    paddingHorizontal: 16,
+    marginTop: 20,
     color: "black",
     fontWeight: "600",
     width: 280,
@@ -41,7 +42,7 @@ const authStyle = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: color.submit,
-    width: 280,
+    width: 200,
     height: 50,
     marginTop: 32,
     borderRadius: 30,
@@ -56,4 +57,43 @@ const authStyle = StyleSheet.create({
   },
 });
 
-export { authStyle };
+const userProfile = StyleSheet.create({
+  container: {
+    backgroundColor: color.background,
+  },
+  topNav: {
+    display: 'flex',
+    marginTop: 40,
+    marginLeft: 13,
+    marginRight: 13,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  headerButtons: {
+    backgroundColor: 'aqua', //random vibrant color for now, style our app later
+    borderRadius: 25,
+    height: 35,
+    width: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    marginTop: 10,
+    fontSize: 15,
+  },
+  body: {
+    display: 'flex',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: color.background,
+    textAlign: 'center'
+  },
+  input: {
+    marginTop: 20,
+    color: "black",
+    fontWeight: "600",
+    width: 280,
+  }
+})
+
+export { authStyle, userProfile };
