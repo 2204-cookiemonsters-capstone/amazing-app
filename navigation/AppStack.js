@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -165,7 +165,7 @@ const ExploreStack = ({ navigation }) => (
   </Stack.Navigator>
 );
 
-const AppStack = ({ navigation, currentRoute }) => {
+const AppStack = ({ currentRoute }) => {
   //tab bar visibility messages tab
   const getTabBarVisibility = () => {
     if (
@@ -343,6 +343,7 @@ const AppStack = ({ navigation, currentRoute }) => {
             height: 60,
           },
         ],
+        initialRouteName: 'AddTask',
       }}
     >
       <Tab.Screen
@@ -382,7 +383,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           headerTitle: 'Chats',
           headerRight: () => (
             <View
-              style={{ marginRight: 10, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginRight: 10,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
@@ -405,7 +410,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           ),
           headerLeft: () => (
             <View
-              style={{ marginLeft: 12, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginLeft: 12,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
@@ -484,7 +493,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           headerTitle: '28 Day Tasks',
           headerRight: () => (
             <View
-              style={{ marginRight: 10, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginRight: 10,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
@@ -507,7 +520,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           ),
           headerLeft: () => (
             <View
-              style={{ marginLeft: 12, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginLeft: 12,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
@@ -587,7 +604,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           headerTitle: 'Add',
           headerRight: () => (
             <View
-              style={{ marginRight: 10, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginRight: 10,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
@@ -610,7 +631,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           ),
           headerLeft: () => (
             <View
-              style={{ marginLeft: 12, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginLeft: 12,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
@@ -689,7 +714,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           tabBarStyle: getTabBarVisibilityListTab(),
           headerRight: () => (
             <View
-              style={{ marginRight: 10, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginRight: 10,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
@@ -712,7 +741,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           ),
           headerLeft: () => (
             <View
-              style={{ marginLeft: 12, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginLeft: 12,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
@@ -791,7 +824,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           tabBarStyle: getTabBarVisibilityExploreTab(),
           headerRight: () => (
             <View
-              style={{ marginRight: 10, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginRight: 10,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
@@ -814,7 +851,11 @@ const AppStack = ({ navigation, currentRoute }) => {
           ),
           headerLeft: () => (
             <View
-              style={{ marginLeft: 12, display: 'flex', flexDirection: 'row' }}
+              style={{
+                marginLeft: 12,
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               <TouchableOpacity
                 style={{
