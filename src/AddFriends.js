@@ -16,111 +16,47 @@ import {
   query,
   onSnapshot,
   doc,
+  getDoc,
 } from 'firebase/firestore';
 
 const image = require('../assets/favicon.png');
 
-const users = [
-  {
-    id: '1',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-  {
-    id: '2',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-  {
-    id: '3',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-  {
-    id: '4',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-  {
-    id: '5',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-  {
-    id: '6',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-  {
-    id: '7',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-  {
-    id: '8',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-  {
-    id: '9',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-  {
-    id: '10',
-    name: 'John',
-    username: 'johndoe123',
-    imageURL: image,
-    mutalFriends: '3 Mutual Friends',
-  },
-];
-
 const AddFriends = ({ navigation }) => {
   const [friends, setFriends] = useState('');
-  // useEffect(() => {
-  //   const getFriends = async () => {
-  //     const subColRef = collection(
-  //       firestore,
-  //       'users',
-  //       auth.currentUser.uid,
-  //       'friendships'
-  //     );
-  //     const docSnaps = await getDocs(subColRef);
-  //     console.log('SUB COLLECTION REF', subColRef);
-  //     if (docSnaps.exists()) {
-  //       setFriends(docSnaps.data());
-  //     }
-  //   };
-  //   getFriends();
-  // }, []);
-  // console.log('USER ID', auth.currentUser.uid);
-  // console.log('FRIENDSHIPS', friends);
+  const [allUsers, setAllUsers] = useState([]);
+
+  const fetchAllUsers = async () => {
+    const snapShot = await getDocs(collection(firestore, 'users'));
+    const users = [];
+    snapShot.forEach((doc) => {
+      users.push(doc.data());
+    });
+
+    allUsers !== users ? setAllUsers(users) : ''; //need this or else it will push to allUsers everytime we save
+  };
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
+  console.log('FINALLLLLLLLLL', allUsers);
+
   const handleAddFriend = (userid) => {
     const docRef = doc(firestore, 'users', auth.currentUser.uid);
     const colRef = collection(docRef, 'friendships');
     addDoc(colRef, {
       userid,
-      status: 'friends',
+
+      status: 'pending', //the one sending
+    });
+
+    const docRef2 = doc(firestore, 'users', userid);
+    const colRef2 = collection(docRef2, 'friendships');
+    addDoc(colRef2, {
+      userid: auth.currentUser.uid,
+      status: 'incoming', // the one receiving
     });
   };
+
   return (
     <View>
       <View style={{ display: 'flex', marginTop: 40, marginLeft: 13 }}>
@@ -137,19 +73,6 @@ const AddFriends = ({ navigation }) => {
         >
           <AntDesign name='left' color='black' />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: 'aqua', //random vibrant color for now, style our app later
-            // borderRadius: 25,
-            height: 35,
-            width: 100,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => handleAddFriend('users/XOKZaVFNqQaFyng2pTlgq1rOkuo1')}
-        >
-          <Text>Add Friend</Text>
-        </TouchableOpacity>
       </View>
       <View>
         <View style={{ margin: 25 }}>
@@ -157,8 +80,7 @@ const AddFriends = ({ navigation }) => {
         </View>
         <View style={{ bottom: 20 }}>
           <FlatList
-            data={users}
-            keyExtractor={(user) => user.id}
+            data={allUsers}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
@@ -181,7 +103,7 @@ const AddFriends = ({ navigation }) => {
               >
                 <TouchableOpacity>
                   <Image
-                    source={item.imageURL}
+                    source={image}
                     style={{
                       width: 50,
                       height: 50,
@@ -193,7 +115,7 @@ const AddFriends = ({ navigation }) => {
                 <View style={{ display: 'flex', flexDirection: 'column' }}>
                   <Text>{item.name}</Text>
                   <Text>{item.username}</Text>
-                  <Text>{item.mutalFriends}</Text>
+                  <Text>3 Mutual Friends</Text>
                 </View>
                 <View
                   style={{
@@ -215,6 +137,7 @@ const AddFriends = ({ navigation }) => {
                       display: 'flex',
                       flexDirection: 'row',
                     }}
+                    // onPress={()=> handleAddFriend()}
                   >
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
                       <Image
