@@ -15,9 +15,7 @@ const Profile = ({ navigation }) => {
     const snapShot = await getDocs(
       collection(firestore, "users", auth.currentUser.uid, "friendships")
     );
-    const allFriends = [],
-      allIncomingFriends = [],
-      allPendingFriends = [];
+    const allFriends = [], allIncomingFriends = [], allPendingFriends = [];
     snapShot.forEach((doc) => {
       if (doc.data().status === "friends") {
         allFriends.push(doc.data());
@@ -27,7 +25,12 @@ const Profile = ({ navigation }) => {
         allIncomingFriends.push(doc.data());
       }
     });
+    // console.log("allFriends", allFriends);
+    // console.log("allPendingFriends", allPendingFriends);
+    // console.log("allIncomingFriends", allIncomingFriends);
     // fetching all documents by mapping an array of promises and using Promise.all()
+
+    //issue is bein
     const friendDocs = await Promise.all(
       allFriends.map((f) => getDoc(doc(firestore, "users", f.userid)))
     );
@@ -57,11 +60,12 @@ const Profile = ({ navigation }) => {
       }
     };
     getUser();
+
     getFriends();
   }, []);
-  // console.log("Friends", friends)
-  // console.log("Pending Friends", pendingFriends)
-  // console.log("Incoming Friends", incomingFriends)
+  console.log("Friends", friends)
+  console.log("Pending Friends", pendingFriends)
+  console.log("Incoming Friends", incomingFriends)
 
   const handleCancelFriendship = async (userid) => {
     try {
@@ -84,6 +88,9 @@ const Profile = ({ navigation }) => {
       await updateDoc(docRef, { status: 'friends' })
       const docRef2 = doc(firestore, 'users', userid, 'friendships', auth.currentUser.uid);
       await updateDoc(docRef2, { status: 'friends' })
+      // const docRef2 = doc(firestore, 'users', userid);
+      // const colRef2 = collection(docRef2, 'friendships');
+      // await deleteDoc(doc(firestore, colRef2, where("userid", "==", auth.currentUser.uid)))
   }
 
   const friendRow = (item, context) => (
