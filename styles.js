@@ -13,7 +13,7 @@ const color = {
     blue: "#24A6D9",
     lightBlue: "#A7CBD9",
     white: "#FFFFFF",
-  }
+  },
 };
 
 const authStyle = StyleSheet.create({
@@ -126,34 +126,34 @@ const friendList = StyleSheet.create({
     margin: 10,
   },
   buttonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginLeft: 30,
   },
   button: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
   },
   acceptButton: {
-    backgroundColor: 'lime',
+    backgroundColor: "lime",
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-  }
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+  },
 });
 
 const todoListStyle = StyleSheet.create({
@@ -194,24 +194,63 @@ const todoListStyle = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 6,
     marginHorizontal: 12,
-    alignItems: 'center',
-    width: 200
+    alignItems: "center",
+    width: 200,
   },
   listTitle: {
     fontSize: 24,
     fontWeight: "700",
     color: color.list.white,
-    marginBottom: 18
+    marginBottom: 18,
   },
   count: {
     fontSize: 48,
-    fontWeight: '200',
-    color: color.list.white
+    fontWeight: "200",
+    color: color.list.white,
   },
   subtitle: {
     fontSize: 12,
-    fontWeight: '700',
-    color: color.list.white
+    fontWeight: "700",
+    color: color.list.white,
+  },
+  addListModal: {
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: "800",
+      color: color.list.black,
+      alignSelf: "center",
+      marginBottom: 16,
+    },
+    input: {
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: color.list.blue,
+      borderRadius: 6,
+      height: 50,
+      paddingHorizontal: 16,
+      fontSize: 18
+    },
+    create : {
+      marginTop: 24,
+      height: 50,
+      borderRadius: 6,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    colorSelect: {
+      width: 30,
+      height: 30,
+      borderRadius: 4
+    },
+    colorContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 12
+    }
   }
 });
 

@@ -1,26 +1,46 @@
 import React from "react";
-import { Text, View, TouchableOpacity, FlatList } from "react-native";
+import { Text, View, TouchableOpacity, FlatList, Modal } from "react-native";
 import { auth, firestore } from "../firebase";
 import { AntDesign } from "@expo/vector-icons";
 import ToDoList from "./ToDoList";
 import { todoListStyle, color } from "../styles";
+import AddListModal from "./AddListModal";
 
 export default class List extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      addTodoVisible: false,
+    };
+  }
+
+  toggleAddTodoModal() {
+    this.setState({ addTodoVisible: !this.state.addTodoVisible });
+  }
+
   render() {
     return (
       <View style={todoListStyle.container}>
+        <Modal animationType="slide" visible={this.state.addTodoVisible} onRequestClose={() => this.toggleAddTodoModal()}>
+          <AddListModal closeModal={() => this.toggleAddTodoModal()}/>
+        </Modal>
         <Text>User: {auth.currentUser.uid}</Text>
         <View style={{ flexDirection: "row" }}>
           <View style={todoListStyle.divider} />
           <Text style={todoListStyle.title}>
             Todo{" "}
-            <Text style={{ fontWeight: "300", color: color.list.blue }}>Lists</Text>
+            <Text style={{ fontWeight: "300", color: color.list.blue }}>
+              Lists
+            </Text>
           </Text>
           <View style={todoListStyle.divider} />
         </View>
 
         <View style={{ marginVertical: 48 }}>
-          <TouchableOpacity style={todoListStyle.addList}>
+          <TouchableOpacity
+            style={todoListStyle.addList}
+            onPress={() => this.toggleAddTodoModal()}
+          >
             <AntDesign name="plus" size={16} color={color.list.blue} />
           </TouchableOpacity>
 
@@ -48,21 +68,21 @@ export const tempData = [
     todos: [
       {
         title: "Book Flight",
-        completed: false
+        completed: false,
       },
       {
         title: "Passport Check",
-        completed: false
+        completed: false,
       },
       {
         title: "Reserve Hotel Room",
-        completed: false
+        completed: false,
       },
       {
         title: "Pack Luggage",
-        completed: false
-      }
-    ]
+        completed: false,
+      },
+    ],
   },
   {
     name: "Errands",
@@ -70,21 +90,21 @@ export const tempData = [
     todos: [
       {
         title: "Buy Milk",
-        completed: false
+        completed: false,
       },
       {
         title: "Walk the Dog",
-        completed: true
+        completed: true,
       },
       {
         title: "Workout",
-        completed: true
+        completed: true,
       },
       {
         title: "Go to DMV",
-        completed: false
-      }
-    ]
+        completed: false,
+      },
+    ],
   },
   {
     name: "Birthday Party",
@@ -92,20 +112,20 @@ export const tempData = [
     todos: [
       {
         title: "Buy Balloons",
-        completed: false
+        completed: false,
       },
       {
         title: "Send Invitations",
-        completed: true
+        completed: true,
       },
       {
         title: "Make Dinner Reservations",
-        completed: true
+        completed: true,
       },
       {
         title: "Wrap Gifts",
-        completed: false
-      }
-    ]
+        completed: false,
+      },
+    ],
   },
 ];

@@ -7,7 +7,7 @@ const ToDoList = ({ list }) => {
   const remainingCount = list.todos.length - completedCount;
 
   return (
-    <View style={[todoListStyle.listContainer, {backgroundColor: list.color}]}>
+    <View style={[todoListStyle.listContainer, {backgroundColor: list.color || 'black'}]}>
       <Text style={todoListStyle.listTitle} numberOfLines={1} >
         {list.name}
       </Text>
