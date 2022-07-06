@@ -18,6 +18,7 @@ import {
   onSnapshot,
   doc,
   getDoc,
+  setDoc,
 } from 'firebase/firestore';
 
 const image = require('../assets/favicon.png');
@@ -31,6 +32,9 @@ const AddFriends = ({ navigation }) => {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [incomingUsers, setIncomingUsers] = useState([]);
 
+  const [pendingFriends, setPendingFriends] = useState([]);
+  const [incomingFriends, setIncomingFriends] = useState([]);
+
   const [showAllQuickAdd, setShowAllQuickAdd] = useState(false);
 
   const fetchAllUsers = async () => {
@@ -43,71 +47,73 @@ const AddFriends = ({ navigation }) => {
     allUsers !== users ? setAllUsers(users) : ''; //need this or else it will push to allUsers everytime we save
   };
 
-  const fetchAllIncomingRequests = async () => {
+  const getFriends = async () => {
     const snapShot = await getDocs(
-      collection(firestore, `/users/${auth.currentUser.uid}/friendships`)
+      collection(firestore, 'users', auth.currentUser.uid, 'friendships')
+    );
+    const allFriends = [],
+      allIncomingFriends = [],
+      allPendingFriends = [];
+    snapShot.forEach((doc) => {
+      if (doc.data().status === 'friends') {
+        allFriends.push(doc.data());
+      } else if (doc.data().status === 'pending') {
+        allPendingFriends.push(doc.data());
+      } else if (doc.data().status === 'incoming') {
+        allIncomingFriends.push(doc.data());
+      }
+    });
+
+    const friendDocs = await Promise.all(
+      allFriends.map((f) => getDoc(doc(firestore, 'users', f.userid)))
     );
 
-    const incoming = [];
-    snapShot.forEach((doc) => {
-      const data = doc.data();
-      if (!data) return;
-      if (data.status === 'incoming' && data.userid !== auth.currentUser.uid) {
-        //ensures we dont accept ourselves
-        incoming.push(data);
-      }
-    });
+    const pendingDocs = await Promise.all(
+      allPendingFriends.map((f) => getDoc(doc(firestore, 'users', f.userid)))
+    );
+    const incomingDocs = await Promise.all(
+      allIncomingFriends.map((f) => getDoc(doc(firestore, 'users', f.userid)))
+    );
 
-    incomingRequests !== incoming ? setIncomingRequests(incoming) : null;
-  };
+    // mapping array of document data
+    const friendItems = friendDocs.map((i) => i.data());
+    const pendingItems = pendingDocs.map((i) => i.data());
+    const incomingItems = incomingDocs.map((i) => i.data());
 
-  const fetchIncomingUsers = async () => {
-    const holder = [];
-
-    if (!incomingRequests.length) return;
-
-    incomingRequests.forEach(async (request) => {
-      const docRef = doc(firestore, 'users', request.userid);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        holder.push(docSnap.data());
-      } else {
-        console.log('no such documents');
-      }
-
-      incomingUsers !== holder ? setIncomingUsers(holder) : '';
-    });
-    // console.log('hiiiiiiiiiiii', holder);
-    // incomingUsers !== holder ? setIncomingUsers(holder) : '';    why does it not work out here? IDK
+    //set state
+    setFriends(friendItems);
+    setPendingFriends(pendingItems);
+    setIncomingFriends(incomingItems);
   };
 
   useEffect(() => {
-    fetchAllUsers();
+    fetchAllUsers()
+    getFriends();
   }, []);
-
-  useEffect(() => {
-    fetchAllIncomingRequests();
-  }, []);
-
-  useEffect(() => {
-    if (!incomingRequests) return;
-    fetchIncomingUsers();
-  }, [allUsers]);
-
-  console.log('incoming!!!!!!', incomingUsers);
 
   const handleAddFriend = (userid) => {
-    const docRef = doc(firestore, 'users', auth.currentUser.uid);
-    const colRef = collection(docRef, 'friendships');
-    addDoc(colRef, {
+    const docRef = doc(
+      firestore,
+      'users',
+      auth.currentUser.uid,
+      'friendships',
+      userid
+    );
+    // const colRef = collection(docRef, 'friendships');
+    setDoc(docRef, {
       userid,
       status: 'pending', //the one sending
     });
 
-    const docRef2 = doc(firestore, 'users', userid);
-    const colRef2 = collection(docRef2, 'friendships');
-    addDoc(colRef2, {
+    const docRef2 = doc(
+      firestore,
+      'users',
+      userid,
+      'friendships',
+      auth.currentUser.uid
+    );
+    // const colRef2 = collection(docRef2, 'friendships');
+    setDoc(docRef2, {
       userid: auth.currentUser.uid,
       status: 'incoming', // the one receiving
     });
@@ -163,7 +169,7 @@ const AddFriends = ({ navigation }) => {
         </View>
         <View>
           <FlatList
-            data={incomingUsers}
+            data={incomingFriends}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{}}
@@ -604,4 +610,64 @@ export default AddFriends;
               <Text>Show More</Text>
             </TouchableOpacity>
           )}
+
+
+
+
+
+
+
+          // const fetchAllIncomingRequests = async () => {
+  //   const snapShot = await getDocs(
+  //     collection(firestore, `/users/${auth.currentUser.uid}/friendships`)
+  //   );
+
+  //   const incoming = [];
+  //   snapShot.forEach((doc) => {
+  //     const data = doc.data();
+  //     if (!data) return;
+  //     if (data.status === 'incoming' && data.userid !== auth.currentUser.uid) {
+  //       //ensures we dont accept ourselves
+  //       incoming.push(data);
+  //     }
+  //   });
+
+  //   incomingRequests !== incoming ? setIncomingRequests(incoming) : null;
+  // };
+
+  // const fetchIncomingUsers = async () => {
+  //   const holder = [];
+
+  //   if (!incomingRequests.length) return;
+
+  //   incomingRequests.forEach(async (request) => {
+  //     const docRef = doc(firestore, 'users', request.userid);
+  //     const docSnap = await getDoc(docRef);
+
+  //     if (docSnap.exists()) {
+  //       holder.push(docSnap.data());
+  //     } else {
+  //       console.log('no such documents');
+  //     }
+
+  //     incomingUsers !== holder ? setIncomingUsers(holder) : '';
+  //   });
+  //   // console.log('hiiiiiiiiiiii', holder);
+  //   // incomingUsers !== holder ? setIncomingUsers(holder) : '';    why does it not work out here? IDK
+  // };
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
+
+  // useEffect(() => {
+  //   fetchAllIncomingRequests();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (!incomingRequests) return;
+  //   fetchIncomingUsers();
+  // }, [allUsers]);
+
+  console.log('incoming!!!!!!', incomingUsers);
           */
