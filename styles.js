@@ -8,6 +8,12 @@ const color = {
   inputBorder: "#BAB7C3",
   header: "black",
   submit: "#9075E3",
+  list: {
+    black: "#2D3436",
+    blue: "#24A6D9",
+    lightBlue: "#A7CBD9",
+    white: "#FFFFFF",
+  }
 };
 
 const authStyle = StyleSheet.create({
@@ -150,4 +156,63 @@ const friendList = StyleSheet.create({
   }
 });
 
-export { authStyle, userProfile, friendList };
+const todoListStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: color.list.white,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  divider: {
+    backgroundColor: color.list.lightBlue,
+    height: 1,
+    flex: 1,
+    alignSelf: "center",
+  },
+  title: {
+    fontSize: 38,
+    fontWeight: "800",
+    color: color.list.black,
+    paddingHorizontal: 64,
+  },
+  addList: {
+    borderWidth: 2,
+    borderColor: color.list.lightBlue,
+    borderRadius: 4,
+    padding: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  add: {
+    color: color.list.blue,
+    fontWeight: "600",
+    fontSize: 14,
+    marginTop: 8,
+  },
+  listContainer: {
+    paddingVertical: 32,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    marginHorizontal: 12,
+    alignItems: 'center',
+    width: 200
+  },
+  listTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: color.list.white,
+    marginBottom: 18
+  },
+  count: {
+    fontSize: 48,
+    fontWeight: '200',
+    color: color.list.white
+  },
+  subtitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: color.list.white
+  }
+});
+
+export { authStyle, userProfile, friendList, todoListStyle, color };
