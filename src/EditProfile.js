@@ -17,6 +17,10 @@ const EditProfile = ({ navigation }) => {
   const [hasNewEmail, setHasNewEmail] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
+  const handleSignOut = () => {
+    signOut(auth)
+  }
+
   useEffect(() => {
     const getUser = async () => {
       const docRef = doc(firestore, 'users', auth.currentUser.uid);
@@ -91,6 +95,9 @@ const EditProfile = ({ navigation }) => {
           <TouchableOpacity style={authStyle.submitButton} title="SaveUser">
             <Text>Save</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={authStyle.submitButton} title="Signout" onPress={() => handleSignOut()}>
+          <Text>Sign Out</Text>
+        </TouchableOpacity>
       </View>
       <Snackbar
           visible={isValid.boolSnack}
