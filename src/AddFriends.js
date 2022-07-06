@@ -17,6 +17,7 @@ import {
   onSnapshot,
   doc,
   getDoc,
+  setDoc
 } from 'firebase/firestore';
 
 const image = require('../assets/favicon.png');
@@ -41,17 +42,17 @@ const AddFriends = ({ navigation }) => {
   console.log('FINALLLLLLLLLL', allUsers);
 
   const handleAddFriend = (userid) => {
-    const docRef = doc(firestore, 'users', auth.currentUser.uid);
-    const colRef = collection(docRef, 'friendships');
-    addDoc(colRef, {
+    const docRef = doc(firestore, 'users', auth.currentUser.uid, 'friendships', userid);
+    // const colRef = collection(docRef, 'friendships');
+    setDoc(docRef, {
       userid,
 
       status: 'pending', //the one sending
     });
 
-    const docRef2 = doc(firestore, 'users', userid);
-    const colRef2 = collection(docRef2, 'friendships');
-    addDoc(colRef2, {
+    const docRef2 = doc(firestore, 'users', userid, 'friendships', auth.currentUser.uid);
+    // const colRef2 = collection(docRef2, 'friendships');
+    setDoc(docRef2, {
       userid: auth.currentUser.uid,
       status: 'incoming', // the one receiving
     });
@@ -137,7 +138,7 @@ const AddFriends = ({ navigation }) => {
                       display: 'flex',
                       flexDirection: 'row',
                     }}
-                    // onPress={()=> handleAddFriend()}
+                    onPress={()=> handleAddFriend(item.userid)}
                   >
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
                       <Image
