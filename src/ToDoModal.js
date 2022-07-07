@@ -12,7 +12,6 @@ import {
 import { auth, firestore } from "../firebase";
 import { todoListStyle, color } from "../styles";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { tempData } from "./List";
 
 export default class TodoModal extends React.Component {
   constructor(props) {
