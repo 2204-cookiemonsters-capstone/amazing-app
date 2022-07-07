@@ -1,10 +1,106 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from "react";
+import { Text, View, TouchableOpacity, FlatList, Modal, ActivityIndicator } from "react-native";
+import { auth, firestore } from "../firebase";
+import { doc, getDoc, getDocs, addDoc, collection, onSnapshot } from "firebase/firestore";
+import { AntDesign } from "@expo/vector-icons";
+import ToDoList from "./ToDoList";
+import { todoListStyle, color } from "../styles";
+import AddListModal from "./AddListModal";
 
-const List = () => (
-  <View>
-    <Text>List</Text>
-  </View>
-);
+const List = ({ navigation }) => {
+  const [addTodoVisible, setAddTodoVisible] = useState(false)
+  const [lists, setLists] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getLists();
+  }, [loading])
+
+  let getLists = async () => {
+    const snapShot = await getDocs(collection(firestore, "users", auth.currentUser.uid, "Todo Lists"));
+    console.log("LISTS READ FROM FIRESTORE");
+    let todos = [];
+    snapShot.forEach(doc => {
+      let todo = doc.data();
+      todo.id = doc.id;
+      todos.push(todo);
+    });
+    setLists(todos);
+    setLoading(false);
+  }
+
+  if(loading) {
+    return (
+      <View>
+        <ActivityIndicator size="large" color={color.list.blue}/>
+      </View>
+    )
+  }
+
+  const toggleAddTodoModal = () => {
+    setAddTodoVisible(!addTodoVisible);
+  }
+
+  const renderSingleList = list => {
+    return <ToDoList list={list} updateList={updateList}/>
+  }
+
+  const addList = async (list) => {
+    let listToSave = {
+      name: list.name,
+      color: list.color,
+      todos: []
+    }
+    const docRef = await addDoc(collection(firestore, 'users', auth.currentUser.uid, "Todo Lists"), listToSave)
+    listToSave.id = docRef.id;
+    let updatedLists = [...lists];
+    updatedLists.push(listToSave);
+    setLists(updatedLists);
+  }
+
+  const updateList = list => {
+    setLists(lists.map(item => item.id === list.id ? list : item))
+  }
+
+  return (
+    <View style={todoListStyle.container}>
+      <Modal animationType="slide" visible={addTodoVisible} onRequestClose={() => toggleAddTodoModal()}>
+        <AddListModal closeModal={() => toggleAddTodoModal()} addList={addList}/>
+      </Modal>
+      <View style={{ flexDirection: "row" }}>
+        <View style={todoListStyle.divider} />
+        <Text style={todoListStyle.title}>
+          Todo{" "}
+          <Text style={{ fontWeight: "300", color: color.list.blue }}>
+            Lists
+          </Text>
+        </Text>
+        <View style={todoListStyle.divider} />
+      </View>
+
+      <View style={{ marginVertical: 48 }}>
+        <TouchableOpacity
+          style={todoListStyle.addList}
+          onPress={() => toggleAddTodoModal()}
+        >
+          <AntDesign name="plus" size={16} color={color.list.blue} />
+        </TouchableOpacity>
+
+        <Text style={todoListStyle.add}>Add List</Text>
+      </View>
+
+      <View style={{ height: 275, paddingLeft: 32 }}>
+        <FlatList
+          data={lists}
+          keyExtractor={(item) => item.id}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => renderSingleList(item)}
+          keyboardShouldPersistTaps = 'always'
+        />
+      </View>
+    </View>
+  );
+}
 
 export default List;
