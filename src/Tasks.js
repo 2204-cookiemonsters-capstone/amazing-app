@@ -519,11 +519,11 @@ const Tasks = (props) => {
     setAllUserTasks(dummyUserTasks);
     setFeaturedTasks(dummyFeaturedTasks);
     setCommonTasks(dummyTasks);
-    console.log('useEffect1');
+    // console.log('useEffect1');
   }, []);
 
   useEffect(() => {
-    console.log('useEffect2');
+    // console.log('useEffect2');
   }, [view, allUserTasks]);
 
   return (
@@ -671,7 +671,7 @@ const Tasks = (props) => {
           <View>
             <Text style={styles.subheading}>your post history</Text>
             {allUserTasks.map((item) => {
-              console.log(item.postImgUrl, 'image url');
+              // console.log(item.postImgUrl, 'image url');
 
               return item.completed == true ? (
                 <View style={styles.postContainer}>
