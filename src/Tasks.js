@@ -402,16 +402,16 @@ const Tasks = (props) => {
   let completed = allUserTasks.filter((item) => item.completed === true);
 
 // creates a single users 28 posts
-  async function createUserPosts(){
-   
-   if (completed && completed.length > 0) {null}
-   else {
+  async function createUserTasks(){
+    
     const postsRef = await doc(firestore, 'users', auth.currentUser.uid, "posts", "July")
-    setDoc(postsRef, {userTasks, goalNum: goalNum}, {merge:true})}
+
+    if (postsRef) {null}
+    else {setDoc(postsRef, {userTasks, goalNum: goalNum}, {merge:true})}
   }
   
   // updates a single users 28 posts
-   async function updateUserPost(taskId){
+   async function updateUserPosts(taskId){
     const snapShot = await getDoc(
       doc(firestore, 'users', auth.currentUser.uid, 'posts', "July"))
     
@@ -487,7 +487,7 @@ const Tasks = (props) => {
           })
         : item
     );
-    updateUserPost(taskId)
+    updateUserPosts(taskId)
     setAllUserTasks(newUserTasks);
     setPostDescription('');
     setCurrentTask({});
@@ -501,9 +501,8 @@ const Tasks = (props) => {
 //initial load grabs user posts, creates user posts if don't exist
   useEffect(() => {
     fetchUserPosts();
-    if (completed.length <= 0) {createUserPosts()};
+    createUserTasks();
     setFeaturedTasks(dummyFeaturedTasks);
-
     console.log('useEffect1');
 
   }, []);
@@ -557,7 +556,7 @@ const Tasks = (props) => {
               <Text style={styles.about} onPress={() => handleView('about')}>
                 about{' '}
               </Text>{' '}
-              | next: {allUserTasks ? allUserTasks[1].endDate : null}
+              | {allUserTasks ? allUserTasks[0].month : null}
             </Text>
 
             {!allUserTasks ? null : allUserTasks.map((item) => {
@@ -670,7 +669,7 @@ const Tasks = (props) => {
                   />
                   <Text style={styles.postTag}>{item.title}</Text>
                   <Text style={styles.postDescription}>
-                    {item.postDescription}
+                    {item.reflection}
                   </Text>
                 </View>
               ) : null;
