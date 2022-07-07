@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Text, View, TouchableOpacity, FlatList, Modal, ActivityIndicator } from "react-native";
 import { auth, firestore } from "../firebase";
-import { doc, getDoc, getDocs, addDoc, collection, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, getDocs, addDoc, collection, setDoc } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 import ToDoList from "./ToDoList";
 import { todoListStyle, color } from "../styles";
@@ -18,7 +18,7 @@ const List = ({ navigation }) => {
 
   let getLists = async () => {
     const snapShot = await getDocs(collection(firestore, "users", auth.currentUser.uid, "Todo Lists"));
-    console.log("LISTS READ FROM FIRESTORE");
+    console.log("FETCHED TODO LISTS FROM FIRESTORE");
     let todos = [];
     snapShot.forEach(doc => {
       let todo = doc.data();
@@ -59,6 +59,9 @@ const List = ({ navigation }) => {
   }
 
   const updateList = list => {
+    const todoRef = doc(firestore, 'users', auth.currentUser.uid, 'Todo Lists', list.id)
+    setDoc(todoRef, list, {merge: true});
+    //Update state here
     setLists(lists.map(item => item.id === list.id ? list : item))
   }
 
