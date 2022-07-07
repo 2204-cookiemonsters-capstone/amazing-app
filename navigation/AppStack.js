@@ -13,6 +13,7 @@ import ChatScreen from '../src/Messages-Chat/ChatScreen';
 import Explore from '../src/Explore';
 import SearchPage from '../src/SearchPage';
 import AddFriends from '../src/AddFriends';
+import FriendsList from '../src/FriendsList';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,6 +54,12 @@ const MessagesStack = ({ navigation }) => (
       component={AddFriends}
       options={{ header: () => null }}
     />
+
+    <Stack.Screen
+      name='FriendsList'
+      component={FriendsList}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -77,6 +84,11 @@ const TasksStack = ({ navigation }) => (
     <Stack.Screen
       name='AddFriendsTasks'
       component={AddFriends}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='FriendsList'
+      component={FriendsList}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -107,6 +119,11 @@ const AddTaskStack = ({ navigation }) => (
       component={AddFriends}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name='FriendsList'
+      component={FriendsList}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -133,6 +150,11 @@ const ListStack = ({ navigation }) => (
     <Stack.Screen
       name='AddFriendsList'
       component={AddFriends}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='FriendsList'
+      component={FriendsList}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -162,6 +184,11 @@ const ExploreStack = ({ navigation }) => (
       component={AddFriends}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name='FriendsList'
+      component={FriendsList}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -173,7 +200,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === 'SearchScreen' ||
       currentRoute === 'ProfileMessages' ||
       currentRoute === 'EditProfile' ||
-      currentRoute === 'AddFriends'
+      currentRoute === 'AddFriends' ||
+      currentRoute === 'FriendsList'
     ) {
       return {
         display: 'none',
@@ -193,7 +221,8 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === 'Search' ||
       currentRoute === 'ProfileTasks' ||
-      currentRoute === 'AddFriendsTasks'
+      currentRoute === 'AddFriendsTasks' ||
+      currentRoute === 'FriendsList'
     ) {
       return {
         display: 'none',
@@ -213,7 +242,8 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === 'SearchAdd' ||
       currentRoute === 'ProfileAdd' ||
-      currentRoute === 'AddFriendsAdd'
+      currentRoute === 'AddFriendsAdd' ||
+      currentRoute === 'FriendsList'
     ) {
       return {
         display: 'none',
@@ -233,7 +263,8 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === 'SearchList' ||
       currentRoute === 'ProfileList' ||
-      currentRoute === 'AddFriendsList'
+      currentRoute === 'AddFriendsList' ||
+      currentRoute === 'FriendsList'
     ) {
       return {
         display: 'none',
@@ -253,7 +284,8 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === 'SearchExplore' ||
       currentRoute === 'ProfileExplore' ||
-      currentRoute === 'AddFriendsExplore'
+      currentRoute === 'AddFriendsExplore' ||
+      currentRoute === 'FriendsList'
     ) {
       return {
         display: 'none',
@@ -275,7 +307,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === 'SearchScreen' ||
       currentRoute === 'ProfileMessages' ||
       currentRoute === 'EditProfile' ||
-      currentRoute === 'AddFriends'
+      currentRoute === 'AddFriends' ||
+      currentRoute === 'FriendsList'
     ) {
       return false;
     }
@@ -287,7 +320,8 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === 'Search' ||
       currentRoute === 'ProfileTasks' ||
-      currentRoute === 'AddFriendsTasks'
+      currentRoute === 'AddFriendsTasks' ||
+      currentRoute === 'FriendsList'
     ) {
       return false;
     }
@@ -299,7 +333,8 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === 'SearchAdd' ||
       currentRoute === 'ProfileAdd' ||
-      currentRoute === 'AddFriendsAdd'
+      currentRoute === 'AddFriendsAdd' ||
+      currentRoute === 'FriendsList'
     ) {
       return false;
     }
@@ -311,7 +346,8 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === 'SearchList' ||
       currentRoute === 'ProfileList' ||
-      currentRoute === 'AddFriendsList'
+      currentRoute === 'AddFriendsList' ||
+      currentRoute === 'FriendsList'
     ) {
       return false;
     }
@@ -323,7 +359,8 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === 'SearchExplore' ||
       currentRoute === 'ProfileExplore' ||
-      currentRoute === 'AddFriendsExplore'
+      currentRoute === 'AddFriendsExplore' ||
+      currentRoute === 'FriendsList'
     ) {
       return false;
     }

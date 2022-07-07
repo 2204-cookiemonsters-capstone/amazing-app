@@ -3,40 +3,81 @@ import React, { Component, useEffect, useState, useCallback } from 'react';
 import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { auth, firestore } from '../../firebase';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  query,
+  onSnapshot,
+  doc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
 
-const ChatScreen = () => {
-  const [messages, setMessages] = useState([]);
+//https://stackoverflow.com/questions/58844095/how-to-get-firestore-document-id
+const ChatScreen = (props) => {
+  const [allMessages, setAllMessages] = useState([]);
+  const [previousMessages, setPreviousMessages] = useState([]);
+
+  const fetchMessages = async () => {
+    const docRef = doc(firestore, 'chats', props.route.params.chatid);
+    const docSnap = await getDoc(docRef);
+
+    const chatData = [];
+    const data = docSnap.data();
+
+    if (docSnap.exists()) {
+      previousMessages !== data.messages
+        ? setPreviousMessages(data.messages)
+        : null;
+
+      for (let i = 0; i < data.messages.length; i++) {
+        const message = data.messages[i];
+        chatData.push({
+          _id: i,
+          text: message.message,
+          createdAt: new Date(),
+          user: {
+            _id: message.userid,
+            name: 'React Native',
+          },
+        });
+      }
+
+      allMessages !== chatData ? setAllMessages(chatData) : null;
+    } else {
+      console.log('No Such Documents');
+    }
+  };
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-      {
-        _id: 2,
-        text: 'Hello world',
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]);
+    fetchMessages();
   }, []);
 
   const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) =>
+    setAllMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
   }, []);
+
+  const handleSubmit = async (messages) => {
+    onSend(messages);
+
+    const message = {
+      message: messages[0].text,
+      userid: messages[0].user._id,
+    };
+
+    const res = await setDoc(
+      doc(firestore, 'chats', props.route.params.chatid),
+      {
+        messages: [message, ...previousMessages],
+      }
+    );
+  };
+
+  const sendMessageFirebase = async () => {};
 
   const renderBubble = (props) => {
     return (
@@ -83,10 +124,10 @@ const ChatScreen = () => {
 
   return (
     <GiftedChat
-      messages={messages}
-      onSend={(messages) => onSend(messages)}
+      messages={allMessages}
+      onSend={(messages) => handleSubmit(messages)}
       user={{
-        _id: 1,
+        _id: auth.currentUser.uid,
       }}
       renderBubble={renderBubble}
       alwaysShowSend

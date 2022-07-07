@@ -29,9 +29,6 @@ const AddFriends = ({ navigation }) => {
   const [allUsers, setAllUsers] = useState([]);
   const firstThreeUsers = allUsers.slice(0, 3);
 
-  const [incomingRequests, setIncomingRequests] = useState([]);
-  const [incomingUsers, setIncomingUsers] = useState([]);
-
   const [pendingFriends, setPendingFriends] = useState([]);
   const [incomingFriends, setIncomingFriends] = useState([]);
 
@@ -41,7 +38,9 @@ const AddFriends = ({ navigation }) => {
     const snapShot = await getDocs(collection(firestore, 'users'));
     const users = [];
     snapShot.forEach((doc) => {
-      users.push(doc.data());
+      if (doc.data().userid !== auth.currentUser.uid) {
+        users.push(doc.data());
+      }
     });
 
     allUsers !== users ? setAllUsers(users) : ''; //need this or else it will push to allUsers everytime we save
@@ -51,15 +50,20 @@ const AddFriends = ({ navigation }) => {
     const snapShot = await getDocs(
       collection(firestore, 'users', auth.currentUser.uid, 'friendships')
     );
+
     const allFriends = [],
       allIncomingFriends = [],
       allPendingFriends = [];
+
     snapShot.forEach((doc) => {
       if (doc.data().status === 'friends') {
         allFriends.push(doc.data());
       } else if (doc.data().status === 'pending') {
         allPendingFriends.push(doc.data());
-      } else if (doc.data().status === 'incoming') {
+      } else if (
+        doc.data().status === 'incoming' &&
+        doc.data().userid !== auth.currentUser.uid
+      ) {
         allIncomingFriends.push(doc.data());
       }
     });
@@ -87,8 +91,9 @@ const AddFriends = ({ navigation }) => {
   };
 
   useEffect(() => {
-    fetchAllUsers()
+    fetchAllUsers();
     getFriends();
+    console.log('ran');
   }, []);
 
   const handleAddFriend = (userid) => {
@@ -117,6 +122,29 @@ const AddFriends = ({ navigation }) => {
       userid: auth.currentUser.uid,
       status: 'incoming', // the one receiving
     });
+    // console.log('function ran');
+  };
+
+  const handleAcceptFriendship = async (userid) => {
+    const docRef = doc(
+      firestore,
+      'users',
+      auth.currentUser.uid,
+      'friendships',
+      userid
+    );
+    await updateDoc(docRef, { status: 'friends' });
+    const docRef2 = doc(
+      firestore,
+      'users',
+      userid,
+      'friendships',
+      auth.currentUser.uid
+    );
+    await updateDoc(docRef2, { status: 'friends' });
+    // const docRef2 = doc(firestore, 'users', userid);
+    // const colRef2 = collection(docRef2, 'friendships');
+    // await deleteDoc(doc(firestore, colRef2, where("userid", "==", auth.currentUser.uid)))
   };
 
   return (
@@ -204,6 +232,7 @@ const AddFriends = ({ navigation }) => {
                 <View style={{ display: 'flex', flexDirection: 'column' }}>
                   <Text>{item.name}</Text>
                   <Text>{item.username}</Text>
+                  <Text>3 Mutual Friends</Text>
                 </View>
                 <View
                   style={{
@@ -225,7 +254,7 @@ const AddFriends = ({ navigation }) => {
                       display: 'flex',
                       flexDirection: 'row',
                     }}
-                    onPress={() => handleAddFriend(item.userid)}
+                    onPress={() => handleAcceptFriendship(item.userid)}
                   >
                     <View style={{ marginLeft: 13, marginRight: 8 }}>
                       <Image
@@ -233,7 +262,7 @@ const AddFriends = ({ navigation }) => {
                         style={{ width: 15, height: 15 }}
                       />
                     </View>
-                    <Text style={{ marginRight: 14 }}>Add</Text>
+                    <Text style={{ marginRight: 14 }}>Accept</Text>
                   </TouchableOpacity>
                 </View>
               </TouchableOpacity>
@@ -335,7 +364,7 @@ const AddFriends = ({ navigation }) => {
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
-                paddingBottom: 430, //fix navbar does not block the last item
+                marginBottom: 430, //fix navbar does not block the last item
               }}
               renderItem={({ item }) => (
                 <TouchableOpacity
@@ -368,6 +397,7 @@ const AddFriends = ({ navigation }) => {
                   <View style={{ display: 'flex', flexDirection: 'column' }}>
                     <Text>{item.name}</Text>
                     <Text>{item.username}</Text>
+                    <Text>3 Mutual Friends</Text>
                   </View>
                   <View
                     style={{
