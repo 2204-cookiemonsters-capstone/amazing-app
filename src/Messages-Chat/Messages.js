@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,20 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { auth, firestore } from '../../firebase';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  query,
+  onSnapshot,
+  doc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
+import { useTheme } from 'react-navigation';
 
+const image = require('../../assets/favicon.png');
 const messages = [
   {
     id: '1',
@@ -86,11 +99,55 @@ const messages = [
 ];
 
 const Messages = (props) => {
+  const [allChatsData, setAllChatsData] = useState([]);
+
+  const fetchAllChats = async () => {
+    const snapShot = await getDocs(collection(firestore, 'chats'));
+
+    const chats = []; //holds details of chat
+    snapShot.forEach((doc) => {
+      if (doc.data().userids.includes(auth.currentUser.uid)) {
+        chats.push(doc.data());
+      }
+    });
+
+    const userData = []; //data to be rendered on messages screen for each chat
+    for (let i = 0; i < chats.length; i++) {
+      const docSnap = await getDoc(
+        doc(
+          firestore,
+          'users',
+          chats[i].userids.filter((id) => id !== auth.currentUser.uid)[0]
+        )
+      );
+
+      userData.push({
+        ...docSnap.data(),
+        lastMessage: chats.find(
+          (chat) =>
+            chat.userids.includes(docSnap.data().userid) &&
+            chat.userids.includes(auth.currentUser.uid)
+        ).messages[0],
+        chatid: chats.find(
+          (chat) =>
+            chat.userids.includes(docSnap.data().userid) &&
+            chat.userids.includes(auth.currentUser.uid)
+        ).chatid,
+      });
+    }
+    console.log(userData);
+    allChatsData !== userData ? setAllChatsData(userData) : null;
+  };
+
+  useEffect(() => {
+    fetchAllChats();
+  }, []);
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={messages}
-        keyExtractor={(message) => message.id}
+        data={allChatsData}
+        keyExtractor={(chat) => chat.chatid} //might not see if we cant get the id
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -99,18 +156,22 @@ const Messages = (props) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={{ width: '100%' }}
-            onPress={() => props.navigation.navigate('ChatScreen')}
+            onPress={() =>
+              props.navigation.navigate('ChatScreen', { chatid: item.chatid })
+            }
           >
             <View style={styles.userinfo}>
               <View style={styles.userimage}>
-                <Image source={item.userImg} style={styles.img} />
+                <Image source={image} style={styles.img} />
               </View>
               <View style={styles.textView}>
                 <View style={styles.userinfotext}>
-                  <Text style={styles.username}>{item.userName}</Text>
-                  <Text style={styles.posttime}>{item.messageTime}</Text>
+                  <Text style={styles.username}>{item.name}</Text>
+                  {/* <Text style={styles.posttime}>{item.messageTime}</Text> */}
                 </View>
-                <Text style={styles.messageText}>{item.messageText}</Text>
+                <Text style={styles.messageText}>
+                  {item.lastMessage.message}
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
