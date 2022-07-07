@@ -503,13 +503,15 @@ const Tasks = (props) => {
     fetchUserPosts();
     if (completed.length <= 0) {createUserPosts()};
     setFeaturedTasks(dummyFeaturedTasks);
+
     console.log('useEffect1');
+
   }, []);
 
 // need to do a useEffect to update taskPosts if user submits a post or changes the goal num-- need to timestamp the postTime value to current time
 
   useEffect(() => {
-    console.log('useEffect2');
+    // console.log('useEffect2');
   }, [view, allUserTasks]);
 
 // need to do a useEffect to fetch friends and featured recent posts if visits stories view / scrolls.
@@ -658,6 +660,7 @@ const Tasks = (props) => {
           <View>
             <Text style={styles.subheading}>your post history</Text>
             {allUserTasks.map((item) => {
+
 
               return item.completed == true ? (
                 <View style={styles.postContainer} key={item.taskId}>
