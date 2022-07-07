@@ -13,6 +13,8 @@ const color = {
     blue: "#24A6D9",
     lightBlue: "#A7CBD9",
     white: "#FFFFFF",
+    gray: '#A4A4A4',
+    lightGray: '#CACACA'
   },
 };
 
@@ -250,6 +252,62 @@ const todoListStyle = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       marginTop: 12
+    }
+  },
+  todoModal: {
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    section: {
+      flex: 1,
+      alignSelf: 'stretch'
+    },
+    header: {
+      justifyContent: 'flex-end',
+      marginLeft: 64,
+      borderBottomWidth: 3
+    },
+    title: {
+      fontSize: 30,
+      fontWeight: "800",
+      color: color.list.black
+    },
+    taskCount: {
+      marginTop: 4,
+      marginBottom: 16,
+      color: color.list.gray,
+      fontWeight: '600'
+    },
+    footer: {
+      paddingHorizontal: 32,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    input: {
+      flex: 1,
+      height: 48,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderRadius: 6,
+      marginRight: 8,
+      paddingHorizontal: 8
+    },
+    addTodo: {
+      borderRadius: 4,
+      padding: 16,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    todoContainer: {
+      paddingVertical: 16,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    todo: {
+      color: color.list.black,
+      fontWeight: '700',
+      fontSize: 16
     }
   }
 });
