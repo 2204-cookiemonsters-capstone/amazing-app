@@ -1,135 +1,106 @@
-import React from "react";
-import { Text, View, TouchableOpacity, FlatList, Modal } from "react-native";
+import React, {useState, useEffect} from "react";
+import { Text, View, TouchableOpacity, FlatList, Modal, ActivityIndicator } from "react-native";
 import { auth, firestore } from "../firebase";
+import { doc, getDoc, getDocs, addDoc, collection, onSnapshot } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 import ToDoList from "./ToDoList";
 import { todoListStyle, color } from "../styles";
 import AddListModal from "./AddListModal";
 
-export default class List extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      addTodoVisible: false,
-    };
+const List = ({ navigation }) => {
+  const [addTodoVisible, setAddTodoVisible] = useState(false)
+  const [lists, setLists] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getLists();
+  }, [loading])
+
+  let getLists = async () => {
+    const snapShot = await getDocs(collection(firestore, "users", auth.currentUser.uid, "Todo Lists"));
+    console.log("LISTS READ FROM FIRESTORE");
+    let todos = [];
+    snapShot.forEach(doc => {
+      let todo = doc.data();
+      todo.id = doc.id;
+      todos.push(todo);
+    });
+    setLists(todos);
+    setLoading(false);
   }
 
-  toggleAddTodoModal() {
-    this.setState({ addTodoVisible: !this.state.addTodoVisible });
-  }
-
-  renderSingleList = list => {
-    return <ToDoList list={list}/>
-  }
-
-  render() {
+  if(loading) {
     return (
-      <View style={todoListStyle.container}>
-        <Modal animationType="slide" visible={this.state.addTodoVisible} onRequestClose={() => this.toggleAddTodoModal()}>
-          <AddListModal closeModal={() => this.toggleAddTodoModal()}/>
-        </Modal>
-        <Text>User: {auth.currentUser.uid}</Text>
-        <View style={{ flexDirection: "row" }}>
-          <View style={todoListStyle.divider} />
-          <Text style={todoListStyle.title}>
-            Todo{" "}
-            <Text style={{ fontWeight: "300", color: color.list.blue }}>
-              Lists
-            </Text>
-          </Text>
-          <View style={todoListStyle.divider} />
-        </View>
-
-        <View style={{ marginVertical: 48 }}>
-          <TouchableOpacity
-            style={todoListStyle.addList}
-            onPress={() => this.toggleAddTodoModal()}
-          >
-            <AntDesign name="plus" size={16} color={color.list.blue} />
-          </TouchableOpacity>
-
-          <Text style={todoListStyle.add}>Add List</Text>
-        </View>
-
-        <View style={{ height: 275, paddingLeft: 32 }}>
-          <FlatList
-            data={tempData}
-            keyExtractor={(item) => item.name}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => this.renderSingleList(item)}
-          />
-        </View>
+      <View>
+        <ActivityIndicator size="large" color={color.list.blue}/>
       </View>
-    );
+    )
   }
+
+  const toggleAddTodoModal = () => {
+    setAddTodoVisible(!addTodoVisible);
+  }
+
+  const renderSingleList = list => {
+    return <ToDoList list={list} updateList={updateList}/>
+  }
+
+  const addList = async (list) => {
+    let listToSave = {
+      name: list.name,
+      color: list.color,
+      todos: []
+    }
+    const docRef = await addDoc(collection(firestore, 'users', auth.currentUser.uid, "Todo Lists"), listToSave)
+    listToSave.id = docRef.id;
+    let updatedLists = [...lists];
+    updatedLists.push(listToSave);
+    setLists(updatedLists);
+  }
+
+  const updateList = list => {
+    setLists(lists.map(item => item.id === list.id ? list : item))
+  }
+
+  return (
+    <View style={todoListStyle.container}>
+      <Modal animationType="slide" visible={addTodoVisible} onRequestClose={() => toggleAddTodoModal()}>
+        <AddListModal closeModal={() => toggleAddTodoModal()} addList={addList}/>
+      </Modal>
+      <View style={{ flexDirection: "row" }}>
+        <View style={todoListStyle.divider} />
+        <Text style={todoListStyle.title}>
+          Todo{" "}
+          <Text style={{ fontWeight: "300", color: color.list.blue }}>
+            Lists
+          </Text>
+        </Text>
+        <View style={todoListStyle.divider} />
+      </View>
+
+      <View style={{ marginVertical: 48 }}>
+        <TouchableOpacity
+          style={todoListStyle.addList}
+          onPress={() => toggleAddTodoModal()}
+        >
+          <AntDesign name="plus" size={16} color={color.list.blue} />
+        </TouchableOpacity>
+
+        <Text style={todoListStyle.add}>Add List</Text>
+      </View>
+
+      <View style={{ height: 275, paddingLeft: 32 }}>
+        <FlatList
+          data={lists}
+          keyExtractor={(item) => item.id}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => renderSingleList(item)}
+          keyboardShouldPersistTaps = 'always'
+        />
+      </View>
+    </View>
+  );
 }
 
-export const tempData = [
-  {
-    name: "Plan a trip",
-    color: "#24A6D9",
-    todos: [
-      {
-        title: "Book Flight",
-        completed: false,
-      },
-      {
-        title: "Passport Check",
-        completed: false,
-      },
-      {
-        title: "Reserve Hotel Room",
-        completed: false,
-      },
-      {
-        title: "Pack Luggage",
-        completed: false,
-      },
-    ],
-  },
-  {
-    name: "Errands",
-    color: "#8022D9",
-    todos: [
-      {
-        title: "Buy Milk",
-        completed: false,
-      },
-      {
-        title: "Walk the Dog",
-        completed: true,
-      },
-      {
-        title: "Workout",
-        completed: true,
-      },
-      {
-        title: "Go to DMV",
-        completed: false,
-      },
-    ],
-  },
-  {
-    name: "Birthday Party",
-    color: "#595BD9",
-    todos: [
-      {
-        title: "Buy Balloons",
-        completed: false,
-      },
-      {
-        title: "Send Invitations",
-        completed: true,
-      },
-      {
-        title: "Make Dinner Reservations",
-        completed: true,
-      },
-      {
-        title: "Wrap Gifts",
-        completed: false,
-      },
-    ],
-  },
-];
+export default List;

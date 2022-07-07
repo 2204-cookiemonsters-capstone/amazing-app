@@ -7,6 +7,7 @@ import {
   TextInput,
   SafeAreaView,
   FlatList,
+  Keyboard
 } from "react-native";
 import { auth, firestore } from "../firebase";
 import { todoListStyle, color } from "../styles";
@@ -17,16 +18,30 @@ export default class TodoModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: this.props.list.name,
-      color: this.props.list.color,
-      todos: this.props.list.todos,
+      newTodo: ''
     };
   }
 
-  renderTodo = (todo) => {
+  toggleTodoCompleted = index => {
+    let list = this.props.list;
+    list.todos[index].completed = !list.todos[index].completed;
+    this.props.updateList(list);
+    console.log("updated list", list)
+  }
+  addTodo = () => {
+    let list = this.props.list;
+    list.todos.push({title: this.state.newTodo, completed: false});
+
+    this.props.updateList(list);
+    this.setState({ newTodo: ''});
+
+    Keyboard.dismiss();
+  }
+
+  renderTodo = (todo, index) => {
     return (
       <View style={todoListStyle.todoModal.todoContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => this.toggleTodoCompleted(index)}>
           <Ionicons
             name={todo.completed ? "ios-square" : "ios-square-outline"}
             size={24}
@@ -50,13 +65,13 @@ export default class TodoModal extends React.Component {
   };
 
   render() {
-    const taskCount = this.state.todos.length;
-    const completedCount = this.state.todos.filter(
-      (todo) => todo.completed
-    ).length;
+    const list = this.props.list;
+    const taskCount = list.todos.length;
+    const completedCount = list.todos.filter((todo) => todo.completed).length;
 
     return (
-      <SafeAreaView style={todoListStyle.todoModal.container}>
+      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+        <SafeAreaView style={todoListStyle.todoModal.container}>
         <TouchableOpacity
           style={{ position: "absolute", top: 64, right: 32, zIndex: 10 }}
           onPress={this.props.closeModal}
@@ -68,11 +83,11 @@ export default class TodoModal extends React.Component {
           style={[
             todoListStyle.todoModal.section,
             todoListStyle.todoModal.header,
-            { borderBottomColor: this.state.color },
+            { borderBottomColor: list.color },
           ]}
         >
           <View>
-            <Text style={todoListStyle.todoModal.title}>{this.state.name}</Text>
+            <Text style={todoListStyle.todoModal.title}>{list.name}</Text>
             <Text style={todoListStyle.todoModal.taskCount}>
               {completedCount} of {taskCount} tasks
             </Text>
@@ -80,9 +95,9 @@ export default class TodoModal extends React.Component {
         </View>
         <View style={[todoListStyle.todoModal.section, { flex: 3 }]}>
           <FlatList
-            data={this.state.todos}
-            renderItem={({ item }) => this.renderTodo(item)}
-            keyExtractor={(item) => item.title}
+            data={list.todos}
+            renderItem={({ item, index }) => this.renderTodo(item, index)}
+            keyExtractor={(_, index) => index.toString()}
             contentContainerStyle={{
               paddingHorizontal: 32,
               paddingVertical: 64,
@@ -90,29 +105,24 @@ export default class TodoModal extends React.Component {
             showsVerticalScrollIndicator={false}
           />
         </View>
-        <KeyboardAvoidingView
+        <View
           style={[
             todoListStyle.todoModal.section,
             todoListStyle.todoModal.footer,
           ]}
-          behavior="padding"
         >
-          <TextInput
-            style={[
-              todoListStyle.todoModal.input,
-              { borderColor: this.state.color },
-            ]}
+          <TextInput style={[todoListStyle.todoModal.input, { borderColor: list.color }]}
+            onChangeText={text => this.setState({newTodo: text})}
+            value={this.state.newTodo}
           />
-          <TouchableOpacity
-            style={[
-              todoListStyle.todoModal.addTodo,
-              { backgroundColor: this.state.color },
-            ]}
+          <TouchableOpacity style={[todoListStyle.todoModal.addTodo, { backgroundColor: list.color }]}
+            onPress={() => this.addTodo()}
           >
             <AntDesign name="plus" size={16} color={color.list.white} />
           </TouchableOpacity>
-        </KeyboardAvoidingView>
+        </View>
       </SafeAreaView>
+      </KeyboardAvoidingView>
     );
   }
 }
