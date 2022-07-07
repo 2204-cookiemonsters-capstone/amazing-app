@@ -392,19 +392,22 @@ const Tasks = (props) => {
   const [featuredTasks, setFeaturedTasks] = useState([]);
   const [view, setView] = useState('stories');
   const [open, setOpen] = useState(0);
-  const [goalNum, setGoalNum] = useState('21');
+  const [goalNum, setGoalNum] = useState('28');
   const [currentTask, setCurrentTask] = useState({});
   const [displayPost, setDisplayPost] = useState({});
   const [postDescription, setPostDescription] = useState('');
   const [displayPostText, setDisplayPostText] = useState(true);
+  const [tasksCreated, setTasksCreated] = (useState(false))
 
   let completed = allUserTasks.filter((item) => item.completed === true);
 
-
 // creates a single users 28 posts
   async function createUserPosts(){
+   
+   if (completed && completed.length > 0) {null}
+   else {
     const postsRef = await doc(firestore, 'users', auth.currentUser.uid, "posts", "July")
-    setDoc(postsRef, {userTasks, goalNum: 28})
+    setDoc(postsRef, {userTasks, goalNum: goalNum}, {merge:true})}
   }
   
   // updates a single users 28 posts
@@ -414,11 +417,11 @@ const Tasks = (props) => {
     
     let previousPosts = snapShot.data().userTasks
 
-   let updatedPosts = previousPosts.map((item) => item.taskId !== taskId ? item : {...item, completed: true, completedTime: Date.now(), reflection: postDescription})
+   let userTasks = previousPosts.map((item) => item.taskId !== taskId ? item : {...item, completed: true, completedTime: Date.now(), reflection: postDescription})
 
     const postsRef = await doc(firestore, 'users', auth.currentUser.uid, "posts", "July")
 
-    setDoc(postsRef, {updatedPosts})
+    setDoc(postsRef, {userTasks}, {merge: true })
    }
 
    async function updateGoalNum(num){
@@ -498,7 +501,7 @@ const Tasks = (props) => {
 //initial load grabs user posts, creates user posts if don't exist
   useEffect(() => {
     fetchUserPosts();
-    createUserPosts();
+    if (completed.length <= 0) {createUserPosts()};
     setFeaturedTasks(dummyFeaturedTasks);
     console.log('useEffect1');
   }, []);
