@@ -25,13 +25,23 @@ import {
   setDoc,
 } from 'firebase/firestore';
 
-const userTasks = [
+
+
+const featuredPostsData = [
   {
     taskId: 1,
     title: 'read a book',
     description:
       'it can be any genre of your choice, just finish a book this month',
     defaultImgUrl: 'https://i.imgur.com/D7Iht7E.jpg',
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8',
     month: 'July',
     year: 2022,
 
@@ -42,6 +52,14 @@ const userTasks = [
     description:
       'spend 30 minutes practicing meditation.',
       defaultImgUrl: 'https://i.imgur.com/syBzUa2.jpg',
+      reflection: 'reflection 1',
+      reflection2: 'reflection 2',
+      reflection3: 'reflection 3',
+      reflection4: 'reflection 4',
+      reflection5: 'reflection 5',
+      reflection6: 'reflection 6',
+      reflection7: 'reflection 7',
+      reflection8: 'reflection 8',
       month: 'July',
       year: 2022,
   },
@@ -51,6 +69,14 @@ const userTasks = [
     description:
       'sample description for this task this is just a sample description for a task this is just a sample description for a task',
     defaultImgUrl: 'https://i.imgur.com/NNKNIWz.jpg',
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8',
     month: 'July',
     year: 2022,
 
@@ -59,7 +85,15 @@ const userTasks = [
     taskId: 4,
     title: 'write a letter',
     description: 'write and send a letter in the mail',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/XKzBaOA.jpg',
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8',    
     month: 'July',
     year: 2022,
 
@@ -70,6 +104,15 @@ const userTasks = [
     description:
       'sample description for this task this is just a sample description for a task this is just a sample description for a task',
       defaultImgUrl: 'https://i.imgur.com/hlhLJcq.jpg',
+      reflection: 'reflection 1',
+      reflection2: 'reflection 2',
+      reflection3: 'reflection 3',
+      reflection4: 'reflection 4',
+      reflection5: 'reflection 5',
+      reflection6: 'reflection 6',
+      reflection7: 'reflection 7',
+      reflection8: 'reflection 8',  
+
       month: 'July',
       year: 2022,
 
@@ -80,6 +123,14 @@ const userTasks = [
     description:
       'sample description for this task this is just a sample description for a task this is just a sample description for a task',
       defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+      reflection: 'reflection 1',
+      reflection2: 'reflection 2',
+      reflection3: 'reflection 3',
+      reflection4: 'reflection 4',
+      reflection5: 'reflection 5',
+      reflection6: 'reflection 6',
+      reflection7: 'reflection 7',
+      reflection8: 'reflection 8',  
       month: 'July',
       year: 2022,
 
@@ -88,8 +139,17 @@ const userTasks = [
     taskId: 7,
     title: 'write a journal entry',
     description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
-      defaultImgUrl: '',
+      "write a journal entry-- what's been on your mind? What is a story you have to tell? What do you need to write down?",
+      defaultImgUrl:'https://i.imgur.com/auj7RJW.jpg',
+
+      reflection: 'reflection 1',
+      reflection2: 'reflection 2',
+      reflection3: 'reflection 3',
+      reflection4: 'reflection 4',
+      reflection5: 'reflection 5',
+      reflection6: 'reflection 6',
+      reflection7: 'reflection 7',
+      reflection8: 'reflection 8',  
       month: 'July',
       year: 2022,
  
@@ -99,7 +159,16 @@ const userTasks = [
     taskId: 8,
     title: 'family past',
     description: 'record a family story',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8',  
     month: 'July',
     year: 2022,
 
@@ -109,7 +178,16 @@ const userTasks = [
     title: '10 meaningful photos',
     description:
       'Take ten photos of important people, places or things in your life',
-      defaultImgUrl: '',
+      defaultImgUrl: 'https://i.imgur.com/RcYQzBW.jpg',
+
+      reflection: 'reflection 1',
+      reflection2: 'reflection 2',
+      reflection3: 'reflection 3',
+      reflection4: 'reflection 4',
+      reflection5: 'reflection 5',
+      reflection6: 'reflection 6',
+      reflection7: 'reflection 7',
+      reflection8: 'reflection 8',  
       month: 'July',
       year: 2022,
 
@@ -120,7 +198,16 @@ const userTasks = [
     title: 'sit with water',
     description:
       'visit a pond, lake, river, ocean, or other body of water and observe the water',
-      defaultImgUrl: '',
+      defaultImgUrl: 'https://i.imgur.com/kC0vOPy.jpg',
+
+      reflection: 'reflection 1',
+      reflection2: 'reflection 2',
+      reflection3: 'reflection 3',
+      reflection4: 'reflection 4',
+      reflection5: 'reflection 5',
+      reflection6: 'reflection 6',
+      reflection7: 'reflection 7',
+      reflection8: 'reflection 8',  
       month: 'July',
       year: 2022,
 
@@ -131,7 +218,16 @@ const userTasks = [
     title: 'walking meditation',
     description:
       'go on a walk, and focus on feeling the ground beneath your feet with each step',
-      defaultImgUrl: '',
+      defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+
+      reflection: 'reflection 1',
+      reflection2: 'reflection 2',
+      reflection3: 'reflection 3',
+      reflection4: 'reflection 4',
+      reflection5: 'reflection 5',
+      reflection6: 'reflection 6',
+      reflection7: 'reflection 7',
+      reflection8: 'reflection 8',  
       month: 'July',
       year: 2022,
 
@@ -140,7 +236,16 @@ const userTasks = [
     taskId: 12,
     title: 'watch a movie',
     description: 'watch a movie',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8',  
     month: 'July',
     year: 2022,
 
@@ -150,7 +255,16 @@ const userTasks = [
     taskId: 13,
     title: 'be a critic',
     description: 'write positive reviews for the locally owned places you love',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/p5Lyn9H.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8',  
     month: 'July',
     year: 2022,
 
@@ -160,16 +274,34 @@ const userTasks = [
     taskId: 14,
     title: 'walk',
     description: '30 minute walk',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/9VFmLyh.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8',  
     month: 'July',
     year: 2022,
 
   },
 {
   taskId: 15,
-  title: 'task 15',
-  description: '30 minute walk',
-  defaultImgUrl: '',
+  title: '30 minute workout',
+  description: '30 minute workout',
+  defaultImgUrl: 'https://i.imgur.com/bb17UDd.jpg',
+
+  reflection: 'reflection 1',
+  reflection2: 'reflection 2',
+  reflection3: 'reflection 3',
+  reflection4: 'reflection 4',
+  reflection5: 'reflection 5',
+  reflection6: 'reflection 6',
+  reflection7: 'reflection 7',
+  reflection8: 'reflection 8',  
   month: 'July',
   year: 2022,
 
@@ -178,6 +310,16 @@ const userTasks = [
     taskId: 16,
     title: 'movement',
     description: 'yoga, dance, martial arts. Move your body for 30 minutes.',
+    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8',  
     month: 'July',
     year: 2022,
 
@@ -185,27 +327,54 @@ const userTasks = [
   {
     taskId: 17,
     title: 'stretch',
-    description: 'from head to toe, stretch each part of your body',
-    defaultImgUrl: '',
+    description: 'stretch each part of your body-- take lots of deep breaths as you let go of whatever tightness you feel in your muscles',
+    defaultImgUrl: 'https://i.imgur.com/uJOBwHY.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
   },
   {
     taskId: 18,
-    title: 'relaxation',
+    title: 'deep relaxation',
     description:
       'lie down and spend 10 minutes relaxing your body without falling asleep',
-      defaultImgUrl: '',
+      defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+ 
+      reflection: 'reflection 1',
+      reflection2: 'reflection 2',
+      reflection3: 'reflection 3',
+      reflection4: 'reflection 4',
+      reflection5: 'reflection 5',
+      reflection6: 'reflection 6',
+      reflection7: 'reflection 7',
+      reflection8: 'reflection 8', 
       month: 'July',
       year: 2022,
 
   },
   {
     taskId: 19,
-    title: 'new food',
-    description: "eat something you've never tried before",
-    defaultImgUrl: '',
+    title: 'nature sit',
+    description: "spend several minutes sitting in nature without your phone or any other distractions-- just listen and observe. ",
+    defaultImgUrl: 'https://i.imgur.com/Ga1vIyc.jpg',
+ 
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -213,25 +382,43 @@ const userTasks = [
   {
     taskId: 20,
     title: 'volunteer',
-    description: 'volunteer',
-    defaultImgUrl: '',
+    description: 'find a volunteer opportunity in your community',
+    defaultImgUrl: 'https://i.imgur.com/xOEG5mO.jpg',
     month: 'July',
     year: 2022,
 
   },{
     taskId: 21,
-    title: 'task 21',
-    description: 'task 21 description',
-    defaultImgUrl: '',
+    title: 'gratitude meditation',
+    description: 'Spend several minutes meditating on the people and experiences you are grateful for in your life.',
+    defaultImgUrl: 'https://i.imgur.com/GyKJQjk.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
   },
   {
     taskId: 22,
-    title: 'task 22',
-    description: 'task 22 description',
-    defaultImgUrl: '',
+    title: 'reflection',
+    description: 'write a journal entry on your ',
+    defaultImgUrl: 'https://i.imgur.com/Xcz7KJ7.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -240,7 +427,16 @@ const userTasks = [
     taskId: 23,
     title: 'task 23',
     description: 'task 23 description',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
   
@@ -249,7 +445,16 @@ const userTasks = [
     taskId: 24,
     title: 'task 24',
     description: 'task 24 description',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+ 
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -258,7 +463,16 @@ const userTasks = [
     taskId: 25,
     title: 'task 25',
     description: 'task 25 description',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -267,7 +481,16 @@ const userTasks = [
     taskId: 26,
     title: 'task 26',
     description: 'task 26 description',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+ 
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -276,7 +499,16 @@ const userTasks = [
     taskId: 27,
     title: 'task 27',
     description: 'task 27 description',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
   },
@@ -284,150 +516,51 @@ const userTasks = [
     taskId: 28,
     title: 'task 28',
     description: 'task 28 description',
-    defaultImgUrl: '',
+    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+
+    reflection: 'reflection 1',
+    reflection2: 'reflection 2',
+    reflection3: 'reflection 3',
+    reflection4: 'reflection 4',
+    reflection5: 'reflection 5',
+    reflection6: 'reflection 6',
+    reflection7: 'reflection 7',
+    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
   },
 ];
 
-const userPostInfo = [ {visibility: 'public',
-postTime: '',
-postDescription: '',
-postImgUrl:'',
-completed: false}]
-
-const dummyFeaturedTasks = [
-  {
-    id: 1,
-    userId: 1,
-    taskId: 1,
-    title: 'read a book',
-    description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
-    status: 'current',
-    completed: true,
-    postDescription:
-      'this is my reflection on the book I read. I recommend this book because...',
-    postImgUrl: 'https://i.imgur.com/DsehfR6.jpg',
-    endDate: 'July 30',
-    featured: true,
-  },
-  {
-    id: 2,
-    userId: 1,
-    taskId: 2,
-    title: 'meditate',
-    description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
-    status: 'current',
-    completed: true,
-    postDescription:
-      "this is my reflection on meditating. I'm not good at meditation so this one was a challenge...etc",
-    postImgUrl: 'https://imgur.com/Ev7LLdE.jpg',
-    endDate: 'July 30',
-    featured: true,
-  },
-  {
-    id: 3,
-    userId: 1,
-    taskId: 3,
-    title: 'spend an hour in nature',
-    description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
-    status: 'current',
-    completed: true,
-    postDescription:
-      'This is my reflection on nature. It was nice to get outdoors.',
-    postImgUrl: 'https://imgur.com/hZ4pnHI.jpg',
-    endDate: 'July 30',
-    featured: true,
-  },
-  {
-    id: 4,
-    userId: 1,
-    taskId: 4,
-    title: 'write a letter',
-    description: 'write and send a letter in the mail',
-    status: 'current',
-    completed: false,
-    postDescription: '',
-    postImgUrl: 'https://imgur.com/hZ4pnHI.jpg',
-    endDate: 'July 30',
-    featured: true,
-  },
-  {
-    id: 5,
-    userId: 1,
-    taskId: 5,
-    title: 'spend 30 minutes practicing deep breathing',
-    description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
-    status: 'current',
-    completed: true,
-    postDescription:
-      'This is my reflection on deep breathing. I felt so much more relaxed after 30 minutes.',
-    postImgUrl: 'https://imgur.com/DsehfR6.jpg',
-    endDate: 'July 30',
-    featured: true,
-  },
-  {
-    id: 6,
-    userId: 1,
-    taskId: 6,
-    title: 'complete an art project',
-    description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
-    status: 'current',
-    completed: true,
-    postDescription:
-      'Doodling is something I used to do a lot when I was younger. I picked up a pen and just started drawing and drew this...',
-    postImgUrl: 'https://imgur.com/xVtrThI.jpg',
-    endDate: 'July 30',
-    featured: true,
-  },
-];
-
 const Tasks = (props) => {
   const [allUserTasks, setAllUserTasks] = useState([]);
-  const [featuredTasks, setFeaturedTasks] = useState([]);
-  const [view, setView] = useState('stories');
+  const [view, setView] = useState('featured');
   const [open, setOpen] = useState(0);
   const [goalNum, setGoalNum] = useState('28');
   const [currentTask, setCurrentTask] = useState({});
   const [displayPost, setDisplayPost] = useState({});
-  const [postDescription, setPostDescription] = useState('');
+  const [reflection, setReflection] = useState('');
   const [displayPostText, setDisplayPostText] = useState(true);
-  const [tasksCreated, setTasksCreated] = (useState(false))
 
   let completed = allUserTasks.filter((item) => item.completed === true);
 
-// creates a single users 28 posts
-  async function createUserTasks(){
-    
-    const postsRef = await doc(firestore, 'users', auth.currentUser.uid, "posts", "July")
 
-    if (postsRef) {null}
-    else {setDoc(postsRef, {userTasks, goalNum: goalNum}, {merge:true})}
-  }
-  
-  // updates a single users 28 posts
+  // updates a single users posts
    async function updateUserPosts(taskId){
     const snapShot = await getDoc(
       doc(firestore, 'users', auth.currentUser.uid, 'posts', "July"))
     
     let previousPosts = snapShot.data().userTasks
 
-   let userTasks = previousPosts.map((item) => item.taskId !== taskId ? item : {...item, completed: true, completedTime: Date.now(), reflection: postDescription})
+   let userTasks = previousPosts.map((item) => item.taskId !== taskId ? item : {...item, completed: true, completedTime: Date.now(), reflection: reflection})
 
     const postsRef = await doc(firestore, 'users', auth.currentUser.uid, "posts", "July")
 
     setDoc(postsRef, {userTasks}, {merge: true })
    }
 
+     // updates goal num to 7, 14, 21, or 28
    async function updateGoalNum(num){
-
     const postsRef = await doc(firestore, 'users', auth.currentUser.uid, "posts", "July")
-
     setDoc(postsRef, {goalNum: num}, {merge: true})
    }
   
@@ -435,11 +568,12 @@ const Tasks = (props) => {
   async function fetchUserPosts(){
       const snapShot = await getDoc(
         doc(firestore, 'users', auth.currentUser.uid, 'posts', "July"))
-      setAllUserTasks(snapShot.data().userTasks)}
+      setAllUserTasks(snapShot.data().userTasks)
+    }
   
 
   const handleView = (view) => {
-    if (view === 'tasks' || view === 'posts' || view === 'stories') {
+    if (view === 'tasks' || view === 'posts' || view === 'featured') {
       setDisplayPost({});
     }
     setView(view);
@@ -457,8 +591,8 @@ const Tasks = (props) => {
     }
   };
 
-  const handleDisplayPost = (id) => {
-    let post = allUserTasks.filter((item) => item.id === id);
+  const handleDisplayFeaturedPost = (id) => {
+    let post = featuredPostsData.filter((item) => item.taskId === id);
     setDisplayPostText(true);
     setDisplayPost(post[0]);
     setView('postStack');
@@ -472,6 +606,20 @@ const Tasks = (props) => {
     }
   };
 
+  const handlePrevious = (taskId) => {
+    let previousPost = featuredPostsData.filter((item) => item.taskId === taskId - 1)
+    previousPost.length ? setDisplayPost(previousPost[0]) : setView('featured')
+  }
+  
+
+  const handleNext = (taskId) => {
+    let nextPost = featuredPostsData.filter((item) => item.taskId === taskId + 1)
+    console.log(nextPost)
+    nextPost.length ? setDisplayPost(nextPost[0]) : setView('featured')
+  }
+
+  
+
   const handleGoalNum = (num) => {
     (updateGoalNum(num))
     setGoalNum(num);
@@ -483,40 +631,44 @@ const Tasks = (props) => {
         ? (item = {
             ...item,
             completed: true,
-            postDescription: postDescription,
+            reflection: reflection,
           })
         : item
     );
     updateUserPosts(taskId)
     setAllUserTasks(newUserTasks);
-    setPostDescription('');
+    setReflection('');
     setCurrentTask({});
     setView('posts');
   };
+
+
 
   const handleFollowNewPeople = () => {
     setView('followNewPeople');
   };
 
-//initial load grabs user posts, creates user posts if don't exist
+//initial load creates user tasks if don't exist, fetches users posts, fetches featured posts
   useEffect(() => {
     fetchUserPosts();
-    createUserTasks();
-    setFeaturedTasks(dummyFeaturedTasks);
-    console.log('useEffect1');
+    console.log('useEffect1')
+    // console.log('All user tasks', allUserTasks);
 
   }, []);
 
 // need to do a useEffect to update taskPosts if user submits a post or changes the goal num-- need to timestamp the postTime value to current time
 
+
   useEffect(() => {
     // console.log('useEffect2');
-  }, [view, allUserTasks]);
+    fetchUserPosts();
+  }, [allUserTasks]);
 
-// need to do a useEffect to fetch friends and featured recent posts if visits stories view / scrolls.
+// need to do a useEffect to fetch friends and featured recent posts if visits featured view / scrolls.
 
 
   return (
+    
     <ScrollView>
       <View style={styles.container}>
         {/* top scroll bar */}
@@ -531,34 +683,91 @@ const Tasks = (props) => {
             28
           </Text>
 
-          <Text style={styles.subheading} onPress={() => handleView('stories')}>
-            stories
+          <Text style={styles.subheading} onPress={() => handleView('featured')}>
+            featured
           </Text>
         </View>
 
         {/* your tasks section */}
         {view === 'tasks' ? (
           <View>
-            <View style={styles.twentyEightContainer}>
-              <Text style={styles.twentyEightCount}>{completed ? completed.length : null}</Text>
-              <Text style={styles.twentyEight}>/ {goalNum}</Text>
-            </View>
-        
-            <Text style={[styles.goalNum, styles.center]}>
-              set your goal:
+            <View>
+
+            <View style={styles.followingSectionContainer}>
+              <Text style={styles.subheading}>Following</Text>
+              <ScrollView horizontal={true}>
+              
+                <View style={styles.followingItemsContainer}>
+                  <TouchableOpacity onPress={() => handleFollowNewPeople()}>
+                    <Text style={styles.followingItem}>+</Text>
+                  </TouchableOpacity>
+
+        {featuredPostsData.map((item)=> 
+         <TouchableOpacity onPress={() => handleDisplayFeaturedPost(item.taskId)} key={item.taskId}>
+         <Image
+           style={styles.followingItem}
+           source={{ uri: item.defaultImgUrl }}
+         />
+       </TouchableOpacity>
+        )
+      }
+      </View>
+     </ScrollView>
+     <Text style={styles.center}>___________________________</Text>
+    </View>
+<Text style={[styles.center, styles.padding10]}>Your Dashboard</Text>
+
+      <View style={styles.userDashboard}>
+
+          {/* number completed */}
+         
+<View style={styles.dashboardRowTop}>
+  <View style={styles.dashboardSetYourGoal}>
+        <View >
+            <Text style={[styles.goalNum, styles.center, styles.fontWeight700]}>
+              set your goal</Text>
+
+              <Text style={styles.center}>
               <Text onPress={() => handleGoalNum(7)}> 7 </Text>
               <Text onPress={() => handleGoalNum(14)}> 14 </Text>
               <Text onPress={() => handleGoalNum(21)}> 21 </Text>
               <Text onPress={() => handleGoalNum(28)}> 28 </Text>
             </Text>
+            </View>
+        </View>
+        
+        <View style={styles.dashboardCompleted}>
+          <View>
+          <Text style={styles.fontWeight700}>completed</Text>
+          </View>
+          <View style={styles.dashboardCompletedContainer}>
+              <Text style={styles.dashboardCompletedCount}>{completed ? completed.length : null}</Text>
+              <Text style={styles.padding10}>/ {goalNum}</Text>
+          </View>
+          </View>
+        </View>
+
+        <View style={styles.dashboardRowBottom}>
+        
+
+      <View style={styles.center}>
+        <Text style={[styles.center, styles.padding10, styles.fontWeight700]}>Your Strengths</Text>
+        <Text>complete more tasks to see your strengths</Text>
+        </View>
+        </View>
+  </View>
 
             <Text style={styles.newList}>
               <Text style={styles.about} onPress={() => handleView('about')}>
-                about{' '}
-              </Text>{' '}
-              | {allUserTasks ? allUserTasks[0].month : null}
-            </Text>
+                about
+              </Text>
 
+            </Text>
+            <Text style={styles.center}>___________________________</Text>
+
+            <Text></Text>
+            <Text style={styles.subheading}>Remaining Tasks for {allUserTasks && allUserTasks[0] ? allUserTasks[0].month : null}</Text>
+          </View>
             {!allUserTasks ? null : allUserTasks.map((item) => {
               // console.log(item, "item")
             return (
@@ -583,12 +792,7 @@ const Tasks = (props) => {
                         >
                           submit your post
                         </Text>
-                        <Text
-                          style={styles.getInspired}
-                          onPress={() => handleView('featured')}
-                        >
-                          get inspired
-                        </Text>
+                        
                       </View>
                     </View>
                   ) : null}
@@ -642,8 +846,8 @@ const Tasks = (props) => {
               multiline={true}
               textAlign={'left'}
               maxLength={1000}
-              onChangeText={(newText) => setPostDescription(newText)}
-              defaultValue={postDescription}
+              onChangeText={(newText) => setReflection(newText)}
+              defaultValue={reflection}
             />
             <Text
               style={styles.submitCompletedTask}
@@ -668,7 +872,7 @@ const Tasks = (props) => {
                     source={item.defaultImgUrl ? { uri: item.defaultImgUrl } : null}
                   />
                   <Text style={styles.postTag}>{item.title}</Text>
-                  <Text style={styles.postDescription}>
+                  <Text style={styles.reflection}>
                     {item.reflection}
                   </Text>
                 </View>
@@ -678,53 +882,9 @@ const Tasks = (props) => {
         ) : null}
 
         {/* following section */}
-        {view === 'stories' ? (
-          <View style={styles.storiesContainer}>
-            <View style={styles.followingSectionContainer}>
-              <Text style={styles.subheading}>Following</Text>
-              <ScrollView horizontal={true}>
-                <View style={styles.followingItemsContainer}>
-                  <TouchableOpacity onPress={() => handleFollowNewPeople()}>
-                    <Text style={styles.followingItem}>+</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => handleDisplayPost(1)}>
-                    <Image
-                      style={styles.followingItem}
-                      source={{ uri: 'https://i.imgur.com/DsehfR6.jpg' }}
-                    />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => handleDisplayPost(2)}>
-                    <Image
-                      style={styles.followingItem}
-                      source={{ uri: 'https://imgur.com/Ev7LLdE.jpg' }}
-                    />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => handleDisplayPost(3)}>
-                    <Image
-                      style={styles.followingItem}
-                      source={{ uri: 'https://imgur.com/xVtrThI.jpg' }}
-                    />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => handleDisplayPost(4)}>
-                    <Image
-                      style={styles.followingItem}
-                      source={{ uri: 'https://imgur.com/hZ4pnHI.jpg' }}
-                    />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => handleDisplayPost(5)}>
-                    <Image
-                      style={styles.followingItem}
-                      source={{ uri: 'https://imgur.com/Ev7LLdE.jpg' }}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </ScrollView>
-            </View>
+        {view === 'featured' ? (
+          <View style={styles.featuredContainer}>
+            
 
             {/* featured section */}
 
@@ -733,16 +893,16 @@ const Tasks = (props) => {
 
               <ScrollView>
                 <View style={styles.featuredItemsContainer}>
-                  {featuredTasks ? (
-                    featuredTasks.map((item) => (
-                      <View key={item.id}>
+                  {featuredPostsData ? (
+                    featuredPostsData.map((item) => (
+                      <View key={item.taskId}>
                         <TouchableOpacity
                           style={styles.featuredItemTouch}
-                          onPress={() => handleDisplayPost(item.id)}
+                          onPress={() => handleDisplayFeaturedPost(item.taskId)}
                         >
                           <Image
                             style={styles.featuredItem}
-                            source={{ uri: item.postImgUrl }}
+                            source={{ uri: item.defaultImgUrl }}
                           />
                         </TouchableOpacity>
                       </View>
@@ -757,20 +917,26 @@ const Tasks = (props) => {
         ) : null}
 
         {/* display single posts as a stack to swipe thru section */}
+        {/* swipe right changes display to taskId+ 1, swipe left changes display to taskId -1 */}
+
+
         {view === 'postStack' ? (
           <View style={styles.displayPostContainer}>
             <TouchableWithoutFeedback onPress={() => handleDisplayPostText()}>
               <ImageBackground
                 style={styles.displayPostImage}
-                source={{ uri: displayPost.postImgUrl }}
+                source={{ uri: displayPost.defaultImgUrl }}
               />
             </TouchableWithoutFeedback>
-
+            <View style={styles.previousNext}>
+              <Text onPress={() => handlePrevious(displayPost.taskId)}>previous</Text>
+               <Text onPress={() => handleNext(displayPost.taskId)}>next</Text>
+            </View>
             {displayPostText ? (
               <View style={styles.displayPostTextContainer}>
                 <Text style={styles.displayPostTitle}>{displayPost.title}</Text>
-                <Text style={styles.displayPostDescription}>
-                  {displayPost.postDescription}
+                <Text style={styles.displayReflection}>
+                  {displayPost.reflection}
                 </Text>
               </View>
             ) : null}
@@ -798,14 +964,25 @@ const styles = StyleSheet.create({
   center: {
     textAlign: 'center',
   },
+  padding10: {
+    padding: 10
+  },
+  fontWeight700: {
+    fontWeight: "700"
+  },
   topOptions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  twentyEightCount: {
-    fontSize: 60,
+  dashboardCompletedCount: {
+    fontSize: 40,
     textAlign: 'center',
-  },
+  }, 
+  dashboardCompletedContainer: {
+    flexDirection: "row",
+    textAlign: 'center',
+  }, 
+
   twentyEight: {
     padding: 10,
   },
@@ -814,6 +991,20 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     paddingTop: 20,
+    paddingBottom: 10,
+  },
+  dashboardRowTop : {
+    flexDirection: 'row',
+    alignItems: 'top',
+    justifyContent: 'space-around',
+    paddingTop: 15,
+    paddingBottom: 10,
+  },
+  dashboardRowBottom : {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingTop: 5,
     paddingBottom: 10,
   },
   goalNum: {
@@ -842,7 +1033,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingBottom: 25,
     fontWeight: '500',
-    fontSize: 30,
+    fontSize: 16,
   },
   taskDescription: {
     textAlign: 'center',
@@ -864,8 +1055,9 @@ const styles = StyleSheet.create({
     color: 'gray',
     borderRadius: 5,
   },
-  getInspired: {
-    padding: 5,
+  userDashboard: {
+    justifyContent: "space-around",
+    padding: 5,  
     margin: 5,
     borderWidth: 1,
     color: 'gray',
@@ -899,7 +1091,7 @@ const styles = StyleSheet.create({
     padding: 50,
   },
 
-  storiesContainer: {
+  featuredContainer: {
     flexDirection: 'column',
   },
   followingSectionContainer: {
@@ -965,7 +1157,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
   },
-  postDescription: {
+  reflection: {
     paddingBottom: 20,
   },
   postContainer: {
@@ -978,7 +1170,6 @@ const styles = StyleSheet.create({
   },
   displayPostContainer: {
     width: '100%',
-    backgroundColor: 'black',
     justifyContent: 'space-between',
   },
   displayPostImage: {
@@ -989,16 +1180,20 @@ const styles = StyleSheet.create({
     padding: 10,
     position: 'absolute',
     backgroundColor: 'rgba(0,0,0,.7)',
-    bottom: 0,
+    bottom: 30,
   },
   displayPostTitle: {
     color: '#FFFFFF',
     fontWeight: '700',
   },
-  displayPostDescription: {
+  displayReflection: {
     lineHeight: 20,
     color: '#FFFFFF',
   },
+  previousNext : {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });
 
 export default Tasks;
