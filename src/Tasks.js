@@ -34,8 +34,8 @@ const featuredPostsData = [
     description:
       'it can be any genre of your choice, just finish a book this month',
     defaultImgUrl: 'https://i.imgur.com/D7Iht7E.jpg',
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
+    reflection: 'this is a sample reflection 1. The quick brown fox jumped over the lazy dog. Sally sells seashells by the sea shore',
+    reflection2: ' this is a sample reflection 2',
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
@@ -218,11 +218,11 @@ const featuredPostsData = [
     title: 'walking meditation',
     description:
       'go on a walk, and focus on feeling the ground beneath your feet with each step',
-      defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+      defaultImgUrl: 'https://i.imgur.com/9VFmLyh.jpg',
 
-      reflection: 'reflection 1',
-      reflection2: 'reflection 2',
-      reflection3: 'reflection 3',
+      reflection: 'this is a sample of a first reflection',
+      reflection2: 'this is a sample of a second reflection',
+      reflection3: 'this is a sample of a third reflection',
       reflection4: 'reflection 4',
       reflection5: 'reflection 5',
       reflection6: 'reflection 6',
@@ -274,7 +274,7 @@ const featuredPostsData = [
     taskId: 14,
     title: 'walk',
     description: '30 minute walk',
-    defaultImgUrl: 'https://i.imgur.com/9VFmLyh.jpg',
+    defaultImgUrl: 'https://i.imgur.com/NNKNIWz.jpg',
 
     reflection: 'reflection 1',
     reflection2: 'reflection 2',
@@ -425,9 +425,9 @@ const featuredPostsData = [
   },
   {
     taskId: 23,
-    title: 'task 23',
-    description: 'task 23 description',
-    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+    title: 'donate something you own',
+    description: 'donate something you own',
+    defaultImgUrl: 'https://i.imgur.com/cjOOlHY.jpg',
 
     reflection: 'reflection 1',
     reflection2: 'reflection 2',
@@ -479,9 +479,9 @@ const featuredPostsData = [
   },
   {
     taskId: 26,
-    title: 'task 26',
-    description: 'task 26 description',
-    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+    title: 'support a local business',
+    description: 'visit a locally owned business',
+    defaultImgUrl: 'https://i.imgur.com/X97pCMd.jpg',
  
     reflection: 'reflection 1',
     reflection2: 'reflection 2',
@@ -514,9 +514,9 @@ const featuredPostsData = [
   },
   {
     taskId: 28,
-    title: 'task 28',
-    description: 'task 28 description',
-    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
+    title: 'express gratitude',
+    description: 'express gratitude to 3 people who have made a positive impact on your life',
+    defaultImgUrl: 'https://i.imgur.com/A6ZH2gb.jpg',
 
     reflection: 'reflection 1',
     reflection2: 'reflection 2',
@@ -540,9 +540,9 @@ const Tasks = (props) => {
   const [displayPost, setDisplayPost] = useState({});
   const [reflection, setReflection] = useState('');
   const [displayPostText, setDisplayPostText] = useState(true);
+  const [displayReflection, setDisplayReflection] = useState(1)
 
   let completed = allUserTasks.filter((item) => item.completed === true);
-
 
   // updates a single users posts
    async function updateUserPosts(taskId){
@@ -605,6 +605,10 @@ const Tasks = (props) => {
       setDisplayPostText(true);
     }
   };
+
+  const handleDisplayReflection = (num) => {
+    setDisplayReflection(num + 1)
+  }
 
   const handlePrevious = (taskId) => {
     let previousPost = featuredPostsData.filter((item) => item.taskId === taskId - 1)
@@ -699,7 +703,7 @@ const Tasks = (props) => {
               
                 <View style={styles.followingItemsContainer}>
                   <TouchableOpacity onPress={() => handleFollowNewPeople()}>
-                    <Text style={styles.followingItem}>+</Text>
+                    <Text style={styles.followingItemAdd}>+</Text>
                   </TouchableOpacity>
 
         {featuredPostsData.map((item)=> 
@@ -713,9 +717,10 @@ const Tasks = (props) => {
       }
       </View>
      </ScrollView>
-     <Text style={styles.center}>___________________________</Text>
+
     </View>
-<Text style={[styles.center, styles.padding10]}>Your Dashboard</Text>
+    <View style={styles.dashboardContainer}>
+<Text style={[styles.center, styles.padding10, styles.fontWeight700]}>Your Dashboard</Text>
 
       <View style={styles.userDashboard}>
 
@@ -758,12 +763,10 @@ const Tasks = (props) => {
   </View>
 
             <Text style={styles.newList}>
-              <Text style={styles.about} onPress={() => handleView('about')}>
-                about
-              </Text>
 
             </Text>
-            <Text style={styles.center}>___________________________</Text>
+        </View>
+
 
             <Text></Text>
             <Text style={styles.subheading}>Remaining Tasks for {allUserTasks && allUserTasks[0] ? allUserTasks[0].month : null}</Text>
@@ -799,6 +802,9 @@ const Tasks = (props) => {
                 </View>
               ) : null
             )})}
+            <Text style={[styles.about, styles.center]} onPress={() => handleView('about')}>
+                about
+              </Text>
           </View>
         ) : null}
 
@@ -933,13 +939,18 @@ const Tasks = (props) => {
                <Text onPress={() => handleNext(displayPost.taskId)}>next</Text>
             </View>
             {displayPostText ? (
-              <View style={styles.displayPostTextContainer}>
+              <View style={styles.displayPostTitleContainer}>
                 <Text style={styles.displayPostTitle}>{displayPost.title}</Text>
+              </View>
+            ) : null}
+              {displayPostText ? (
+              <View style={styles.displayPostTextContainer}>
                 <Text style={styles.displayReflection}>
                   {displayPost.reflection}
                 </Text>
               </View>
             ) : null}
+             
           </View>
         ) : null}
 
@@ -974,14 +985,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  dashboardCompletedCount: {
-    fontSize: 40,
-    textAlign: 'center',
-  }, 
-  dashboardCompletedContainer: {
-    flexDirection: "row",
-    textAlign: 'center',
-  }, 
+ 
 
   twentyEight: {
     padding: 10,
@@ -993,7 +997,21 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
   },
-  dashboardRowTop : {
+
+  dashboardContainer: {
+    marginTop: 30,
+    borderColor: "black",
+    borderWidth: 3,
+    borderRadius: 5
+},
+userDashboard: {
+  justifyContent: "space-around",
+  padding: 5,  
+  margin: 5,
+  color: "white",
+  backgroundColor: 'white',
+},
+dashboardRowTop : {
     flexDirection: 'row',
     alignItems: 'top',
     justifyContent: 'space-around',
@@ -1007,6 +1025,16 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 10,
   },
+
+  dashboardCompletedCount: {
+    fontSize: 40,
+    textAlign: 'center',
+  }, 
+  dashboardCompletedContainer: {
+    flexDirection: "row",
+    textAlign: 'center',
+  }, 
+
   goalNum: {
     paddingBottom: 10,
   },
@@ -1055,14 +1083,7 @@ const styles = StyleSheet.create({
     color: 'gray',
     borderRadius: 5,
   },
-  userDashboard: {
-    justifyContent: "space-around",
-    padding: 5,  
-    margin: 5,
-    borderWidth: 1,
-    color: 'gray',
-    borderRadius: 5,
-  },
+ 
 
   submitCompletedTask: {
     textAlign: 'center',
@@ -1101,7 +1122,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
   },
-  followingItem: {
+  followingItemAdd: {
     width: 100,
     height: 100,
     textAlign: 'center',
@@ -1114,6 +1135,21 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 2,
     borderStyle: 'solid',
+    borderRadius: 50,
+    backgroundColor: "white", 
+    overflow: "hidden"
+  },
+  followingItem: {
+    width: 100,
+    height: 100,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 40,
+    paddingBottom: 40,
+    marginRight: 5,
+    marginLeft: 5,
+    borderColor: 'black',
+    borderWidth: 2,
     borderRadius: 50,
   },
   featuredSectionContainer: {
@@ -1176,11 +1212,21 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 650,
   },
+  displayPostTitleContainer: {
+    padding: 10,
+    position: 'absolute',
+    backgroundColor: 'rgba(0,0,0,.5)',
+    top: 10,
+    textAlign: "center",
+    borderRadius: "10"
+
+  },
   displayPostTextContainer: {
     padding: 10,
     position: 'absolute',
     backgroundColor: 'rgba(0,0,0,.7)',
-    bottom: 30,
+    bottom: 50,
+    borderRadius: "10"
   },
   displayPostTitle: {
     color: '#FFFFFF',
