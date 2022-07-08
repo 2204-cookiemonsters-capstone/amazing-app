@@ -36,12 +36,9 @@ const featuredPostsData = [
     defaultImgUrl: 'https://i.imgur.com/D7Iht7E.jpg',
     reflection: 'this is a sample reflection 1. The quick brown fox jumped over the lazy dog. Sally sells seashells by the sea shore',
     reflection2: ' this is a sample reflection 2',
-    reflection3: 'reflection 3',
+    reflection3: 'this is reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8',
     month: 'July',
     year: 2022,
 
@@ -57,9 +54,6 @@ const featuredPostsData = [
       reflection3: 'reflection 3',
       reflection4: 'reflection 4',
       reflection5: 'reflection 5',
-      reflection6: 'reflection 6',
-      reflection7: 'reflection 7',
-      reflection8: 'reflection 8',
       month: 'July',
       year: 2022,
   },
@@ -74,9 +68,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8',
     month: 'July',
     year: 2022,
 
@@ -91,9 +82,7 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8',    
+   
     month: 'July',
     year: 2022,
 
@@ -109,9 +98,6 @@ const featuredPostsData = [
       reflection3: 'reflection 3',
       reflection4: 'reflection 4',
       reflection5: 'reflection 5',
-      reflection6: 'reflection 6',
-      reflection7: 'reflection 7',
-      reflection8: 'reflection 8',  
 
       month: 'July',
       year: 2022,
@@ -127,10 +113,7 @@ const featuredPostsData = [
       reflection2: 'reflection 2',
       reflection3: 'reflection 3',
       reflection4: 'reflection 4',
-      reflection5: 'reflection 5',
-      reflection6: 'reflection 6',
-      reflection7: 'reflection 7',
-      reflection8: 'reflection 8',  
+      reflection5: 'reflection 5', 
       month: 'July',
       year: 2022,
 
@@ -147,9 +130,6 @@ const featuredPostsData = [
       reflection3: 'reflection 3',
       reflection4: 'reflection 4',
       reflection5: 'reflection 5',
-      reflection6: 'reflection 6',
-      reflection7: 'reflection 7',
-      reflection8: 'reflection 8',  
       month: 'July',
       year: 2022,
  
@@ -166,9 +146,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8',  
     month: 'July',
     year: 2022,
 
@@ -185,9 +162,6 @@ const featuredPostsData = [
       reflection3: 'reflection 3',
       reflection4: 'reflection 4',
       reflection5: 'reflection 5',
-      reflection6: 'reflection 6',
-      reflection7: 'reflection 7',
-      reflection8: 'reflection 8',  
       month: 'July',
       year: 2022,
 
@@ -204,10 +178,7 @@ const featuredPostsData = [
       reflection2: 'reflection 2',
       reflection3: 'reflection 3',
       reflection4: 'reflection 4',
-      reflection5: 'reflection 5',
-      reflection6: 'reflection 6',
-      reflection7: 'reflection 7',
-      reflection8: 'reflection 8',  
+      reflection5: 'reflection 5', 
       month: 'July',
       year: 2022,
 
@@ -224,10 +195,7 @@ const featuredPostsData = [
       reflection2: 'this is a sample of a second reflection',
       reflection3: 'this is a sample of a third reflection',
       reflection4: 'reflection 4',
-      reflection5: 'reflection 5',
-      reflection6: 'reflection 6',
-      reflection7: 'reflection 7',
-      reflection8: 'reflection 8',  
+      reflection5: 'reflection 5',  
       month: 'July',
       year: 2022,
 
@@ -242,10 +210,7 @@ const featuredPostsData = [
     reflection2: 'reflection 2',
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8',  
+    reflection5: 'reflection 5',  
     month: 'July',
     year: 2022,
 
@@ -261,10 +226,7 @@ const featuredPostsData = [
     reflection2: 'reflection 2',
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8',  
+    reflection5: 'reflection 5', 
     month: 'July',
     year: 2022,
 
@@ -280,10 +242,7 @@ const featuredPostsData = [
     reflection2: 'reflection 2',
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8',  
+    reflection5: 'reflection 5', 
     month: 'July',
     year: 2022,
 
@@ -298,10 +257,7 @@ const featuredPostsData = [
   reflection2: 'reflection 2',
   reflection3: 'reflection 3',
   reflection4: 'reflection 4',
-  reflection5: 'reflection 5',
-  reflection6: 'reflection 6',
-  reflection7: 'reflection 7',
-  reflection8: 'reflection 8',  
+  reflection5: 'reflection 5', 
   month: 'July',
   year: 2022,
 
@@ -317,9 +273,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8',  
     month: 'July',
     year: 2022,
 
@@ -335,9 +288,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -354,9 +304,6 @@ const featuredPostsData = [
       reflection3: 'reflection 3',
       reflection4: 'reflection 4',
       reflection5: 'reflection 5',
-      reflection6: 'reflection 6',
-      reflection7: 'reflection 7',
-      reflection8: 'reflection 8', 
       month: 'July',
       year: 2022,
 
@@ -371,10 +318,7 @@ const featuredPostsData = [
     reflection2: 'reflection 2',
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
+    reflection5: 'reflection 5', 
     month: 'July',
     year: 2022,
 
@@ -398,9 +342,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -416,9 +357,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -434,9 +372,7 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
+
     month: 'July',
     year: 2022,
   
@@ -452,9 +388,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -470,9 +403,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -488,9 +418,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
 
@@ -506,9 +433,6 @@ const featuredPostsData = [
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
     reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
     month: 'July',
     year: 2022,
   },
@@ -522,10 +446,7 @@ const featuredPostsData = [
     reflection2: 'reflection 2',
     reflection3: 'reflection 3',
     reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
-    reflection6: 'reflection 6',
-    reflection7: 'reflection 7',
-    reflection8: 'reflection 8', 
+    reflection5: 'reflection 5', 
     month: 'July',
     year: 2022,
   },
@@ -571,6 +492,11 @@ const Tasks = (props) => {
       setAllUserTasks(snapShot.data().userTasks)
     }
   
+async function fetchFriends(){
+  const snapShot = await getDocs(
+    collection(firestore, 'users', auth.currentUser.uid, 'friendships')
+  )
+}
 
   const handleView = (view) => {
     if (view === 'tasks' || view === 'posts' || view === 'featured') {
@@ -598,6 +524,20 @@ const Tasks = (props) => {
     setView('postStack');
   };
 
+  const handleDisplayFollowingPost = (id) => {
+    let post = featuredPostsData.filter((item) => item.taskId === id);
+    setDisplayPostText(true);
+    setDisplayPost(post[0]);
+    setView('postStack');
+  };
+
+  // const handleDisplayFollowingPage = (id) => {
+  //   let post = featuredPostsData.filter((item) => item.taskId === id);
+  //   setDisplayPostText(true);
+  //   setDisplayPost(post[0]);
+  //   setView('postStack');
+  // };
+
   const handleDisplayPostText = () => {
     if (displayPostText) {
       setDisplayPostText(false);
@@ -607,8 +547,9 @@ const Tasks = (props) => {
   };
 
   const handleDisplayReflection = (num) => {
-    setDisplayReflection(num + 1)
-  }
+  setDisplayReflection(num + 1)
+    }
+  
 
   const handlePrevious = (taskId) => {
     let previousPost = featuredPostsData.filter((item) => item.taskId === taskId - 1)
@@ -707,7 +648,7 @@ const Tasks = (props) => {
                   </TouchableOpacity>
 
         {featuredPostsData.map((item)=> 
-         <TouchableOpacity onPress={() => handleDisplayFeaturedPost(item.taskId)} key={item.taskId}>
+         <TouchableOpacity onPress={() => handleDisplayFollowingPost(item.taskId)} key={item.taskId}>
          <Image
            style={styles.followingItem}
            source={{ uri: item.defaultImgUrl }}
@@ -740,7 +681,9 @@ const Tasks = (props) => {
             </Text>
             </View>
         </View>
-        
+        <View style={styles.dashboardPipe}>
+        <Text> </Text>
+        </View>
         <View style={styles.dashboardCompleted}>
           <View>
           <Text style={styles.fontWeight700}>completed</Text>
@@ -761,10 +704,7 @@ const Tasks = (props) => {
         </View>
         </View>
   </View>
-
-            <Text style={styles.newList}>
-
-            </Text>
+         
         </View>
 
 
@@ -938,21 +878,29 @@ const Tasks = (props) => {
               <Text onPress={() => handlePrevious(displayPost.taskId)}>previous</Text>
                <Text onPress={() => handleNext(displayPost.taskId)}>next</Text>
             </View>
-            {displayPostText ? (
-              <View style={styles.displayPostTitleContainer}>
-                <Text style={styles.displayPostTitle}>{displayPost.title}</Text>
-              </View>
-            ) : null}
+           
               {displayPostText ? (
               <View style={styles.displayPostTextContainer}>
-                <Text style={styles.displayReflection}>
-                  {displayPost.reflection}
+                
+                <Text style={styles.displayReflection} onPress={() => handleDisplayReflection(displayReflection)}>
+                  {displayReflection % 5 === 1 ? (displayPost.reflection) : null}
+                  {displayReflection % 5 === 2 ? (displayPost.reflection2) : null}
+                  {displayReflection % 5 === 3 ? (displayPost.reflection3) : null}
+                  {displayReflection % 5 === 4 ? (displayPost.reflection4) : null}
+                  {displayReflection % 5 === 0 ? (displayPost.reflection5) : null}
                 </Text>
               </View>
             ) : null}
              
           </View>
         ) : null}
+
+{/* see friends posts section */}
+{view === "followingStack" ? (
+  <View>
+    <Text>Following Stack</Text>
+  </View>
+) : null}
 
         {/* follow new people section */}
         {view === 'followNewPeople' ? (
@@ -1001,15 +949,19 @@ const styles = StyleSheet.create({
   dashboardContainer: {
     marginTop: 30,
     borderColor: "black",
-    borderWidth: 3,
+    borderWidth: 2,
+    backgroundColor: "lightblue",
     borderRadius: 5
 },
+dashboardPipe: {
+  height: 70,
+  borderLeftWidth: 1, 
+  borderColor: "gray" },
 userDashboard: {
   justifyContent: "space-around",
   padding: 5,  
   margin: 5,
-  color: "white",
-  backgroundColor: 'white',
+  backgroundColor: 'lightblue',
 },
 dashboardRowTop : {
     flexDirection: 'row',
@@ -1024,6 +976,8 @@ dashboardRowTop : {
     justifyContent: 'space-around',
     paddingTop: 5,
     paddingBottom: 10,
+    borderTopWidth: 1,
+    borderColor: "gray"
   },
 
   dashboardCompletedCount: {
@@ -1033,6 +987,7 @@ dashboardRowTop : {
   dashboardCompletedContainer: {
     flexDirection: "row",
     textAlign: 'center',
+
   }, 
 
   goalNum: {
@@ -1214,27 +1169,36 @@ dashboardRowTop : {
   },
   displayPostTitleContainer: {
     padding: 10,
+    margin: "10%",
     position: 'absolute',
-    backgroundColor: 'rgba(0,0,0,.5)',
+    backgroundColor: 'rgba(0,0,0,.7)',
     top: 10,
+    
+    width: "80%",
     textAlign: "center",
     borderRadius: "10"
 
   },
   displayPostTextContainer: {
     padding: 10,
+    margin: "10%",
     position: 'absolute',
     backgroundColor: 'rgba(0,0,0,.7)',
-    bottom: 50,
-    borderRadius: "10"
+    top: 100,
+    borderRadius: "10",
+    width: "80%",
   },
   displayPostTitle: {
-    color: '#FFFFFF',
-    fontWeight: '700',
+    color: "white",
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "600",
+
   },
   displayReflection: {
     lineHeight: 20,
-    color: '#FFFFFF',
+    color: "white",
+    textAlign: "center"
   },
   previousNext : {
     flexDirection: "row",

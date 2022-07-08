@@ -271,7 +271,7 @@ const AddFriends = ({ navigation }) => {
                 >
                   <TouchableOpacity
                     style={{
-                      backgroundColor: 'white',
+                      backgroundColor: 'lightblue',
                       borderRadius: 10,
                       borderWidth: 1,
                       height: 30,
@@ -359,7 +359,7 @@ const AddFriends = ({ navigation }) => {
                   <View>
                     <TouchableOpacity
                       style={{
-                        backgroundColor: 'white',
+                        backgroundColor: 'lightblue',
                         borderWidth: 1,
                         borderRadius: 10,
                         height: 30,
@@ -431,7 +431,7 @@ const AddFriends = ({ navigation }) => {
                   >
                     <TouchableOpacity
                       style={{
-                        backgroundColor: 'white',
+                        backgroundColor: 'lightblue',
                         borderWidth: 1,
                         borderRadius: 10,
                         height: 30,
@@ -502,7 +502,7 @@ const AddFriends = ({ navigation }) => {
                   >
                     <TouchableOpacity
                       style={{
-                        backgroundColor: 'white',
+                        backgroundColor: 'lightblue',
                         borderWidth: 1,
                        borderRadius: 10,
                         height: 30,
@@ -544,7 +544,7 @@ const AddFriends = ({ navigation }) => {
           ) : (
             <TouchableOpacity
               style={{
-                backgroundColor: 'white',
+                backgroundColor: 'lightblue',
                 borderWidth: 1,
                 bottom: 420,
                 width: 100,
