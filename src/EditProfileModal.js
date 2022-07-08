@@ -1,17 +1,8 @@
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  SafeAreaView,
-  FlatList,
-  Keyboard,
-  ScrollView,
-  Image,
-} from "react-native";
+import { Text, View, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, FlatList, Keyboard, ScrollView, Image} from "react-native";
 import { TextInput, Button, Snackbar } from "react-native-paper";
-import { auth, firestore, signOut } from "../firebase";
+import { auth, firestore, signOut, updateEmail } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { authStyle, userProfile } from "../styles";
 
@@ -22,12 +13,56 @@ const EditProfileModal = ({ user, closeModal }) => {
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [email, setEmail] = useState(user.email);
-  const [newEmail, setNewEmail] = useState("");
   const [hasNewEmail, setHasNewEmail] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
   const handleSignOut = () => {
     signOut(auth);
+  };
+
+  const handleSubmit = () => {
+    // console.log(name, username, email, newEmail);
+    if (username.length == 0) {
+      setIsValid({
+        bool: true,
+        boolSnack: true,
+        message: 'Please enter a username',
+      });
+      return;
+    }
+    if (name.length == 0) {
+      setIsValid({
+        bool: true,
+        boolSnack: true,
+        message: 'Please enter your name',
+      });
+      return;
+    }
+    if (email.length == 0) {
+      setIsValid({
+        bool: true,
+        boolSnack: true,
+        message: 'Please enter your email',
+      });
+      return
+    }
+    if (!hasNewEmail) {
+      const userRef = doc(firestore, 'users', auth.currentUser.uid);
+      let updatedUser = {name, username, email};
+      setDoc(userRef, updatedUser, {merge: true});
+      return
+    }
+    if (user.email !== email) {
+      updateEmail(auth.currentUser, email).catch(error => {
+        setIsValid({
+          bool: true,
+          boolSnack: true,
+          message: 'Something went wrong: ' + error.message,
+        });
+        return
+      })
+    }
+    Keyboard.dismiss();
   };
 
   return (
@@ -75,19 +110,13 @@ const EditProfileModal = ({ user, closeModal }) => {
               mode="outlined"
               label="Email"
               value={email}
-              disabled={hasNewEmail}
-              onFocus={() => setHasNewEmail(!hasNewEmail)}
+              onChangeText={(email) => {
+                setEmail(email);
+                setHasNewEmail(true);
+              }}
             />
             {hasNewEmail && (
               <View>
-                <TextInput
-                  style={userProfile.input}
-                  autoCapitalize="none"
-                  mode="outlined"
-                  label="New Email"
-                  value={newEmail}
-                  onChangeText={(newEmail) => setNewEmail(newEmail)}
-                />
                 <TextInput
                   style={userProfile.input}
                   autoCapitalize="none"
@@ -104,7 +133,7 @@ const EditProfileModal = ({ user, closeModal }) => {
                 />
               </View>
             )}
-            <TouchableOpacity style={authStyle.submitButton} title="SaveUser">
+            <TouchableOpacity style={authStyle.submitButton} title="SaveUser" onPress={() => handleSubmit()}>
               <Text>Save</Text>
             </TouchableOpacity>
             <TouchableOpacity

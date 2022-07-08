@@ -89,7 +89,6 @@ const Profile = ({ navigation }) => {
           <EditProfileModal
             user={userData}
             closeModal={() => toggleEditModal()}
-            // updateList={this.props.updateList}
           />
         </Modal>
       <View style={userProfile.topNav}>
@@ -114,8 +113,9 @@ const Profile = ({ navigation }) => {
         onPress={() => navigation.navigate('FriendsList')}
       />
       <View style={userProfile.body}>
-        <Text style={userProfile.text}>Name: {userData.name}</Text>
+        <Text style={userProfile.text}>{userData.name}</Text>
         <Text style={userProfile.text}>Score: {userData.score}</Text>
+        <Text style={userProfile.text}>Friends: {friends.length}</Text>
         <View>
           <Text>Friends</Text>
           <View>{friends.map((item) => (friendRow(item)))}</View>

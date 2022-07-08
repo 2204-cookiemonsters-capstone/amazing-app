@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { Text, View, TouchableOpacity, FlatList, Modal, ActivityIndicator } from "react-native";
 import { auth, firestore } from "../firebase";
-import { doc, getDoc, getDocs, addDoc, collection, setDoc } from "firebase/firestore";
+import { doc, getDocs, addDoc, collection, setDoc } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 import ToDoList from "./ToDoList";
 import { todoListStyle, color } from "../styles";
