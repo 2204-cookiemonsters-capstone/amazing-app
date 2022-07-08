@@ -68,10 +68,11 @@ const AddChat = ({ navigation }) => {
 
     const snapShot = await getDocs(q);
 
-    // console.log("SNAPPPPPSHOT", snapShot);
+    console.log("CHATTT", snapShot);
     const selectedChat = [];
-    snapShot.forEach((doc) => {
-      selectedChat.push(doc.data());
+    snapShot.forEach((docs) => {
+      
+      selectedChat.push(docs.data());
     });
 
     if (!selectedChat.length) {
@@ -83,13 +84,16 @@ const AddChat = ({ navigation }) => {
       const snap = await getDocs(q);
 
       snap.forEach(async (docs) => {
+        
         const ref = doc(firestore, "chats", docs.id);
         await setDoc(ref, { chatid: docs.id }, { merge: true });
         setSelectedChatId(docs.id);
       });
+    }else{
+      setSelectedChatId(selectedChat[0].chatid);
     }
-    // console.log("CHATTT", selectedChat[0].chatid);
-    setSelectedChatId(selectedChat[0].chatid);
+    
+    
 
     const userRef = doc(firestore, "users", userid);
     const userSnap = await getDoc(userRef);
