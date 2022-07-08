@@ -19,6 +19,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  updateDoc
 } from 'firebase/firestore';
 
 const image = require('../assets/favicon.png');
@@ -35,23 +36,39 @@ const AddFriends = ({ navigation }) => {
   const [showAllQuickAdd, setShowAllQuickAdd] = useState(false);
 
   const fetchAllUsers = async () => {
-    const snapShot = await getDocs(collection(firestore, 'users'));
-    const users = [];
-    snapShot.forEach((doc) => {
-      if (doc.data().userid !== auth.currentUser.uid) {
-        users.push(doc.data());
-      }
-    });
 
-    allUsers !== users ? setAllUsers(users) : ''; //need this or else it will push to allUsers everytime we save
+    const friendSnap = await getDocs(collection(firestore, 'users', auth.currentUser.uid, 'friendships'))
+    const friends = []
+
+    friendSnap.forEach((docs)=>{
+        if(docs.data().status === "friends"){
+          friends.push(docs.data().userid)
+        }
+    })
+
+    
+    onSnapshot(collection(firestore, 'users'), async(snapShot)=>{
+      const users = [];
+      snapShot.forEach(async (doc) => {
+        
+        if (doc.data().userid !== auth.currentUser.uid) {
+          if(!friends.includes(doc.data().userid)){
+            users.push(doc.data());
+          }
+        }
+      });
+  
+     
+  
+      allUsers !== users ? setAllUsers(users) : ''; //need this or else it will push to allUsers everytime we save
+    })
+    
   };
 
   const getFriends = async () => {
-    const snapShot = await getDocs(
-      collection(firestore, 'users', auth.currentUser.uid, 'friendships')
-    );
-
-    const allFriends = [],
+  
+    onSnapshot( collection(firestore, 'users', auth.currentUser.uid, 'friendships'), async (snapShot)=>{
+      const allFriends = [],
       allIncomingFriends = [],
       allPendingFriends = [];
 
@@ -88,12 +105,15 @@ const AddFriends = ({ navigation }) => {
     setFriends(friendItems);
     setPendingFriends(pendingItems);
     setIncomingFriends(incomingItems);
+    })
+
+    
   };
 
   useEffect(() => {
     fetchAllUsers();
     getFriends();
-    console.log('ran');
+    
   }, []);
 
   const handleAddFriend = (userid) => {
@@ -122,10 +142,11 @@ const AddFriends = ({ navigation }) => {
       userid: auth.currentUser.uid,
       status: 'incoming', // the one receiving
     });
-    // console.log('function ran');
+    
   };
 
   const handleAcceptFriendship = async (userid) => {
+    
     const docRef = doc(
       firestore,
       'users',
@@ -133,6 +154,7 @@ const AddFriends = ({ navigation }) => {
       'friendships',
       userid
     );
+
     await updateDoc(docRef, { status: 'friends' });
     const docRef2 = doc(
       firestore,
@@ -191,7 +213,8 @@ const AddFriends = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View>
+      {incomingFriends.length ? (
+        <View>
         <View style={{ margin: 25 }}>
           <Text style={{ fontWeight: '700', fontSize: 17 }}>Added Me</Text>
         </View>
@@ -270,6 +293,7 @@ const AddFriends = ({ navigation }) => {
           ></FlatList>
         </View>
       </View>
+      ): null}
 
       <View>
         <View style={{ margin: 25 }}>
@@ -554,150 +578,3 @@ const AddFriends = ({ navigation }) => {
 };
 
 export default AddFriends;
-
-/*<FlatList
-            data={allUsers}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingBottom: 430, //fix navbar does not block the last item
-            }}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={{
-                  marginLeft: 25,
-                  marginTop: 10,
-                  borderLeftWidth: 1,
-                  borderRightWidth: 1,
-                  borderBottomWidth: 1,
-                  borderTopWidth: 1,
-                  marginRight: 25,
-                  borderColor: '#cccccc',
-                  display: 'flex',
-                  flexDirection: 'row',
-                }}
-              >
-                <TouchableOpacity>
-                  <Image
-                    source={image}
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: 25,
-                      margin: 10,
-                    }}
-                  />
-                </TouchableOpacity>
-                <View style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Text>{item.name}</Text>
-                  <Text>{item.username}</Text>
-                  <Text>3 Mutual Friends</Text>
-                </View>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginLeft: 30,
-                  }}
-                >
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: 'red',
-                      borderTopLeftRadius: 10,
-                      borderBottomLeftRadius: 10,
-                      borderTopRightRadius: 10,
-                      borderBottomRightRadius: 10,
-                      height: 30,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}
-                    onPress={() => handleAddFriend(item.userid)}
-                  >
-                    <View style={{ marginLeft: 13, marginRight: 8 }}>
-                      <Image
-                        source={require('../assets/ADDFRIEND2.png')}
-                        style={{ width: 15, height: 15 }}
-                      />
-                    </View>
-                    <Text style={{ marginRight: 14 }}>Add</Text>
-                  </TouchableOpacity>
-                </View>
-              </TouchableOpacity>
-            )}
-          ></FlatList>
-          
-          
-          
-          
-          {showAllQuickAdd ? (
-            <TouchableOpacity style={{ backgroundColor: 'red' }}>
-              <Text style={{ fontSize: 30 }}>Show Less</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity>
-              <Text>Show More</Text>
-            </TouchableOpacity>
-          )}
-
-
-
-
-
-
-
-          // const fetchAllIncomingRequests = async () => {
-  //   const snapShot = await getDocs(
-  //     collection(firestore, `/users/${auth.currentUser.uid}/friendships`)
-  //   );
-
-  //   const incoming = [];
-  //   snapShot.forEach((doc) => {
-  //     const data = doc.data();
-  //     if (!data) return;
-  //     if (data.status === 'incoming' && data.userid !== auth.currentUser.uid) {
-  //       //ensures we dont accept ourselves
-  //       incoming.push(data);
-  //     }
-  //   });
-
-  //   incomingRequests !== incoming ? setIncomingRequests(incoming) : null;
-  // };
-
-  // const fetchIncomingUsers = async () => {
-  //   const holder = [];
-
-  //   if (!incomingRequests.length) return;
-
-  //   incomingRequests.forEach(async (request) => {
-  //     const docRef = doc(firestore, 'users', request.userid);
-  //     const docSnap = await getDoc(docRef);
-
-  //     if (docSnap.exists()) {
-  //       holder.push(docSnap.data());
-  //     } else {
-  //       console.log('no such documents');
-  //     }
-
-  //     incomingUsers !== holder ? setIncomingUsers(holder) : '';
-  //   });
-  //   // console.log('hiiiiiiiiiiii', holder);
-  //   // incomingUsers !== holder ? setIncomingUsers(holder) : '';    why does it not work out here? IDK
-  // };
-
-  useEffect(() => {
-    fetchAllUsers();
-  }, []);
-
-  // useEffect(() => {
-  //   fetchAllIncomingRequests();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!incomingRequests) return;
-  //   fetchIncomingUsers();
-  // }, [allUsers]);
-
-  console.log('incoming!!!!!!', incomingUsers);
-          */

@@ -1,9 +1,9 @@
-import { Text, View, StyleSheet } from 'react-native';
-import React, { Component, useEffect, useState, useCallback } from 'react';
-import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { auth, firestore } from '../../firebase';
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { Component, useEffect, useState, useCallback } from "react";
+import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { auth, firestore } from "../../firebase";
 import {
   collection,
   getDocs,
@@ -13,47 +13,54 @@ import {
   doc,
   getDoc,
   setDoc,
-} from 'firebase/firestore';
+  updateDoc,
+} from "firebase/firestore";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
 
-//https://stackoverflow.com/questions/58844095/how-to-get-firestore-document-id
+//doc.id gets the id
 const ChatScreen = (props) => {
   const [allMessages, setAllMessages] = useState([]);
   const [previousMessages, setPreviousMessages] = useState([]);
 
   const fetchMessages = async () => {
-    const docRef = doc(firestore, 'chats', props.route.params.chatid);
-    const docSnap = await getDoc(docRef);
+    const docRef = doc(firestore, "chats", props.route.params.chatid);
+    // const docSnap = await getDoc(docRef);
 
-    const chatData = [];
-    const data = docSnap.data();
-
-    if (docSnap.exists()) {
-      previousMessages !== data.messages
-        ? setPreviousMessages(data.messages)
-        : null;
-
-      for (let i = 0; i < data.messages.length; i++) {
-        const message = data.messages[i];
-        chatData.push({
-          _id: i,
-          text: message.message,
-          createdAt: new Date(),
-          user: {
-            _id: message.userid,
-            name: 'React Native',
-          },
-        });
+    onSnapshot(docRef, async (snapShot)=>{
+      const chatData = [];
+      const data = snapShot.data();
+  
+      if (snapShot.exists()) {
+        previousMessages !== data.messages
+          ? setPreviousMessages(data.messages)
+          : null;
+  
+        for (let i = 0; i < data.messages.length; i++) {
+          const message = data.messages[i];
+          chatData.push({
+            _id: i,
+            text: message.message,
+            createdAt: message.time.toDate(),
+            user: {
+              _id: message.userid,
+              name: "React Native",
+            },
+          });
+        }
+  
+        allMessages !== chatData ? setAllMessages(chatData) : null;
+      } else {
+        console.log("No Such Documents");
       }
-
-      allMessages !== chatData ? setAllMessages(chatData) : null;
-    } else {
-      console.log('No Such Documents');
-    }
+    })
+   
   };
 
   useEffect(() => {
+    if (!props.route.params.chatid) return;
     fetchMessages();
-  }, []);
+  }, [props.route.params.chatid]);
 
   const onSend = useCallback((messages = []) => {
     setAllMessages((previousMessages) =>
@@ -67,17 +74,17 @@ const ChatScreen = (props) => {
     const message = {
       message: messages[0].text,
       userid: messages[0].user._id,
+      time: new Date(),
     };
+    // console.log(new Date());
 
-    const res = await setDoc(
-      doc(firestore, 'chats', props.route.params.chatid),
+    const res = await updateDoc(
+      doc(firestore, "chats", props.route.params.chatid),
       {
         messages: [message, ...previousMessages],
       }
     );
   };
-
-  const sendMessageFirebase = async () => {};
 
   const renderBubble = (props) => {
     return (
@@ -85,18 +92,18 @@ const ChatScreen = (props) => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: 'red',
+            backgroundColor: "red",
           },
           left: {
-            backgroundColor: '#24CCE7',
+            backgroundColor: "#24CCE7",
           },
         }}
         textStyle={{
           right: {
-            color: 'white',
+            color: "white",
           },
           left: {
-            color: '#ECF0F1',
+            color: "#ECF0F1",
           },
         }}
       />
@@ -134,18 +141,9 @@ const ChatScreen = (props) => {
       renderSend={renderSend}
       scrollToBottom
       scrollToBottomComponent={scrollToBottomComponent}
-      scrollToBottomStyle={{ alignItems: 'center' }}
+      scrollToBottomStyle={{ alignItems: "center" }}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default ChatScreen;
