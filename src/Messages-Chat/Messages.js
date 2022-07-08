@@ -29,48 +29,50 @@ const Messages = (props) => {
   const [allChatsData, setAllChatsData] = useState([]);
 
   const fetchAllChats = async () => {
-    const snapShot = await getDocs(collection(firestore, "chats"));
+    // const snapShot = await getDocs(collection(firestore, "chats"))
 
-    const chats = []; //holds details of chat
-    snapShot.forEach((doc) => {
-      if (doc.data().userids.includes(auth.currentUser.uid)) {
-        chats.push(doc.data());
-      }
-    });
-
-    //doc.id returns the auto genned id
-
-    const userData = []; //data to be rendered on messages screen for each chat
-    for (let i = 0; i < chats.length; i++) {
-      const docSnap = await getDoc(
-        doc(
-          firestore,
-          "users",
-          chats[i].userids.filter((id) => id !== auth.currentUser.uid)[0]
-        )
-      );
-
-      userData.push({
-        ...docSnap.data(),
-        lastMessage: chats.find(
-          (chat) =>
-            chat.userids.includes(docSnap.data().userid) &&
-            chat.userids.includes(auth.currentUser.uid)
-        ).messages[0],
-        chatid: chats.find(
-          (chat) =>
-            chat.userids.includes(docSnap.data().userid) &&
-            chat.userids.includes(auth.currentUser.uid)
-        ).chatid,
+    onSnapshot(collection(firestore, "chats"), async (snapShot)=>{
+      const chats = []; //holds details of chat
+      snapShot.forEach((doc) => {
+        if (doc.data().userids.includes(auth.currentUser.uid)) {
+          chats.push(doc.data());
+        }
       });
-    }
-
-    allChatsData !== userData ? setAllChatsData(userData) : null;
+  
+      //doc.id returns the auto genned id
+  
+      const userData = []; //data to be rendered on messages screen for each chat
+      for (let i = 0; i < chats.length; i++) {
+        const docSnap = await getDoc(
+          doc(
+            firestore,
+            "users",
+            chats[i].userids.filter((id) => id !== auth.currentUser.uid)[0]
+          )
+        );
+  
+        userData.push({
+          ...docSnap.data(),
+          lastMessage: chats.find(
+            (chat) =>
+              chat.userids.includes(docSnap.data().userid) &&
+              chat.userids.includes(auth.currentUser.uid)
+          ).messages[0],
+          chatid: chats.find(
+            (chat) =>
+              chat.userids.includes(docSnap.data().userid) &&
+              chat.userids.includes(auth.currentUser.uid)
+          ).chatid,
+        });
+      }
+  
+      allChatsData !== userData ? setAllChatsData(userData) : null;
+    })
   };
 
   useEffect(() => {
     fetchAllChats();
-  });
+  }, []);
 
   return (
     <View style={styles.container}>

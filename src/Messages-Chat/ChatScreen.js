@@ -25,32 +25,36 @@ const ChatScreen = (props) => {
 
   const fetchMessages = async () => {
     const docRef = doc(firestore, "chats", props.route.params.chatid);
-    const docSnap = await getDoc(docRef);
-    const chatData = [];
-    const data = docSnap.data();
+    // const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      previousMessages !== data.messages
-        ? setPreviousMessages(data.messages)
-        : null;
-
-      for (let i = 0; i < data.messages.length; i++) {
-        const message = data.messages[i];
-        chatData.push({
-          _id: i,
-          text: message.message,
-          createdAt: message.time.toDate(),
-          user: {
-            _id: message.userid,
-            name: "React Native",
-          },
-        });
+    onSnapshot(docRef, async (snapShot)=>{
+      const chatData = [];
+      const data = snapShot.data();
+  
+      if (snapShot.exists()) {
+        previousMessages !== data.messages
+          ? setPreviousMessages(data.messages)
+          : null;
+  
+        for (let i = 0; i < data.messages.length; i++) {
+          const message = data.messages[i];
+          chatData.push({
+            _id: i,
+            text: message.message,
+            createdAt: message.time.toDate(),
+            user: {
+              _id: message.userid,
+              name: "React Native",
+            },
+          });
+        }
+  
+        allMessages !== chatData ? setAllMessages(chatData) : null;
+      } else {
+        console.log("No Such Documents");
       }
-
-      allMessages !== chatData ? setAllMessages(chatData) : null;
-    } else {
-      console.log("No Such Documents");
-    }
+    })
+   
   };
 
   useEffect(() => {

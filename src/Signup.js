@@ -416,7 +416,8 @@ const Signup = (props) => {
 
   return (
     <View style={authStyle.container}>
-      <ScrollView>
+      <ScrollView
+      showsVerticalScrollIndicator={false}>
         <View style={authStyle.body}>
           <Text style={authStyle.header}>Sign Up</Text>
           <TextInput
