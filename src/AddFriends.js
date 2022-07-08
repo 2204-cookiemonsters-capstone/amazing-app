@@ -215,8 +215,8 @@ const AddFriends = ({ navigation }) => {
 
       {incomingFriends.length ? (
         <View>
-        <View style={{ margin: 25 }}>
-          <Text style={{ fontWeight: '700', fontSize: 17 }}>Added Me</Text>
+        <View style={{ marginTop: 40 }}>
+          <Text style={{ fontWeight: '700', fontSize: 17, textAlign: "center" }}>Added Me</Text>
         </View>
         <View>
           <FlatList
@@ -237,10 +237,12 @@ const AddFriends = ({ navigation }) => {
                   borderColor: '#cccccc',
                   display: 'flex',
                   flexDirection: 'row',
+                  justifyContent: "space-between",
                   paddingLeft: 10,
                   paddingRight: 15,
                 }}
               >
+                <View style={{flexDirection: "row"}}>
                 <TouchableOpacity>
                   <Image
                     source={image}
@@ -252,11 +254,14 @@ const AddFriends = ({ navigation }) => {
                     }}
                   />
                 </TouchableOpacity>
-                <View style={{ display: 'flex', flexDirection: 'column' }}>
+
+                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: "center" }}>
                   <Text>{item.name}</Text>
                   <Text>{item.username}</Text>
                   <Text>3 Mutual Friends</Text>
                 </View>
+                </View>
+                
                 <View
                   style={{
                     alignItems: 'center',
@@ -266,11 +271,9 @@ const AddFriends = ({ navigation }) => {
                 >
                   <TouchableOpacity
                     style={{
-                      backgroundColor: 'red',
-                      borderTopLeftRadius: 10,
-                      borderBottomLeftRadius: 10,
-                      borderTopRightRadius: 10,
-                      borderBottomRightRadius: 10,
+                      backgroundColor: 'white',
+                      borderRadius: 10,
+                      borderWidth: 1,
                       height: 30,
                       justifyContent: 'center',
                       alignItems: 'center',
@@ -296,9 +299,10 @@ const AddFriends = ({ navigation }) => {
       ): null}
 
       <View>
-        <View style={{ margin: 25 }}>
-          <Text style={{ fontWeight: '700', fontSize: 17 }}>Quick Add</Text>
+        <View style={{ marginTop: 40, marginBottom: 20 }}>
+          <Text style={{ fontWeight: '700', fontSize: 17, textAlign: "center" }}>Quick Add</Text>
         </View>
+
         <View
           style={{
             bottom: 20,
@@ -317,22 +321,21 @@ const AddFriends = ({ navigation }) => {
                 paddingBottom: 430, //fix navbar does not block the last item
               }}
               renderItem={({ item }) => (
-                <TouchableOpacity
+              // quick add list item
+                <View
                   style={{
-                    marginLeft: 25,
-                    marginTop: 10,
-                    borderLeftWidth: 1,
-                    borderRightWidth: 1,
-                    borderBottomWidth: 1,
-                    borderTopWidth: 1,
-                    marginRight: 25,
+                    marginLeft: 10,
+                    padding: 10,
+                    borderWidth: 10,
                     borderColor: '#cccccc',
-                    display: 'flex',
                     flexDirection: 'row',
+                    justifyContent: "space-between",
                     paddingLeft: 10,
                     paddingRight: 15,
-                  }}
+                  }} 
                 >
+            {/* quick add logo and name */}
+              <View>
                   <TouchableOpacity>
                     <Image
                       source={image}
@@ -344,33 +347,29 @@ const AddFriends = ({ navigation }) => {
                       }}
                     />
                   </TouchableOpacity>
-                  <View style={{ display: 'flex', flexDirection: 'column' }}>
+
+                  <View style={{ flexDirection: 'column', justifyContent: "center" }}>
                     <Text>{item.name}</Text>
                     <Text>{item.username}</Text>
                   </View>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginLeft: 30,
-                    }}
-                  >
+              </View>
+
+
+          {/* quick add button */}                
+                  <View>
                     <TouchableOpacity
                       style={{
-                        backgroundColor: 'red',
-                        borderTopLeftRadius: 10,
-                        borderBottomLeftRadius: 10,
-                        borderTopRightRadius: 10,
-                        borderBottomRightRadius: 10,
+                        backgroundColor: 'white',
+                        borderWidth: 1,
+                        borderRadius: 10,
                         height: 30,
+                        flexDirection: 'row',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        display: 'flex',
-                        flexDirection: 'row',
                       }}
                       onPress={() => handleAddFriend(item.userid)}
                     >
-                      <View style={{ marginLeft: 13, marginRight: 8 }}>
+                  <View style={{ marginLeft: 13, marginRight: 8 }}>
                         <Image
                           source={require('../assets/ADDFRIEND2.png')}
                           style={{ width: 15, height: 15 }}
@@ -379,8 +378,8 @@ const AddFriends = ({ navigation }) => {
                       <Text style={{ marginRight: 14 }}>Add</Text>
                     </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
-              )}
+                </View>
+                                )}
             ></FlatList>
           ) : allUsers.length > 3 && showAllQuickAdd ? (
             <FlatList
@@ -418,7 +417,7 @@ const AddFriends = ({ navigation }) => {
                       }}
                     />
                   </TouchableOpacity>
-                  <View style={{ display: 'flex', flexDirection: 'column' }}>
+                  <View style={{ display: 'flex', flexDirection: 'column', justifyContent: "center" }}>
                     <Text>{item.name}</Text>
                     <Text>{item.username}</Text>
                     <Text>3 Mutual Friends</Text>
@@ -432,11 +431,9 @@ const AddFriends = ({ navigation }) => {
                   >
                     <TouchableOpacity
                       style={{
-                        backgroundColor: 'red',
-                        borderTopLeftRadius: 10,
-                        borderBottomLeftRadius: 10,
-                        borderTopRightRadius: 10,
-                        borderBottomRightRadius: 10,
+                        backgroundColor: 'white',
+                        borderWidth: 1,
+                        borderRadius: 10,
                         height: 30,
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -468,20 +465,17 @@ const AddFriends = ({ navigation }) => {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={{
-                    marginLeft: 25,
-                    marginTop: 10,
-                    borderLeftWidth: 1,
-                    borderRightWidth: 1,
-                    borderBottomWidth: 1,
-                    borderTopWidth: 1,
-                    marginRight: 25,
+                    margin: 5,
+                    borderWidth: 1,
                     borderColor: '#cccccc',
                     display: 'flex',
                     flexDirection: 'row',
+                    justifyContent: "space-between",
                     paddingLeft: 10,
                     paddingRight: 15,
                   }}
                 >
+                  <View style={{flexDirection: "row"}}>
                   <TouchableOpacity>
                     <Image
                       source={image}
@@ -493,10 +487,12 @@ const AddFriends = ({ navigation }) => {
                       }}
                     />
                   </TouchableOpacity>
-                  <View style={{ display: 'flex', flexDirection: 'column' }}>
+                  <View style={{ display: 'flex', flexDirection: 'column', justifyContent: "center" }}>
                     <Text>{item.name}</Text>
                     <Text>{item.username}</Text>
                   </View>
+                  </View>
+
                   <View
                     style={{
                       alignItems: 'center',
@@ -506,13 +502,11 @@ const AddFriends = ({ navigation }) => {
                   >
                     <TouchableOpacity
                       style={{
-                        backgroundColor: 'red',
-                        borderTopLeftRadius: 10,
-                        borderBottomLeftRadius: 10,
-                        borderTopRightRadius: 10,
-                        borderBottomRightRadius: 10,
+                        backgroundColor: 'white',
+                        borderWidth: 1,
+                       borderRadius: 10,
                         height: 30,
-                        justifyContent: 'center',
+                        justifyContent: 'space-between',
                         alignItems: 'center',
                         display: 'flex',
                         flexDirection: 'row',
@@ -541,10 +535,7 @@ const AddFriends = ({ navigation }) => {
                 alignItems: 'center',
                 height: 30,
                 justifyContent: 'center',
-                borderTopLeftRadius: 10,
-                borderBottomLeftRadius: 10,
-                borderTopRightRadius: 10,
-                borderBottomRightRadius: 10,
+               borderRadius: 10,
               }}
               onPress={() => setShowAllQuickAdd(false)}
             >
@@ -553,7 +544,8 @@ const AddFriends = ({ navigation }) => {
           ) : (
             <TouchableOpacity
               style={{
-                backgroundColor: 'red',
+                backgroundColor: 'white',
+                borderWidth: 1,
                 bottom: 420,
                 width: 100,
                 // marginLeft: '25%',
@@ -561,10 +553,7 @@ const AddFriends = ({ navigation }) => {
                 alignItems: 'center',
                 height: 30,
                 justifyContent: 'center',
-                borderTopLeftRadius: 10,
-                borderBottomLeftRadius: 10,
-                borderTopRightRadius: 10,
-                borderBottomRightRadius: 10,
+                borderRadius: 10,
               }}
               onPress={() => setShowAllQuickAdd(true)}
             >
