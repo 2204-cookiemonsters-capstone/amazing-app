@@ -83,11 +83,6 @@ const MessagesStack = ({ navigation }) => (
       component={Profile}
       options={{ header: () => null }}
     />
-    <Stack.Screen
-      name='EditProfile'
-      component={EditProfile}
-      options={{ header: () => null }}
-    />
 
     <Stack.Screen
       name='AddFriends'
@@ -261,10 +256,11 @@ const AppStack = ({ currentRoute }) => {
   //tab bar visibility messages tab
   const getTabBarVisibility = () => {
     if (
+
       currentRoute === "ChatScreen" ||
       currentRoute === "SearchScreen" ||
       currentRoute === "ProfileMessages" ||
-      currentRoute === "EditProfile" ||
+      
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat"
@@ -373,13 +369,15 @@ const AppStack = ({ currentRoute }) => {
   //header visibility messages tab
   const getHeaderVisibility = () => {
     if (
+
       currentRoute === "ChatScreen" ||
       currentRoute === "SearchScreen" ||
       currentRoute === "ProfileMessages" ||
-      currentRoute === "EditProfile" ||
+      
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat"
+
     ) {
       return false;
     }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, Button } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Button, Modal } from 'react-native';
 import { auth, firestore } from '../firebase';
 import { userProfile, friendList } from '../styles';
 import {
@@ -8,14 +8,15 @@ import {
   getDocs,
   collection,
   deleteDoc,
-  where,
-  updateDoc,
+  where
 } from 'firebase/firestore';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import EditProfileModal from "./EditProfileModal";
 
 const Profile = ({ navigation }) => {
   const [userData, setUserData] = useState('');
   const [friends, setFriends] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false)
 
   const getFriends = async () => {
     const snapShot = await getDocs(
@@ -50,21 +51,8 @@ const Profile = ({ navigation }) => {
     getFriends();
   }, []);
 
-  const handleUnfriend = async (userid) => {
-    // try {
-    //   const docRef = doc(firestore, 'users', auth.currentUser.uid);
-    //   const colRef = collection(docRef, 'friendships');
-    //   // console.log(colRef)
-    //   await deleteDoc(doc(firestore, colRef, where("userid", "==", userid)))
-
-    //   const docRef2 = doc(firestore, 'users', userid);
-    //   const colRef2 = collection(docRef2, 'friendships');
-    //   await deleteDoc(doc(firestore, colRef2, where("userid", "==", auth.currentUser.uid)))
-    //   alert('Success')
-    // } catch (error) {
-    //   alert('Something went wrong')
-    // }
-
+  const toggleEditModal = () => {
+    setShowEditModal(!showEditModal);
   }
 
   const friendRow = (item) => (
@@ -93,6 +81,16 @@ const Profile = ({ navigation }) => {
 
   return (
     <View style={userProfile.container}>
+      <Modal
+          animationType="slide"
+          visible={showEditModal}
+          onRequestClose={() => toggleEditModal()}
+        >
+          <EditProfileModal
+            user={userData}
+            closeModal={() => toggleEditModal()}
+          />
+        </Modal>
       <View style={userProfile.topNav}>
         <TouchableOpacity
           style={userProfile.headerButtons}
@@ -102,7 +100,7 @@ const Profile = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={userProfile.headerButtons}
-          onPress={() => navigation.navigate('EditProfile')}
+          onPress={() => toggleEditModal()} //edit this in auth path
         >
           <Image
             source={require('../assets/pencil.png')}
@@ -115,8 +113,9 @@ const Profile = ({ navigation }) => {
         onPress={() => navigation.navigate('FriendsList')}
       />
       <View style={userProfile.body}>
-        <Text style={userProfile.text}>Name: {userData.name}</Text>
+        <Text style={userProfile.text}>{userData.name}</Text>
         <Text style={userProfile.text}>Score: {userData.score}</Text>
+        <Text style={userProfile.text}>Friends: {friends.length}</Text>
         <View>
           <Text>Friends</Text>
           <View>{friends.map((item) => (friendRow(item)))}</View>
