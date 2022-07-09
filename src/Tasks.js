@@ -24,7 +24,7 @@ import {
   getDoc,
   setDoc,
 } from 'firebase/firestore';
-
+import  Ionicons  from '@expo/vector-icons/Ionicons';
 
 
 const featuredPostsData = [
@@ -520,16 +520,36 @@ const fetchAllFriends = async () => {
     setOpen(0);
   };
 
-  const handleOpen = (taskId) => {
-    if (open !== taskId) {
-      setOpen(taskId);
-      let userTask = allUserTasks.filter((item) => item.taskId === taskId);
-      setCurrentTask(userTask[0]);
-    } else {
-      setOpen(0);
-      setCurrentTask({});
+  
+  const getBackgroundColor = (category) => {
+    let color;
+    if (category === "nature") {
+        color = "#5BD858";
+    } else if (category === "community") {
+        color = "#8021D9";
+      } else if (category === "reflection") {
+        color = "#23A6D9";
+      } else if (category === "meditation") {
+        color = "#D585BD9";
+      } else if (category === "movement") {
+        color = "#D585BD9";
+      } else if (category === "kindness") {
+        color = "#D85963";
+      } else if (category === "creativity") {
+        color = "#D78559";
     }
-  };
+    else {color === "#8021D9"}
+    return color;
+};
+
+const getTaskIcon = (taskId) => {
+  let taskIcon;
+  if (taskId === 1) {
+    taskIcon = "#5BD858";
+} else if (category === "community") {
+    color = "#8021D9";
+}
+}
 
   const handleDisplayFeaturedPost = (id) => {
     let post = featuredPostsData.filter((item) => item.taskId === id);
@@ -710,13 +730,13 @@ const handleGetFriends = () => {
             {!allUserTasks ? null : allUserTasks.map((item) => {
               // console.log(item, "item")
             return (
-              
               item.completed !== true ? (
-                <View style={styles.uncompletedContainer} key={item.taskId}>
+                
+                <View style={[styles.uncompletedContainer, {backgroundColor: getBackgroundColor(item.category)}
+                ]} key={item.taskId}>
                   <Text
                     style={styles.taskTitle}
 
-                    // onPress={() => handleOpen(item.taskId)}
                   >
                     {item.title}
                   </Text>
@@ -752,29 +772,23 @@ const handleGetFriends = () => {
           <ScrollView>
             <View>
               <Text style={styles.subheading}>the 28 tasks challenge</Text>
+            
               <Text>Consistency and kindness: two superpowers within your control.</Text>
               <Text style={styles.subheading}>what</Text>
               <Text style={styles.aboutParagraph}>
-                Every 28 days, we post a list of 28 tasks for all users to
-                achieve. These tasks change each month, but are intended to
-                inspire our users to spend time in nature, connecting with their
-                communities, and practicing activities proven to promote
-                wellbeing.
+                Every month, we share a list of 28 tasks for all users to achieve. These tasks are intended to inspire our users to spend time in nature, connecting with their communities, and practicing activities proven by research to promote wellbeing and increase happiness.
               </Text>
               <Text style={styles.subheading}>why</Text>
               <Text style={styles.aboutParagraph}>
                 
-                Lots of social media wants to suck users in with endless
-                scrolling, shopping, and comparisons. Our tasks are all intended
-                to motivate our users to find a balance-- to put their phones
-                down for awhile, to reflect, and to connect.
+                Lots of social media wants to users to stay on their devices-- endlessly scrolling, shopping, and making comparisons. Our tasks are all intended
+                to motivate our users to find balance and practice activities known to make life a little more enjoyable and meaningful.
               </Text>
               <Text style={styles.subheading}>how</Text>
               <Text style={styles.aboutParagraph}>
                 All you have to do is choose a task and begin. If 28 tasks is
-                beyond your grasp, you can set your monthly goal to 7, 14, or 21
-                tasks. To complete a task, simply click on that task and submit
-                any photo and a short description or reflection on the activity.{' '}
+                beyond your current grasp, you can adjust your monthly goal to 7, 14, or 21
+                tasks. To complete a task, simply click on that task and submit a short reflection on the activity.
               </Text>
               <Text onPress={() => fetchAllFriends()}>fetch friends</Text>
             </View>
@@ -822,6 +836,8 @@ const handleGetFriends = () => {
                   <Text style={styles.reflection}>
                     {item.reflection}
                   </Text>
+                   
+              
                 </View>
               ) : null;
             })}

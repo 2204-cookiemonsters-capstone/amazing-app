@@ -16,325 +16,266 @@ import { authStyle } from '../styles';
 const userTasks = [
   {
     taskId: 1,
-    title: 'read a book',
+    title: 'Read a Book',
     description:
-      'it can be any genre of your choice, just finish a book this month',
+      'It can be any genre of your choice, just finish a book this month.',
     defaultImgUrl: 'https://i.imgur.com/D7Iht7E.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
+    category: 'reflection',
   },
   {
     taskId: 2,
-    title: 'meditate',
+    title: 'Breathing Meditation',
     description:
-      'spend 30 minutes practicing meditation.',
+      'Find a quiet space to sit. Without changing your normal breathing pattern, bring your attention to your inhaling and exhaling. As your mind wanders, bring your focus back to your breath. Practice this type of meditation for at least 15 minutes.',
       defaultImgUrl: 'https://i.imgur.com/syBzUa2.jpg',
       month: 'July',
       year: 2022,
-      category: ''
-
+      category: 'meditation',
   },
   {
     taskId: 3,
-    title: 'spend an hour in nature',
+    title: 'Nature Walk',
     description:
-      'nature description',
+      'Visit any natural environment-- a trail, a park, a lake, or whatever is available-- and go on a nature walk.',
     defaultImgUrl: 'https://i.imgur.com/NNKNIWz.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'nature',
   },
   {
     taskId: 4,
-    title: 'write a letter to someone you care about and send it in the mail',
-    description: 'write and send a letter in the mail',
+    title: 'Send A Letter',
+    description: 'Write and mail a physical letter to someone you care about.',
     defaultImgUrl: 'https://i.imgur.com/NNKNIWz.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'kindness'
   },
   {
     taskId: 5,
-    title: 'spend 30 minutes practicing deep breathing',
+    title: 'Purposeful Photo Album',
     description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
+      'Take photos of ten important things in your life-- people, places, or objects.',
       defaultImgUrl: 'https://i.imgur.com/hlhLJcq.jpg',
       month: 'July',
       year: 2022,
-      category: ''
-
-
+      category: 'creativity'
   },
   {
     taskId: 6,
-    title: 'complete an art project',
+    title: 'Connect With Community',
     description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
+      'Attend a local event or group meeting in your community',
       defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
       month: 'July',
       year: 2022,
-      category: ''
-
-
+      category: 'community'
   },
   {
     taskId: 7,
-    title: 'write a journal entry',
+    title: 'Full Body Stretch',
     description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
+      'Spend 20+ minutes stretching your muscles, loosen up the tightness in your body.',
       defaultImgUrl:'https://i.imgur.com/xVtrThI.jpg',
       month: 'July',
       year: 2022,
-      category: ''
-
- 
+      category: 'movement'
   },
   {
-
     taskId: 8,
-    title: 'record a family story',
-    description: 'write or record a story from a family member',
+    title: 'Core Values Reflection',
+    description: 'Journal Prompt: What are your core values? When do you feel most connected with these values?',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'reflection'
   },
   {
     taskId: 9,
-    title: '10 meaningful photos',
-    description:
-      'Take ten photos of important people, places or things in your life',
+    title: 'Walking Meditation',
+    description: 'Walk slowly and focus on the feeling of your feet on the ground. As your attention goes elsewhere, bring your focus back to the feeling of your feet on the ground. Practice this meditation for 10+ minutes.',
       defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
       month: 'July',
       year: 2022,
-      category: ''
-
-
+      category: 'meditation'
   },
   {
-
     taskId: 10,
-    title: 'visit water',
+    title: 'Water',
     description:
-      'visit a pond, lake, river, ocean, or other body of water and observe the water',
+      'Visit a pond, lake, river, ocean, or other body of water. If the climate allows, swim, canoe, or just enjoy the sounds and wildlife near the water.',
       defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
       month: 'July',
       year: 2022,
-      category: ''
-
-
+      category: 'nature'
   },
   {
-
     taskId: 11,
-    title: 'walking meditation',
+    title: 'Positive Review',
     description:
-      'go on a walk, and focus on feeling the ground beneath your feet with each step',
+      'Leave a positive review for a local business or organization you support.',
       defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
       month: 'July',
       year: 2022,
-      category: ''
-
-
+      category: 'kindness'
   },
   {
     taskId: 12,
-    title: 'watch a movie',
-    description: 'watch a movie',
+    title: 'Improve Your Space',
+    description: 'Make some improvement to your work or living space-- redesign, organize, rearrange, build, or declutter.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'creativity'
   },
   {
-
     taskId: 13,
-    title: 'be a critic',
-    description: 'write positive reviews for the locally owned places you love',
+    title: 'Reconnect',
+    description: 'Reach out to someone you have not spoken to in more than 3 months.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'community'
   },
   {
-
     taskId: 14,
-    title: 'listen to an album',
-    description: 'listen to an entire album start to finish',
+    title: 'Core / Upper Body Strength',
+    description: 'Complete a core or upper body workout of some kind for 20+ minutes',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'movement'
   },
 {
   taskId: 15,
-  title: 'task 15',
-  description: '30 minute walk',
+  title: 'Gratitude Reflection',
+  description: 'Journal Prompt: Who are you grateful for in your life? What experiences are you most grateful for? Which of your qualities or traits are you grateful for?',
   defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
   month: 'July',
   year: 2022,
-  category: ''
-
-
+  category: 'reflection'
 },
   {
     taskId: 16,
-    title: 'movement',
-    description: 'yoga, dance, martial arts. Move your body for 30 minutes.',
+    title: 'Relaxation Meditation',
+    description: 'While lying down, slowly scan from head to toe. As you scan, focus on relaxing each part of your body for several breaths, then move to the next part of your body. Practice for minimum 20 min.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'meditation'
   },
   {
     taskId: 17,
-    title: 'stretch',
-    description: 'from head to toe, stretch each part of your body',
+    title: 'Nature Sit',
+    description: 'Find a peaceful place to sit in nature without any distractions. Spend at least 20 minutes sitting without using your phone, reading, music, or journaling.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'nature'
   },
   {
     taskId: 18,
-    title: 'relaxation',
+    title: 'Donation',
     description:
-      'lie down and spend 10 minutes relaxing your body without falling asleep',
+      'Make a donation of some kind-- it could be a monetary donation to a cause you care about, or it could be clothing, food, or some other item.',
       defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
       month: 'July',
       year: 2022,
-      category: ''
-
-
+      category: 'kindness'
   },
   {
     taskId: 19,
-    title: 'new food',
-    description: "eat something you've never tried before",
+    title: 'Album',
+    description: "Listen to an entire music album from start to finish.",
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'creativity'
   },
   {
     taskId: 20,
-    title: 'volunteer',
-    description: 'volunteer',
+    title: 'Volunteer',
+    description: 'Volunteer for a local organization or cause.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'community'
   },{
     taskId: 21,
-    title: 'task 21',
-    description: 'task 21 description',
+    title: 'Yoga',
+    description: 'Complete a yoga or martial arts practice. Minimum 20+ min, use the internet to discover free class videos.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'movement'
   },
   {
     taskId: 22,
-    title: 'task 22',
-    description: 'task 22 description',
+    title: 'Goals',
+    description: 'Journal Prompt: What is a goal you would like to accomplish in the next year? What steps or people will help you achieve this goal? What is your motivation for achieving this goal? How can you help others achieve their goals?',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
     month: 'July',
     year: 2022,
-    category: ''
-
-
+    category: 'reflection'
   },
   {
     taskId: 23,
-    title: 'task 23',
-    description: 'task 23 description',
+    title: 'Compassion Meditation',
+    description: 'Pracitice a compassion meditation: bring to mind people you care about. For each person, say to yourself: "May they be happy and free from unhappiness and pain". This practice helps to build your compassionate feelings for others.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
     month: 'July',
     year: 2022,
-    category: ''
+    category: 'meditation'
 
   },
   {
     taskId: 24,
-    title: 'task 24',
-    description: 'task 24 description',
+    title: 'Care for Nature',
+    description: 'Ideas: If you have a pet, spend time caring for your pet. If you have a garden or plants, spend time tending your garden or plants. In some way, spend some time caring for plants or animals.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-    
     month: 'July',
     year: 2022,
-    category: ''
+    category: 'nature'
 
   },
   {
     taskId: 25,
-    title: 'task 25',
-    description: 'task 25 description',
+    title: 'Kind Messages',
+    description: 'Send messages to 3+ people who have had a positive impact on you, letting them know you appreciate them.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
     month: 'July',
     year: 2022,
-    category: ''
+    category: 'kindness'
 
   },
   {
     taskId: 26,
-    title: 'task 26',
-    description: 'task 26 description',
+    title: 'Hands On Art',
+    description: 'Complete an art project with your hands-- paint, draw, sculpt, build, etc.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
     month: 'July',
     year: 2022,
-    category: ''
-
+    category: 'creativity'
   },
   {
     taskId: 27,
-    title: 'task 27',
-    description: 'task 27 description',
+    title: 'Support Local',
+    description: 'Visit a locally-owned restaurant, store, or organization.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
     month: 'July',
     year: 2022,
-    category: ''
-
+    category: 'community'
   },
   {
     taskId: 28,
-    title: 'task 28',
-    description: 'task 28 description',
+    title: 'Jog',
+    description: 'Complete a walk/jog/run for at least one mile.',
     defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
     month: 'July',
     year: 2022,
-    category: ''
-
+    category: 'movement'
   },
 ];
 
