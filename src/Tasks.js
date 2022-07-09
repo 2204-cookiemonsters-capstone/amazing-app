@@ -24,7 +24,8 @@ import {
   getDoc,
   setDoc,
 } from 'firebase/firestore';
-import  Ionicons  from '@expo/vector-icons/Ionicons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 
 const featuredPostsData = [
@@ -452,6 +453,8 @@ const featuredPostsData = [
   },
 ];
 
+
+
 const Tasks = (props) => {
   const [allUserTasks, setAllUserTasks] = useState([]);
   const [view, setView] = useState('featured');
@@ -524,32 +527,23 @@ const fetchAllFriends = async () => {
   const getBackgroundColor = (category) => {
     let color;
     if (category === "nature") {
-        color = "#5BD858";
+        color = "darkgreen";
     } else if (category === "community") {
-        color = "#8021D9";
+        color = "purple";
       } else if (category === "reflection") {
-        color = "#23A6D9";
+        color = "darkblue";
       } else if (category === "meditation") {
-        color = "#D585BD9";
+        color = "darkred";
       } else if (category === "movement") {
-        color = "#D585BD9";
+        color = "green";
       } else if (category === "kindness") {
-        color = "#D85963";
+        color = "blue";
       } else if (category === "creativity") {
-        color = "#D78559";
+        color = "darkorange";
     }
     else {color === "#8021D9"}
     return color;
 };
-
-const getTaskIcon = (taskId) => {
-  let taskIcon;
-  if (taskId === 1) {
-    taskIcon = "#5BD858";
-} else if (category === "community") {
-    color = "#8021D9";
-}
-}
 
   const handleDisplayFeaturedPost = (id) => {
     let post = featuredPostsData.filter((item) => item.taskId === id);
@@ -736,11 +730,20 @@ const handleGetFriends = () => {
                 ]} key={item.taskId}>
                   <Text
                     style={styles.taskTitle}
-
                   >
                     {item.title}
+                    
                   </Text>
-                <Text style={styles.taskIcon}>Task icon</Text>
+                  <View style={styles.taskIconContainer}>
+                  {item.category === "meditation" ? <FontAwesome name="gear" size={42} color="white"/> : null}
+                  {item.category === "movement" ? <MaterialCommunityIcons name="yoga" size={42} color="white"/> : null}
+                  {item.category === "nature" ? <FontAwesome name="tree" size={42} color="white"/> : null}
+                  {item.category === "creativity" ? <FontAwesome name="lightbulb-o" size={42} color="white"/> : null}
+                  {item.category === "reflection" ? <FontAwesome name="book" size={42} color="white"/> : null}
+                  {item.category === "community" ? <FontAwesome name="users" size={42} color="white"/> : null}
+                  {item.category === "kindness" ? <FontAwesome name="heart" size={42} color="white"/> : null}
+                  </View>
+                <Text style={styles.taskIcon}></Text>
                     <View>
                       <Text style={styles.taskDescription}>
                         {item.description}
@@ -1062,7 +1065,9 @@ dashboardRowTop : {
     fontSize: 16,
     color: "white"
   },
-  taskIcon:{color:"white", textAlign: "center"},
+  taskIconContainer:{
+    flexDirection: "row", justifyContent: "center", padding: 10},
+
   taskDescription: {
     textAlign: 'center',
     padding: 15,
