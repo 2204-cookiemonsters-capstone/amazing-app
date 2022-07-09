@@ -461,7 +461,8 @@ const Tasks = (props) => {
   const [displayPost, setDisplayPost] = useState({});
   const [reflection, setReflection] = useState('');
   const [displayPostText, setDisplayPostText] = useState(true);
-  const [displayReflection, setDisplayReflection] = useState(1)
+  const [displayReflection, setDisplayReflection] = useState(1);
+  const [allFriends, setAllFriends] = useState([])
 
   let completed = allUserTasks.filter((item) => item.completed === true);
 
@@ -492,10 +493,23 @@ const Tasks = (props) => {
       setAllUserTasks(snapShot.data().userTasks)
     }
   
-async function fetchFriends(){
+const fetchAllFriends = async () => {
   const snapShot = await getDocs(
     collection(firestore, 'users', auth.currentUser.uid, 'friendships')
-  )
+  );
+  const friends = [];
+  snapShot.forEach((doc) => {
+    if (doc.data().status === 'friends') {
+      friends.push(doc.data());
+    }
+  })
+  const friendDocs = await Promise.all(
+    friends.map((f) => getDoc(doc(firestore, 'users', f.userid)))
+  );
+  const friendsItems = friendDocs.map((i) => i.data());
+
+  setAllFriends(friendsItems)
+  console.log(allFriends)
 }
 
   const handleView = (view) => {
@@ -587,7 +601,9 @@ async function fetchFriends(){
     setView('posts');
   };
 
-
+const handleGetFriends = () => {
+  fetchAllFriends()
+}
 
   const handleFollowNewPeople = () => {
     setView('followNewPeople');
@@ -635,45 +651,23 @@ async function fetchFriends(){
 
         {/* your tasks section */}
         {view === 'tasks' ? (
-          <View>
-            <View>
 
-            <View style={styles.followingSectionContainer}>
-              <Text style={styles.subheading}>Following</Text>
-              <ScrollView horizontal={true}>
-              
-                <View style={styles.followingItemsContainer}>
-                  <TouchableOpacity onPress={() => handleFollowNewPeople()}>
-                    <Text style={styles.followingItemAdd}>+</Text>
-                  </TouchableOpacity>
+<View>
+           
 
-        {featuredPostsData.map((item)=> 
-         <TouchableOpacity onPress={() => handleDisplayFollowingPost(item.taskId)} key={item.taskId}>
-         <Image
-           style={styles.followingItem}
-           source={{ uri: item.defaultImgUrl }}
-         />
-       </TouchableOpacity>
-        )
-      }
-      </View>
-     </ScrollView>
+    {/* your dashboard */}
+    <Text style={[styles.center, styles.fontWeight700, styles.subheading]}>Your {allUserTasks && allUserTasks[0] ? allUserTasks[0].month : null} Dashboard</Text>
 
-    </View>
     <View style={styles.dashboardContainer}>
-<Text style={[styles.center, styles.padding10, styles.fontWeight700]}>Your Dashboard</Text>
 
-      <View style={styles.userDashboard}>
-
-          {/* number completed */}
-         
+      <View style={styles.userDashboard}>         
 <View style={styles.dashboardRowTop}>
   <View style={styles.dashboardSetYourGoal}>
         <View >
             <Text style={[styles.goalNum, styles.center, styles.fontWeight700]}>
-              set your goal</Text>
+              Set Your Goal</Text>
 
-              <Text style={styles.center}>
+              <Text style={[styles.center, styles.white]}>
               <Text onPress={() => handleGoalNum(7)}> 7 </Text>
               <Text onPress={() => handleGoalNum(14)}> 14 </Text>
               <Text onPress={() => handleGoalNum(21)}> 21 </Text>
@@ -686,44 +680,47 @@ async function fetchFriends(){
         </View>
         <View style={styles.dashboardCompleted}>
           <View>
-          <Text style={styles.fontWeight700}>completed</Text>
+          <Text style={[styles.fontWeight700, styles.white]}>Completed</Text>
           </View>
           <View style={styles.dashboardCompletedContainer}>
               <Text style={styles.dashboardCompletedCount}>{completed ? completed.length : null}</Text>
-              <Text style={styles.padding10}>/ {goalNum}</Text>
+              <Text style={[styles.padding10, styles.white]}>/ {goalNum}</Text>
           </View>
           </View>
-        </View>
+      </View>
 
-        <View style={styles.dashboardRowBottom}>
+      <View style={styles.dashboardRowBottom}>
         
-
       <View style={styles.center}>
-        <Text style={[styles.center, styles.padding10, styles.fontWeight700]}>Your Strengths</Text>
-        <Text>complete more tasks to see your strengths</Text>
+        <Text style={[styles.center, styles.padding10, styles.fontWeight700, styles.white]}>Your Strengths</Text>
+        <Text style={styles.white}>complete more tasks to see your strengths</Text>
         </View>
         </View>
-  </View>
+        </View>
          
         </View>
 
+    {/* remaining tasks */}
 
-            <Text></Text>
-            <Text style={styles.subheading}>Remaining Tasks for {allUserTasks && allUserTasks[0] ? allUserTasks[0].month : null}</Text>
-          </View>
+            <Text style={[styles.subheading, styles.fontWeight700]}>Remaining Tasks for {allUserTasks && allUserTasks[0] ? allUserTasks[0].month : null}</Text>
+           
+            <ScrollView horizontal= {true}decelerationRate={0}
+            snapToInterval={310} //your element width
+            snapToAlignment={"center"}>
             {!allUserTasks ? null : allUserTasks.map((item) => {
               // console.log(item, "item")
             return (
+              
               item.completed !== true ? (
                 <View style={styles.uncompletedContainer} key={item.taskId}>
                   <Text
                     style={styles.taskTitle}
 
-                    onPress={() => handleOpen(item.taskId)}
+                    // onPress={() => handleOpen(item.taskId)}
                   >
                     {item.title}
                   </Text>
-                  {open === item.taskId ? (
+                <Text style={styles.taskIcon}>Task icon</Text>
                     <View>
                       <Text style={styles.taskDescription}>
                         {item.description}
@@ -738,10 +735,12 @@ async function fetchFriends(){
                         
                       </View>
                     </View>
-                  ) : null}
+                  
                 </View>
               ) : null
-            )})}
+              )})}
+              </ScrollView>
+
             <Text style={[styles.about, styles.center]} onPress={() => handleView('about')}>
                 about
               </Text>
@@ -753,17 +752,18 @@ async function fetchFriends(){
           <ScrollView>
             <View>
               <Text style={styles.subheading}>the 28 tasks challenge</Text>
+              <Text>Consistency and kindness: two superpowers within your control.</Text>
               <Text style={styles.subheading}>what</Text>
               <Text style={styles.aboutParagraph}>
                 Every 28 days, we post a list of 28 tasks for all users to
                 achieve. These tasks change each month, but are intended to
                 inspire our users to spend time in nature, connecting with their
                 communities, and practicing activities proven to promote
-                wellbeing.{' '}
+                wellbeing.
               </Text>
               <Text style={styles.subheading}>why</Text>
               <Text style={styles.aboutParagraph}>
-                {' '}
+                
                 Lots of social media wants to suck users in with endless
                 scrolling, shopping, and comparisons. Our tasks are all intended
                 to motivate our users to find a balance-- to put their phones
@@ -776,6 +776,7 @@ async function fetchFriends(){
                 tasks. To complete a task, simply click on that task and submit
                 any photo and a short description or reflection on the activity.{' '}
               </Text>
+              <Text onPress={() => fetchAllFriends()}>fetch friends</Text>
             </View>
           </ScrollView>
         ) : null}
@@ -830,7 +831,28 @@ async function fetchFriends(){
         {/* following section */}
         {view === 'featured' ? (
           <View style={styles.featuredContainer}>
-            
+             <View style={styles.followingSectionContainer}>
+              <Text style={styles.subheading}>Following</Text>
+              <ScrollView horizontal={true}>
+              
+                <View style={styles.followingItemsContainer}>
+                  <TouchableOpacity onPress={() => handleFollowNewPeople()}>
+                    <Text style={styles.followingItemAdd}>+</Text>
+                  </TouchableOpacity>
+
+        {featuredPostsData.map((item)=> 
+         <TouchableOpacity onPress={() => handleDisplayFollowingPost(item.taskId)} key={item.taskId}>
+         <Image
+           style={styles.followingItem}
+           source={{ uri: item.defaultImgUrl }}
+         />
+       </TouchableOpacity>
+        )
+      }
+      </View>
+     </ScrollView>
+
+    </View>
 
             {/* featured section */}
 
@@ -908,6 +930,10 @@ async function fetchFriends(){
             <Text>follow new people</Text>
           </View>
         ) : null}
+
+
+
+
       </View>
     </ScrollView>
   );
@@ -926,6 +952,7 @@ const styles = StyleSheet.create({
   padding10: {
     padding: 10
   },
+  white: {color: "white"},
   fontWeight700: {
     fontWeight: "700"
   },
@@ -933,10 +960,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
- 
-
   twentyEight: {
     padding: 10,
+    color: "white"
   },
   twentyEightContainer: {
     flexDirection: 'row',
@@ -947,21 +973,20 @@ const styles = StyleSheet.create({
   },
 
   dashboardContainer: {
-    marginTop: 30,
     borderColor: "black",
-    borderWidth: 2,
-    backgroundColor: "lightblue",
+    backgroundColor: "#3F88C5",
     borderRadius: 5
 },
 dashboardPipe: {
   height: 70,
   borderLeftWidth: 1, 
-  borderColor: "gray" },
+  borderColor: "white" },
+
 userDashboard: {
   justifyContent: "space-around",
   padding: 5,  
   margin: 5,
-  backgroundColor: 'lightblue',
+  backgroundColor: '"#5BD858"',
 },
 dashboardRowTop : {
     flexDirection: 'row',
@@ -977,21 +1002,23 @@ dashboardRowTop : {
     paddingTop: 5,
     paddingBottom: 10,
     borderTopWidth: 1,
-    borderColor: "gray"
+    borderColor: "white"
   },
 
   dashboardCompletedCount: {
     fontSize: 40,
     textAlign: 'center',
+    color: "white",
   }, 
   dashboardCompletedContainer: {
     flexDirection: "row",
     textAlign: 'center',
+    color: "white",
 
   }, 
-
   goalNum: {
     paddingBottom: 10,
+    color: "white",
   },
   newList: {
     textAlign: 'center',
@@ -1014,13 +1041,16 @@ dashboardRowTop : {
   },
   taskTitle: {
     textAlign: 'center',
-    paddingBottom: 25,
+    padding: 15,
     fontWeight: '500',
     fontSize: 16,
+    color: "white"
   },
+  taskIcon:{color:"white", textAlign: "center"},
   taskDescription: {
     textAlign: 'center',
-    paddingBottom: 20,
+    padding: 15,
+    color:"white"
   },
   completed: {
     paddingBottom: 30,
@@ -1035,11 +1065,19 @@ dashboardRowTop : {
     padding: 5,
     margin: 5,
     borderWidth: 1,
-    color: 'gray',
+    color: 'white',
     borderRadius: 5,
+    borderColor: "white",
   },
+  uncompletedContainer:{backgroundColor: "#585BD9", borderRadius: "5", margin: 5, width: 300},
+  nature:{backgroundColor: "#5BD858"},
+  reflection:{backgroundColor: "#23A6D9"},
+  meditation:{backgroundColor: "#D585BD9"},
+  movement:{backgroundColor: "#D585BD9"},
+  community:{backgroundColor: "#8021D9"},
+  kindness:{backgroundColor: "#D85963"},
+  creativity:{backgroundColor: "#D78559"},
  
-
   submitCompletedTask: {
     textAlign: 'center',
     padding: 10,
@@ -1049,7 +1087,7 @@ dashboardRowTop : {
     marginRight: '20%',
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: 'gray',
+    borderColor: 'white',
     overflow: 'hidden',
   },
   addPhoto: {
@@ -1203,7 +1241,8 @@ dashboardRowTop : {
   previousNext : {
     flexDirection: "row",
     justifyContent: "space-between"
-  }
+  },
+  
 });
 
 export default Tasks;
