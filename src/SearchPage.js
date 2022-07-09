@@ -25,7 +25,6 @@ const image = require("../assets/favicon.png");
 const SearchPage = ({ navigation }) => {
   const [searchValue, setSearchValue] = useState("");
   const [allUsers, setAllUsers] = useState([]);
-  const [allUsers2, setAllUsers2] = useState([]);
   const [renderedUsers, setRenderedUsers] = useState([]);
 
   const fetchAllUsers = async () => {
@@ -39,13 +38,12 @@ const SearchPage = ({ navigation }) => {
       });
 
       allUsers !== users ? setAllUsers(users) : null;
+      renderedUsers !== users ? setRenderedUsers(users) : null;
     });
   };
 
   const search = (value) => {
-    setAllUsers2(allUsers);
-
-    const filtered = allUsers2.filter(
+    const filtered = allUsers.filter(
       (user) =>
         user.name
           .toLowerCase()
@@ -77,7 +75,7 @@ const SearchPage = ({ navigation }) => {
         }}
       >
         <TextInput
-          placeholder="Find Users"
+          placeholder='Find Users'
           onChangeText={(value) => {
             setSearchValue(value), search(value);
           }}

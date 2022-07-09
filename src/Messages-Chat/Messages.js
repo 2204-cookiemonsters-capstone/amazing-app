@@ -31,17 +31,18 @@ const Messages = (props) => {
   const fetchAllChats = async () => {
     // const snapShot = await getDocs(collection(firestore, "chats"))
 
-    onSnapshot(collection(firestore, "chats"), async (snapShot)=>{
+    onSnapshot(collection(firestore, "chats"), async (snapShot) => {
       const chats = []; //holds details of chat
       snapShot.forEach((doc) => {
         if (doc.data().userids.includes(auth.currentUser.uid)) {
           chats.push(doc.data());
         }
       });
-  
+
       //doc.id returns the auto genned id
-  
+
       const userData = []; //data to be rendered on messages screen for each chat
+
       for (let i = 0; i < chats.length; i++) {
         const docSnap = await getDoc(
           doc(
@@ -50,24 +51,40 @@ const Messages = (props) => {
             chats[i].userids.filter((id) => id !== auth.currentUser.uid)[0]
           )
         );
-  
+
         userData.push({
           ...docSnap.data(),
           lastMessage: chats.find(
             (chat) =>
               chat.userids.includes(docSnap.data().userid) &&
               chat.userids.includes(auth.currentUser.uid)
-          ).messages[0],
+          ).messages[0].message,
           chatid: chats.find(
             (chat) =>
               chat.userids.includes(docSnap.data().userid) &&
               chat.userids.includes(auth.currentUser.uid)
           ).chatid,
+          timesent: chats
+            .find(
+              (chat) =>
+                chat.userids.includes(docSnap.data().userid) &&
+                chat.userids.includes(auth.currentUser.uid)
+            )
+            .messages[0].time.toDate()
+            .getTime(),
         });
       }
-  
+
       allChatsData !== userData ? setAllChatsData(userData) : null;
-    })
+    });
+  };
+
+  const getTimeDifference = (timesent) => {
+    const timeNow = new Date().getTime();
+    const difference = (timeNow - timesent) / 1000;
+    const diff = difference / 60;
+
+    return Math.abs(Math.round(diff));
   };
 
   useEffect(() => {
@@ -103,11 +120,47 @@ const Messages = (props) => {
                   <View style={styles.textView}>
                     <View style={styles.userinfotext}>
                       <Text style={styles.username}>{item.name}</Text>
-                      {/* <Text style={styles.posttime}>{item.messageTime}</Text> */}
+
+                      {getTimeDifference(item.timesent) < 60 ? (
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#666",
+                            marginRight: 30,
+                          }}
+                        >
+                          {getTimeDifference(item.timesent)} Minutes Ago
+                        </Text>
+                      ) : getTimeDifference(item.timesent) >= 60 &&
+                        getTimeDifference(item.timesent) < 1440 ? (
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#666",
+                            marginRight: 30,
+                          }}
+                        >
+                          {" "}
+                          {Math.floor(
+                            getTimeDifference(item.timesent) / 60
+                          )}{" "}
+                          Hours Ago
+                        </Text>
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#666",
+                            marginRight: 30,
+                          }}
+                        >
+                          {Math.floor(getTimeDifference(item.timesent) / 1440)}{" "}
+                          Days Ago
+                        </Text>
+                      )}
                     </View>
                     <Text style={styles.messageText}>
-                      {/* {item.lastMessage.message ? item.lastMessage.message : null} */}
-                      hi
+                      {item.lastMessage ? item.lastMessage : null}
                     </Text>
                   </View>
                 </View>
