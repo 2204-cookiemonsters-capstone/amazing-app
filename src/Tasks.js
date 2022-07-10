@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback, Swipeable
 } from 'react-native-gesture-handler';
 import { auth, firestore } from '../firebase';
 import {
@@ -41,6 +41,7 @@ const Tasks = (props) => {
   const [allFriends, setAllFriends] = useState([])
   const [strengthsCount, setStrengthsCount] = useState([])
   const [friendsPosts, setFriendsPosts] = useState([])
+  const [currentFriendUsername, setCurrentFriendUsername] = useState("")
  
   let completed = allUserTasks.filter((item) => item.completed === true);
 
@@ -160,8 +161,9 @@ async function fetchFriendsPosts(id){
     setView('postStack');
   };
 
-  const handleDisplayFollowing = (id) => {
+  const handleDisplayFollowing = (id, username) => {
     fetchFriendsPosts(id)
+    setCurrentFriendUsername(username)
     setView('friendsPosts');
   };
 
@@ -179,12 +181,14 @@ async function fetchFriendsPosts(id){
 
   const handlePrevious = (taskId) => {
     let previousPost = featuredPostsData.filter((item) => item.taskId === taskId - 1)
+    setDisplayPostText(1);
     previousPost.length ? setDisplayPost(previousPost[0]) : setView('featured')
   }
   
 
   const handleNext = (taskId) => {
     let nextPost = featuredPostsData.filter((item) => item.taskId === taskId + 1)
+    setDisplayPostText(1);
     console.log(nextPost)
     nextPost.length ? setDisplayPost(nextPost[0]) : setView('featured')
   }
@@ -489,6 +493,10 @@ async function fetchFriendsPosts(id){
             </View>
             </View>
 
+            <Text>Who can see this post?</Text>
+            <Text>only me</Text>
+            <Text>friends</Text>
+            <Text>public (all public posts are anonymous)</Text>
             <Text
               style={styles.submitCompletedTask}
               onPress={() => handleSubmit(currentTask.taskId)}
@@ -501,7 +509,7 @@ async function fetchFriendsPosts(id){
         {/* users posts section */}
         {view === 'posts' ? (
           <View>
-            <Text style={[styles.subheading, styles.fontWeight700]}>your post history</Text>
+            <Text style={[styles.subheading, styles.fontWeight700]}>Your Post History</Text>
             {allUserTasks.map((item) => {
 
 
@@ -511,7 +519,14 @@ async function fetchFriendsPosts(id){
                     style={{ width: 'auto', height: 400 }}
                     source={item.defaultImgUrl ? { uri: item.defaultImgUrl } : null}
                   />
+                  <View style={styles.postTitleEditContainer}>
                   <Text style={styles.postTag}>{item.title}</Text>
+                  <View style={styles.postEditDeleteContainer}>
+                  <FontAwesome name="pencil" size={16} color="black" style={styles.postEdit}/>
+                  <FontAwesome name="trash" size={16} color="black" style={styles.postEdit}/>
+                  </View>
+
+                  </View>
                   <Text style={styles.reflection}>
                     {item.reflection}
                   </Text>
@@ -526,7 +541,7 @@ async function fetchFriendsPosts(id){
          {/* users posts section */}
          {view === 'friendsPosts' ? (
           <View>
-            <Text style={[styles.subheading, styles.fontWeight700]}>Post History</Text>
+            <Text style={[styles.subheading, styles.fontWeight700]}>{currentFriendUsername}'s Posts</Text>
             {friendsPosts.map((item) => {
               return item.completed == true ? (
                 <View style={styles.postContainer} key={item.taskId}>
@@ -534,7 +549,11 @@ async function fetchFriendsPosts(id){
                     style={{ width: 'auto', height: 400 }}
                     source={item.defaultImgUrl ? { uri: item.defaultImgUrl } : null}
                   />
-                  <Text style={styles.postTag}>{item.title}</Text>
+                  <View style={styles.friendsPostTitleCommentContainer}>
+                  <Text style={[styles.postTag]}>{item.title}</Text>
+                  <MaterialCommunityIcons name="chat-outline" size={16} color="black" style={styles.postEdit}/>
+
+                  </View>
                   <Text style={styles.reflection}>
                     {item.reflection}
                   </Text>
@@ -556,7 +575,7 @@ async function fetchFriendsPosts(id){
         <View style={styles.followingItemsContainer}>
         {allFriends.map((item)=> 
 
-         <TouchableWithoutFeedback onPress={() => handleDisplayFollowing(item.userid)} key={item.userid} style={styles.followingItem}>
+         <TouchableWithoutFeedback onPress={() => handleDisplayFollowing(item.userid, item.username)} key={item.userid} style={styles.followingItem}>
         
         <FontAwesome name="user" size={24} color="gray"/>
           <Text>{item.username}</Text>
@@ -603,24 +622,27 @@ async function fetchFriendsPosts(id){
 
 
         {view === 'postStack' ? (
+         
           <View style={styles.displayPostContainer}>
-            <TouchableWithoutFeedback onPress={() => handleDisplayPostText()}>
+                     
               <ImageBackground
                 style={styles.displayPostImage}
                 source={{ uri: displayPost.defaultImgUrl }}
               />
+
+          <View style={styles.previousNext}>
+
+              <TouchableWithoutFeedback onPress={() => handlePrevious(displayPost.taskId)}>
+                 <Text style={styles.previous} > </Text>
+              </TouchableWithoutFeedback>  
+
+              <TouchableWithoutFeedback style={styles.showDisplayReflection} onPress={() => handleDisplayPostText()}>
+              <Text> </Text>
               </TouchableWithoutFeedback>
 
-              <View style={styles.previousNext}>
-              <View style={styles.previousIcon}>
-              <Text onPress={() => handlePrevious(displayPost.taskId)}>previous</Text>
-              </View>
-
-              <View style={styles.nextIcon}>
-              
-              <Text onPress={() => handleNext(displayPost.taskId)}>next</Text>
-             
-              </View>  
+              <TouchableWithoutFeedback onPress={() => handleNext(displayPost.taskId)} >
+                 <Text style={styles.next}> </Text>
+              </TouchableWithoutFeedback>
               </View>
 
                 
@@ -752,7 +774,6 @@ dashboardRowTop : {
     textAlign: 'center',
     paddingBottom: 20,
     paddingTop: 20,
-    textTransform: 'capitalize',
     letterSpacing: 1,
     paddingLeft: 10,
     paddingRight: 10,
@@ -949,35 +970,44 @@ dashboardRowTop : {
     padding: 10,
     margin: "10%",
     position: 'absolute',
-    backgroundColor: 'rgba(0,0,0,.7)',
+    backgroundColor: 'rgba(0,0,0,.5)',
     bottom: 10,
     borderRadius: "10",
     width: "80%",
   },
-  displayPostTitle: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 18,
-    fontWeight: "600",
-
-  },
   displayReflection: {
+    fontSize: 18,
     lineHeight: 20,
     color: "white",
-    textAlign: "center"
+    textAlign: "center",
+    fontWeight: "700"
   },
   previousNext : {
+    position: 'absolute',
+    width: "100%",
+    height: 700,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    alignItems: "center"
   },
-  previousIcon:{
-    position: 'absolute',
-  left: 0,
-  top: 0},
-  nextIcon:{
-    position: 'absolute',
-    right: 0
+  previous:{
+    paddingTop: 330,
+    paddingBottom: 330,
+    width: 100,
+
   },
+  showDisplayReflection:{
+    paddingTop: 330,
+    paddingBottom: 330,
+    width: 150,
+  },
+  next:{
+paddingTop: 300,
+paddingBottom: 300,
+width: 100
+
+},
+
 strengths: {color: "white", paddingLeft: 5, paddingBottom: 5},
   strengthIconRow:{flexDirection: "row", paddingRight: 15, paddingBottom: 10 },
 
@@ -986,6 +1016,20 @@ flexDirection: "row",
 justifyContent: "center",
 flexWrap: "wrap"
   },
+  postTitleEditContainer:{
+    flexDirection: "row", 
+    alignItems: "center", 
+    justifyContent: "space-between"
+  },
+  postEdit:{
+    marginTop:20, 
+    marginRight: 10
+  },
+  postEditDeleteContainer:{
+    flexDirection: "row"},
+  friendsPostTitleCommentContainer:{
+    flexDirection: "row", 
+    justifyContent: "space-between"},
 });
 
 export default Tasks;
