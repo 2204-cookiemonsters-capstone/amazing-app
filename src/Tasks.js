@@ -363,9 +363,30 @@ const Tasks = (props) => {
   const [displayPostText, setDisplayPostText] = useState(1);
   const [displayReflection, setDisplayReflection] = useState(1);
   const [allFriends, setAllFriends] = useState([])
-
+  const [strengthsCount, setStrengthsCount] = useState([])
+ 
   let completed = allUserTasks.filter((item) => item.completed === true);
 
+  const getCompletedCount = () => {
+  if (completed.length) { 
+  let nature = completed.filter((item) => item.category === 'nature')
+  let natureCount = nature.length
+  let meditation = completed.filter((item) => item.category === 'meditation')
+  let meditationCount = meditation.length
+  let movement = completed.filter((item) => item.category === 'movement')
+  let movementCount = movement.length
+  let reflection = completed.filter((item) => item.category === 'reflection')
+  let reflectionCount = reflection.length
+  let creativity = completed.filter((item) => item.category === 'creativity')
+  let creativityCount = creativity.length
+  let kindness = completed.filter((item) => item.category === 'kindness')
+  let kindnessCount = kindness.length
+  let community = completed.filter((item) => item.category === 'community')
+  let communityCount = community.length
+  let strengthsList = {...strengthsCount, "nature": natureCount, "meditation": meditationCount, "movement": movementCount, "reflection": reflectionCount, "creativity": creativityCount, "kindness": kindnessCount, "community": communityCount}
+  if (strengthsCount != strengthsList) {
+  setStrengthsCount(strengthsList)}}}
+  
   // updates a single users posts
    async function updateUserPosts(taskId){
     const snapShot = await getDoc(
@@ -486,7 +507,6 @@ const fetchAllFriends = async () => {
     nextPost.length ? setDisplayPost(nextPost[0]) : setView('featured')
   }
 
-  
 
   const handleGoalNum = (num) => {
     (updateGoalNum(num))
@@ -532,6 +552,7 @@ const handleGetFriends = () => {
   useEffect(() => {
     // console.log('useEffect2');
     fetchUserPosts();
+    getCompletedCount()
   }, [allUserTasks]);
 
 // need to do a useEffect to fetch friends and featured recent posts if visits featured view / scrolls.
@@ -601,6 +622,7 @@ const handleGetFriends = () => {
               <Text style={styles.dashboardCompletedCount}>{completed ? completed.length : null}</Text>
               <Text style={[styles.padding10, styles.white]}>/ {goalNum}</Text>
           </View>
+          {completed.length >= goalNum ? <Text style={styles.white}>goal reached!</Text> : null}
           </View>
       </View>
 
@@ -608,7 +630,54 @@ const handleGetFriends = () => {
         
       <View style={styles.center}>
         <Text style={[styles.center, styles.padding10, styles.fontWeight700, styles.white]}>Your Strengths</Text>
-        <Text style={styles.white}>complete more tasks to see your strengths</Text>
+
+        {completed.length ? null : <Text style={styles.white}>complete tasks to see your strengths</Text>}
+
+<View styles={[styles.strengthsList, styles.padding10]}>
+
+{strengthsCount.community ? 
+  <View style={styles.strengthIconRow}>
+<FontAwesome name="users" size={20} color="white"/>
+<Text style={styles.strengths}>community x {strengthsCount.community}</Text>
+  </View> : null}
+
+  {strengthsCount.creativity ? 
+    <View style={styles.strengthIconRow}>
+<FontAwesome name="lightbulb-o" size={20} color="white"/>
+<Text style={styles.strengths}>{strengthsCount.creativity}</Text>
+  </View> : null}
+
+  {strengthsCount.kindness ? 
+<View style={styles.strengthIconRow}>
+<FontAwesome name="heart" size={20} color="white"/>
+<Text style={styles.strengths}>kindness x {strengthsCount.kindness}</Text>
+  </View> : null}
+
+  {strengthsCount.meditation ? 
+    <View style={styles.strengthIconRow}>
+<FontAwesome name="gear" size={20} color="white"/> 
+<Text style={styles.strengths}>meditation x {strengthsCount.meditation}</Text>
+  </View> : null}
+
+  {strengthsCount.movement ? 
+    <View style={styles.strengthIconRow}>
+<MaterialCommunityIcons name="yoga" size={20} color="white"/>
+<Text style={styles.strengths}>movement x {strengthsCount.movement} </Text>
+  </View> : null}
+
+  {strengthsCount.nature ? 
+    <View style={styles.strengthIconRow}>
+ <FontAwesome name="tree" size={20} color="white"/>
+ <Text style={styles.strengths}>nature x {strengthsCount.nature}</Text>
+ </View> : null}
+
+  {strengthsCount.reflection ? 
+<View style={styles.strengthIconRow}>
+<FontAwesome name="book" size={20} color="white"/>
+<Text style={styles.strengths}>reflection x {strengthsCount.reflection} </Text>
+  </View> : null}
+
+        </View>
         </View>
         </View>
         </View>
@@ -701,9 +770,29 @@ const handleGetFriends = () => {
 
         {/* submit a post section */}
         {view === 'submit' ? (
-          <View style={styles.submitHeading}> 
-            <Text style={styles.subheading}>{currentTask.title}</Text>
-            <Text>{currentTask.description}</Text>
+        
+        <View style={styles.submitHeading}> 
+            <Text style={[styles.subheading, styles.fontWeight700]}>{currentTask.title}</Text>
+            <Text style={{padding: 20}}>{currentTask.description}</Text>
+
+          <Text style={[styles.center,{color:"lightgray"}]}>select an image</Text>
+          <View style={{flexDirection: "row", justifyContent: "center", marginTop:10}}>
+            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1,}} source={{uri: currentTask.defaultImgUrl}} />
+            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1}} source={{uri: currentTask.defaultImgUrl}} />
+           </View>
+
+           <View style={{flexDirection: "row", justifyContent: "center"}}> 
+            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1}} source={{uri: currentTask.defaultImgUrl}} />
+            <View>
+            <TouchableWithoutFeedback style={{justifyContent: "center", alignItems: "center", flexDirection: "column", width: 150, height: 150, margin: 1, marginTop: 2, borderWidth: 2, borderColor: "lightgray"}}>
+            <FontAwesome name="camera-retro" size={84} color="lightgray"/>
+            <Text style={{color: "lightgray"}}>add an image</Text>
+            </TouchableWithoutFeedback>
+            </View>
+            </View>
+            
+            <View>
+
           <View style={styles.inputReflection}>
             <TextInput
               style={styles.addReflection}
@@ -715,6 +804,8 @@ const handleGetFriends = () => {
               defaultValue={reflection}
             />
             </View>
+            </View>
+
             <Text
               style={styles.submitCompletedTask}
               onPress={() => handleSubmit(currentTask.taskId)}
@@ -965,6 +1056,10 @@ dashboardRowTop : {
     paddingLeft: 10,
     paddingRight: 10,
   },
+  about:{
+    paddingTop: 30,
+  color: "lightgray"
+  },
   aboutParagraph: {
     lineHeight: 25,
     textAlign: 'justify',
@@ -1153,7 +1248,7 @@ dashboardRowTop : {
     margin: "10%",
     position: 'absolute',
     backgroundColor: 'rgba(0,0,0,.7)',
-    top: 150,
+    bottom: 10,
     borderRadius: "10",
     width: "80%",
   },
@@ -1181,6 +1276,12 @@ dashboardRowTop : {
     position: 'absolute',
     right: 0
   },
+  strengthsList:{
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  strengths: {color: "white", paddingLeft: 5, paddingBottom: 5},
+  strengthIconRow:{flexDirection: "row"}
   
 });
 
