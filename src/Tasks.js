@@ -38,9 +38,9 @@ const Tasks = (props) => {
   const [displayPost, setDisplayPost] = useState({});
   const [reflection, setReflection] = useState('');
   const [displayPostText, setDisplayPostText] = useState(1);
-  const [displayReflection, setDisplayReflection] = useState(1);
   const [allFriends, setAllFriends] = useState([])
   const [strengthsCount, setStrengthsCount] = useState([])
+  const [friendsPosts, setFriendsPosts] = useState([])
  
   let completed = allUserTasks.filter((item) => item.completed === true);
 
@@ -112,9 +112,18 @@ const fetchAllFriends = async () => {
   console.log(allFriends)
 }
 
+async function fetchFriendsPosts(id){
+  const snapShot = await getDoc(
+    doc(firestore, 'users', id, 'posts', "July"))
+    let friendsPosts = snapShot.data().userTasks;
+    friendsPosts.sort((b,a) => a.completedTime - b.completedTime)
+    setFriendsPosts(friendsPosts)
+}
+
   const handleView = (view, item) => {
     if (view === 'tasks' || view === 'posts' || view === 'featured') {
       setDisplayPost({});
+      setFriendsPosts([])
     }
     if (view === 'submit'){
       setCurrentTask(item)
@@ -151,11 +160,9 @@ const fetchAllFriends = async () => {
     setView('postStack');
   };
 
-  const handleDisplayFollowingPost = (id) => {
-    let post = featuredPostsData.filter((item) => item.taskId === id);
-    setDisplayPostText(1);
-    setDisplayPost(post[0]);
-    setView('postStack');
+  const handleDisplayFollowing = (id) => {
+    fetchFriendsPosts(id)
+    setView('friendsPosts');
   };
 
   // const handleDisplayFollowingPage = (id) => {
@@ -169,10 +176,6 @@ const fetchAllFriends = async () => {
     setDisplayPostText(displayPostText + 1);
   };
 
-  const handleDisplayReflection = (num) => {
-  setDisplayReflection(num + 1)
-    }
-  
 
   const handlePrevious = (taskId) => {
     let previousPost = featuredPostsData.filter((item) => item.taskId === taskId - 1)
@@ -209,10 +212,6 @@ const fetchAllFriends = async () => {
     setView('posts');
   };
 
-const handleGetFriends = () => {
-  fetchAllFriends()
-}
-
   const handleFollowNewPeople = () => {
     setView('followNewPeople');
   };
@@ -220,7 +219,8 @@ const handleGetFriends = () => {
 //initial load creates user tasks if don't exist, fetches users posts, fetches featured posts
   useEffect(() => {
     fetchUserPosts();
-    console.log('useEffect1')
+    fetchAllFriends()
+    console.log('useEffect1', allFriends)
     // console.log('All user tasks', allUserTasks);
 
   }, []);
@@ -327,7 +327,7 @@ const handleGetFriends = () => {
   {strengthsCount.creativity ? 
     <View style={styles.strengthIconRow}>
 <FontAwesome name="lightbulb-o" size={20} color="white"/>
-<Text style={styles.strengths}>{strengthsCount.creativity}</Text>
+<Text style={styles.strengths}>creativity x {strengthsCount.creativity}</Text>
   </View> : null}
 
   {strengthsCount.kindness ? 
@@ -523,30 +523,49 @@ const handleGetFriends = () => {
           </View>
         ) : null}
 
+         {/* users posts section */}
+         {view === 'friendsPosts' ? (
+          <View>
+            <Text style={[styles.subheading, styles.fontWeight700]}>Post History</Text>
+            {friendsPosts.map((item) => {
+              return item.completed == true ? (
+                <View style={styles.postContainer} key={item.taskId}>
+                  <Image
+                    style={{ width: 'auto', height: 400 }}
+                    source={item.defaultImgUrl ? { uri: item.defaultImgUrl } : null}
+                  />
+                  <Text style={styles.postTag}>{item.title}</Text>
+                  <Text style={styles.reflection}>
+                    {item.reflection}
+                  </Text>
+                   
+                </View>
+              ) : null;
+            })}
+          </View>
+        ) : null}
+
         {/* following section */}
         {view === 'featured' ? (
           <View style={styles.featuredContainer}>
              <View style={styles.followingSectionContainer}>
               <Text style={[styles.subheading, styles.fontWeight700]}>Following</Text>
-              <ScrollView horizontal={true}>
               
-                <View style={styles.followingItemsContainer}>
-                  {/* <TouchableOpacity onPress={() => handleFollowNewPeople()}>
-                    <Text style={styles.followingItemAdd}>+</Text>
-                  </TouchableOpacity> */}
+{allFriends.length ? 
+        <ScrollView horizontal={true}>
+        <View style={styles.followingItemsContainer}>
+        {allFriends.map((item)=> 
 
-        {featuredPostsData.map((item)=> 
-         <TouchableWithoutFeedback onPress={() => handleDisplayFollowingPost(item.taskId)} key={item.taskId}>
-         <Image
-           style={styles.followingItem}
-           source={{ uri: item.defaultImgUrl }}
-         />
+         <TouchableWithoutFeedback onPress={() => handleDisplayFollowing(item.userid)} key={item.userid} style={styles.followingItem}>
+        
+        <FontAwesome name="user" size={24} color="gray"/>
+          <Text>{item.username}</Text>
        </TouchableWithoutFeedback>
         )
       }
       </View>
-     </ScrollView>
-
+     </ScrollView> : <Text style={[styles.center, styles.padding10]}>no friend posts to display</Text>}
+     
     </View>
 
             {/* featured section */}
@@ -863,6 +882,7 @@ dashboardRowTop : {
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 50,
+    alignItems: "center"
   },
   featuredSectionContainer: {
     flex: 1,
