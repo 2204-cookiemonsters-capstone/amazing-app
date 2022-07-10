@@ -26,430 +26,328 @@ import {
 } from 'firebase/firestore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { PanGestureHandler, TapGesture,  } from 'react-native-gesture-handler';
 
 
 const featuredPostsData = [
   {
     taskId: 1,
-    title: 'read a book',
+    title: 'Read a Book',
     description:
-      'it can be any genre of your choice, just finish a book this month',
-    defaultImgUrl: 'https://i.imgur.com/D7Iht7E.jpg',
-    reflection: 'this is a sample reflection 1. The quick brown fox jumped over the lazy dog. Sally sells seashells by the sea shore',
-    reflection2: ' this is a sample reflection 2',
-    reflection3: 'this is reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+      'It can be any genre of your choice, just finish a book this month.',
+    defaultImgUrl: 'https://i.imgur.com/Tr4Urao.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'reflection',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 2,
-    title: 'meditate',
+    title: 'Breathing Meditation',
     description:
-      'spend 30 minutes practicing meditation.',
-      defaultImgUrl: 'https://i.imgur.com/syBzUa2.jpg',
-      reflection: 'reflection 1',
-      reflection2: 'reflection 2',
-      reflection3: 'reflection 3',
-      reflection4: 'reflection 4',
-      reflection5: 'reflection 5',
+      'Find a quiet space to sit. Without changing your normal breathing pattern, bring your attention to your inhaling and exhaling. As your mind wanders, bring your focus back to your breath. Practice this type of meditation for at least 15 minutes.',
+      defaultImgUrl: 'https://i.imgur.com/GyKJQjk.jpg',
       month: 'July',
       year: 2022,
+      category: 'meditation',
+      reflection: "This is a sample reflection. This is a short reflection.",
+      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 3,
-    title: 'spend an hour in nature',
+    title: 'Nature Walk',
     description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
+      'Visit any natural environment-- a trail, a park, a lake, or whatever is available-- and go on a nature walk.',
     defaultImgUrl: 'https://i.imgur.com/NNKNIWz.jpg',
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
     month: 'July',
     year: 2022,
-
+    category: 'nature',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 4,
-    title: 'write a letter',
-    description: 'write and send a letter in the mail',
+    title: 'Send A Letter',
+    description: 'Write and mail a physical letter to someone you care about.',
     defaultImgUrl: 'https://i.imgur.com/XKzBaOA.jpg',
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
-   
     month: 'July',
     year: 2022,
-
+    category: 'kindness',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 5,
-    title: 'spend 30 minutes practicing deep breathing',
+    title: 'Purposeful Photo Album',
     description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
-      defaultImgUrl: 'https://i.imgur.com/hlhLJcq.jpg',
-      reflection: 'reflection 1',
-      reflection2: 'reflection 2',
-      reflection3: 'reflection 3',
-      reflection4: 'reflection 4',
-      reflection5: 'reflection 5',
-
+      'Take photos of ten important things in your life-- people, places, or objects.',
+      defaultImgUrl: 'https://i.imgur.com/RcYQzBW.jpg',
       month: 'July',
       year: 2022,
-
+      category: 'creativity',
+      reflection: "This is a sample reflection. This is a short reflection.",
+      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 6,
-    title: 'complete an art project',
+    title: 'Connect With Community',
     description:
-      'sample description for this task this is just a sample description for a task this is just a sample description for a task',
-      defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-      reflection: 'reflection 1',
-      reflection2: 'reflection 2',
-      reflection3: 'reflection 3',
-      reflection4: 'reflection 4',
-      reflection5: 'reflection 5', 
+      'Attend a local event or group meeting in your community',
+      defaultImgUrl: 'https://i.imgur.com/8TZYNlI.jpg',
       month: 'July',
       year: 2022,
-
+      category: 'community',
+      reflection: "This is a sample reflection. This is a short reflection.",
+      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 7,
-    title: 'write a journal entry',
+    title: 'Full Body Stretch',
     description:
-      "write a journal entry-- what's been on your mind? What is a story you have to tell? What do you need to write down?",
-      defaultImgUrl:'https://i.imgur.com/auj7RJW.jpg',
-
-      reflection: 'reflection 1',
-      reflection2: 'reflection 2',
-      reflection3: 'reflection 3',
-      reflection4: 'reflection 4',
-      reflection5: 'reflection 5',
+      'Spend 20+ minutes stretching your muscles, loosen up the tightness in your body.',
+      defaultImgUrl:'https://i.imgur.com/uJOBwHY.jpg',
       month: 'July',
       year: 2022,
- 
+      category: 'movement',
+      reflection: "This is a sample reflection. This is a short reflection.",
+      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
-
     taskId: 8,
-    title: 'family past',
-    description: 'record a family story',
-    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+    title: 'Core Values Reflection',
+    description: 'Journal Prompt: What are your core values? When do you feel most connected with these values?',
+    defaultImgUrl: 'https://i.imgur.com/auj7RJW.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'reflection',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 9,
-    title: '10 meaningful photos',
-    description:
-      'Take ten photos of important people, places or things in your life',
-      defaultImgUrl: 'https://i.imgur.com/RcYQzBW.jpg',
-
-      reflection: 'reflection 1',
-      reflection2: 'reflection 2',
-      reflection3: 'reflection 3',
-      reflection4: 'reflection 4',
-      reflection5: 'reflection 5',
+    title: 'Walking Meditation',
+    description: 'Walk slowly and focus on the feeling of your feet on the ground. As your attention goes elsewhere, bring your focus back to the feeling of your feet on the ground. Practice this meditation for 10+ minutes.',
+      defaultImgUrl: 'https://i.imgur.com/wEF9n7F.jpg',
       month: 'July',
       year: 2022,
-
+      category: 'meditation',
+      reflection: "This is a sample reflection. This is a short reflection.",
+      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
-
     taskId: 10,
-    title: 'sit with water',
+    title: 'Water',
     description:
-      'visit a pond, lake, river, ocean, or other body of water and observe the water',
+      'Visit a pond, lake, river, ocean, or other body of water. If the climate allows, swim, canoe, or just enjoy the sounds and wildlife near the water.',
       defaultImgUrl: 'https://i.imgur.com/kC0vOPy.jpg',
-
-      reflection: 'reflection 1',
-      reflection2: 'reflection 2',
-      reflection3: 'reflection 3',
-      reflection4: 'reflection 4',
-      reflection5: 'reflection 5', 
       month: 'July',
       year: 2022,
-
+      category: 'nature',
+      reflection: "This is a sample reflection. This is a short reflection.",
+      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
-
     taskId: 11,
-    title: 'walking meditation',
+    title: 'Positive Review',
     description:
-      'go on a walk, and focus on feeling the ground beneath your feet with each step',
-      defaultImgUrl: 'https://i.imgur.com/9VFmLyh.jpg',
-
-      reflection: 'this is a sample of a first reflection',
-      reflection2: 'this is a sample of a second reflection',
-      reflection3: 'this is a sample of a third reflection',
-      reflection4: 'reflection 4',
-      reflection5: 'reflection 5',  
+      'Leave a positive review for a local business or organization you support.',
+      defaultImgUrl: 'https://i.imgur.com/p5Lyn9H.jpg',
       month: 'July',
       year: 2022,
-
+      category: 'kindness',
+      reflection: "This is a sample reflection. This is a short reflection.",
+      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 12,
-    title: 'watch a movie',
-    description: 'watch a movie',
-    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',  
+    title: 'Improve Your Space',
+    description: 'Make some improvement to your work or living space-- redesign, organize, rearrange, build, or declutter.',
+    defaultImgUrl: 'https://i.imgur.com/Cm6c0Ar.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'creativity',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
-
     taskId: 13,
-    title: 'be a critic',
-    description: 'write positive reviews for the locally owned places you love',
-    defaultImgUrl: 'https://i.imgur.com/p5Lyn9H.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5', 
+    title: 'Reconnect',
+    description: 'Reach out to someone you have not spoken to in more than 3 months.',
+    defaultImgUrl: 'https://i.imgur.com/kq8X3ss.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'community',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
-
     taskId: 14,
-    title: 'walk',
-    description: '30 minute walk',
-    defaultImgUrl: 'https://i.imgur.com/NNKNIWz.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5', 
+    title: 'Core / Upper Body Strength',
+    description: 'Complete a core or upper body workout of some kind for 20+ minutes',
+    defaultImgUrl: 'https://i.imgur.com/2usl9dm.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'movement',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
 {
   taskId: 15,
-  title: '30 minute workout',
-  description: '30 minute workout',
-  defaultImgUrl: 'https://i.imgur.com/bb17UDd.jpg',
-
-  reflection: 'reflection 1',
-  reflection2: 'reflection 2',
-  reflection3: 'reflection 3',
-  reflection4: 'reflection 4',
-  reflection5: 'reflection 5', 
+  title: 'Gratitude Reflection',
+  description: 'Journal Prompt: Who are you grateful for in your life? What experiences are you most grateful for? Which of your qualities or traits are you grateful for?',
+  defaultImgUrl: 'https://i.imgur.com/A6ZH2gb.jpg',
   month: 'July',
   year: 2022,
-
+  category: 'reflection',
+  reflection: "This is a sample reflection. This is a short reflection.",
+  reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
 },
   {
     taskId: 16,
-    title: 'movement',
-    description: 'yoga, dance, martial arts. Move your body for 30 minutes.',
-    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+    title: 'Relaxation Meditation',
+    description: 'While lying down, slowly scan from head to toe. As you scan, focus on relaxing each part of your body for several breaths, then move to the next part of your body. Practice for minimum 20 min.',
+    defaultImgUrl: 'https://i.imgur.com/Xcz7KJ7.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'meditation',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 17,
-    title: 'stretch',
-    description: 'stretch each part of your body-- take lots of deep breaths as you let go of whatever tightness you feel in your muscles',
-    defaultImgUrl: 'https://i.imgur.com/uJOBwHY.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+    title: 'Nature Sit',
+    description: 'Find a peaceful place to sit in nature without any distractions. Spend at least 20 minutes sitting without using your phone, reading, music, or journaling.',
+    defaultImgUrl: 'https://i.imgur.com/Ga1vIyc.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'nature',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 18,
-    title: 'deep relaxation',
+    title: 'Donation',
     description:
-      'lie down and spend 10 minutes relaxing your body without falling asleep',
-      defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
- 
-      reflection: 'reflection 1',
-      reflection2: 'reflection 2',
-      reflection3: 'reflection 3',
-      reflection4: 'reflection 4',
-      reflection5: 'reflection 5',
+      'Make a donation of some kind-- it could be a monetary donation to a cause you care about, or it could be clothing, food, or some other item.',
+      defaultImgUrl: 'https://i.imgur.com/cjOOlHY.jpg',
       month: 'July',
       year: 2022,
-
+      category: 'kindness',
+      reflection: "This is a sample reflection. This is a short reflection.",
+      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 19,
-    title: 'nature sit',
-    description: "spend several minutes sitting in nature without your phone or any other distractions-- just listen and observe. ",
-    defaultImgUrl: 'https://i.imgur.com/Ga1vIyc.jpg',
- 
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5', 
+    title: 'Album',
+    description: "Listen to an entire music album from start to finish.",
+    defaultImgUrl: 'https://i.imgur.com/mz0ciOf.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'creativity',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 20,
-    title: 'volunteer',
-    description: 'find a volunteer opportunity in your community',
+    title: 'Volunteer',
+    description: 'Volunteer for a local organization or cause.',
     defaultImgUrl: 'https://i.imgur.com/xOEG5mO.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'community',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },{
     taskId: 21,
-    title: 'gratitude meditation',
-    description: 'Spend several minutes meditating on the people and experiences you are grateful for in your life.',
-    defaultImgUrl: 'https://i.imgur.com/GyKJQjk.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+    title: 'Yoga',
+    description: 'Complete a yoga or martial arts practice. Minimum 20+ min, use the internet to discover free class videos.',
+    defaultImgUrl: 'https://i.imgur.com/bb17UDd.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'movement',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 22,
-    title: 'reflection',
-    description: 'write a journal entry on your ',
-    defaultImgUrl: 'https://i.imgur.com/Xcz7KJ7.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+    title: 'Goals',
+    description: 'Journal Prompt: What is a goal you would like to accomplish in the next year? What steps or people will help you achieve this goal? What is your motivation for achieving this goal? How can you help others achieve their goals?',
+    defaultImgUrl: 'https://i.imgur.com/PTcmc5o.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'reflection',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 23,
-    title: 'donate something you own',
-    description: 'donate something you own',
-    defaultImgUrl: 'https://i.imgur.com/cjOOlHY.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
-
+    title: 'Compassion Meditation',
+    description: 'Pracitice a compassion meditation: bring to mind people you care about. For each person, say to yourself: "May they be happy and free from unhappiness and pain". This practice helps to build your compassionate feelings for others.',
+    defaultImgUrl: 'https://i.imgur.com/moDVGYn.jpg',
     month: 'July',
     year: 2022,
-  
+    category: 'meditation',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+
   },
   {
     taskId: 24,
-    title: 'task 24',
-    description: 'task 24 description',
-    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
- 
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+    title: 'Care for Plants / Animals',
+    description: 'Ideas: If you have a pet, spend time caring for your pet. If you have a garden or plants, spend time tending your garden or plants. In some way, spend some time caring for plants or animals.',
+    defaultImgUrl: 'https://i.imgur.com/xOEG5mO.jpg',
     month: 'July',
     year: 2022,
+    category: 'nature',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
 
   },
   {
     taskId: 25,
-    title: 'task 25',
-    description: 'task 25 description',
-    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+    title: 'Kind Messages',
+    description: 'Send messages to 3+ people who have had a positive impact on you, letting them know you appreciate them.',
+    defaultImgUrl: 'https://i.imgur.com/nfy24Gz.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'kindness',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 26,
-    title: 'support a local business',
-    description: 'visit a locally owned business',
-    defaultImgUrl: 'https://i.imgur.com/X97pCMd.jpg',
- 
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+    title: 'Hands On Art',
+    description: 'Complete an art project with your hands-- paint, draw, sculpt, build, etc.',
+    defaultImgUrl: 'https://i.imgur.com/VaOCIkc.jpg',
     month: 'July',
     year: 2022,
-
+    category: 'creativity',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 27,
-    title: 'task 27',
-    description: 'task 27 description',
-    defaultImgUrl: 'https://i.imgur.com/xVtrThI.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5',
+    title: 'Support Local',
+    description: 'Visit a locally-owned restaurant, store, or organization.',
+    defaultImgUrl: 'https://i.imgur.com/X97pCMd.jpg',
     month: 'July',
     year: 2022,
+    category: 'community',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
   {
     taskId: 28,
-    title: 'express gratitude',
-    description: 'express gratitude to 3 people who have made a positive impact on your life',
-    defaultImgUrl: 'https://i.imgur.com/A6ZH2gb.jpg',
-
-    reflection: 'reflection 1',
-    reflection2: 'reflection 2',
-    reflection3: 'reflection 3',
-    reflection4: 'reflection 4',
-    reflection5: 'reflection 5', 
+    title: 'Jog',
+    description: 'Complete a walk/jog/run for at least one mile.',
+    defaultImgUrl: 'https://i.imgur.com/eGvYXyM.jpg',
     month: 'July',
     year: 2022,
+    category: 'movement',
+    reflection: "This is a sample reflection. This is a short reflection.",
+    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
   },
 ];
 
@@ -458,12 +356,11 @@ const featuredPostsData = [
 const Tasks = (props) => {
   const [allUserTasks, setAllUserTasks] = useState([]);
   const [view, setView] = useState('featured');
-  const [open, setOpen] = useState(0);
   const [goalNum, setGoalNum] = useState('28');
   const [currentTask, setCurrentTask] = useState({});
   const [displayPost, setDisplayPost] = useState({});
   const [reflection, setReflection] = useState('');
-  const [displayPostText, setDisplayPostText] = useState(true);
+  const [displayPostText, setDisplayPostText] = useState(1);
   const [displayReflection, setDisplayReflection] = useState(1);
   const [allFriends, setAllFriends] = useState([])
 
@@ -515,31 +412,33 @@ const fetchAllFriends = async () => {
   console.log(allFriends)
 }
 
-  const handleView = (view) => {
+  const handleView = (view, item) => {
     if (view === 'tasks' || view === 'posts' || view === 'featured') {
       setDisplayPost({});
     }
+    if (view === 'submit'){
+      setCurrentTask(item)
+    }
     setView(view);
-    setOpen(0);
   };
 
   
   const getBackgroundColor = (category) => {
     let color;
     if (category === "nature") {
-        color = "darkgreen";
+        color = "#558564";
     } else if (category === "community") {
-        color = "purple";
+        color = "#574D68";
       } else if (category === "reflection") {
-        color = "darkblue";
+        color = "#33658A";
       } else if (category === "meditation") {
-        color = "darkred";
+        color = "#A22522";
       } else if (category === "movement") {
-        color = "green";
+        color = "#59A96A";
       } else if (category === "kindness") {
-        color = "blue";
+        color = "#EF798A";
       } else if (category === "creativity") {
-        color = "darkorange";
+        color = "#EB6426";
     }
     else {color === "#8021D9"}
     return color;
@@ -547,14 +446,14 @@ const fetchAllFriends = async () => {
 
   const handleDisplayFeaturedPost = (id) => {
     let post = featuredPostsData.filter((item) => item.taskId === id);
-    setDisplayPostText(true);
+    setDisplayPostText(1);
     setDisplayPost(post[0]);
     setView('postStack');
   };
 
   const handleDisplayFollowingPost = (id) => {
     let post = featuredPostsData.filter((item) => item.taskId === id);
-    setDisplayPostText(true);
+    setDisplayPostText(1);
     setDisplayPost(post[0]);
     setView('postStack');
   };
@@ -566,12 +465,8 @@ const fetchAllFriends = async () => {
   //   setView('postStack');
   // };
 
-  const handleDisplayPostText = () => {
-    if (displayPostText) {
-      setDisplayPostText(false);
-    } else {
-      setDisplayPostText(true);
-    }
+  const handleDisplayPostText = () => {  
+    setDisplayPostText(displayPostText + 1);
   };
 
   const handleDisplayReflection = (num) => {
@@ -650,17 +545,23 @@ const handleGetFriends = () => {
         {/* need to make each have onPress that sets state view to corresponding section, also makes icon/title bold and/or underlined */}
 
         <View style={styles.topOptions}>
-          <Text style={styles.subheading} onPress={() => handleView('posts')}>
-            posts
+          <TouchableWithoutFeedback onPress={() => handleView('posts')}>
+          <Text style={styles.subheading} >
+          <FontAwesome name="photo" size={24} color="black"/>
           </Text>
+          </TouchableWithoutFeedback>
+        
+          <TouchableWithoutFeedback onPress={() => handleView('tasks')}>
+          <Text style={[styles.subheading, styles.fontWeight700]} >
+          <AntDesign name="dashboard" size={24} color="black"/>
+          </Text>
+          </TouchableWithoutFeedback>
 
-          <Text style={styles.subheading} onPress={() => handleView('tasks')}>
-            28
+        <TouchableWithoutFeedback onPress={() => handleView('featured')}>
+          <Text style={styles.subheading} >
+          <FontAwesome name="star-o" size={24} color="black"/>
           </Text>
-
-          <Text style={styles.subheading} onPress={() => handleView('featured')}>
-            featured
-          </Text>
+          </TouchableWithoutFeedback>
         </View>
 
         {/* your tasks section */}
@@ -751,7 +652,7 @@ const handleGetFriends = () => {
                       <View style={styles.goToSubmitContainer}>
                         <Text
                           style={styles.goToSubmit}
-                          onPress={() => handleView('submit')}
+                          onPress={() => handleView('submit', item)}
                         >
                           submit your post
                         </Text>
@@ -800,10 +701,10 @@ const handleGetFriends = () => {
 
         {/* submit a post section */}
         {view === 'submit' ? (
-          <View>
+          <View style={styles.submitHeading}> 
             <Text style={styles.subheading}>{currentTask.title}</Text>
-            <Text >{currentTask.description}</Text>
-          
+            <Text>{currentTask.description}</Text>
+          <View style={styles.inputReflection}>
             <TextInput
               style={styles.addReflection}
               placeholder='add a reflection'
@@ -813,6 +714,7 @@ const handleGetFriends = () => {
               onChangeText={(newText) => setReflection(newText)}
               defaultValue={reflection}
             />
+            </View>
             <Text
               style={styles.submitCompletedTask}
               onPress={() => handleSubmit(currentTask.taskId)}
@@ -825,7 +727,7 @@ const handleGetFriends = () => {
         {/* users posts section */}
         {view === 'posts' ? (
           <View>
-            <Text style={styles.subheading}>your post history</Text>
+            <Text style={[styles.subheading, styles.fontWeight700]}>your post history</Text>
             {allUserTasks.map((item) => {
 
 
@@ -851,7 +753,7 @@ const handleGetFriends = () => {
         {view === 'featured' ? (
           <View style={styles.featuredContainer}>
              <View style={styles.followingSectionContainer}>
-              <Text style={styles.subheading}>Following</Text>
+              <Text style={[styles.subheading, styles.fontWeight700]}>Following</Text>
               <ScrollView horizontal={true}>
               
                 <View style={styles.followingItemsContainer}>
@@ -860,12 +762,12 @@ const handleGetFriends = () => {
                   </TouchableOpacity>
 
         {featuredPostsData.map((item)=> 
-         <TouchableOpacity onPress={() => handleDisplayFollowingPost(item.taskId)} key={item.taskId}>
+         <TouchableWithoutFeedback onPress={() => handleDisplayFollowingPost(item.taskId)} key={item.taskId}>
          <Image
            style={styles.followingItem}
            source={{ uri: item.defaultImgUrl }}
          />
-       </TouchableOpacity>
+       </TouchableWithoutFeedback>
         )
       }
       </View>
@@ -876,14 +778,14 @@ const handleGetFriends = () => {
             {/* featured section */}
 
             <View style={styles.featuredSectionContainer}>
-              <Text style={styles.subheading}>Featured</Text>
+              <Text style={[styles.subheading, styles.fontWeight700]}>Featured</Text>
 
               <ScrollView>
                 <View style={styles.featuredItemsContainer}>
                   {featuredPostsData ? (
                     featuredPostsData.map((item) => (
                       <View key={item.taskId}>
-                        <TouchableOpacity
+                        <TouchableWithoutFeedback
                           style={styles.featuredItemTouch}
                           onPress={() => handleDisplayFeaturedPost(item.taskId)}
                         >
@@ -891,7 +793,7 @@ const handleGetFriends = () => {
                             style={styles.featuredItem}
                             source={{ uri: item.defaultImgUrl }}
                           />
-                        </TouchableOpacity>
+                        </TouchableWithoutFeedback>
                       </View>
                     ))
                   ) : (
@@ -914,26 +816,36 @@ const handleGetFriends = () => {
                 style={styles.displayPostImage}
                 source={{ uri: displayPost.defaultImgUrl }}
               />
-            </TouchableWithoutFeedback>
-            <View style={styles.previousNext}>
-              <Text onPress={() => handlePrevious(displayPost.taskId)}>previous</Text>
-               <Text onPress={() => handleNext(displayPost.taskId)}>next</Text>
-            </View>
-           
-              {displayPostText ? (
-              <View style={styles.displayPostTextContainer}>
-                
-                <Text style={styles.displayReflection} onPress={() => handleDisplayReflection(displayReflection)}>
-                  {displayReflection % 5 === 1 ? (displayPost.reflection) : null}
-                  {displayReflection % 5 === 2 ? (displayPost.reflection2) : null}
-                  {displayReflection % 5 === 3 ? (displayPost.reflection3) : null}
-                  {displayReflection % 5 === 4 ? (displayPost.reflection4) : null}
-                  {displayReflection % 5 === 0 ? (displayPost.reflection5) : null}
-                </Text>
+              </TouchableWithoutFeedback>
+
+              <View style={styles.previousNext}>
+              <View style={styles.previousIcon}>
+              <AntDesign name="leftcircleo" size={32} color="white" onPress={() => handlePrevious(displayPost.taskId)}/>
               </View>
-            ) : null}
+
+              <View style={styles.nextIcon}>
+
+              <TouchableWithoutFeedback><Text onPress={() => handleNext(displayPost.taskId)}>next</Text>
+              <AntDesign name="rightcircleo" size={32} color="white" />
+              </TouchableWithoutFeedback>
+              </View>  
+              </View>
+
+                
+                  {displayPostText % 3 === 1 ? 
+                   <View style={styles.displayPostTextContainer}>
+                  <Text style={styles.displayReflection}>{displayPost.reflection}</Text> 
+                  </View> : null}
+
+                  {displayPostText % 3 === 2 ? 
+                   <View style={styles.displayPostTextContainer}>
+                  <Text style={styles.displayReflection}>{displayPost.reflection2}</Text> 
+                  </View>
+                  : null}
+               
+              </View>
+            
              
-          </View>
         ) : null}
 
 {/* see friends posts section */}
@@ -1066,7 +978,9 @@ dashboardRowTop : {
     color: "white"
   },
   taskIconContainer:{
-    flexDirection: "row", justifyContent: "center", padding: 10},
+    flexDirection: "row", 
+    justifyContent: "center", 
+    padding: 10},
 
   taskDescription: {
     textAlign: 'center',
@@ -1090,14 +1004,13 @@ dashboardRowTop : {
     borderRadius: 5,
     borderColor: "white",
   },
-  uncompletedContainer:{backgroundColor: "#585BD9", borderRadius: "5", margin: 5, width: 300},
-  nature:{backgroundColor: "#5BD858"},
-  reflection:{backgroundColor: "#23A6D9"},
-  meditation:{backgroundColor: "#D585BD9"},
-  movement:{backgroundColor: "#D585BD9"},
-  community:{backgroundColor: "#8021D9"},
-  kindness:{backgroundColor: "#D85963"},
-  creativity:{backgroundColor: "#D78559"},
+  uncompletedContainer:{
+    backgroundColor: "#585BD9", 
+  borderRadius: "5", 
+  margin: 5, 
+  width: 300
+},
+
  
   submitCompletedTask: {
     textAlign: 'center',
@@ -1116,6 +1029,14 @@ dashboardRowTop : {
     borderWidth: 1,
     padding: 100,
     paddingBottom: 300,
+  },
+  inputReflection:{
+  marginTop:30,
+  marginBottom: 30
+  },
+  submitHeading:{
+    marginLeft: 20,
+    marginRight: 20
   },
   addReflection: {
     textAlign: 'center',
@@ -1226,24 +1147,13 @@ dashboardRowTop : {
     width: '100%',
     height: 650,
   },
-  displayPostTitleContainer: {
-    padding: 10,
-    margin: "10%",
-    position: 'absolute',
-    backgroundColor: 'rgba(0,0,0,.7)',
-    top: 10,
-    
-    width: "80%",
-    textAlign: "center",
-    borderRadius: "10"
-
-  },
+ 
   displayPostTextContainer: {
     padding: 10,
     margin: "10%",
     position: 'absolute',
     backgroundColor: 'rgba(0,0,0,.7)',
-    top: 100,
+    top: 150,
     borderRadius: "10",
     width: "80%",
   },
@@ -1262,6 +1172,14 @@ dashboardRowTop : {
   previousNext : {
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  previousIcon:{
+    position: 'absolute',
+  left: 0,
+  top: 0},
+  nextIcon:{
+    position: 'absolute',
+    right: 0
   },
   
 });
