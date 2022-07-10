@@ -29,6 +29,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { PanGestureHandler, TapGesture,  } from 'react-native-gesture-handler';
 import {featuredPostsData} from './assets/featuredPostsData'
+import {profileImagesArray, profileImages} from './assets/profileImages'
 
 const Tasks = (props) => {
   const [allUserTasks, setAllUserTasks] = useState([]);
@@ -575,10 +576,12 @@ async function fetchFriendsPosts(id){
         <View style={styles.followingItemsContainer}>
         {allFriends.map((item)=> 
 
-         <TouchableWithoutFeedback onPress={() => handleDisplayFollowing(item.userid, item.username)} key={item.userid} style={styles.followingItem}>
-        
+         <TouchableWithoutFeedback onPress={() => handleDisplayFollowing(item.userid, item.username)} key={item.userid}>
+          <Image source={{uri: profileImagesArray[6]["url"]}} style={styles.followingItem}/>
+        <View style={styles.iconAndNameContainer}>
         <FontAwesome name="user" size={24} color="gray"/>
-          <Text>{item.username}</Text>
+          <Text style={styles.followingItemUsername}>{item.username}</Text>
+          </View>
        </TouchableWithoutFeedback>
         )
       }
@@ -880,7 +883,7 @@ dashboardRowTop : {
     textAlign: 'center',
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 40,
+    paddingTop: 0,
     paddingBottom: 40,
     marginRight: 5,
     marginLeft: 5,
@@ -896,15 +899,19 @@ dashboardRowTop : {
     height: 100,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 40,
+    paddingTop: 20,
     paddingBottom: 40,
     marginRight: 5,
     marginLeft: 5,
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 50,
-    alignItems: "center"
+    alignItems: "center",
   },
+  followingItemUsername:{
+    color: "black", 
+  paddingLeft: 5},
+
   featuredSectionContainer: {
     flex: 1,
   },
@@ -976,7 +983,7 @@ dashboardRowTop : {
     width: "80%",
   },
   displayReflection: {
-    fontSize: 18,
+    fontSize: 16,
     lineHeight: 20,
     color: "white",
     textAlign: "center",
@@ -1030,6 +1037,8 @@ flexWrap: "wrap"
   friendsPostTitleCommentContainer:{
     flexDirection: "row", 
     justifyContent: "space-between"},
+    iconAndNameContainer:{
+      flexDirection: "row", alignItems: "center"}
 });
 
 export default Tasks;
