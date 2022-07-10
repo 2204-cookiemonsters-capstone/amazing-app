@@ -88,9 +88,11 @@ const Tasks = (props) => {
   async function fetchUserPosts(){
       const snapShot = await getDoc(
         doc(firestore, 'users', auth.currentUser.uid, 'posts', "July"))
-      setAllUserTasks(snapShot.data().userTasks)
+        let userTasks = snapShot.data().userTasks;
+        userTasks.sort((b,a) => a.completedTime - b.completedTime)
+        setAllUserTasks(userTasks)
     }
-  
+
 const fetchAllFriends = async () => {
   const snapShot = await getDocs(
     collection(firestore, 'users', auth.currentUser.uid, 'friendships')
@@ -529,9 +531,9 @@ const handleGetFriends = () => {
               <ScrollView horizontal={true}>
               
                 <View style={styles.followingItemsContainer}>
-                  <TouchableOpacity onPress={() => handleFollowNewPeople()}>
+                  {/* <TouchableOpacity onPress={() => handleFollowNewPeople()}>
                     <Text style={styles.followingItemAdd}>+</Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
 
         {featuredPostsData.map((item)=> 
          <TouchableWithoutFeedback onPress={() => handleDisplayFollowingPost(item.taskId)} key={item.taskId}>
@@ -592,14 +594,13 @@ const handleGetFriends = () => {
 
               <View style={styles.previousNext}>
               <View style={styles.previousIcon}>
-              <AntDesign name="leftcircleo" size={32} color="white" onPress={() => handlePrevious(displayPost.taskId)}/>
+              <Text onPress={() => handlePrevious(displayPost.taskId)}>previous</Text>
               </View>
 
               <View style={styles.nextIcon}>
-
-              <TouchableWithoutFeedback><Text onPress={() => handleNext(displayPost.taskId)}>next</Text>
-              <AntDesign name="rightcircleo" size={32} color="white" />
-              </TouchableWithoutFeedback>
+              
+              <Text onPress={() => handleNext(displayPost.taskId)}>next</Text>
+             
               </View>  
               </View>
 
