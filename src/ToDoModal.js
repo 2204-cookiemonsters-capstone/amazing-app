@@ -7,7 +7,7 @@ import {
   TextInput,
   SafeAreaView,
   FlatList,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { todoListStyle, color } from "../styles";
 import ToDoItem from "./ToDoItem";
@@ -29,12 +29,23 @@ export default class TodoModal extends React.Component {
 
   addTodo = () => {
     let list = this.props.list;
-    list.todos.push({title: this.state.newTodo, completed: false, likes: 0});
 
-    this.props.updateList(list);
+    if(!list.todos.some(todo => todo.title === this.state.newTodo)) {
+      list.todos.push({title: this.state.newTodo, completed: false, likes: 0});
+      this.props.updateList(list);
+
+    }
+
+
     this.setState({ newTodo: ''});
 
     Keyboard.dismiss();
+  }
+
+  deleteTodo = index => {
+    let list = this.props.list;
+    list.todos.splice(index, 1);
+    this.props.updateList(list);
   }
 
   render() {
@@ -66,16 +77,12 @@ export default class TodoModal extends React.Component {
             </Text>
           </View>
         </View>
-        <View style={[todoListStyle.todoModal.section, { flex: 3 }]}>
+        <View style={[todoListStyle.todoModal.section, { flex: 3, marginVertical: 16 }]}>
           <FlatList
             data={list.todos}
             //---------------------------------
-            renderItem={({ item, index }) => <ToDoItem todo={item} index={index} toggleTodoCompleted={this.toggleTodoCompleted}/>}
-            keyExtractor={(_, index) => index.toString()}
-            contentContainerStyle={{
-              paddingHorizontal: 32,
-              paddingVertical: 64,
-            }}
+            renderItem={({ item, index }) => <ToDoItem todo={item} index={index} toggleTodoCompleted={this.toggleTodoCompleted} deleteTodo={this.deleteTodo}/>}
+            keyExtractor={(item) => item.title}
             showsVerticalScrollIndicator={false}
           />
         </View>

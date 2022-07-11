@@ -30,7 +30,7 @@ const FriendToDoItem = ({todo, index, likeTodoItem, unlikeTodoItem}) => {
       >
         {todo.title}
       </Text>
-      <View>
+      <View style={{alignItems: 'center'}}>
         {liked ? <Ionicons name='heart-sharp' size={30} color='#D85963'  onPress={() => handleUnlike(index)}/> : <Ionicons name='heart-outline' size={30} color='#73788B' onPress={() => handleLike(index)}/>}
         <Text>{todo.likes}</Text>
       </View>
