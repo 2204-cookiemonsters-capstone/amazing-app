@@ -36,7 +36,6 @@ const FriendsList = ({ navigation }) => {
     const friends = [];
 
     snapShot.forEach((doc) => {
-      console.log(doc.data());
       if (doc.data().status === "friends") {
         friends.push(doc.data());
       }
@@ -87,7 +86,7 @@ const FriendsList = ({ navigation }) => {
       >
         <TouchableOpacity
           style={{
-            backgroundColor: "aqua", //random vibrant color for now, style our app later
+            backgroundColor: "white", //random vibrant color for now, style our app later
             borderRadius: 25,
             height: 35,
             width: 35,
@@ -104,7 +103,7 @@ const FriendsList = ({ navigation }) => {
         <View style={{ flexGrow: 1 }} />
         <TouchableOpacity
           style={{
-            backgroundColor: "aqua", //random vibrant color for now, style our app later
+            backgroundColor: "white", //random vibrant color for now, style our app later
             borderRadius: 25,
             height: 35,
             width: 35,
@@ -120,28 +119,45 @@ const FriendsList = ({ navigation }) => {
       <View
         style={{
           marginTop: 40,
-          marginLeft: 25,
-          marginRight: 25,
+          marginLeft: 15,
+          marginRight: 15,
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "center",
+          borderRadius: 50,
+          backgroundColor: "white",
+          height: 40,
+          paddingHorizontal: 16,
+          flexGrow: 1,
+          marginBottom: 5,
+          shadowColor: "#7F5DF0",
+          shadowOffset: {
+            width: 0,
+            height: 10,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.5,
+          elevation: 5,
         }}
       >
+        <Image
+          source={require("../assets/search2.png")}
+          style={{
+            width: 22,
+            height: 22,
+            resizeMode: "contain",
+          }}
+        />
         <TextInput
           placeholder='Find Friends'
           onChangeText={(value) => {
             setSearchValue(value), search(value);
           }}
           style={{
-            height: 40,
-            borderWidth: StyleSheet.hairlineWidth,
-            borderRadius: 30,
             paddingHorizontal: 16,
             color: "black",
             fontWeight: "600",
-            width: "100%",
-            backgroundColor: "ghostwhite",
+            flexGrow: 1,
           }}
         />
         <TouchableOpacity
@@ -150,77 +166,98 @@ const FriendsList = ({ navigation }) => {
         ></TouchableOpacity>
       </View>
 
-      <View>
-        <FlatList
-          data={renderedUsers}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TouchableOpacity
+      <View style={{ marginTop: 20 }}>
+        {allFriends.map((item) => (
+          <TouchableOpacity
+            key={item.userid}
+            style={{
+              marginLeft: 15,
+              marginRight: 15,
+              paddingTop: 7,
+              paddingBottom: 0,
+              borderColor: "#cccccc",
+              display: "flex",
+              flexDirection: "row",
+              paddingLeft: 10,
+              paddingRight: 15,
+              borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
+              borderTopRightRadius: item === allFriends[0] ? 8 : 0,
+              backgroundColor: "white",
+              marginBottom: 1,
+              borderBottomRightRadius:
+                item === allFriends[allFriends.length - 1] ? 8 : 0,
+              borderBottomLeftRadius:
+                item === allFriends[allFriends.length - 1] ? 8 : 0,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+            }}
+          >
+            <TouchableOpacity>
+              <Image
+                source={image}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  marginTop: 10,
+                  marginBottom: 10,
+                  marginRight: 5,
+                }}
+              />
+            </TouchableOpacity>
+            <View
               style={{
-                marginLeft: 25,
-                marginTop: 10,
-                borderLeftWidth: 1,
-                borderRightWidth: 1,
-                borderBottomWidth: 1,
-                borderTopWidth: 1,
-                marginRight: 25,
-                borderColor: "#cccccc",
                 display: "flex",
-                flexDirection: "row",
-                paddingLeft: 10,
-                paddingRight: 15,
+                flexDirection: "column",
+                width: "52%",
               }}
             >
-              <TouchableOpacity>
-                <Image
-                  source={image}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 25,
-                    margin: 10,
-                  }}
-                />
-              </TouchableOpacity>
-              <View style={{ display: "flex", flexDirection: "column" }}>
-                <Text>{item.name}</Text>
-                <Text>{item.username}</Text>
-                <Text>3 Mutual Friends</Text>
-              </View>
-              <View
+              <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                {item.name}
+              </Text>
+              <Text style={{ color: "gray" }}>{item.username}</Text>
+              <Text>3 Mutual Friends</Text>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: 25,
+              }}
+            >
+              <TouchableOpacity
                 style={{
-                  alignItems: "center",
+                  backgroundColor: "red",
+                  borderRadius: 25,
+                  height: 30,
+                  width: 60,
                   justifyContent: "center",
-                  marginLeft: 30,
+                  alignItems: "center",
+                  display: "flex",
+                  flexDirection: "row",
                 }}
               >
-                <TouchableOpacity
+                <View
                   style={{
-                    backgroundColor: "red",
-                    borderTopLeftRadius: 10,
-                    borderBottomLeftRadius: 10,
-                    borderTopRightRadius: 10,
-                    borderBottomRightRadius: 10,
-                    height: 30,
-                    justifyContent: "center",
                     alignItems: "center",
-                    display: "flex",
-                    flexDirection: "row",
+                    justifyContent: "center",
                   }}
                 >
-                  <View style={{ marginLeft: 13, marginRight: 8 }}>
-                    <Image
-                      source={require("../assets/ADDFRIEND2.png")}
-                      style={{ width: 15, height: 15 }}
-                    />
-                  </View>
-                  <Text style={{ marginRight: 14 }}>Remove</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
+                  <Image
+                    source={require("../assets/ADDFRIEND2.png")}
+                    style={{ width: 15, height: 15 }}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );

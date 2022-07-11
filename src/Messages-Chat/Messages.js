@@ -75,6 +75,8 @@ const Messages = (props) => {
         });
       }
 
+      userData.sort(sorting);
+
       allChatsData !== userData ? setAllChatsData(userData) : null;
     });
   };
@@ -86,6 +88,12 @@ const Messages = (props) => {
 
     return Math.abs(Math.round(diff));
   };
+
+  function sorting(a, b) {
+    if (a.timesent > b.timesent) return -1; //this function sorts the array by the time sent so the most recent message will appear first
+    if (a.timesent < b.timesent) return 1;
+    return 0;
+  }
 
   useEffect(() => {
     fetchAllChats();
@@ -105,7 +113,11 @@ const Messages = (props) => {
             }}
             renderItem={({ item }) => (
               <TouchableOpacity
-                style={{ width: "100%" }}
+                style={{
+                  width: "100%",
+                  backgroundColor: "white",
+                  marginBottom: 1,
+                }}
                 onPress={() =>
                   props.navigation.navigate("ChatScreen", {
                     chatid: item.chatid,
@@ -155,13 +167,24 @@ const Messages = (props) => {
                           }}
                         >
                           {Math.floor(getTimeDifference(item.timesent) / 1440)}{" "}
-                          Days Ago
+                          {Math.floor(
+                            getTimeDifference(item.timesent) / 1440
+                          ) === 1
+                            ? "Day Ago"
+                            : "Days Ago"}
                         </Text>
                       )}
                     </View>
-                    <Text style={styles.messageText}>
-                      {item.lastMessage ? item.lastMessage : null}
-                    </Text>
+                    <View style={{ width: "65%" }}>
+                      <Text style={styles.messageText}>
+                        {item.lastMessage.length <= 25 &&
+                        item.lastMessage.length > 0
+                          ? item.lastMessage
+                          : item.lastMessage.length > 25
+                          ? item.lastMessage.slice(0, 23) + "..."
+                          : null}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -171,11 +194,10 @@ const Messages = (props) => {
             style={{
               width: 60,
               height: 60,
-
               backgroundColor: "#ee6e73",
               position: "absolute",
-              bottom: 90,
-              right: 0,
+              bottom: 80,
+              right: 20,
               borderRadius: 70 / 2,
               alignItems: "center",
               justifyContent: "center",
@@ -218,10 +240,8 @@ const Messages = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#F0F0F0",
     marginTop: 0,
   },
   userinfo: {
@@ -231,6 +251,7 @@ const styles = StyleSheet.create({
   userimage: {
     paddingTop: 15,
     paddingBottom: 15,
+    marginLeft: 15,
   },
   img: {
     width: 50,
@@ -244,8 +265,6 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     marginLeft: 10,
     width: 300,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
   },
   userinfotext: {
     flexDirection: "row",
