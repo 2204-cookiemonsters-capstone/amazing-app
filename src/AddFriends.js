@@ -318,6 +318,7 @@ const AddFriends = ({ navigation }) => {
             marginBottom: 5,
           }}
         >
+
           <Image
             source={require("../assets/search2.png")}
             style={{
@@ -367,6 +368,7 @@ const AddFriends = ({ navigation }) => {
                       flexDirection: "row",
                       paddingLeft: 10,
                       paddingRight: 15,
+
                     }}
                   >
                     <TouchableOpacity>
@@ -385,7 +387,9 @@ const AddFriends = ({ navigation }) => {
                       <Text style={{ color: "gray" }}>{item.username}</Text>
                       <Text>3 Mutual Friends</Text>
                     </View>
+
                     <View
+
                       style={{
                         alignItems: "center",
                         justifyContent: "center",
@@ -417,6 +421,7 @@ const AddFriends = ({ navigation }) => {
                       </TouchableOpacity>
                     </View>
                   </TouchableOpacity>
+
                 ))}
               </View>
             </View>
@@ -458,9 +463,11 @@ const AddFriends = ({ navigation }) => {
             >
               {showAllQuickAdd
                 ? renderedAllFriends.map((item) => (
+
                     <TouchableOpacity
                       key={item.userid}
                       style={{
+
                         marginLeft: 15,
                         marginRight: 15,
                         paddingTop: 7,
@@ -482,9 +489,12 @@ const AddFriends = ({ navigation }) => {
                         shadowOpacity: 0.25,
                         shadowRadius: 3.5,
                         elevation: 5,
+
                       }}
                     >
+
                       <TouchableOpacity>
+
                         <Image
                           source={image}
                           style={{
@@ -546,11 +556,14 @@ const AddFriends = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                     </TouchableOpacity>
+
                   ))
                 : firstThreeUsers.map((item) => (
+
                     <TouchableOpacity
                       key={item.userid}
                       style={{
+
                         marginLeft: 15,
                         marginRight: 15,
                         paddingTop: 7,
@@ -572,6 +585,7 @@ const AddFriends = ({ navigation }) => {
                         shadowOpacity: 0.25,
                         shadowRadius: 3.5,
                         elevation: 5,
+
                       }}
                     >
                       <TouchableOpacity>
@@ -672,6 +686,7 @@ const AddFriends = ({ navigation }) => {
               ) : searchValue === "" && !showAllQuickAdd ? (
                 <TouchableOpacity
                   style={{
+
                     marginLeft: 15,
                     marginRight: 15,
                     paddingTop: 7,
@@ -679,6 +694,7 @@ const AddFriends = ({ navigation }) => {
                     borderColor: "#cccccc",
                     display: "flex",
                     flexDirection: "row",
+
                     paddingLeft: 10,
                     paddingRight: 15,
                     height: 40,
@@ -698,6 +714,7 @@ const AddFriends = ({ navigation }) => {
                   }}
                   onPress={() => setShowAllQuickAdd(true)}
                 >
+
                   <Text>View More</Text>
                 </TouchableOpacity>
               ) : null}
@@ -711,288 +728,4 @@ const AddFriends = ({ navigation }) => {
 
 export default AddFriends;
 
-/*
 
- <View style={{ height: 300 }}>
-          {!renderedAllFriends.length ? null : (
-            <View style={{ margin: 25 }}>
-              <Text style={{ fontWeight: "700", fontSize: 17 }}>Quick Add</Text>
-            </View>
-          )}
-          <View
-            style={{
-              bottom: 20,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {renderedAllFriends.length <= 3 ? (
-              <FlatList
-                data={renderedAllFriends}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  paddingBottom: 430, //fix navbar does not block the last item
-                }}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={{
-                      marginLeft: 25,
-                      marginTop: 10,
-                      borderLeftWidth: 1,
-                      borderRightWidth: 1,
-                      borderBottomWidth: 1,
-                      borderTopWidth: 1,
-                      marginRight: 25,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
-                    }}
-                  >
-                    <TouchableOpacity>
-                      <Image
-                        source={image}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          margin: 10,
-                        }}
-                      />
-                    </TouchableOpacity>
-                    <View style={{ display: "flex", flexDirection: "column" }}>
-                      <Text>{item.name}</Text>
-                      <Text>{item.username}</Text>
-                    </View>
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 30,
-                      }}
-                    >
-                      <TouchableOpacity
-                        style={{
-                          backgroundColor: "red",
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                          borderBottomRightRadius: 10,
-                          height: 30,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                        onPress={() => handleAddFriend(item.userid)}
-                      >
-                        <View style={{ marginLeft: 13, marginRight: 8 }}>
-                          <Image
-                            source={require("../assets/ADDFRIEND2.png")}
-                            style={{ width: 15, height: 15 }}
-                          />
-                        </View>
-                        <Text style={{ marginRight: 14 }}>Add</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </TouchableOpacity>
-                )}
-              />
-            ) : allUsers.length > 3 && showAllQuickAdd ? (
-              <FlatList
-                data={renderedAllFriends}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                // contentContainerStyle={{
-                //   marginBottom: 430, //fix navbar does not block the last item
-                // }}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={{
-                      marginLeft: 25,
-                      marginTop: 10,
-                      borderLeftWidth: 1,
-                      borderRightWidth: 1,
-                      borderBottomWidth: 1,
-                      borderTopWidth: 1,
-                      marginRight: 25,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
-                    }}
-                  >
-                    <TouchableOpacity>
-                      <Image
-                        source={image}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          margin: 10,
-                        }}
-                      />
-                    </TouchableOpacity>
-                    <View style={{ display: "flex", flexDirection: "column" }}>
-                      <Text>{item.name}</Text>
-                      <Text>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
-                    </View>
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 30,
-                      }}
-                    >
-                      <TouchableOpacity
-                        style={{
-                          backgroundColor: "red",
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                          borderBottomRightRadius: 10,
-                          height: 30,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                        onPress={() => handleAddFriend(item.userid)}
-                      >
-                        <View style={{ marginLeft: 13, marginRight: 8 }}>
-                          <Image
-                            source={require("../assets/ADDFRIEND2.png")}
-                            style={{ width: 15, height: 15 }}
-                          />
-                        </View>
-                        <Text style={{ marginRight: 14 }}>Add</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </TouchableOpacity>
-                )}
-              />
-            ) : (
-              <FlatList
-                data={firstThreeUsers}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  paddingBottom: 430, //fix navbar does not block the last item
-                }}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={{
-                      marginLeft: 25,
-                      marginTop: 10,
-                      borderLeftWidth: 1,
-                      borderRightWidth: 1,
-                      borderBottomWidth: 1,
-                      borderTopWidth: 1,
-                      marginRight: 25,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
-                    }}
-                  >
-                    <TouchableOpacity>
-                      <Image
-                        source={image}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          margin: 10,
-                        }}
-                      />
-                    </TouchableOpacity>
-                    <View style={{ display: "flex", flexDirection: "column" }}>
-                      <Text>{item.name}</Text>
-                      <Text>{item.username}</Text>
-                    </View>
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 30,
-                      }}
-                    >
-                      <TouchableOpacity
-                        style={{
-                          backgroundColor: "red",
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                          borderBottomRightRadius: 10,
-                          height: 30,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                        onPress={() => handleAddFriend(item.userid)}
-                      >
-                        <View style={{ marginLeft: 13, marginRight: 8 }}>
-                          <Image
-                            source={require("../assets/ADDFRIEND2.png")}
-                            style={{ width: 15, height: 15 }}
-                          />
-                        </View>
-                        <Text style={{ marginRight: 14 }}>Add</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </TouchableOpacity>
-                )}
-              />
-            )}
-            {searchValue !== "" ? null : allUsers.length <=
-              3 ? null : showAllQuickAdd ? (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "red",
-                  bottom: 420,
-                  width: 100,
-                  alignItems: "center",
-                  height: 30,
-                  justifyContent: "center",
-                  borderTopLeftRadius: 10,
-                  borderBottomLeftRadius: 10,
-                  borderTopRightRadius: 10,
-                  borderBottomRightRadius: 10,
-                }}
-                onPress={() => setShowAllQuickAdd(false)}
-              >
-                <Text style={{ fontSize: 15 }}>Show Less</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "red",
-                  bottom: 420,
-                  width: 100,
-                  // marginLeft: '25%',
-                  // marginRight: '25%',
-                  alignItems: "center",
-                  height: 30,
-                  justifyContent: "center",
-                  borderTopLeftRadius: 10,
-                  borderBottomLeftRadius: 10,
-                  borderTopRightRadius: 10,
-                  borderBottomRightRadius: 10,
-                }}
-                onPress={() => setShowAllQuickAdd(true)}
-              >
-                <Text style={{ fontSize: 15 }}>Show More</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
-
-        */
