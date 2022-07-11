@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, FlatList, Keyboard, ScrollView, Image} from "react-native";
-import { TextInput, Button, Snackbar } from "react-native-paper";
+import { Text, View, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, FlatList, Keyboard, ScrollView, Image, ImageBackground} from "react-native";
+import { TextInput, Button, Snackbar, Avatar, TouchableRipple, Title } from "react-native-paper";
+import Icon from '@expo/vector-icons/MaterialCommunityIcons'
 import { auth, firestore, signOut, updateEmail } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import BottomSheet from 'reanimated-bottom-sheet';
+import Animated from "react-native-reanimated";
 import { authStyle, userProfile } from "../styles";
 
 const EditProfileModal = ({ user, closeModal }) => {
@@ -16,12 +19,14 @@ const EditProfileModal = ({ user, closeModal }) => {
   const [hasNewEmail, setHasNewEmail] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
+  const bs = React.createRef();
+  const fall = new Animated.Value(1);
+
   const handleSignOut = () => {
     signOut(auth);
   };
 
   const handleSubmit = () => {
-    // console.log(name, username, email, newEmail);
     if (username.length == 0) {
       setIsValid({
         bool: true,
@@ -65,8 +70,35 @@ const EditProfileModal = ({ user, closeModal }) => {
     Keyboard.dismiss();
   };
 
+  const renderInner = () => (
+    <View style={userProfile.panel}>
+      <View style={{alignItems: 'center'}}>
+        <Text style={userProfile.panelTitle}>Upload Photo</Text>
+        <Text style={userProfile.panelSubtitle}>Choose your profile picture</Text>
+      </View>
+      <TouchableOpacity style={userProfile.panelButton}>
+        <Text style={userProfile.panelButtonTitle}>Take a photo</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={userProfile.panelButton}>
+        <Text style={userProfile.panelButtonTitle}>Choose from library</Text>
+      </TouchableOpacity>
+    </View>
+  )
+
+  const renderHeader = () => (
+    <View style={userProfile.header}>
+      <View style={userProfile.panelHeader}>
+        <View style={userProfile.panelHandle}>
+
+        </View>
+      </View>
+  </View>
+  )
+
+
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <BottomSheet ref={bs} snapPoints={[300, 0]} renderContent={renderInner} renderHeader={renderHeader} initialSnap={1} callbackNode={fall} enabledGestureInteraction={true} />
       <SafeAreaView>
         <TouchableOpacity
           style={{ position: "absolute", top: 64, right: 32, zIndex: 10 }}
@@ -75,15 +107,37 @@ const EditProfileModal = ({ user, closeModal }) => {
           <AntDesign name="close" size={24} color="black" />
         </TouchableOpacity>
         <ScrollView>
+          <Title style={authStyle.header}>Edit your profile</Title>
           <View style={userProfile.body}>
-            <Image
-              source={require("../assets/user-avatar.png")}
-              style={{ width: 100, height: 100 }}
-            />
-            <Text style={authStyle.header}>Edit your profile</Text>
+      {/* ------------------------------ Bottom Slider ------------------------------------ */}
+            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
+              <View style={{
+                height: 100,
+                width: 100,
+                borderRadius: 15,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <ImageBackground source={{uri: 'https://picsum.photos/100'}} style={{height: 100, width: 100}} imageStyle={{borderRadius: 15}} >
+                  <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                    <Icon name="camera" size={40} color='white' style={{
+                      opacity: 0.7,
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }} />
+                  </View>
+                </ImageBackground>
+              </View>
+            </TouchableOpacity>
             <TextInput
               label="Name"
               style={userProfile.input}
+              autoCorrect={false}
+              autoComplete={false}
               mode="outlined"
               onChangeText={(name) => setName(name)}
               value={name}
@@ -91,7 +145,9 @@ const EditProfileModal = ({ user, closeModal }) => {
             <TextInput
               style={userProfile.input}
               value={username}
-              autoCapitalize="none"
+              autoCapitalize='none'
+              autoCorrect={false}
+              autoComplete={false}
               mode="outlined"
               label="Username"
               onChangeText={(username) =>
@@ -106,7 +162,9 @@ const EditProfileModal = ({ user, closeModal }) => {
             />
             <TextInput
               style={userProfile.input}
-              autoCapitalize="none"
+              autoCapitalize='none'
+              autoCorrect={false}
+              autoComplete={false}
               mode="outlined"
               label="Email"
               value={email}
@@ -119,7 +177,7 @@ const EditProfileModal = ({ user, closeModal }) => {
               <View>
                 <TextInput
                   style={userProfile.input}
-                  autoCapitalize="none"
+                  autoCapitalize='none'
                   secureTextEntry={passwordVisible}
                   mode="outlined"
                   label="Password"
