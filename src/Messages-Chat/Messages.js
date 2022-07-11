@@ -31,17 +31,18 @@ const Messages = (props) => {
   const fetchAllChats = async () => {
     // const snapShot = await getDocs(collection(firestore, "chats"))
 
-    onSnapshot(collection(firestore, "chats"), async (snapShot)=>{
+    onSnapshot(collection(firestore, "chats"), async (snapShot) => {
       const chats = []; //holds details of chat
       snapShot.forEach((doc) => {
         if (doc.data().userids.includes(auth.currentUser.uid)) {
           chats.push(doc.data());
         }
       });
-  
+
       //doc.id returns the auto genned id
-  
+
       const userData = []; //data to be rendered on messages screen for each chat
+
       for (let i = 0; i < chats.length; i++) {
         const docSnap = await getDoc(
           doc(
@@ -50,25 +51,49 @@ const Messages = (props) => {
             chats[i].userids.filter((id) => id !== auth.currentUser.uid)[0]
           )
         );
-  
+
         userData.push({
           ...docSnap.data(),
           lastMessage: chats.find(
             (chat) =>
               chat.userids.includes(docSnap.data().userid) &&
               chat.userids.includes(auth.currentUser.uid)
-          ).messages[0],
+          ).messages[0].message,
           chatid: chats.find(
             (chat) =>
               chat.userids.includes(docSnap.data().userid) &&
               chat.userids.includes(auth.currentUser.uid)
           ).chatid,
+          timesent: chats
+            .find(
+              (chat) =>
+                chat.userids.includes(docSnap.data().userid) &&
+                chat.userids.includes(auth.currentUser.uid)
+            )
+            .messages[0].time.toDate()
+            .getTime(),
         });
       }
-  
+
+      userData.sort(sorting);
+
       allChatsData !== userData ? setAllChatsData(userData) : null;
-    })
+    });
   };
+
+  const getTimeDifference = (timesent) => {
+    const timeNow = new Date().getTime();
+    const difference = (timeNow - timesent) / 1000;
+    const diff = difference / 60;
+
+    return Math.abs(Math.round(diff));
+  };
+
+  function sorting(a, b) {
+    if (a.timesent > b.timesent) return -1; //this function sorts the array by the time sent so the most recent message will appear first
+    if (a.timesent < b.timesent) return 1;
+    return 0;
+  }
 
   useEffect(() => {
     fetchAllChats();
@@ -88,7 +113,11 @@ const Messages = (props) => {
             }}
             renderItem={({ item }) => (
               <TouchableOpacity
-                style={{ width: "100%" }}
+                style={{
+                  width: "100%",
+                  backgroundColor: "white",
+                  marginBottom: 1,
+                }}
                 onPress={() =>
                   props.navigation.navigate("ChatScreen", {
                     chatid: item.chatid,
@@ -103,12 +132,59 @@ const Messages = (props) => {
                   <View style={styles.textView}>
                     <View style={styles.userinfotext}>
                       <Text style={styles.username}>{item.name}</Text>
-                      {/* <Text style={styles.posttime}>{item.messageTime}</Text> */}
+
+                      {getTimeDifference(item.timesent) < 60 ? (
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#666",
+                            marginRight: 30,
+                          }}
+                        >
+                          {getTimeDifference(item.timesent)} Minutes Ago
+                        </Text>
+                      ) : getTimeDifference(item.timesent) >= 60 &&
+                        getTimeDifference(item.timesent) < 1440 ? (
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#666",
+                            marginRight: 30,
+                          }}
+                        >
+                          {" "}
+                          {Math.floor(
+                            getTimeDifference(item.timesent) / 60
+                          )}{" "}
+                          Hours Ago
+                        </Text>
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#666",
+                            marginRight: 30,
+                          }}
+                        >
+                          {Math.floor(getTimeDifference(item.timesent) / 1440)}{" "}
+                          {Math.floor(
+                            getTimeDifference(item.timesent) / 1440
+                          ) === 1
+                            ? "Day Ago"
+                            : "Days Ago"}
+                        </Text>
+                      )}
                     </View>
-                    <Text style={styles.messageText}>
-                      {/* {item.lastMessage.message ? item.lastMessage.message : null} */}
-                      hi
-                    </Text>
+                    <View style={{ width: "65%" }}>
+                      <Text style={styles.messageText}>
+                        {item.lastMessage.length <= 25 &&
+                        item.lastMessage.length > 0
+                          ? item.lastMessage
+                          : item.lastMessage.length > 25
+                          ? item.lastMessage.slice(0, 23) + "..."
+                          : null}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -118,11 +194,10 @@ const Messages = (props) => {
             style={{
               width: 60,
               height: 60,
-
               backgroundColor: "#ee6e73",
               position: "absolute",
-              bottom: 90,
-              right: 0,
+              bottom: 80,
+              right: 20,
               borderRadius: 70 / 2,
               alignItems: "center",
               justifyContent: "center",
@@ -165,10 +240,8 @@ const Messages = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#F0F0F0",
     marginTop: 0,
   },
   userinfo: {
@@ -178,6 +251,7 @@ const styles = StyleSheet.create({
   userimage: {
     paddingTop: 15,
     paddingBottom: 15,
+    marginLeft: 15,
   },
   img: {
     width: 50,
@@ -191,8 +265,6 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     marginLeft: 10,
     width: 300,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
   },
   userinfotext: {
     flexDirection: "row",

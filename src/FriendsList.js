@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-} from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
+} from "react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
 import {
   collection,
   getDocs,
@@ -20,22 +20,23 @@ import {
   doc,
   getDoc,
   setDoc,
-} from 'firebase/firestore';
-import { auth, firestore } from '../firebase';
-const image = require('../assets/favicon.png');
+} from "firebase/firestore";
+import { auth, firestore } from "../firebase";
+const image = require("../assets/favicon.png");
 
 const FriendsList = ({ navigation }) => {
   const [allFriends, setAllFriends] = useState([]);
+  const [renderedUsers, setRenderedUsers] = useState([]);
+  const [searchValue, setSearchValue] = useState([""]);
 
   const fetchAllFriends = async () => {
     const snapShot = await getDocs(
-      collection(firestore, 'users', auth.currentUser.uid, 'friendships')
+      collection(firestore, "users", auth.currentUser.uid, "friendships")
     );
     const friends = [];
 
     snapShot.forEach((doc) => {
-      console.log(doc.data());
-      if (doc.data().status === 'friends') {
+      if (doc.data().status === "friends") {
         friends.push(doc.data());
       }
     });
@@ -43,13 +44,29 @@ const FriendsList = ({ navigation }) => {
     // allFriends !== friends ? setAllFriends(friends) : null;
 
     const friendDocs = await Promise.all(
-      friends.map((f) => getDoc(doc(firestore, 'users', f.userid)))
+      friends.map((f) => getDoc(doc(firestore, "users", f.userid)))
     );
 
     const friendItems = friendDocs.map((i) => i.data());
-    console.log('FRIENDSSSSS', friendItems);
 
     setAllFriends(friendItems);
+    setRenderedUsers(friendItems);
+  };
+
+  const search = (value) => {
+    const filtered = allFriends.filter(
+      (user) =>
+        user.name
+          .toLowerCase()
+          .slice(0, value.length)
+          .includes(value.toLowerCase()) ||
+        user.username
+          .toLowerCase()
+          .slice(0, value.length)
+          .includes(value.toLowerCase())
+    );
+
+    setRenderedUsers(filtered);
   };
 
   useEffect(() => {
@@ -60,21 +77,21 @@ const FriendsList = ({ navigation }) => {
     <View>
       <View
         style={{
-          display: 'flex',
+          display: "flex",
           marginTop: 40,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <TouchableOpacity
           style={{
-            backgroundColor: 'aqua', //random vibrant color for now, style our app later
+            backgroundColor: "white", //random vibrant color for now, style our app later
             borderRadius: 25,
             height: 35,
             width: 35,
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: "center",
+            justifyContent: "center",
             marginLeft: 13,
           }}
           onPress={() => navigation.goBack()}
@@ -82,16 +99,16 @@ const FriendsList = ({ navigation }) => {
           <AntDesign name='left' color='black' size={18} />
         </TouchableOpacity>
         <View style={{ flexGrow: 1 }} />
-        <Text style={{ fontWeight: '700', fontSize: 22 }}>My Friends</Text>
+        <Text style={{ fontWeight: "700", fontSize: 22 }}>My Friends</Text>
         <View style={{ flexGrow: 1 }} />
         <TouchableOpacity
           style={{
-            backgroundColor: 'aqua', //random vibrant color for now, style our app later
+            backgroundColor: "white", //random vibrant color for now, style our app later
             borderRadius: 25,
             height: 35,
             width: 35,
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: "center",
+            justifyContent: "center",
             marginRight: 13,
           }}
           onPress={() => navigation.goBack()}
@@ -102,25 +119,45 @@ const FriendsList = ({ navigation }) => {
       <View
         style={{
           marginTop: 40,
-          marginLeft: 25,
-          marginRight: 25,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
+          marginLeft: 15,
+          marginRight: 15,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          borderRadius: 50,
+          backgroundColor: "white",
+          height: 40,
+          paddingHorizontal: 16,
+          flexGrow: 1,
+          marginBottom: 5,
+          shadowColor: "#7F5DF0",
+          shadowOffset: {
+            width: 0,
+            height: 10,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.5,
+          elevation: 5,
         }}
       >
-        <TextInput
-          placeholder='Search'
+        <Image
+          source={require("../assets/search2.png")}
           style={{
-            height: 40,
-            borderWidth: StyleSheet.hairlineWidth,
-            borderRadius: 30,
+            width: 22,
+            height: 22,
+            resizeMode: "contain",
+          }}
+        />
+        <TextInput
+          placeholder='Find Friends'
+          onChangeText={(value) => {
+            setSearchValue(value), search(value);
+          }}
+          style={{
             paddingHorizontal: 16,
-            color: 'black',
-            fontWeight: '600',
-            width: '100%',
-            backgroundColor: 'ghostwhite',
+            color: "black",
+            fontWeight: "600",
+            flexGrow: 1,
           }}
         />
         <TouchableOpacity
@@ -129,77 +166,98 @@ const FriendsList = ({ navigation }) => {
         ></TouchableOpacity>
       </View>
 
-      <View>
-        <FlatList
-          data={allFriends}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TouchableOpacity
+      <View style={{ marginTop: 20 }}>
+        {allFriends.map((item) => (
+          <TouchableOpacity
+            key={item.userid}
+            style={{
+              marginLeft: 15,
+              marginRight: 15,
+              paddingTop: 7,
+              paddingBottom: 0,
+              borderColor: "#cccccc",
+              display: "flex",
+              flexDirection: "row",
+              paddingLeft: 10,
+              paddingRight: 15,
+              borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
+              borderTopRightRadius: item === allFriends[0] ? 8 : 0,
+              backgroundColor: "white",
+              marginBottom: 1,
+              borderBottomRightRadius:
+                item === allFriends[allFriends.length - 1] ? 8 : 0,
+              borderBottomLeftRadius:
+                item === allFriends[allFriends.length - 1] ? 8 : 0,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+            }}
+          >
+            <TouchableOpacity>
+              <Image
+                source={image}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  marginTop: 10,
+                  marginBottom: 10,
+                  marginRight: 5,
+                }}
+              />
+            </TouchableOpacity>
+            <View
               style={{
-                marginLeft: 25,
-                marginTop: 10,
-                borderLeftWidth: 1,
-                borderRightWidth: 1,
-                borderBottomWidth: 1,
-                borderTopWidth: 1,
-                marginRight: 25,
-                borderColor: '#cccccc',
-                display: 'flex',
-                flexDirection: 'row',
-                paddingLeft: 10,
-                paddingRight: 15,
+                display: "flex",
+                flexDirection: "column",
+                width: "52%",
               }}
             >
-              <TouchableOpacity>
-                <Image
-                  source={image}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 25,
-                    margin: 10,
-                  }}
-                />
-              </TouchableOpacity>
-              <View style={{ display: 'flex', flexDirection: 'column' }}>
-                <Text>{item.name}</Text>
-                <Text>{item.username}</Text>
-                <Text>3 Mutual Friends</Text>
-              </View>
-              <View
+              <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                {item.name}
+              </Text>
+              <Text style={{ color: "gray" }}>{item.username}</Text>
+              <Text>3 Mutual Friends</Text>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: 25,
+              }}
+            >
+              <TouchableOpacity
                 style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginLeft: 30,
+                  backgroundColor: "red",
+                  borderRadius: 25,
+                  height: 30,
+                  width: 60,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  display: "flex",
+                  flexDirection: "row",
                 }}
               >
-                <TouchableOpacity
+                <View
                   style={{
-                    backgroundColor: 'red',
-                    borderTopLeftRadius: 10,
-                    borderBottomLeftRadius: 10,
-                    borderTopRightRadius: 10,
-                    borderBottomRightRadius: 10,
-                    height: 30,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    display: 'flex',
-                    flexDirection: 'row',
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  <View style={{ marginLeft: 13, marginRight: 8 }}>
-                    <Image
-                      source={require('../assets/ADDFRIEND2.png')}
-                      style={{ width: 15, height: 15 }}
-                    />
-                  </View>
-                  <Text style={{ marginRight: 14 }}>Remove</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
+                  <Image
+                    source={require("../assets/ADDFRIEND2.png")}
+                    style={{ width: 15, height: 15 }}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );
