@@ -111,7 +111,7 @@ const fetchAllFriends = async () => {
   const friendsItems = friendDocs.map((i) => i.data());
 
   setAllFriends(friendsItems)
-  console.log(allFriends)
+  // console.log(allFriends)
 }
 
 async function fetchFriendsPosts(id){
@@ -190,7 +190,7 @@ async function fetchFriendsPosts(id){
   const handleNext = (taskId) => {
     let nextPost = featuredPostsData.filter((item) => item.taskId === taskId + 1)
     setDisplayPostText(1);
-    console.log(nextPost)
+    // console.log(nextPost)
     nextPost.length ? setDisplayPost(nextPost[0]) : setView('featured')
   }
 
@@ -225,7 +225,7 @@ async function fetchFriendsPosts(id){
   useEffect(() => {
     fetchUserPosts();
     fetchAllFriends()
-    console.log('useEffect1', allFriends)
+    console.log('useEffect1')
     // console.log('All user tasks', allUserTasks);
 
   }, []);
