@@ -5,7 +5,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Messages from "../src/Messages-Chat/Messages";
 import Profile from "../src/Profile";
-import EditProfile from "../src/EditProfile";
 import Tasks from "../src/Tasks";
 import AddTask from "../src/AddTask";
 import List from "../src/List";
@@ -260,7 +259,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ChatScreen" ||
       currentRoute === "SearchScreen" ||
       currentRoute === "ProfileMessages" ||
-      
+
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat"
@@ -373,7 +372,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ChatScreen" ||
       currentRoute === "SearchScreen" ||
       currentRoute === "ProfileMessages" ||
-      
+
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat"

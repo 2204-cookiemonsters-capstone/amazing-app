@@ -10,10 +10,10 @@ import {
   Keyboard
 } from "react-native";
 import { todoListStyle, color } from "../styles";
-import ToDoItem from "./ToDoItem";
+import FriendToDoItem from "./FriendToDoItem";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-export default class TodoModal extends React.Component {
+export default class FriendTodoModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,9 +21,15 @@ export default class TodoModal extends React.Component {
     };
   }
 
-  toggleTodoCompleted = index => {
+  likeTodoItem = index => {
     let list = this.props.list;
-    list.todos[index].completed = !list.todos[index].completed;
+    list.todos[index].likes = list.todos[index].likes + 1;
+    this.props.updateList(list);
+  }
+
+  unlikeTodoItem = index => {
+    let list = this.props.list;
+    list.todos[index].likes = list.todos[index].likes - 1;
     this.props.updateList(list);
   }
 
@@ -60,6 +66,7 @@ export default class TodoModal extends React.Component {
           ]}
         >
           <View>
+            <Text>FRIEND'S MODAL</Text>
             <Text style={todoListStyle.todoModal.title}>{list.name}</Text>
             <Text style={todoListStyle.todoModal.taskCount}>
               {completedCount} of {taskCount} tasks
@@ -69,8 +76,7 @@ export default class TodoModal extends React.Component {
         <View style={[todoListStyle.todoModal.section, { flex: 3 }]}>
           <FlatList
             data={list.todos}
-            //---------------------------------
-            renderItem={({ item, index }) => <ToDoItem todo={item} index={index} toggleTodoCompleted={this.toggleTodoCompleted}/>}
+            renderItem={({ item, index }) => <FriendToDoItem todo={item} index={index} toggleTodoCompleted={this.toggleTodoCompleted} likeTodoItem={this.likeTodoItem} unlikeTodoItem={this.unlikeTodoItem} />}
             keyExtractor={(_, index) => index.toString()}
             contentContainerStyle={{
               paddingHorizontal: 32,

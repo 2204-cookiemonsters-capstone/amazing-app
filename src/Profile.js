@@ -12,11 +12,14 @@ import {
 } from 'firebase/firestore';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EditProfileModal from "./EditProfileModal";
+import FriendModal from "./FriendModal";
 
 const Profile = ({ navigation }) => {
   const [userData, setUserData] = useState('');
   const [friends, setFriends] = useState([]);
+  const [selectedFriend, setSelectedFriend] = useState('');
   const [showEditModal, setShowEditModal] = useState(false)
+  const [showFriendModal, setShowFriendModal] = useState(false)
 
   const getFriends = async () => {
     const snapShot = await getDocs(
@@ -54,10 +57,13 @@ const Profile = ({ navigation }) => {
   const toggleEditModal = () => {
     setShowEditModal(!showEditModal);
   }
+  const toggleFriendModal = () => {
+    setShowFriendModal(!showFriendModal);
+  }
 
   const friendRow = (item) => (
     <View key={item.userid}>
-      <TouchableOpacity style={friendList.friendRow}>
+      <TouchableOpacity style={friendList.friendRow} onPress={() => {toggleFriendModal(); setSelectedFriend(item.userid)}}>
         <TouchableOpacity>
           <Image
             source={require('../assets/user-avatar.png')}
@@ -69,7 +75,7 @@ const Profile = ({ navigation }) => {
           <Text>{item.username}</Text>
         </View>
         <View style={friendList.buttonContainer}>
-          <TouchableOpacity style={friendList.button} onPress={()=> handleUnfriend(item.userid)}>
+          <TouchableOpacity style={friendList.button}>
             <View style={{ marginLeft: 13, marginRight: 8 }}>
             </View>
             <Text style={{ marginRight: 14 }}>Unfriend</Text>
@@ -90,7 +96,17 @@ const Profile = ({ navigation }) => {
             user={userData}
             closeModal={() => toggleEditModal()}
           />
-        </Modal>
+      </Modal>
+      <Modal
+          animationType="slide"
+          visible={showFriendModal}
+          onRequestClose={() => toggleFriendModal()}
+        >
+          <FriendModal
+            user={selectedFriend}
+            closeModal={() => toggleFriendModal()}
+          />
+      </Modal>
       <View style={userProfile.topNav}>
         <TouchableOpacity
           style={userProfile.headerButtons}
