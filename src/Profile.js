@@ -1,143 +1,375 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, Button, Modal } from 'react-native';
-import { auth, firestore } from '../firebase';
-import { userProfile, friendList } from '../styles';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Button,
+  Modal,
+  Touchable,
+  SafeAreaView
+} from "react-native";
+import { auth, firestore } from "../firebase";
+import { userProfile, friendList } from "../styles";
 import {
   doc,
   getDoc,
   getDocs,
   collection,
   deleteDoc,
-  where
-} from 'firebase/firestore';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+  where,
+} from "firebase/firestore";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import EditProfileModal from "./EditProfileModal";
 import FriendModal from "./FriendModal";
+import OctIcons from "react-native-vector-icons/Octicons";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const Profile = ({ navigation }) => {
-  const [userData, setUserData] = useState('');
+  const [userData, setUserData] = useState("");
+  console.log(userData);
   const [friends, setFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState('');
-  const [showEditModal, setShowEditModal] = useState(false)
-  const [showFriendModal, setShowFriendModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false);
 
-  const getFriends = async () => {
-    const snapShot = await getDocs(
-      collection(firestore, 'users', auth.currentUser.uid, 'friendships')
-    );
-    const allFriends = [];
-    snapShot.forEach((doc) => {
-      if (doc.data().status === 'friends') {
-        allFriends.push(doc.data());
-      }
-    });
-    // fetching all documents by mapping an array of promises and using Promise.all()
-    const friendDocs = await Promise.all(
-      allFriends.map((f) => getDoc(doc(firestore, 'users', f.userid)))
-    );
-    // mapping array of document data
-    const friendItems = friendDocs.map((i) => i.data());
-    //set state
-    setFriends(friendItems);
-    console.log("GOT FRIENDS FROM DB")
+  const [visibilityProfile, setVisibilityProfile] = useState(false);
+
+  useEffect(() => {
+    setVisibilityProfile(true);
+  }, []);
+
+  const toggleVisibilityProfile = () => {
+    setVisibilityProfile(false);
+    navigation.goBack();
+  };
+
+  const getWidthScore = () => {
+    return Number(30 + String(userData.score).length * 9);
+  };
+
+  // const getFriends = async () => {
+  //   const snapShot = await getDocs(
+  //     collection(firestore, "users", auth.currentUser.uid, "friendships")
+  //   );
+  //   const allFriends = [];
+  //   snapShot.forEach((doc) => {
+  //     if (doc.data().status === "friends") {
+  //       allFriends.push(doc.data());
+  //     }
+  //   });
+  //   // fetching all documents by mapping an array of promises and using Promise.all()
+  //   const friendDocs = await Promise.all(
+  //     allFriends.map((f) => getDoc(doc(firestore, "users", f.userid)))
+  //   );
+  //   // mapping array of document data
+  //   const friendItems = friendDocs.map((i) => i.data());
+  //   //set state
+  //   setFriends(friendItems);
+  //   console.log("GOT FRIENDS FROM DB");
+  // };
+
+  const getUser = async () => {
+    const docRef = doc(firestore, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setUserData(docSnap.data());
+    }
   };
 
   useEffect(() => {
-    const getUser = async () => {
-      const docRef = doc(firestore, 'users', auth.currentUser.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserData(docSnap.data());
-      }
-    };
     getUser();
-    getFriends();
   }, []);
 
   const toggleEditModal = () => {
     setShowEditModal(!showEditModal);
   }
-  const toggleFriendModal = () => {
-    setShowFriendModal(!showFriendModal);
-  }
 
-  const friendRow = (item) => (
-    <View key={item.userid}>
-      <TouchableOpacity style={friendList.friendRow} onPress={() => {toggleFriendModal(); setSelectedFriend(item.userid)}}>
-        <TouchableOpacity>
-          <Image
-            source={require('../assets/user-avatar.png')}
-            style={friendList.image}
-          />
-        </TouchableOpacity>
-        <View style={friendList.infoContainer}>
-          <Text>{item.name}</Text>
-          <Text>{item.username}</Text>
-        </View>
-        <View style={friendList.buttonContainer}>
-          <TouchableOpacity style={friendList.button}>
-            <View style={{ marginLeft: 13, marginRight: 8 }}>
-            </View>
-            <Text style={{ marginRight: 14 }}>Unfriend</Text>
-          </TouchableOpacity>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
+// THIS WAS THE CODE TO LAUNCH THE EDIT USER PROFILE MODAL
+      // <Modal
+      //     animationType="slide"
+      //     visible={showEditModal}
+      //     onRequestClose={() => toggleEditModal()}
+      //   >
+      //     <EditProfileModal
+      //       user={userData}
+      //       closeModal={() => toggleEditModal()}
+      //     />
+      // </Modal>
+      // <View style={userProfile.topNav}>
+      //   <TouchableOpacity
+      //     style={userProfile.headerButtons}
+      //     onPress={() => navigation.goBack()}
+      //   >
+      //     <AntDesign name='left' color='black' />
+      //   </TouchableOpacity>
+      //   <TouchableOpacity
+      //     style={userProfile.headerButtons}
+      //     onPress={() => toggleEditModal()} //edit this in auth path
+      //    />
 
   return (
-    <View style={userProfile.container}>
+    <SafeAreaView>
       <Modal
-          animationType="slide"
-          visible={showEditModal}
-          onRequestClose={() => toggleEditModal()}
+      animationType='slide'
+      visible={visibilityProfile}
+      onRequestClose={() => toggleVisibilityProfile()}
+    >
+      <View style={{ backgroundColor: "#F0F0F0", height: "100%" }}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
-          <EditProfileModal
-            user={userData}
-            closeModal={() => toggleEditModal()}
-          />
-      </Modal>
-      <Modal
-          animationType="slide"
-          visible={showFriendModal}
-          onRequestClose={() => toggleFriendModal()}
-        >
-          <FriendModal
-            user={selectedFriend}
-            closeModal={() => toggleFriendModal()}
-          />
-      </Modal>
-      <View style={userProfile.topNav}>
-        <TouchableOpacity
-          style={userProfile.headerButtons}
-          onPress={() => navigation.goBack()}
-        >
-          <AntDesign name='left' color='black' />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={userProfile.headerButtons}
-          onPress={() => toggleEditModal()} //edit this in auth path
-        >
-          <Image
-            source={require('../assets/pencil.png')}
-            style={{ width: 30, height: 30 }}
-          />
-        </TouchableOpacity>
-      </View>
-      <Button
-        title='Friends'
-        onPress={() => navigation.navigate('FriendsList')}
-      />
-      <View style={userProfile.body}>
-        <Text style={userProfile.text}>{userData.name}</Text>
-        <Text style={userProfile.text}>Score: {userData.score}</Text>
-        <Text style={userProfile.text}>Friends: {friends.length}</Text>
-        <View>
-          <Text>Friends</Text>
-          <View>{friends.map((item) => (friendRow(item)))}</View>
+          <View
+            style={{ display: "flex", flexDirection: "row", marginBottom: 30 }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: "white",
+                borderRadius: 25,
+                height: 35,
+                width: 35,
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: 15,
+                marginTop: 15,
+                shadowColor: "#7F5DF0",
+                shadowOffset: {
+                  width: 0,
+                  height: 10,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.5,
+                elevation: 5,
+              }}
+              onPress={() => toggleVisibilityProfile()}
+            >
+              <AntDesign name='down' size={20} />
+            </TouchableOpacity>
+            <View style={{ flexGrow: 1 }} />
+            <TouchableOpacity
+              style={{
+                backgroundColor: "white",
+                borderRadius: 25,
+                height: 35,
+                width: 35,
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 15,
+                marginRight: 15,
+                shadowColor: "#7F5DF0",
+                shadowOffset: {
+                  width: 0,
+                  height: 10,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.5,
+                elevation: 5,
+              }}
+              onPress={() => toggleEditModal()}
+            >
+              <OctIcons name='gear' size={20} />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              height: 60,
+              marginTop: 0,
+              marginLeft: 20,
+            }}
+          >
+            <TouchableWithoutFeedback>
+              <Image
+                source={require("../assets/favicon.png")}
+                style={{ width: 60, height: 60, resizeMode: "contain" }}
+              />
+            </TouchableWithoutFeedback>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginLeft: 20,
+              }}
+            >
+              <Text
+                style={{ fontSize: 18, fontWeight: "500", marginBottom: 13 }}
+              >
+                {userData.name}
+              </Text>
+
+              <Text style={{ color: "grey", fontSize: 12 }}>
+                {userData.username}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              backgroundColor: "white",
+              borderRadius: 15,
+              height: 30,
+              justifyContent: "center",
+              alignItems: "center",
+              width: getWidthScore(),
+              display: "flex",
+              flexDirection: "row",
+              marginTop: 10,
+              marginLeft: 15,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+            }}
+          >
+            <AntDesign name='aliwangwang-o1' />
+            <Text> {userData.score}</Text>
+          </View>
+          <View style={{ marginTop: 25, marginLeft: 15 }}>
+            <Text style={{ fontWeight: "700", fontSize: 17 }}>My Stories</Text>
+          </View>
+          <TouchableOpacity
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: 20,
+              backgroundColor: "white",
+              marginRight: 15,
+              marginLeft: 15,
+              height: 55,
+              alignItems: "center",
+              borderRadius: 15,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+            }}
+          >
+            <SimpleLineIcons
+              name='camera'
+              size={30}
+              style={{ marginLeft: 20 }}
+            />
+            <Text style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}>
+              Add To My Story
+            </Text>
+            <View style={{ flexGrow: 1 }} />
+            <AntDesign
+              name='right'
+              size={18}
+              color='lightgray'
+              style={{ marginRight: 15 }}
+            />
+          </TouchableOpacity>
+          <View style={{ marginTop: 25, marginLeft: 15 }}>
+            <Text style={{ fontWeight: "700", fontSize: 18 }}>Friends</Text>
+          </View>
+          <TouchableOpacity
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: 20,
+              backgroundColor: "white",
+              marginRight: 15,
+              marginLeft: 15,
+              height: 55,
+              alignItems: "center",
+              borderRadius: 15,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+            }}
+            onPress={() => {
+              setVisibilityProfile(false);
+              navigation.goBack();
+              navigation.navigate("AddFriends");
+            }}
+          >
+            <Image
+              source={require("../assets/addperson.png")}
+              style={{
+                width: 30,
+                height: 30,
+                resizeMode: "contain",
+                marginLeft: 15,
+              }}
+            />
+            <Text style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}>
+              Add Friends
+            </Text>
+            <View style={{ flexGrow: 1 }} />
+            <AntDesign
+              name='right'
+              size={18}
+              color='lightgray'
+              style={{ marginRight: 15 }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: 10,
+              backgroundColor: "white",
+              marginRight: 15,
+              marginLeft: 15,
+              height: 55,
+              alignItems: "center",
+              borderRadius: 15,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+            }}
+            onPress={() => {
+              setVisibilityProfile(false);
+              navigation.goBack();
+              navigation.navigate("FriendsList");
+            }}
+          >
+            <Image
+              source={require("../assets/friendlist2.png")}
+              style={{
+                width: 33,
+                height: 33,
+                resizeMode: "contain",
+                marginLeft: 15,
+              }}
+            />
+            <Text style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}>
+              My Friends
+            </Text>
+            <View style={{ flexGrow: 1 }} />
+            <AntDesign
+              name='right'
+              size={18}
+              color='lightgray'
+              style={{ marginRight: 15 }}
+            />
+          </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </Modal>
+    </SafeAreaView>
   );
 };
 
