@@ -12,7 +12,6 @@ import {
 import { auth, firestore } from "../firebase";
 import { todoListStyle, color } from "../styles";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { tempData } from "./List";
 
 export default class TodoModal extends React.Component {
   constructor(props) {
@@ -26,8 +25,8 @@ export default class TodoModal extends React.Component {
     let list = this.props.list;
     list.todos[index].completed = !list.todos[index].completed;
     this.props.updateList(list);
-    console.log("updated list", list)
   }
+
   addTodo = () => {
     let list = this.props.list;
     list.todos.push({title: this.state.newTodo, completed: false});

@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, TouchableOpacity, Text, Image, ScrollView } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Messages from "../src/Messages-Chat/Messages";
 import Profile from "../src/Profile";
-import EditProfile from "../src/EditProfile";
 import Tasks from "../src/Tasks";
 import AddTask from "../src/AddTask";
 import List from "../src/List";
@@ -15,6 +14,7 @@ import SearchPage from "../src/SearchPage";
 import AddFriends from "../src/AddFriends";
 import FriendsList from "../src/FriendsList";
 import AddChat from "../src/Messages-Chat/AddChat";
+import SingleProfile from "../src/SingleProfile";
 
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -64,7 +64,7 @@ const MessagesStack = ({ navigation }) => (
               justifyContent: "center",
               marginRight: 13,
             }}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate("SingleProfile")}
           >
             <Entypo name='dots-three-horizontal' color='black' size={18} />
           </TouchableOpacity>
@@ -83,11 +83,6 @@ const MessagesStack = ({ navigation }) => (
       component={Profile}
       options={{ header: () => null }}
     />
-    <Stack.Screen
-      name='EditProfile'
-      component={EditProfile}
-      options={{ header: () => null }}
-    />
 
     <Stack.Screen
       name='AddFriends'
@@ -103,6 +98,11 @@ const MessagesStack = ({ navigation }) => (
     <Stack.Screen
       name='AddChat'
       component={AddChat}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='SingleProfile'
+      component={SingleProfile}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -139,6 +139,11 @@ const TasksStack = ({ navigation }) => (
     <Stack.Screen
       name='AddChat'
       component={AddChat}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='SingleProfile'
+      component={SingleProfile}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -179,6 +184,11 @@ const AddTaskStack = ({ navigation }) => (
       component={AddChat}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name='SingleProfile'
+      component={SingleProfile}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -215,6 +225,11 @@ const ListStack = ({ navigation }) => (
     <Stack.Screen
       name='AddChat'
       component={AddChat}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='SingleProfile'
+      component={SingleProfile}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -254,6 +269,11 @@ const ExploreStack = ({ navigation }) => (
       component={AddChat}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name='SingleProfile'
+      component={SingleProfile}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -264,10 +284,10 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ChatScreen" ||
       currentRoute === "SearchScreen" ||
       currentRoute === "ProfileMessages" ||
-      currentRoute === "EditProfile" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return {
         display: "none",
@@ -289,7 +309,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileTasks" ||
       currentRoute === "AddFriendsTasks" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return {
         display: "none",
@@ -311,7 +332,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileAdd" ||
       currentRoute === "AddFriendsAdd" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return {
         display: "none",
@@ -333,7 +355,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileList" ||
       currentRoute === "AddFriendsList" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return {
         display: "none",
@@ -355,7 +378,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileExplore" ||
       currentRoute === "AddFriendsExplore" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return {
         display: "none",
@@ -376,10 +400,10 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ChatScreen" ||
       currentRoute === "SearchScreen" ||
       currentRoute === "ProfileMessages" ||
-      currentRoute === "EditProfile" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return false;
     }
@@ -393,7 +417,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileTasks" ||
       currentRoute === "AddFriendsTasks" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return false;
     }
@@ -407,7 +432,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileAdd" ||
       currentRoute === "AddFriendsAdd" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return false;
     }
@@ -421,7 +447,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileList" ||
       currentRoute === "AddFriendsList" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return false;
     }
@@ -435,7 +462,8 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileExplore" ||
       currentRoute === "AddFriendsExplore" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat"
+      currentRoute === "AddChat" ||
+      currentRoute === "SingleProfile"
     ) {
       return false;
     }
