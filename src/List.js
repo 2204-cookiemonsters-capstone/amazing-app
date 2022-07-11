@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, TouchableOpacity, FlatList, Modal, ActivityIndicator } from "react-native";
+import { Text, View, TouchableOpacity, FlatList, Modal } from "react-native";
+import {ActivityIndicator} from 'react-native-paper';
 import { auth, firestore } from "../firebase";
 import { doc, getDocs, addDoc, collection, setDoc } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
@@ -31,8 +32,8 @@ const List = ({ navigation }) => {
 
   if(loading) {
     return (
-      <View>
-        <ActivityIndicator size="large" color={color.list.blue}/>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={color.list.blue} />
       </View>
     )
   }
