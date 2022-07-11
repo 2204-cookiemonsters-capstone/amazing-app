@@ -127,7 +127,7 @@ async function fetchFriendsPosts(id){
       setDisplayPost({});
       setFriendsPosts([])
     }
-    if (view === 'submit'){
+    if (view === 'submit' || 'submitEdit'){
       setCurrentTask(item)
     }
     setView(view);
@@ -245,10 +245,10 @@ async function fetchFriendsPosts(id){
   return (
     
     <ScrollView>
+      
       <View style={styles.container}>
-        {/* top scroll bar */}
-        {/* need to make each have onPress that sets state view to corresponding section, also makes icon/title bold and/or underlined */}
-
+        {/* top icon bar */}
+        {view === 'postStack' ? null : 
         <View style={styles.topOptions}>
           <TouchableWithoutFeedback onPress={() => handleView('posts')}>
           <Text style={styles.subheading}>
@@ -272,11 +272,10 @@ async function fetchFriendsPosts(id){
           <FontAwesome name="star-o" size={24} color="gray"/> }
           </Text>
           </TouchableWithoutFeedback>
-        </View>
+        </View>}
 
         {/* your tasks section */}
         {view === 'tasks' ? (
-
 <View>
            
     {/* your dashboard */}
@@ -494,15 +493,75 @@ async function fetchFriendsPosts(id){
             </View>
             </View>
 
-            <Text>Who can see this post?</Text>
-            <Text>only me</Text>
-            <Text>friends</Text>
-            <Text>public (all public posts are anonymous)</Text>
+            <View style={styles.visibility}>
+            <FontAwesome name="eye" size={16} color="black" />
+            <Text style={{paddingLeft: 10}}>Who can see this post?</Text>
+            </View>
+            <View style={styles.visibilityOptions}>
+            <Text style={{paddingLeft: 30}}>only me</Text>
+            <Text style={{paddingLeft: 30}}>friends</Text>
+            <Text style={{paddingLeft: 30}}>public</Text>
+            </View>
             <Text
               style={styles.submitCompletedTask}
               onPress={() => handleSubmit(currentTask.taskId)}
             >
               submit completed task
+            </Text>
+          </View>
+        ) : null}
+
+          {view === 'submitEdit' ? (
+        
+        <View style={styles.submitHeading}> 
+            <Text style={[styles.subheading, styles.fontWeight700]}>{currentTask.title}</Text>
+            <Text style={{padding: 20}}>{currentTask.description}</Text>
+
+          <Text style={[styles.center,{color:"lightgray"}]}>select an image</Text>
+          <View style={{flexDirection: "row", justifyContent: "center", marginTop:10}}>
+            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1,}} source={{uri: currentTask.defaultImgUrl}} />
+            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1}} source={{uri: currentTask.defaultImgUrl}} />
+           </View>
+
+           <View style={{flexDirection: "row", justifyContent: "center"}}> 
+            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1}} source={{uri: currentTask.defaultImgUrl}} />
+            <View>
+            <TouchableWithoutFeedback style={{justifyContent: "center", alignItems: "center", flexDirection: "column", width: 150, height: 150, margin: 1, marginTop: 2, borderWidth: 2, borderColor: "lightgray"}}>
+            <FontAwesome name="camera-retro" size={84} color="lightgray"/>
+            <Text style={{color: "lightgray"}}>add an image</Text>
+            </TouchableWithoutFeedback>
+            </View>
+            </View>
+            
+            <View>
+
+          <View style={styles.inputReflection}>
+            <TextInput
+              style={styles.addReflection}
+              placeholder={currentTask.reflection}
+              multiline={true}
+              textAlign={'left'}
+              maxLength={1000}
+              onChangeText={(newText) => setReflection(newText)}
+              defaultValue={reflection}
+            />
+            </View>
+            </View>
+
+          <View style={styles.visibility}>
+            <FontAwesome name="eye" size={16} color="black" />
+            <Text style={{paddingLeft: 10}}>Who can see this post?</Text>
+            </View>
+            <View style={styles.visibilityOptions}>
+            <Text style={{paddingLeft: 30}}>only me</Text>
+            <Text style={{paddingLeft: 30}}>friends</Text>
+            <Text style={{paddingLeft: 30}}>public</Text>
+            </View>
+            <Text
+              style={styles.submitCompletedTask}
+              onPress={() => handleSubmit(currentTask.taskId)}
+            >
+              submit
             </Text>
           </View>
         ) : null}
@@ -523,7 +582,9 @@ async function fetchFriendsPosts(id){
                   <View style={styles.postTitleEditContainer}>
                   <Text style={styles.postTag}>{item.title}</Text>
                   <View style={styles.postEditDeleteContainer}>
+                    <TouchableWithoutFeedback onPress={() => handleView('submitEdit', item)}>
                   <FontAwesome name="pencil" size={16} color="black" style={styles.postEdit}/>
+                  </TouchableWithoutFeedback>
                   <FontAwesome name="trash" size={16} color="black" style={styles.postEdit}/>
                   </View>
 
@@ -578,10 +639,7 @@ async function fetchFriendsPosts(id){
 
          <TouchableWithoutFeedback onPress={() => handleDisplayFollowing(item.userid, item.username)} key={item.userid}>
           <Image source={{uri: profileImagesArray[6]["url"]}} style={styles.followingItem}/>
-        <View style={styles.iconAndNameContainer}>
-        <FontAwesome name="user" size={24} color="gray"/>
-          <Text style={styles.followingItemUsername}>{item.username}</Text>
-          </View>
+          <Text style={[styles.followingItemUsername, styles.center]}>{item.username}</Text>
        </TouchableWithoutFeedback>
         )
       }
@@ -634,9 +692,8 @@ async function fetchFriendsPosts(id){
               />
 
           <View style={styles.previousNext}>
-
               <TouchableWithoutFeedback onPress={() => handlePrevious(displayPost.taskId)}>
-                 <Text style={styles.previous} > </Text>
+                 <Text style={styles.previous} ></Text>
               </TouchableWithoutFeedback>  
 
               <TouchableWithoutFeedback style={styles.showDisplayReflection} onPress={() => handleDisplayPostText()}>
@@ -664,22 +721,6 @@ async function fetchFriendsPosts(id){
             
              
         ) : null}
-
-{/* see friends posts section */}
-{view === "followingStack" ? (
-  <View>
-    <Text>Following Stack</Text>
-  </View>
-) : null}
-
-        {/* follow new people section */}
-        {view === 'followNewPeople' ? (
-          <View>
-            <Text>follow new people</Text>
-          </View>
-        ) : null}
-
-
 
 
       </View>
@@ -969,8 +1010,10 @@ dashboardRowTop : {
     justifyContent: 'space-between',
   },
   displayPostImage: {
-    width: '100%',
-    height: 650,
+    width: '110%',
+    height: 800,
+    marginLeft: -20,
+    marginRight: -20
   },
  
   displayPostTextContainer: {
@@ -978,7 +1021,7 @@ dashboardRowTop : {
     margin: "10%",
     position: 'absolute',
     backgroundColor: 'rgba(0,0,0,.5)',
-    bottom: 10,
+    bottom: 30,
     borderRadius: "10",
     width: "80%",
   },
@@ -991,32 +1034,44 @@ dashboardRowTop : {
   },
   previousNext : {
     position: 'absolute',
-    width: "100%",
-    height: 700,
+    width: "112%",
+    marginLeft: -20,
+    height: 800,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   previous:{
     paddingTop: 330,
     paddingBottom: 330,
-    width: 100,
+    width: 110,
+    marginLeft: 0,
 
   },
   showDisplayReflection:{
     paddingTop: 330,
     paddingBottom: 330,
-    width: 150,
+    width: 200,
   },
   next:{
-paddingTop: 300,
-paddingBottom: 300,
-width: 100
-
+paddingTop: 330,
+paddingBottom: 330,
+width: 130,
+},
+backToFeatured:{
+  backgroundColor:"red"
 },
 
-strengths: {color: "white", paddingLeft: 5, paddingBottom: 5},
-  strengthIconRow:{flexDirection: "row", paddingRight: 15, paddingBottom: 10 },
+strengths: {
+  color: "white", 
+paddingLeft: 5, 
+paddingBottom: 5
+},
+strengthIconRow:{
+    flexDirection: "row", 
+    paddingRight: 15, 
+    paddingBottom: 10 
+  },
 
   strengthsIconContainer:{
 flexDirection: "row",
@@ -1038,7 +1093,9 @@ flexWrap: "wrap"
     flexDirection: "row", 
     justifyContent: "space-between"},
     iconAndNameContainer:{
-      flexDirection: "row", alignItems: "center"}
+      flexDirection: "row", alignItems: "center"},
+      visibility:{flexDirection: "row", alignItems: "center", justifyContent: "center"},
+      visibilityOptions:{flexDirection:"row", justifyContent: "center", paddingTop: 30, paddingBottom: 30}
 });
 
 export default Tasks;
