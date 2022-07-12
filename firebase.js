@@ -5,9 +5,10 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  updateEmail
+  updateEmail,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBr95jUf8aRaCHXOTr7hUMnTkHasYSu70Q",
@@ -29,6 +30,7 @@ if (getApps().length === 0) {
 
 const firestore = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 export {
   auth,
@@ -37,5 +39,6 @@ export {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  updateEmail
+  updateEmail,
+  storage,
 };
