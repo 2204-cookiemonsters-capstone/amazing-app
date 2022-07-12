@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, FlatList, Keyboard, ScrollView, Image, ImageBackground} from "react-native";
+import { Text, View, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Keyboard, ScrollView, ImageBackground, Platform} from "react-native";
 import { TextInput, Button, Snackbar, Avatar, TouchableRipple, Title } from "react-native-paper";
 import Icon from '@expo/vector-icons/MaterialCommunityIcons'
 import { auth, firestore, signOut, updateEmail } from "../firebase";
@@ -7,10 +7,13 @@ import { doc, setDoc } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from "react-native-reanimated";
+import * as ImagePicker from 'expo-image-picker';
 import { authStyle, userProfile } from "../styles";
+const userAvatar = require("../assets/favicon.png");
+// console.log("AVATAR", avatar)
 
 const EditProfileModal = ({ user, closeModal }) => {
-  const [userData, setUserData] = useState("");
+  const [userData, setUserData] = useState('');
   const [name, setName] = useState(user.name);
   const [username, setUsername] = useState(user.username);
   const [password, setPassword] = useState("");
@@ -18,6 +21,7 @@ const EditProfileModal = ({ user, closeModal }) => {
   const [email, setEmail] = useState(user.email);
   const [hasNewEmail, setHasNewEmail] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [avatar, setAvatar] = useState('https://cdn-icons-png.flaticon.com/512/1177/1177568.png');
 
   const bs = React.createRef();
   const fall = new Animated.Value(1);
@@ -70,15 +74,41 @@ const EditProfileModal = ({ user, closeModal }) => {
     Keyboard.dismiss();
   };
 
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 4],
+      quality: 1,
+    });
+
+    if(!result.cancelled) {
+      setAvatar(result.uri);
+    }
+  }
+
+  const takePhoto = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      cropping: true,
+      compressImageMaxWidth: 300,
+      compressImageMaxHeight: 300,
+    });
+
+    console.log("RESULT", result);
+    if(!result.cancelled) {
+      setAvatar(result.uri);
+    }
+  }
+
   const renderInner = () => (
     <View style={userProfile.panel}>
       <View style={{alignItems: 'center'}}>
         <Text style={userProfile.panelTitle}>Upload your profile picture</Text>
       </View>
-      <TouchableOpacity style={userProfile.panelButton}>
+      <TouchableOpacity style={userProfile.panelButton} onPress={takePhoto}>
         <Text style={userProfile.panelButtonTitle}>Take a photo</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={userProfile.panelButton}>
+      <TouchableOpacity style={userProfile.panelButton} onPress={pickImage}>
         <Text style={userProfile.panelButtonTitle}>Choose from library</Text>
       </TouchableOpacity>
       <TouchableOpacity style={userProfile.panelButton} onPress={() => bs.current.snapTo(1)}>
@@ -95,7 +125,6 @@ const EditProfileModal = ({ user, closeModal }) => {
       </View>
   </View>
   )
-
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
@@ -120,14 +149,14 @@ const EditProfileModal = ({ user, closeModal }) => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}>
-                <ImageBackground source={{uri: 'https://picsum.photos/100'}} style={{height: 100, width: 100}} imageStyle={{borderRadius: 15}} >
+                <ImageBackground source={{uri: avatar}} style={{height: 100, width: 100}} imageStyle={{borderRadius: 15}} >
                   <View style={{
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}>
                     <Icon name="camera" size={40} color='white' style={{
-                      opacity: 0.7,
+                      opacity: 0.4,
                       alignItems: 'center',
                       justifyContent: 'center'
                     }} />
