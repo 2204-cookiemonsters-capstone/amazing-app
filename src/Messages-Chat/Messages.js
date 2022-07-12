@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { auth, firestore } from "../../firebase";
@@ -27,10 +28,9 @@ const image = require("../../assets/favicon.png");
 
 const Messages = (props) => {
   const [allChatsData, setAllChatsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchAllChats = async () => {
-    // const snapShot = await getDocs(collection(firestore, "chats"))
-
     onSnapshot(collection(firestore, "chats"), async (snapShot) => {
       const chats = []; //holds details of chat
       snapShot.forEach((doc) => {
@@ -78,6 +78,7 @@ const Messages = (props) => {
       userData.sort(sorting);
 
       allChatsData !== userData ? setAllChatsData(userData) : null;
+      setIsLoading(false);
     });
   };
 
@@ -141,7 +142,7 @@ const Messages = (props) => {
                             marginRight: 30,
                           }}
                         >
-                          {getTimeDifference(item.timesent)} Minutes Ago
+                          {getTimeDifference(item.timesent)} minutes ago
                         </Text>
                       ) : getTimeDifference(item.timesent) >= 60 &&
                         getTimeDifference(item.timesent) < 1440 ? (
@@ -156,7 +157,10 @@ const Messages = (props) => {
                           {Math.floor(
                             getTimeDifference(item.timesent) / 60
                           )}{" "}
-                          Hours Ago
+                          {Math.floor(getTimeDifference(item.timesent) / 60) ===
+                          1
+                            ? "hour Ago"
+                            : "hours Ago"}
                         </Text>
                       ) : (
                         <Text
@@ -170,8 +174,8 @@ const Messages = (props) => {
                           {Math.floor(
                             getTimeDifference(item.timesent) / 1440
                           ) === 1
-                            ? "Day Ago"
-                            : "Days Ago"}
+                            ? "day Ago"
+                            : "days Ago"}
                         </Text>
                       )}
                     </View>
@@ -206,6 +210,10 @@ const Messages = (props) => {
           >
             <Ionicons name='add' size={26} color='white' />
           </TouchableOpacity>
+        </View>
+      ) : isLoading ? (
+        <View style={{ margin: "50%" }}>
+          <ActivityIndicator size='large' color='blue' />
         </View>
       ) : (
         <View

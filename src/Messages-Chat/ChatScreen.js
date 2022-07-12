@@ -20,6 +20,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 
 //doc.id gets the id
 const ChatScreen = (props) => {
+  console.log(props.route.params.chatid);
   const [allMessages, setAllMessages] = useState([]);
   const [previousMessages, setPreviousMessages] = useState([]);
 
@@ -27,15 +28,15 @@ const ChatScreen = (props) => {
     const docRef = doc(firestore, "chats", props.route.params.chatid);
     // const docSnap = await getDoc(docRef);
 
-    onSnapshot(docRef, async (snapShot)=>{
+    onSnapshot(docRef, async (snapShot) => {
       const chatData = [];
       const data = snapShot.data();
-  
+
       if (snapShot.exists()) {
         previousMessages !== data.messages
           ? setPreviousMessages(data.messages)
           : null;
-  
+
         for (let i = 0; i < data.messages.length; i++) {
           const message = data.messages[i];
           chatData.push({
@@ -48,17 +49,15 @@ const ChatScreen = (props) => {
             },
           });
         }
-  
+
         allMessages !== chatData ? setAllMessages(chatData) : null;
       } else {
         console.log("No Such Documents");
       }
-    })
-   
+    });
   };
 
   useEffect(() => {
-    if (!props.route.params.chatid) return;
     fetchMessages();
   }, [props.route.params.chatid]);
 

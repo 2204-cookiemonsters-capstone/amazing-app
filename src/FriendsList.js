@@ -33,15 +33,13 @@ const FriendsList = ({ navigation }) => {
     const snapShot = await getDocs(
       collection(firestore, "users", auth.currentUser.uid, "friendships")
     );
-    const friends = [];
 
+    const friends = [];
     snapShot.forEach((doc) => {
       if (doc.data().status === "friends") {
         friends.push(doc.data());
       }
     });
-
-    // allFriends !== friends ? setAllFriends(friends) : null;
 
     const friendDocs = await Promise.all(
       friends.map((f) => getDoc(doc(firestore, "users", f.userid)))
