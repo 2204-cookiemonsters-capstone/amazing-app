@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   TextInput,
 } from "react-native";
+import { Avatar } from "react-native-paper";
 import { auth, firestore } from "../firebase";
 import { userProfile, friendList } from "../styles";
 import {
@@ -61,27 +62,6 @@ const Profile = ({ navigation }) => {
   const getWidthScore = () => {
     return Number(30 + String(userData.score).length * 9);
   };
-
-  // const getFriends = async () => {
-  //   const snapShot = await getDocs(
-  //     collection(firestore, "users", auth.currentUser.uid, "friendships")
-  //   );
-  //   const allFriends = [];
-  //   snapShot.forEach((doc) => {
-  //     if (doc.data().status === "friends") {
-  //       allFriends.push(doc.data());
-  //     }
-  //   });
-  //   // fetching all documents by mapping an array of promises and using Promise.all()
-  //   const friendDocs = await Promise.all(
-  //     allFriends.map((f) => getDoc(doc(firestore, "users", f.userid)))
-  //   );
-  //   // mapping array of document data
-  //   const friendItems = friendDocs.map((i) => i.data());
-  //   //set state
-  //   setFriends(friendItems);
-  //   console.log("GOT FRIENDS FROM DB");
-  // };
 
   const getUser = async () => {
     const docRef = doc(firestore, "users", auth.currentUser.uid);
