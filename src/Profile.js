@@ -30,7 +30,6 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const Profile = ({ navigation }) => {
   const [userData, setUserData] = useState("");
-  console.log(userData);
   const [friends, setFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);

@@ -76,7 +76,7 @@ const EditProfileModal = ({ user, closeModal }) => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [3, 4],
+      aspect: [1, 1],
       quality: 1,
     });
 
@@ -91,7 +91,12 @@ const EditProfileModal = ({ user, closeModal }) => {
       alert("You've denied permission to allow this app to access your camera.");
       return
     }
-    const result = await ImagePicker.launchCameraAsync();
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
 
     if(!result.cancelled) {
       setAvatar(result.uri);
