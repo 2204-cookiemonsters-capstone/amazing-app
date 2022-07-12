@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Modal
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -22,12 +23,15 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { auth, firestore } from "../firebase";
+import FriendModal from "./FriendModal";
 const image = require("../assets/favicon.png");
 
 const FriendsList = ({ navigation }) => {
   const [allFriends, setAllFriends] = useState([]);
   const [renderedUsers, setRenderedUsers] = useState([]);
   const [searchValue, setSearchValue] = useState([""]);
+  const [selectedFriend, setSelectedFriend] = useState('');
+  const [showFriendModal, setShowFriendModal] = useState(false);
 
   const fetchAllFriends = async () => {
     const snapShot = await getDocs(
@@ -70,6 +74,10 @@ const FriendsList = ({ navigation }) => {
   useEffect(() => {
     fetchAllFriends();
   }, []);
+
+  const toggleFriendModal = () => {
+    setShowFriendModal(!showFriendModal);
+  }
 
   return (
     <View>
@@ -168,6 +176,7 @@ const FriendsList = ({ navigation }) => {
         {allFriends.map((item) => (
           <TouchableOpacity
             key={item.userid}
+            onPress={() => {toggleFriendModal(); setSelectedFriend(item.userid)}}
             style={{
               marginLeft: 15,
               marginRight: 15,
@@ -257,6 +266,16 @@ const FriendsList = ({ navigation }) => {
           </TouchableOpacity>
         ))}
       </View>
+      <Modal
+          animationType="slide"
+          visible={showFriendModal}
+          onRequestClose={() => toggleFriendModal()}
+        >
+          <FriendModal
+            user={selectedFriend}
+            closeModal={() => toggleFriendModal()}
+          />
+      </Modal>
     </View>
   );
 };

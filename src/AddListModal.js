@@ -7,10 +7,8 @@ import {
   KeyboardAvoidingView,
   TextInput
 } from "react-native";
-import { auth, firestore } from "../firebase";
 import { todoListStyle, color } from "../styles";
 import { AntDesign } from "@expo/vector-icons";
-import { tempData } from "./List";
 
 export default class AddListModal extends React.Component {
   constructor(props) {

@@ -14,7 +14,8 @@ const color = {
     lightBlue: "#A7CBD9",
     white: "#FFFFFF",
     gray: '#A4A4A4',
-    lightGray: '#CACACA'
+    lightGray: '#CACACA',
+    red: '#D85963'
   },
 };
 
@@ -261,13 +262,14 @@ const todoListStyle = StyleSheet.create({
       alignItems: 'center'
     },
     section: {
-      flex: 1,
+      // flex: 1,
       alignSelf: 'stretch'
     },
     header: {
       justifyContent: 'flex-end',
       marginLeft: 64,
-      borderBottomWidth: 3
+      borderBottomWidth: 3,
+      paddingTop: 16
     },
     title: {
       fontSize: 30,
@@ -283,7 +285,8 @@ const todoListStyle = StyleSheet.create({
     footer: {
       paddingHorizontal: 32,
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      paddingVertical: 16
     },
     input: {
       flex: 1,
@@ -302,12 +305,26 @@ const todoListStyle = StyleSheet.create({
     todoContainer: {
       paddingVertical: 16,
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingLeft: 32,
+      paddingRight: 16
     },
     todo: {
       color: color.list.black,
       fontWeight: '700',
       fontSize: 16
+    },
+    todoCheckbox: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    deleteButton: {
+      flex: 1,
+      backgroundColor: color.list.red,
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 100
     }
   }
 });

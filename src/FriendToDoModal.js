@@ -7,13 +7,13 @@ import {
   TextInput,
   SafeAreaView,
   FlatList,
-  Keyboard,
+  Keyboard
 } from "react-native";
 import { todoListStyle, color } from "../styles";
-import ToDoItem from "./ToDoItem";
+import FriendToDoItem from "./FriendToDoItem";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-export default class TodoModal extends React.Component {
+export default class FriendTodoModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,31 +21,26 @@ export default class TodoModal extends React.Component {
     };
   }
 
-  toggleTodoCompleted = index => {
+  likeTodoItem = index => {
     let list = this.props.list;
-    list.todos[index].completed = !list.todos[index].completed;
+    list.todos[index].likes = list.todos[index].likes + 1;
+    this.props.updateList(list);
+  }
+
+  unlikeTodoItem = index => {
+    let list = this.props.list;
+    list.todos[index].likes = list.todos[index].likes - 1;
     this.props.updateList(list);
   }
 
   addTodo = () => {
     let list = this.props.list;
+    list.todos.push({title: this.state.newTodo, completed: false, likes: 0});
 
-    if(!list.todos.some(todo => todo.title === this.state.newTodo)) {
-      list.todos.push({title: this.state.newTodo, completed: false, likes: 0});
-      this.props.updateList(list);
-
-    }
-
-
+    this.props.updateList(list);
     this.setState({ newTodo: ''});
 
     Keyboard.dismiss();
-  }
-
-  deleteTodo = index => {
-    let list = this.props.list;
-    list.todos.splice(index, 1);
-    this.props.updateList(list);
   }
 
   render() {
@@ -71,18 +66,22 @@ export default class TodoModal extends React.Component {
           ]}
         >
           <View>
+            <Text>FRIEND'S MODAL</Text>
             <Text style={todoListStyle.todoModal.title}>{list.name}</Text>
             <Text style={todoListStyle.todoModal.taskCount}>
               {completedCount} of {taskCount} tasks
             </Text>
           </View>
         </View>
-        <View style={[todoListStyle.todoModal.section, { flex: 3, marginVertical: 16 }]}>
+        <View style={[todoListStyle.todoModal.section, { flex: 3 }]}>
           <FlatList
             data={list.todos}
-            //---------------------------------
-            renderItem={({ item, index }) => <ToDoItem todo={item} index={index} toggleTodoCompleted={this.toggleTodoCompleted} deleteTodo={this.deleteTodo}/>}
-            keyExtractor={(item) => item.title}
+            renderItem={({ item, index }) => <FriendToDoItem todo={item} index={index} toggleTodoCompleted={this.toggleTodoCompleted} likeTodoItem={this.likeTodoItem} unlikeTodoItem={this.unlikeTodoItem} />}
+            keyExtractor={(_, index) => index.toString()}
+            contentContainerStyle={{
+              paddingHorizontal: 32,
+              paddingVertical: 64,
+            }}
             showsVerticalScrollIndicator={false}
           />
         </View>

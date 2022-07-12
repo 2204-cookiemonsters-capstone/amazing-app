@@ -7,6 +7,7 @@ import {
   Button,
   Modal,
   Touchable,
+  SafeAreaView
 } from "react-native";
 import { auth, firestore } from "../firebase";
 import { userProfile, friendList } from "../styles";
@@ -20,6 +21,7 @@ import {
 } from "firebase/firestore";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import EditProfileModal from "./EditProfileModal";
+import FriendModal from "./FriendModal";
 import OctIcons from "react-native-vector-icons/Octicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -28,6 +30,7 @@ const Profile = ({ navigation }) => {
   const [userData, setUserData] = useState("");
   console.log(userData);
   const [friends, setFriends] = useState([]);
+  const [selectedFriend, setSelectedFriend] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);
 
   const [visibilityProfile, setVisibilityProfile] = useState(false);
@@ -45,26 +48,26 @@ const Profile = ({ navigation }) => {
     return Number(30 + String(userData.score).length * 9);
   };
 
-  const getFriends = async () => {
-    const snapShot = await getDocs(
-      collection(firestore, "users", auth.currentUser.uid, "friendships")
-    );
-    const allFriends = [];
-    snapShot.forEach((doc) => {
-      if (doc.data().status === "friends") {
-        allFriends.push(doc.data());
-      }
-    });
-    // fetching all documents by mapping an array of promises and using Promise.all()
-    const friendDocs = await Promise.all(
-      allFriends.map((f) => getDoc(doc(firestore, "users", f.userid)))
-    );
-    // mapping array of document data
-    const friendItems = friendDocs.map((i) => i.data());
-    //set state
-    setFriends(friendItems);
-    console.log("GOT FRIENDS FROM DB");
-  };
+  // const getFriends = async () => {
+  //   const snapShot = await getDocs(
+  //     collection(firestore, "users", auth.currentUser.uid, "friendships")
+  //   );
+  //   const allFriends = [];
+  //   snapShot.forEach((doc) => {
+  //     if (doc.data().status === "friends") {
+  //       allFriends.push(doc.data());
+  //     }
+  //   });
+  //   // fetching all documents by mapping an array of promises and using Promise.all()
+  //   const friendDocs = await Promise.all(
+  //     allFriends.map((f) => getDoc(doc(firestore, "users", f.userid)))
+  //   );
+  //   // mapping array of document data
+  //   const friendItems = friendDocs.map((i) => i.data());
+  //   //set state
+  //   setFriends(friendItems);
+  //   console.log("GOT FRIENDS FROM DB");
+  // };
 
   const getUser = async () => {
     const docRef = doc(firestore, "users", auth.currentUser.uid);
@@ -76,15 +79,38 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     getUser();
-    getFriends();
   }, []);
 
   const toggleEditModal = () => {
     setShowEditModal(!showEditModal);
-  };
+  }
+
+// THIS WAS THE CODE TO LAUNCH THE EDIT USER PROFILE MODAL
+      // <Modal
+      //     animationType="slide"
+      //     visible={showEditModal}
+      //     onRequestClose={() => toggleEditModal()}
+      //   >
+      //     <EditProfileModal
+      //       user={userData}
+      //       closeModal={() => toggleEditModal()}
+      //     />
+      // </Modal>
+      // <View style={userProfile.topNav}>
+      //   <TouchableOpacity
+      //     style={userProfile.headerButtons}
+      //     onPress={() => navigation.goBack()}
+      //   >
+      //     <AntDesign name='left' color='black' />
+      //   </TouchableOpacity>
+      //   <TouchableOpacity
+      //     style={userProfile.headerButtons}
+      //     onPress={() => toggleEditModal()} //edit this in auth path
+      //    />
 
   return (
-    <Modal
+    <SafeAreaView>
+      <Modal
       animationType='slide'
       visible={visibilityProfile}
       onRequestClose={() => toggleVisibilityProfile()}
@@ -142,7 +168,7 @@ const Profile = ({ navigation }) => {
                 shadowRadius: 3.5,
                 elevation: 5,
               }}
-              onPress={() => toggleVisibilityProfile()}
+              onPress={() => toggleEditModal()}
             >
               <OctIcons name='gear' size={20} />
             </TouchableOpacity>
@@ -343,6 +369,7 @@ const Profile = ({ navigation }) => {
         </View>
       </View>
     </Modal>
+    </SafeAreaView>
   );
 };
 
