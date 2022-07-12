@@ -10,9 +10,11 @@ import {
   SafeAreaView,
   TextInput,
   Platform,
+  Snackbar,
+  StyleSheet,
 } from "react-native";
 import { Avatar } from "react-native-paper";
-import { auth, firestore } from "../firebase";
+import { auth, firestore, signOut, updateEmail } from "../firebase";
 import { userProfile, friendList } from "../styles";
 import {
   doc,
@@ -32,6 +34,7 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Toast from "react-native-root-toast";
 import { RootSiblingParent } from "react-native-root-siblings";
+import * as ImagePicker from "expo-image-picker";
 
 const Profile = ({ navigation }) => {
   const [userData, setUserData] = useState("");
@@ -42,10 +45,14 @@ const Profile = ({ navigation }) => {
   const [visibilityProfile, setVisibilityProfile] = useState(false);
   const [visibilitySettings, setVisibilitySettings] = useState(false);
 
+  const [isValid, setIsValid] = useState(false);
+
   //UPDATING PROFILE STATES
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+
+  const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
     setVisibilityProfile(true);
@@ -79,30 +86,35 @@ const Profile = ({ navigation }) => {
     setShowEditModal(!showEditModal);
   };
 
-  // THIS WAS THE CODE TO LAUNCH THE EDIT USER PROFILE MODAL
-  // <Modal
-  //     animationType="slide"
-  //     visible={showEditModal}
-  //     onRequestClose={() => toggleEditModal()}
-  //   >
-  //     <EditProfileModal
-  //       user={userData}
-  //       closeModal={() => toggleEditModal()}
-  //     />
-  // </Modal>
-  // <View style={userProfile.topNav}>
-  //   <TouchableOpacity
-  //     style={userProfile.headerButtons}
-  //     onPress={() => navigation.goBack()}
-  //   >
-  //     <AntDesign name='left' color='black' />
-  //   </TouchableOpacity>
-  //   <TouchableOpacity
-  //     style={userProfile.headerButtons}
-  //     onPress={() => toggleEditModal()} //edit this in auth path
-  //    />
+  const takePhoto = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      cropping: true,
+      compressImageMaxWidth: 300,
+      compressImageMaxHeight: 300,
+    });
+
+    console.log("RESULT", result);
+    if (!result.cancelled) {
+      setAvatar(result.uri);
+    }
+
+    console.log(avatar);
+  };
+
+  useEffect(() => {}); //set avatar everytime its updated
 
   const handleUpdate = async () => {
+    if (userData.email !== email) {
+      updateEmail(auth.currentUser, email).catch((error) => {
+        setIsValid({
+          bool: true,
+          boolSnack: true,
+          message: "Something went wrong: " + error.message,
+        });
+        return;
+      });
+    }
+
     const reference = doc(firestore, "users", auth.currentUser.uid);
     await updateDoc(reference, {
       username: username !== "" ? username : userData.username,
@@ -429,24 +441,7 @@ const Profile = ({ navigation }) => {
                 onPress={() => setVisibilitySettings(false)}
               >
                 <View
-                  style={{
-                    backgroundColor: "white",
-                    borderRadius: 25,
-                    height: 35,
-                    width: 35,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: 3,
-                    shadowColor: "#7F5DF0",
-                    shadowOffset: {
-                      width: 0,
-                      height: 10,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.5,
-                    elevation: 5,
-                    marginRight: 10,
-                  }}
+                  style={styles.smallButton}
                   onPress={() => toggleVisibilityProfile()}
                 >
                   <AntDesign name='left' size={20} color='lightgreen' />
@@ -463,24 +458,7 @@ const Profile = ({ navigation }) => {
               </TouchableOpacity>
               <View style={{ flexGrow: 1 }} />
               <TouchableOpacity
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: 25,
-                  height: 35,
-                  width: 100,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: 3,
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                  marginRight: 20,
-                }}
+                style={styles.button}
                 onPress={() => auth.signOut()}
               >
                 <Text style={{ fontWeight: "500", fontSize: 17, color: "red" }}>
@@ -502,25 +480,8 @@ const Profile = ({ navigation }) => {
                   style={{ width: 80, height: 80, marginTop: 12 }}
                 />
                 <TouchableOpacity
-                  style={{
-                    backgroundColor: "white",
-                    borderRadius: 25,
-                    height: 40,
-                    width: 85,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: 3,
-                    shadowColor: "#7F5DF0",
-                    shadowOffset: {
-                      width: 0,
-                      height: 10,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.5,
-                    elevation: 5,
-                    marginRight: 10,
-                    marginLeft: 20,
-                  }}
+                  style={styles.signoutBut}
+                  onPress={() => takePhoto()}
                 >
                   <Text
                     style={{
@@ -532,27 +493,7 @@ const Profile = ({ navigation }) => {
                     Upload
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "white",
-                    borderRadius: 25,
-                    height: 40,
-                    width: 85,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: 3,
-                    shadowColor: "#7F5DF0",
-                    shadowOffset: {
-                      width: 0,
-                      height: 10,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.5,
-                    elevation: 5,
-                    marginRight: 10,
-                    marginLeft: 5,
-                  }}
-                >
+                <TouchableOpacity style={styles.button}>
                   <Text
                     style={{ fontWeight: "500", fontSize: 17, color: "gray" }}
                   >
@@ -596,15 +537,7 @@ const Profile = ({ navigation }) => {
                     Username
                   </Text>
                   <TextInput
-                    style={{
-                      borderWidth: 0.3,
-                      borderColor: "gray",
-                      width: "100%",
-                      height: 40,
-                      paddingTop: 3,
-                      paddingLeft: 10,
-                      borderRadius: 10,
-                    }}
+                    style={styles.textSmall}
                     placeholder={userData.username}
                     label='Username'
                     onChangeText={(e) => setUsername(e)}
@@ -628,15 +561,7 @@ const Profile = ({ navigation }) => {
                     Full Name
                   </Text>
                   <TextInput
-                    style={{
-                      borderWidth: 0.3,
-                      borderColor: "gray",
-                      width: "100%",
-                      height: 40,
-                      paddingTop: 3,
-                      paddingLeft: 10,
-                      borderRadius: 10,
-                    }}
+                    style={styles.textSmall}
                     onChangeText={(e) => setName(e)}
                     placeholder={userData.name}
                   />
@@ -658,48 +583,15 @@ const Profile = ({ navigation }) => {
                   Email Address
                 </Text>
                 <TextInput
-                  style={{
-                    borderWidth: 0.3,
-                    borderColor: "gray",
-                    width: "100%",
-                    height: 40,
-                    paddingTop: 3,
-                    paddingLeft: 10,
-                    borderRadius: 10,
-                  }}
+                  style={styles.textEmail}
                   placeholder={userData.email}
                   onChangeText={(e) => setEmail(e)}
                 />
               </View>
             </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <View style={styles.flexRow}>
               <TouchableOpacity
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: 25,
-                  height: 40,
-                  width: 100,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: 30,
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                  marginRight: 10,
-                  marginLeft: 5,
-                }}
+                style={{ ...styles.button, marginTop: 30 }}
                 disabled={username === "" && email === "" && name === ""}
                 onPress={() => handleUpdate()}
               >
@@ -714,3 +606,85 @@ const Profile = ({ navigation }) => {
 };
 
 export default Profile;
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "white",
+    borderRadius: 25,
+    height: 35,
+    width: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 3,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+    marginRight: 20,
+  },
+  smallButton: {
+    backgroundColor: "white",
+    borderRadius: 25,
+    height: 35,
+    width: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 3,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+    marginRight: 10,
+  },
+  signoutBut: {
+    backgroundColor: "white",
+    borderRadius: 25,
+    height: 40,
+    width: 85,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 3,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+    marginRight: 10,
+    marginLeft: 20,
+  },
+  textEmail: {
+    borderWidth: 0.3,
+    borderColor: "gray",
+    width: "100%",
+    height: 40,
+    paddingTop: 3,
+    paddingLeft: 10,
+    borderRadius: 10,
+  },
+  textSmall: {
+    borderWidth: 0.3,
+    borderColor: "gray",
+    width: "100%",
+    height: 40,
+    paddingTop: 3,
+    paddingLeft: 10,
+    borderRadius: 10,
+  },
+  flexRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
