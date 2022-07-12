@@ -8,13 +8,10 @@ import {
   Modal,
   Touchable,
   SafeAreaView,
-  TextInput,
   Platform,
-  Snackbar,
-  StyleSheet,
 } from "react-native";
 import { Avatar } from "react-native-paper";
-import { auth, firestore, signOut, updateEmail } from "../firebase";
+import { auth, firestore } from "../firebase";
 import { userProfile, friendList } from "../styles";
 import {
   doc,
@@ -23,7 +20,6 @@ import {
   collection,
   deleteDoc,
   where,
-  updateDoc,
   onSnapshot,
 } from "firebase/firestore";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -32,9 +28,6 @@ import FriendModal from "./FriendModal";
 import OctIcons from "react-native-vector-icons/Octicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import Toast from "react-native-root-toast";
-import { RootSiblingParent } from "react-native-root-siblings";
-import * as ImagePicker from "expo-image-picker";
 
 const Profile = ({ navigation }) => {
   const [userData, setUserData] = useState("");
@@ -45,15 +38,6 @@ const Profile = ({ navigation }) => {
   const [visibilityProfile, setVisibilityProfile] = useState(false);
   const [visibilitySettings, setVisibilitySettings] = useState(false);
 
-  const [isValid, setIsValid] = useState(false);
-
-  //UPDATING PROFILE STATES
-  const [username, setUsername] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-
-  const [avatar, setAvatar] = useState(null);
-
   useEffect(() => {
     setVisibilityProfile(true);
   }, []);
@@ -61,10 +45,6 @@ const Profile = ({ navigation }) => {
   const toggleVisibilityProfile = () => {
     setVisibilityProfile(false);
     navigation.goBack();
-  };
-
-  const toggleVisibilitySettings = () => {
-    setVisibilitySettings(false);
   };
 
   const getWidthScore = () => {
@@ -86,605 +66,284 @@ const Profile = ({ navigation }) => {
     setShowEditModal(!showEditModal);
   };
 
-  const takePhoto = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      cropping: true,
-      compressImageMaxWidth: 300,
-      compressImageMaxHeight: 300,
-    });
-
-    console.log("RESULT", result);
-    if (!result.cancelled) {
-      setAvatar(result.uri);
-    }
-
-    console.log(avatar);
-  };
-
-  useEffect(() => {}); //set avatar everytime its updated
-
-  const handleUpdate = async () => {
-    if (userData.email !== email) {
-      updateEmail(auth.currentUser, email).catch((error) => {
-        setIsValid({
-          bool: true,
-          boolSnack: true,
-          message: "Something went wrong: " + error.message,
-        });
-        return;
-      });
-    }
-
-    const reference = doc(firestore, "users", auth.currentUser.uid);
-    await updateDoc(reference, {
-      username: username !== "" ? username : userData.username,
-      name: name !== "" ? name : userData.name,
-      email: email !== "" ? email : userData.email,
-    });
-
-    Toast.show("Profile Updated", {
-      duration: Toast.durations.SHORT,
-    });
-
-    setVisibilitySettings(false);
-  };
+  const topMargin = Platform.OS === "ios" ? 30 : 0;
 
   return (
-    <RootSiblingParent>
-      <SafeAreaView>
-        <Modal
-          animationType='slide'
-          visible={visibilityProfile}
-          onRequestClose={() => toggleVisibilityProfile()}
-        >
-          <View style={{ backgroundColor: "#F0F0F0", height: "100%" }}>
+    <SafeAreaView>
+      <Modal
+        animationType='slide'
+        visible={visibilityProfile}
+        onRequestClose={() => toggleVisibilityProfile()}
+      >
+        <View style={{ backgroundColor: "#F0F0F0", height: "100%" }}>
+          <View style={{ display: "flex", flexDirection: "column" }}>
             <View
               style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: 30,
-                }}
-              >
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "white",
-                    borderRadius: 25,
-                    height: 35,
-                    width: 35,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginLeft: 15,
-                    marginTop: 15,
-                    shadowColor: "#7F5DF0",
-                    shadowOffset: {
-                      width: 0,
-                      height: 10,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.5,
-                    elevation: 5,
-                  }}
-                  onPress={() => toggleVisibilityProfile()}
-                >
-                  <AntDesign name='down' size={20} />
-                </TouchableOpacity>
-                <View style={{ flexGrow: 1 }} />
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "white",
-                    borderRadius: 25,
-                    height: 35,
-                    width: 35,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: 15,
-                    marginRight: 15,
-                    shadowColor: "#7F5DF0",
-                    shadowOffset: {
-                      width: 0,
-                      height: 10,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.5,
-                    elevation: 5,
-                  }}
-                  onPress={() => setVisibilitySettings(true)}
-                >
-                  <OctIcons name='gear' size={20} />
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  height: 60,
-                  marginTop: 0,
-                  marginLeft: 20,
-                }}
-              >
-                <TouchableWithoutFeedback>
-                  <Image
-                    source={require("../assets/favicon.png")}
-                    style={{ width: 60, height: 60, resizeMode: "contain" }}
-                  />
-                </TouchableWithoutFeedback>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginLeft: 20,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: "500",
-                      marginBottom: 13,
-                    }}
-                  >
-                    {userData.name}
-                  </Text>
-
-                  <Text style={{ color: "grey", fontSize: 12 }}>
-                    {userData.username}
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: 15,
-                  height: 30,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: getWidthScore(),
-                  display: "flex",
-                  flexDirection: "row",
-                  marginTop: 10,
-                  marginLeft: 15,
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
-              >
-                <AntDesign name='aliwangwang-o1' />
-                <Text> {userData.score}</Text>
-              </View>
-              <View style={{ marginTop: 25, marginLeft: 15 }}>
-                <Text style={{ fontWeight: "700", fontSize: 17 }}>
-                  My Stories
-                </Text>
-              </View>
-              <TouchableOpacity
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginTop: 20,
-                  backgroundColor: "white",
-                  marginRight: 15,
-                  marginLeft: 15,
-                  height: 55,
-                  alignItems: "center",
-                  borderRadius: 15,
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
-              >
-                <SimpleLineIcons
-                  name='camera'
-                  size={30}
-                  style={{ marginLeft: 20 }}
-                />
-                <Text
-                  style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}
-                >
-                  Add To My Story
-                </Text>
-                <View style={{ flexGrow: 1 }} />
-                <AntDesign
-                  name='right'
-                  size={18}
-                  color='lightgray'
-                  style={{ marginRight: 15 }}
-                />
-              </TouchableOpacity>
-              <View style={{ marginTop: 25, marginLeft: 15 }}>
-                <Text style={{ fontWeight: "700", fontSize: 18 }}>Friends</Text>
-              </View>
-              <TouchableOpacity
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginTop: 20,
-                  backgroundColor: "white",
-                  marginRight: 15,
-                  marginLeft: 15,
-                  height: 55,
-                  alignItems: "center",
-                  borderRadius: 15,
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
-                onPress={() => {
-                  setVisibilityProfile(false);
-                  navigation.goBack();
-                  navigation.navigate("AddFriends");
-                }}
-              >
-                <Image
-                  source={require("../assets/addperson.png")}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    resizeMode: "contain",
-                    marginLeft: 15,
-                  }}
-                />
-                <Text
-                  style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}
-                >
-                  Add Friends
-                </Text>
-                <View style={{ flexGrow: 1 }} />
-                <AntDesign
-                  name='right'
-                  size={18}
-                  color='lightgray'
-                  style={{ marginRight: 15 }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginTop: 10,
-                  backgroundColor: "white",
-                  marginRight: 15,
-                  marginLeft: 15,
-                  height: 55,
-                  alignItems: "center",
-                  borderRadius: 15,
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
-                onPress={() => {
-                  setVisibilityProfile(false);
-                  navigation.goBack();
-                  navigation.navigate("FriendsList");
-                }}
-              >
-                <Image
-                  source={require("../assets/friendlist2.png")}
-                  style={{
-                    width: 33,
-                    height: 33,
-                    resizeMode: "contain",
-                    marginLeft: 15,
-                  }}
-                />
-                <Text
-                  style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}
-                >
-                  My Friends
-                </Text>
-                <View style={{ flexGrow: 1 }} />
-                <AntDesign
-                  name='right'
-                  size={18}
-                  color='lightgray'
-                  style={{ marginRight: 15 }}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-
-        <Modal
-          animationType='slide'
-          visible={visibilitySettings}
-          onRequestClose={() => toggleVisibilitySettings()}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <View
-              style={{
-                width: "100%",
                 display: "flex",
                 flexDirection: "row",
-                backgroundColor: "white",
-                height: "8%",
-                alignItems: "center",
+                marginBottom: 30,
+                marginTop: topMargin,
               }}
             >
               <TouchableOpacity
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
+                  backgroundColor: "white",
+                  borderRadius: 25,
+                  height: 35,
+                  width: 35,
                   alignItems: "center",
-                  marginLeft: 10,
+                  justifyContent: "center",
+                  marginLeft: 15,
+                  marginTop: 15,
+                  shadowColor: "#7F5DF0",
+                  shadowOffset: {
+                    width: 0,
+                    height: 10,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.5,
+                  elevation: 5,
                 }}
-                onPress={() => setVisibilitySettings(false)}
+                onPress={() => toggleVisibilityProfile()}
               >
-                <View
-                  style={styles.smallButton}
-                  onPress={() => toggleVisibilityProfile()}
-                >
-                  <AntDesign name='left' size={20} color='lightgreen' />
-                </View>
-                <Text
-                  style={{
-                    fontSize: 21,
-                    color: "lightgreen",
-                    fontWeight: "500",
-                  }}
-                >
-                  Settings
-                </Text>
+                <AntDesign name='down' size={20} />
               </TouchableOpacity>
               <View style={{ flexGrow: 1 }} />
               <TouchableOpacity
-                style={styles.button}
-                onPress={() => auth.signOut()}
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 25,
+                  height: 35,
+                  width: 35,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: 15,
+                  marginRight: 15,
+                  shadowColor: "#7F5DF0",
+                  shadowOffset: {
+                    width: 0,
+                    height: 10,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.5,
+                  elevation: 5,
+                }}
+                onPress={() => setVisibilitySettings(true)}
               >
-                <Text style={{ fontWeight: "500", fontSize: 17, color: "red" }}>
-                  Sign Out
-                </Text>
+                <OctIcons name='gear' size={20} />
               </TouchableOpacity>
             </View>
-            <View style={{ marginLeft: 20, marginTop: 10 }}>
-              <Text style={{ fontWeight: "500", fontSize: 18 }}>Avatar</Text>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <Image
-                  source={require("../assets/favicon.png")}
-                  style={{ width: 80, height: 80, marginTop: 12 }}
-                />
-                <TouchableOpacity
-                  style={styles.signoutBut}
-                  onPress={() => takePhoto()}
-                >
-                  <Text
-                    style={{
-                      fontWeight: "500",
-                      fontSize: 17,
-                      color: "skyblue",
-                    }}
-                  >
-                    Upload
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                  <Text
-                    style={{ fontWeight: "500", fontSize: 17, color: "gray" }}
-                  >
-                    Remove
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View
-              style={{
-                borderBottomWidth: 0.3,
-                borderColor: "gray",
-                marginTop: 30,
-                marginLeft: "8%",
-                marginRight: "8%",
-              }}
-            />
             <View
               style={{
                 display: "flex",
-                flexDirection: "column",
-                marginTop: 30,
+                flexDirection: "row",
+                height: 60,
+                marginTop: 0,
+                marginLeft: 20,
               }}
             >
-              <View style={{ disply: "flex", flexDirection: "row" }}>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "44%",
-                    marginLeft: 12,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontWeight: "500",
-                      fontSize: 17,
-                      marginBottom: 15,
-                    }}
-                  >
-                    Username
-                  </Text>
-                  <TextInput
-                    style={styles.textSmall}
-                    placeholder={userData.username}
-                    label='Username'
-                    onChangeText={(e) => setUsername(e)}
-                  />
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "44%",
-                    marginLeft: 20,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontWeight: "500",
-                      fontSize: 17,
-                      marginBottom: 15,
-                    }}
-                  >
-                    Full Name
-                  </Text>
-                  <TextInput
-                    style={styles.textSmall}
-                    onChangeText={(e) => setName(e)}
-                    placeholder={userData.name}
-                  />
-                </View>
-              </View>
+              <TouchableWithoutFeedback>
+                <Image
+                  source={require("../assets/favicon.png")}
+                  style={{ width: 60, height: 60, resizeMode: "contain" }}
+                />
+              </TouchableWithoutFeedback>
               <View
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  width: "100%",
-                  marginTop: 30,
-                  paddingLeft: 12,
-                  paddingRight: 12,
+                  marginLeft: 20,
                 }}
               >
                 <Text
-                  style={{ fontWeight: "500", fontSize: 17, marginBottom: 15 }}
+                  style={{ fontSize: 18, fontWeight: "500", marginBottom: 13 }}
                 >
-                  Email Address
+                  {userData.name}
                 </Text>
-                <TextInput
-                  style={styles.textEmail}
-                  placeholder={userData.email}
-                  onChangeText={(e) => setEmail(e)}
-                />
+
+                <Text style={{ color: "grey", fontSize: 12 }}>
+                  {userData.username}
+                </Text>
               </View>
             </View>
-            <View style={styles.flexRow}>
-              <TouchableOpacity
-                style={{ ...styles.button, marginTop: 30 }}
-                disabled={username === "" && email === "" && name === ""}
-                onPress={() => handleUpdate()}
-              >
-                <Text style={{ fontWeight: "500", fontSize: 18 }}>Update</Text>
-              </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: "white",
+                borderRadius: 15,
+                height: 30,
+                justifyContent: "center",
+                alignItems: "center",
+                width: getWidthScore(),
+                display: "flex",
+                flexDirection: "row",
+                marginTop: 10,
+                marginLeft: 15,
+                shadowColor: "#7F5DF0",
+                shadowOffset: {
+                  width: 0,
+                  height: 10,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.5,
+                elevation: 5,
+              }}
+            >
+              <AntDesign name='aliwangwang-o1' />
+              <Text> {userData.score}</Text>
             </View>
+            <View style={{ marginTop: 25, marginLeft: 15 }}>
+              <Text style={{ fontWeight: "700", fontSize: 17 }}>
+                My Stories
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                marginTop: 20,
+                backgroundColor: "white",
+                marginRight: 15,
+                marginLeft: 15,
+                height: 55,
+                alignItems: "center",
+                borderRadius: 15,
+                shadowColor: "#7F5DF0",
+                shadowOffset: {
+                  width: 0,
+                  height: 10,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.5,
+                elevation: 5,
+              }}
+            >
+              <SimpleLineIcons
+                name='camera'
+                size={30}
+                style={{ marginLeft: 20 }}
+              />
+              <Text style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}>
+                Add To My Story
+              </Text>
+              <View style={{ flexGrow: 1 }} />
+              <AntDesign
+                name='right'
+                size={18}
+                color='lightgray'
+                style={{ marginRight: 15 }}
+              />
+            </TouchableOpacity>
+            <View style={{ marginTop: 25, marginLeft: 15 }}>
+              <Text style={{ fontWeight: "700", fontSize: 18 }}>Friends</Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                marginTop: 20,
+                backgroundColor: "white",
+                marginRight: 15,
+                marginLeft: 15,
+                height: 55,
+                alignItems: "center",
+                borderRadius: 15,
+                shadowColor: "#7F5DF0",
+                shadowOffset: {
+                  width: 0,
+                  height: 10,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.5,
+                elevation: 5,
+              }}
+              onPress={() => {
+                setVisibilityProfile(false);
+                navigation.goBack();
+                navigation.navigate("AddFriends");
+              }}
+            >
+              <Image
+                source={require("../assets/addperson.png")}
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: "contain",
+                  marginLeft: 15,
+                }}
+              />
+              <Text style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}>
+                Add Friends
+              </Text>
+              <View style={{ flexGrow: 1 }} />
+              <AntDesign
+                name='right'
+                size={18}
+                color='lightgray'
+                style={{ marginRight: 15 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                marginTop: 10,
+                backgroundColor: "white",
+                marginRight: 15,
+                marginLeft: 15,
+                height: 55,
+                alignItems: "center",
+                borderRadius: 15,
+                shadowColor: "#7F5DF0",
+                shadowOffset: {
+                  width: 0,
+                  height: 10,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.5,
+                elevation: 5,
+              }}
+              onPress={() => {
+                setVisibilityProfile(false);
+                navigation.goBack();
+                navigation.navigate("FriendsList");
+              }}
+            >
+              <Image
+                source={require("../assets/friendlist2.png")}
+                style={{
+                  width: 33,
+                  height: 33,
+                  resizeMode: "contain",
+                  marginLeft: 15,
+                }}
+              />
+              <Text style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}>
+                My Friends
+              </Text>
+              <View style={{ flexGrow: 1 }} />
+              <AntDesign
+                name='right'
+                size={18}
+                color='lightgray'
+                style={{ marginRight: 15 }}
+              />
+            </TouchableOpacity>
           </View>
+        </View>
+        <Modal
+          animationType='slide'
+          visible={visibilitySettings}
+          onRequestClose={() => toggleEditModal()}
+        >
+          <EditProfileModal
+            userData={userData}
+            setVisibilitySettings={setVisibilitySettings}
+            closeModal={() => toggleEditModal()}
+          />
         </Modal>
-      </SafeAreaView>
-    </RootSiblingParent>
+      </Modal>
+    </SafeAreaView>
   );
 };
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "white",
-    borderRadius: 25,
-    height: 35,
-    width: 100,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 3,
-    shadowColor: "#7F5DF0",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 5,
-    marginRight: 20,
-  },
-  smallButton: {
-    backgroundColor: "white",
-    borderRadius: 25,
-    height: 35,
-    width: 35,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 3,
-    shadowColor: "#7F5DF0",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 5,
-    marginRight: 10,
-  },
-  signoutBut: {
-    backgroundColor: "white",
-    borderRadius: 25,
-    height: 40,
-    width: 85,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 3,
-    shadowColor: "#7F5DF0",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 5,
-    marginRight: 10,
-    marginLeft: 20,
-  },
-  textEmail: {
-    borderWidth: 0.3,
-    borderColor: "gray",
-    width: "100%",
-    height: 40,
-    paddingTop: 3,
-    paddingLeft: 10,
-    borderRadius: 10,
-  },
-  textSmall: {
-    borderWidth: 0.3,
-    borderColor: "gray",
-    width: "100%",
-    height: 40,
-    paddingTop: 3,
-    paddingLeft: 10,
-    borderRadius: 10,
-  },
-  flexRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
