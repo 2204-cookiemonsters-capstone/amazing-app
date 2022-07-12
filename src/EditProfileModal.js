@@ -9,8 +9,6 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from "react-native-reanimated";
 import * as ImagePicker from 'expo-image-picker';
 import { authStyle, userProfile } from "../styles";
-const userAvatar = require("../assets/favicon.png");
-// console.log("AVATAR", avatar)
 
 const EditProfileModal = ({ user, closeModal }) => {
   const [userData, setUserData] = useState('');
@@ -78,7 +76,7 @@ const EditProfileModal = ({ user, closeModal }) => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [3, 4],
+      aspect: [1, 1],
       quality: 1,
     });
 
@@ -88,13 +86,18 @@ const EditProfileModal = ({ user, closeModal }) => {
   }
 
   const takePhoto = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if(permissionResult.granted === false) {
+      alert("You've denied permission to allow this app to access your camera.");
+      return
+    }
     const result = await ImagePicker.launchCameraAsync({
-      cropping: true,
-      compressImageMaxWidth: 300,
-      compressImageMaxHeight: 300,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
     });
 
-    console.log("RESULT", result);
     if(!result.cancelled) {
       setAvatar(result.uri);
     }
@@ -140,7 +143,6 @@ const EditProfileModal = ({ user, closeModal }) => {
         <ScrollView>
           <Title style={authStyle.header}>Edit your profile</Title>
           <View style={userProfile.body}>
-      {/* ------------------------------ Bottom Slider ------------------------------------ */}
             <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
               <View style={{
                 height: 100,
@@ -244,9 +246,7 @@ const EditProfileModal = ({ user, closeModal }) => {
             {isValid.message}
           </Snackbar>
         </ScrollView>
-
         </Animated.View>
-
       </SafeAreaView>
     </KeyboardAvoidingView>
   );

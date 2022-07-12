@@ -53,13 +53,14 @@ const authStyle = StyleSheet.create({
     backgroundColor: "white",
   },
   submitButton: {
-    backgroundColor: "white",
+    backgroundColor: "#7F5DF0",
     borderRadius: 25,
     height: 50,
     width: 180,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 30,
+    marginTop: 20,
+    marginBottom: 20,
     shadowColor: "#7F5DF0",
     shadowOffset: {
       width: 0,
