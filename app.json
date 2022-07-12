@@ -14,9 +14,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -29,18 +27,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-<<<<<<< HEAD
     "description": "Social media app to promote happiness through connection, spontaneity, reflection and small achievements",
     "githubUrl": "https://github.com/2204-cookiemonsters-capstone/amazing-app"
-=======
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ]
-    ]
->>>>>>> cd9aeda9ff3ff38fe07a40936ce737cc91578be3
   }
 }
