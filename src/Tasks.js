@@ -111,7 +111,6 @@ const fetchAllFriends = async () => {
   const friendsItems = friendDocs.map((i) => i.data());
 
   setAllFriends(friendsItems)
-  // console.log(allFriends)
 }
 
 async function fetchFriendsPosts(id){
@@ -179,6 +178,21 @@ async function fetchFriendsPosts(id){
     setDisplayPostText(displayPostText + 1);
   };
 
+  const handleDelete = async (taskId) => {
+    const snapShot = await getDoc(
+      doc(firestore, 'users', auth.currentUser.uid, 'posts', "July"))
+    
+    let previousPosts = snapShot.data().userTasks
+
+   let userTasks = previousPosts.map((item) => item.taskId !== taskId ? item : {...item, completed: false, completedTime: null, reflection: ""})
+
+    const postsRef = await doc(firestore, 'users', auth.currentUser.uid, "posts", "July")
+
+    setDoc(postsRef, {userTasks}, {merge: true })
+    fetchUserPosts()
+   }
+  
+
 
   const handlePrevious = (taskId) => {
     let previousPost = featuredPostsData.filter((item) => item.taskId === taskId - 1)
@@ -190,7 +204,6 @@ async function fetchFriendsPosts(id){
   const handleNext = (taskId) => {
     let nextPost = featuredPostsData.filter((item) => item.taskId === taskId + 1)
     setDisplayPostText(1);
-    // console.log(nextPost)
     nextPost.length ? setDisplayPost(nextPost[0]) : setView('featured')
   }
 
@@ -217,29 +230,25 @@ async function fetchFriendsPosts(id){
     setView('posts');
   };
 
-  const handleFollowNewPeople = () => {
-    setView('followNewPeople');
+  const getTimeDifference = (timesent) => {
+    const timeNow = new Date().getTime();
+    const difference = (timeNow - timesent) / 1000;
+    const diff = difference / 60;
+
+    return Math.abs(Math.round(diff));
   };
 
-//initial load creates user tasks if don't exist, fetches users posts, fetches featured posts
   useEffect(() => {
     fetchUserPosts();
     fetchAllFriends()
-    console.log('useEffect1')
-    // console.log('All user tasks', allUserTasks);
 
   }, []);
 
-// need to do a useEffect to update taskPosts if user submits a post or changes the goal num-- need to timestamp the postTime value to current time
-
 
   useEffect(() => {
-    // console.log('useEffect2');
     fetchUserPosts();
     getCompletedCount()
   }, [allUserTasks]);
-
-// need to do a useEffect to fetch friends and featured recent posts if visits featured view / scrolls.
 
 
   return (
@@ -250,13 +259,15 @@ async function fetchFriendsPosts(id){
         {/* top icon bar */}
         {view === 'postStack' ? null : 
         <View style={styles.topOptions}>
-          <TouchableWithoutFeedback onPress={() => handleView('posts')}>
-          <Text style={styles.subheading}>
-            {view === 'posts' ? <FontAwesome name="photo" size={24} color="black"/> :
-          <FontAwesome name="photo" size={24} color="gray"/>}
+       
+       <TouchableWithoutFeedback onPress={() => handleView('featured')}>
+          <Text style={styles.subheading} >
+            {view === 'featured' ? 
+          <FontAwesome name="star-o" size={24} color="black"/> :
+          <FontAwesome name="star-o" size={24} color="gray"/> }
           </Text>
           </TouchableWithoutFeedback>
-        
+
           <TouchableWithoutFeedback onPress={() => handleView('tasks')}>
           <Text style={[styles.subheading, styles.fontWeight700]} >
          {view === 'tasks' ?
@@ -265,13 +276,14 @@ async function fetchFriendsPosts(id){
           </Text>
           </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress={() => handleView('featured')}>
-          <Text style={styles.subheading} >
-            {view === 'featured' ? 
-          <FontAwesome name="star-o" size={24} color="black"/> :
-          <FontAwesome name="star-o" size={24} color="gray"/> }
+          <TouchableWithoutFeedback onPress={() => handleView('posts')}>
+          <Text style={styles.subheading}>
+            {view === 'posts' ? <FontAwesome name="photo" size={24} color="black"/> :
+          <FontAwesome name="photo" size={24} color="gray"/>}
           </Text>
           </TouchableWithoutFeedback>
+        
+       
         </View>}
 
         {/* your tasks section */}
@@ -379,7 +391,6 @@ async function fetchFriendsPosts(id){
             snapToInterval={310} //your element width
             snapToAlignment={"center"}>
             {!allUserTasks ? null : allUserTasks.map((item) => {
-              // console.log(item, "item")
             return (
               item.completed !== true ? (
                 
@@ -461,22 +472,21 @@ async function fetchFriendsPosts(id){
         <View style={styles.submitHeading}> 
             <Text style={[styles.subheading, styles.fontWeight700]}>{currentTask.title}</Text>
             <Text style={{padding: 20}}>{currentTask.description}</Text>
-
-          <Text style={[styles.center,{color:"lightgray"}]}>select an image</Text>
+          <Text style={[styles.center,{color:"lightgray"}]}>default image</Text>
           <View style={{flexDirection: "row", justifyContent: "center", marginTop:10}}>
-            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1,}} source={{uri: currentTask.defaultImgUrl}} />
-            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1}} source={{uri: currentTask.defaultImgUrl}} />
+            <Image style={{ width: 200, height: 200, marginTop: 2, marginRight: 1,}} source={{uri: currentTask.defaultImgUrl}} />
            </View>
 
-           <View style={{flexDirection: "row", justifyContent: "center"}}> 
-            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1}} source={{uri: currentTask.defaultImgUrl}} />
-            <View>
-            <TouchableWithoutFeedback style={{justifyContent: "center", alignItems: "center", flexDirection: "column", width: 150, height: 150, margin: 1, marginTop: 2, borderWidth: 2, borderColor: "lightgray"}}>
+           <View style={[styles.center, {alignItems: "center", paddingTop: 20}]}>
+           <Text style={[styles.center,{color:"lightgray", paddingBottom: 10}]}>or</Text>
+            <TouchableWithoutFeedback style={{justifyContent: "center", alignItems: "center", flexDirection: "column", width: 200, height: 200, margin: 1, marginTop: 2, borderWidth: 2, borderColor: "lightgray"}}>
             <FontAwesome name="camera-retro" size={84} color="lightgray"/>
             <Text style={{color: "lightgray"}}>add an image</Text>
             </TouchableWithoutFeedback>
             </View>
-            </View>
+
+          
+            
             
             <View>
 
@@ -498,9 +508,9 @@ async function fetchFriendsPosts(id){
             <Text style={{paddingLeft: 10}}>Who can see this post?</Text>
             </View>
             <View style={styles.visibilityOptions}>
-            <Text style={{paddingLeft: 30}}>only me</Text>
-            <Text style={{paddingLeft: 30}}>friends</Text>
-            <Text style={{paddingLeft: 30}}>public</Text>
+            <Text style={{paddingLeft: 10, paddingRight: 10}}>only me</Text>
+            <Text style={{paddingLeft: 10, paddingRight: 10}}>friends</Text>
+            <Text style={{paddingLeft: 10, paddingRight: 10}}>public</Text>
             </View>
             <Text
               style={styles.submitCompletedTask}
@@ -517,28 +527,17 @@ async function fetchFriendsPosts(id){
             <Text style={[styles.subheading, styles.fontWeight700]}>{currentTask.title}</Text>
             <Text style={{padding: 20}}>{currentTask.description}</Text>
 
-          <Text style={[styles.center,{color:"lightgray"}]}>select an image</Text>
-          <View style={{flexDirection: "row", justifyContent: "center", marginTop:10}}>
-            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1,}} source={{uri: currentTask.defaultImgUrl}} />
-            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1}} source={{uri: currentTask.defaultImgUrl}} />
-           </View>
-
-           <View style={{flexDirection: "row", justifyContent: "center"}}> 
-            <Image style={{ width: 150, height: 150, marginTop: 2, marginRight: 1}} source={{uri: currentTask.defaultImgUrl}} />
-            <View>
-            <TouchableWithoutFeedback style={{justifyContent: "center", alignItems: "center", flexDirection: "column", width: 150, height: 150, margin: 1, marginTop: 2, borderWidth: 2, borderColor: "lightgray"}}>
-            <FontAwesome name="camera-retro" size={84} color="lightgray"/>
-            <Text style={{color: "lightgray"}}>add an image</Text>
-            </TouchableWithoutFeedback>
-            </View>
-            </View>
+          
             
             <View>
+          <Text style={[styles.center, styles.padding10, styles.fontWeight700]}>Previous reflection</Text>
 
+          <Text style={{padding: 20}}>{currentTask.reflection}</Text>
+          
           <View style={styles.inputReflection}>
             <TextInput
               style={styles.addReflection}
-              placeholder={currentTask.reflection}
+              placeholder={"Updated reflection..."}
               multiline={true}
               textAlign={'left'}
               maxLength={1000}
@@ -580,12 +579,62 @@ async function fetchFriendsPosts(id){
                     source={item.defaultImgUrl ? { uri: item.defaultImgUrl } : null}
                   />
                   <View style={styles.postTitleEditContainer}>
+                    <View style={{paddingBottom: 10}}>
                   <Text style={styles.postTag}>{item.title}</Text>
+                 
+                  {getTimeDifference(item.completedTime) < 60 ? (
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#666",
+                            marginRight: 30,
+                          }}
+                        >
+                          {getTimeDifference(item.completedTime)} minutes ago
+                        </Text>
+                      ) : getTimeDifference(item.completedTime) >= 60 &&
+                        getTimeDifference(item.completedTime) < 1440 ? (
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#666",
+                            marginRight: 30,
+                          }}
+                        >
+                          {" "}
+                          {Math.floor(
+                            getTimeDifference(item.completedTime) / 60
+                          )}{" "}
+                           {Math.floor(
+                            getTimeDifference(item.completedTime) / 60
+                          ) === 1
+                            ? "hour ago"
+                            : "hours ago"}
+                        </Text>
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#666",
+                            marginRight: 30,
+                          }}
+                        >
+                          {Math.floor(getTimeDifference(item.completedTime) / 1440)}{" "}
+                          {Math.floor(
+                            getTimeDifference(item.completedTime) / 1440
+                          ) === 1
+                            ? "day ago"
+                            : "days ago"}
+                        </Text>
+                      )}
+              </View>
                   <View style={styles.postEditDeleteContainer}>
                     <TouchableWithoutFeedback onPress={() => handleView('submitEdit', item)}>
                   <FontAwesome name="pencil" size={16} color="black" style={styles.postEdit}/>
                   </TouchableWithoutFeedback>
+                  <TouchableWithoutFeedback onPress={()=>handleDelete(item.taskId)}>
                   <FontAwesome name="trash" size={16} color="black" style={styles.postEdit}/>
+                  </TouchableWithoutFeedback>
                   </View>
 
                   </View>
@@ -604,6 +653,7 @@ async function fetchFriendsPosts(id){
          {view === 'friendsPosts' ? (
           <View>
             <Text style={[styles.subheading, styles.fontWeight700]}>{currentFriendUsername}'s Posts</Text>
+           
             {friendsPosts.map((item) => {
               return item.completed == true ? (
                 <View style={styles.postContainer} key={item.taskId}>
@@ -632,13 +682,13 @@ async function fetchFriendsPosts(id){
              <View style={styles.followingSectionContainer}>
               <Text style={[styles.subheading, styles.fontWeight700]}>Following</Text>
               
-{allFriends.length ? 
+      {allFriends.length ? 
         <ScrollView horizontal={true}>
         <View style={styles.followingItemsContainer}>
         {allFriends.map((item)=> 
 
          <TouchableWithoutFeedback onPress={() => handleDisplayFollowing(item.userid, item.username)} key={item.userid}>
-          <Image source={{uri: profileImagesArray[6]["url"]}} style={styles.followingItem}/>
+          <Image source={{uri: profileImagesArray[16]["url"]}} style={styles.followingItem}/>
           <Text style={[styles.followingItemUsername, styles.center]}>{item.username}</Text>
        </TouchableWithoutFeedback>
         )
@@ -648,7 +698,7 @@ async function fetchFriendsPosts(id){
      
     </View>
 
-            {/* featured section */}
+      {/* featured section */}
 
             <View style={styles.featuredSectionContainer}>
               <Text style={[styles.subheading, styles.fontWeight700]}>Featured</Text>
@@ -677,9 +727,6 @@ async function fetchFriendsPosts(id){
             </View>
           </View>
         ) : null}
-
-        {/* display single posts as a stack to swipe thru section */}
-        {/* swipe right changes display to taskId+ 1, swipe left changes display to taskId -1 */}
 
 
         {view === 'postStack' ? (
@@ -871,8 +918,6 @@ dashboardRowTop : {
   margin: 5, 
   width: 300
 },
-
- 
   submitCompletedTask: {
     textAlign: 'center',
     padding: 10,
@@ -1054,9 +1099,9 @@ dashboardRowTop : {
     width: 200,
   },
   next:{
-paddingTop: 330,
-paddingBottom: 330,
-width: 130,
+    paddingTop: 330,
+    paddingBottom: 330,
+    width: 130,
 },
 backToFeatured:{
   backgroundColor:"red"
@@ -1064,8 +1109,8 @@ backToFeatured:{
 
 strengths: {
   color: "white", 
-paddingLeft: 5, 
-paddingBottom: 5
+  paddingLeft: 5, 
+  paddingBottom: 5
 },
 strengthIconRow:{
     flexDirection: "row", 
@@ -1074,9 +1119,9 @@ strengthIconRow:{
   },
 
   strengthsIconContainer:{
-flexDirection: "row",
-justifyContent: "center",
-flexWrap: "wrap"
+    flexDirection: "row",
+    justifyContent: "center",
+    flexWrap: "wrap"
   },
   postTitleEditContainer:{
     flexDirection: "row", 
@@ -1093,9 +1138,18 @@ flexWrap: "wrap"
     flexDirection: "row", 
     justifyContent: "space-between"},
     iconAndNameContainer:{
-      flexDirection: "row", alignItems: "center"},
-      visibility:{flexDirection: "row", alignItems: "center", justifyContent: "center"},
-      visibilityOptions:{flexDirection:"row", justifyContent: "center", paddingTop: 30, paddingBottom: 30}
+      flexDirection: "row", 
+      alignItems: "center"},
+    visibility:{
+      flexDirection: "row", 
+      alignItems: "center", 
+      justifyContent: "center"
+    },
+    visibilityOptions:{
+      flexDirection:"row", 
+      justifyContent: "center", 
+      paddingTop: 30, 
+      paddingBottom: 30}
 });
 
 export default Tasks;
