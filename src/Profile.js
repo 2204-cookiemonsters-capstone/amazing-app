@@ -9,6 +9,7 @@ import {
   Touchable,
   SafeAreaView,
   TextInput,
+  Platform,
 } from "react-native";
 import { Avatar } from "react-native-paper";
 import { auth, firestore } from "../firebase";
