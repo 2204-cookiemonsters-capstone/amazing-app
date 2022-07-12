@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "capstone",
-    "slug": "capstone",
+    "name": "HappiList",
+    "slug": "happilist",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Social media app to promote happiness through connection, spontaneity, reflection and small achievements",
+    "githubUrl": "https://github.com/2204-cookiemonsters-capstone/amazing-app"
   }
 }

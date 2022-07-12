@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  Modal
+  Modal,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -30,7 +30,7 @@ const FriendsList = ({ navigation }) => {
   const [allFriends, setAllFriends] = useState([]);
   const [renderedUsers, setRenderedUsers] = useState([]);
   const [searchValue, setSearchValue] = useState([""]);
-  const [selectedFriend, setSelectedFriend] = useState('');
+  const [selectedFriend, setSelectedFriend] = useState("");
   const [showFriendModal, setShowFriendModal] = useState(false);
 
   const fetchAllFriends = async () => {
@@ -77,7 +77,7 @@ const FriendsList = ({ navigation }) => {
 
   const toggleFriendModal = () => {
     setShowFriendModal(!showFriendModal);
-  }
+  };
 
   return (
     <View>
@@ -99,6 +99,14 @@ const FriendsList = ({ navigation }) => {
             alignItems: "center",
             justifyContent: "center",
             marginLeft: 13,
+            shadowColor: "#7F5DF0",
+            shadowOffset: {
+              width: 0,
+              height: 10,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.5,
+            elevation: 5,
           }}
           onPress={() => navigation.goBack()}
         >
@@ -116,6 +124,14 @@ const FriendsList = ({ navigation }) => {
             alignItems: "center",
             justifyContent: "center",
             marginRight: 13,
+            shadowColor: "#7F5DF0",
+            shadowOffset: {
+              width: 0,
+              height: 10,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.5,
+            elevation: 5,
           }}
           onPress={() => navigation.goBack()}
         >
@@ -176,7 +192,10 @@ const FriendsList = ({ navigation }) => {
         {allFriends.map((item) => (
           <TouchableOpacity
             key={item.userid}
-            onPress={() => {toggleFriendModal(); setSelectedFriend(item.userid)}}
+            onPress={() => {
+              toggleFriendModal();
+              setSelectedFriend(item.userid);
+            }}
             style={{
               marginLeft: 15,
               marginRight: 15,
@@ -267,14 +286,14 @@ const FriendsList = ({ navigation }) => {
         ))}
       </View>
       <Modal
-          animationType="slide"
-          visible={showFriendModal}
-          onRequestClose={() => toggleFriendModal()}
-        >
-          <FriendModal
-            user={selectedFriend}
-            closeModal={() => toggleFriendModal()}
-          />
+        animationType='slide'
+        visible={showFriendModal}
+        onRequestClose={() => toggleFriendModal()}
+      >
+        <FriendModal
+          user={selectedFriend}
+          closeModal={() => toggleFriendModal()}
+        />
       </Modal>
     </View>
   );
