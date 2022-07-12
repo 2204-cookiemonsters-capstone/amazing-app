@@ -317,10 +317,6 @@ const Profile = ({ navigation }) => {
           />
       </Modal>
     </Modal>
-
-
-
-
     </SafeAreaView>
   );
 };
