@@ -7,7 +7,8 @@ import {
   Button,
   Modal,
   Touchable,
-  SafeAreaView
+  SafeAreaView,
+  Platform
 } from "react-native";
 import { Avatar } from "react-native-paper";
 import { auth, firestore } from "../firebase";
@@ -65,6 +66,8 @@ const Profile = ({ navigation }) => {
     setShowEditModal(!showEditModal);
   }
 
+  const topMargin = Platform.OS=== 'ios' ? 30 : 0;
+
   return (
     <SafeAreaView>
       <Modal
@@ -76,7 +79,7 @@ const Profile = ({ navigation }) => {
         <View style={{ display: "flex", flexDirection: "column" }}
         >
           <View
-            style={{ display: "flex", flexDirection: "row", marginBottom: 30, marginTop: 20 }}
+            style={{ display: "flex", flexDirection: "row", marginBottom: 30, marginTop: topMargin }}
           >
             <TouchableOpacity
               style={{
