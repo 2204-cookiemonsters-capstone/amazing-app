@@ -73,14 +73,16 @@ const EditProfileModal = ({ user, closeModal }) => {
   const renderInner = () => (
     <View style={userProfile.panel}>
       <View style={{alignItems: 'center'}}>
-        <Text style={userProfile.panelTitle}>Upload Photo</Text>
-        <Text style={userProfile.panelSubtitle}>Choose your profile picture</Text>
+        <Text style={userProfile.panelTitle}>Upload your profile picture</Text>
       </View>
       <TouchableOpacity style={userProfile.panelButton}>
         <Text style={userProfile.panelButtonTitle}>Take a photo</Text>
       </TouchableOpacity>
       <TouchableOpacity style={userProfile.panelButton}>
         <Text style={userProfile.panelButtonTitle}>Choose from library</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={userProfile.panelButton} onPress={() => bs.current.snapTo(1)}>
+        <Text style={userProfile.panelButtonTitle}>Cancel</Text>
       </TouchableOpacity>
     </View>
   )
@@ -89,7 +91,6 @@ const EditProfileModal = ({ user, closeModal }) => {
     <View style={userProfile.header}>
       <View style={userProfile.panelHeader}>
         <View style={userProfile.panelHandle}>
-
         </View>
       </View>
   </View>
@@ -100,8 +101,9 @@ const EditProfileModal = ({ user, closeModal }) => {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <BottomSheet ref={bs} snapPoints={[300, 0]} renderContent={renderInner} renderHeader={renderHeader} initialSnap={1} callbackNode={fall} enabledGestureInteraction={true} />
       <SafeAreaView>
+        <Animated.View style={{opacity: Animated.add(0.1, Animated.multiply(fall, 1.0))}}>
         <TouchableOpacity
-          style={{ position: "absolute", top: 64, right: 32, zIndex: 10 }}
+          style={{ position: "absolute", right: 20, zIndex: 10 }}
           onPress={closeModal}
         >
           <AntDesign name="close" size={24} color="black" />
@@ -213,6 +215,9 @@ const EditProfileModal = ({ user, closeModal }) => {
             {isValid.message}
           </Snackbar>
         </ScrollView>
+
+        </Animated.View>
+
       </SafeAreaView>
     </KeyboardAvoidingView>
   );

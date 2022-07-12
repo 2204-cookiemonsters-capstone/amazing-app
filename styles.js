@@ -125,18 +125,11 @@ const userProfile = StyleSheet.create({
   },
   panel: {
     padding: 20,
-    backgroundColor: 'white',
-    paddingTop: 20
+    backgroundColor: 'white'
   },
   panelTitle: {
-    fontSize: 27,
-    height: 35
-  },
-  panelSubtitle: {
-    fontSize: 14,
-    color: 'gray',
-    height: 30,
-    marginBottom: 10
+    fontSize: 20,
+    height: 30
   },
   panelButton: {
     padding: 13,
