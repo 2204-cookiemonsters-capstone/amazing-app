@@ -10,6 +10,7 @@ import React, { Component, useState } from "react";
 import { auth, signInWithEmailAndPassword } from "../firebase";
 import { Snackbar, TextInput } from "react-native-paper";
 import { authStyle } from "../styles";
+import { AntDesign } from "@expo/vector-icons";
 
 const LoginScreen = (props) => {
   const [password, setPassword] = useState("");
@@ -49,29 +50,42 @@ const LoginScreen = (props) => {
     <View style={authStyle.container}>
       <ScrollView>
         <View style={authStyle.body}>
-          <Text style={authStyle.header}>Sign In</Text>
+          <AntDesign name='aliwangwang-o1' size={70} />
+          <Text
+            style={{
+              fontSize: 40,
+              fontWeight: "600",
+              marginTop: 10,
+              marginBottom: 15,
+            }}
+          >
+            Sign In
+          </Text>
           <TextInput
             style={authStyle.input}
-            autoCapitalize="none"
-            mode="outlined"
-            label="Email"
+            autoCapitalize='none'
+            label='Email'
             onChangeText={(email) => setEmail(email)}
           />
           <TextInput
             style={authStyle.input}
-            autoCapitalize="none"
+            autoCapitalize='none'
             secureTextEntry={passwordVisible}
-            mode="outlined"
-            label="Password"
-            right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />}
+            label='Password'
+            right={
+              <TextInput.Icon
+                name={passwordVisible ? "eye" : "eye-off"}
+                onPress={() => setPasswordVisible(!passwordVisible)}
+              />
+            }
             onChangeText={(password) => setPassword(password)}
           />
           <TouchableOpacity
             style={authStyle.submitButton}
-            title="Signup"
+            title='Signup'
             onPress={() => handleLogin()}
           >
-            <Text>Log In</Text>
+            <Text style={{ fontWeight: "500", fontSize: 16 }}>Log In</Text>
           </TouchableOpacity>
           <Text
             onPress={() => props.navigation.navigate("Signup")}

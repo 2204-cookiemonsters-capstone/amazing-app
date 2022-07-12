@@ -40,13 +40,21 @@ const MessagesStack = ({ navigation }) => (
         headerLeft: () => (
           <TouchableOpacity
             style={{
-              backgroundColor: "aqua", //random vibrant color for now, style our app later
+              backgroundColor: "white",
               borderRadius: 25,
               height: 35,
               width: 35,
               alignItems: "center",
               justifyContent: "center",
               marginLeft: 13,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
             }}
             onPress={() => navigation.goBack()}
           >
@@ -56,13 +64,21 @@ const MessagesStack = ({ navigation }) => (
         headerRight: () => (
           <TouchableOpacity
             style={{
-              backgroundColor: "aqua", //random vibrant color for now, style our app later
+              backgroundColor: "white",
               borderRadius: 25,
               height: 35,
               width: 35,
               alignItems: "center",
               justifyContent: "center",
-              marginRight: 13,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+              marginRight: 12,
             }}
             onPress={() => navigation.navigate("SingleProfile")}
           >
@@ -487,8 +503,8 @@ const AppStack = ({ currentRoute }) => {
       }}
     >
       <Tab.Screen
-        name='Messages'
-        component={MessagesStack}
+        name='Feed'
+        component={ExploreStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
             <View
@@ -499,12 +515,12 @@ const AppStack = ({ currentRoute }) => {
               }}
             >
               <Image
-                source={require("../assets/chat.png")}
+                source={require("../assets/homepng.png")}
                 resizeMode='contain'
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94", //outline of the icon, red or grey
+                  tintColor: focused ? "#e32f45" : "#748c94",
                 }}
               />
               <Text
@@ -513,14 +529,15 @@ const AppStack = ({ currentRoute }) => {
                   fontSize: 12,
                 }}
               >
-                Chats
+                Feed
               </Text>
             </View>
           ),
-          tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
-          headerShown: getHeaderVisibility(),
+
           headerTitleAlign: "center",
-          headerTitle: "Chats",
+          headerTitle: "Feed",
+          headerShown: getHeaderVisibilityExploreTab(),
+          tabBarStyle: getTabBarVisibilityExploreTab(),
           headerRight: () => (
             <View
               style={{
@@ -538,7 +555,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("AddFriends")}
+                onPress={() => navigation.navigate("AddFriendsExplore")}
               >
                 <Image
                   source={require("../assets/addperson.png")}
@@ -565,7 +582,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("ProfileMessages")}
+                onPress={() => navigation.navigate("ProfileExplore")}
               >
                 <Image
                   source={require("../assets/profile.png")}
@@ -583,7 +600,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("SearchScreen")} //test only change later
+                onPress={() => navigation.navigate("SearchExplore")}
               >
                 <Image
                   source={require("../assets/search.png")}
@@ -595,6 +612,7 @@ const AppStack = ({ currentRoute }) => {
           ),
         })}
       />
+
       <Tab.Screen
         name='Tasks'
         component={TasksStack}
@@ -927,8 +945,8 @@ const AppStack = ({ currentRoute }) => {
         })}
       />
       <Tab.Screen
-        name='Explore'
-        component={ExploreStack}
+        name='Messages'
+        component={MessagesStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
             <View
@@ -939,12 +957,12 @@ const AppStack = ({ currentRoute }) => {
               }}
             >
               <Image
-                source={require("../assets/globe.png")}
+                source={require("../assets/chat.png")}
                 resizeMode='contain'
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#e32f45" : "#748c94", //outline of the icon, red or grey
                 }}
               />
               <Text
@@ -953,15 +971,14 @@ const AppStack = ({ currentRoute }) => {
                   fontSize: 12,
                 }}
               >
-                Explore
+                Chats
               </Text>
             </View>
           ),
-
+          tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
+          headerShown: getHeaderVisibility(),
           headerTitleAlign: "center",
-          headerTitle: "Explore",
-          headerShown: getHeaderVisibilityExploreTab(),
-          tabBarStyle: getTabBarVisibilityExploreTab(),
+          headerTitle: "Chats",
           headerRight: () => (
             <View
               style={{
@@ -979,7 +996,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("AddFriendsExplore")}
+                onPress={() => navigation.navigate("AddFriends")}
               >
                 <Image
                   source={require("../assets/addperson.png")}
@@ -1006,7 +1023,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("ProfileExplore")}
+                onPress={() => navigation.navigate("ProfileMessages")}
               >
                 <Image
                   source={require("../assets/profile.png")}
@@ -1024,7 +1041,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("SearchExplore")}
+                onPress={() => navigation.navigate("SearchScreen")} //test only change later
               >
                 <Image
                   source={require("../assets/search.png")}

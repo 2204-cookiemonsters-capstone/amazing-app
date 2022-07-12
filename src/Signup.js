@@ -5,24 +5,24 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-} from 'react-native';
-import { TextInput } from 'react-native-paper';
-import React, { useState } from 'react';
-import { auth, createUserWithEmailAndPassword, firestore } from '../firebase';
-import { setDoc, doc } from 'firebase/firestore';
-import { Snackbar } from 'react-native-paper';
-import { authStyle } from '../styles';
-import {userTasks} from './assets/userTasksData'
+} from "react-native";
+import { TextInput } from "react-native-paper";
+import React, { useState } from "react";
+import { auth, createUserWithEmailAndPassword, firestore } from "../firebase";
+import { setDoc, doc } from "firebase/firestore";
+import { Snackbar } from "react-native-paper";
+import { authStyle } from "../styles";
+import { userTasks } from "./assets/userTasksData";
+import { AntDesign } from "@expo/vector-icons";
 
-
-const Signup = (props) => {
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const Signup = ({ navigation }) => {
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(true);
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(true);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isValid, setIsValid] = useState(false);
 
   const handleSignUp = () => {
@@ -30,7 +30,7 @@ const Signup = (props) => {
       setIsValid({
         bool: true,
         boolSnack: true,
-        message: 'Please enter a username',
+        message: "Please enter a username",
       });
       return;
     }
@@ -38,7 +38,7 @@ const Signup = (props) => {
       setIsValid({
         bool: true,
         boolSnack: true,
-        message: 'Please enter your name',
+        message: "Please enter your name",
       });
       return;
     }
@@ -46,7 +46,7 @@ const Signup = (props) => {
       setIsValid({
         bool: true,
         boolSnack: true,
-        message: 'Please enter an email',
+        message: "Please enter an email",
       });
       return;
     }
@@ -54,7 +54,7 @@ const Signup = (props) => {
       setIsValid({
         bool: true,
         boolSnack: true,
-        message: 'Passwords must be at least 6 characters',
+        message: "Passwords must be at least 6 characters",
       });
       return;
     }
@@ -62,17 +62,17 @@ const Signup = (props) => {
       setIsValid({
         bool: true,
         boolSnack: true,
-        message: 'Passwords must match',
+        message: "Passwords must match",
       });
       return;
     }
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log('Signup successful');
+        console.log("Signup successful");
       })
       .then(() => {
-        setDoc(doc(firestore, 'users', auth.currentUser.uid), {
+        setDoc(doc(firestore, "users", auth.currentUser.uid), {
           userid: auth.currentUser.uid,
           username,
           name,
@@ -80,11 +80,11 @@ const Signup = (props) => {
           score: 0,
         });
       })
-      .then(()=>{
-        setDoc(
-          doc(firestore, 'users', auth.currentUser.uid, "posts", "July"), 
-          {userTasks, goalNum: 28}
-          )    
+      .then(() => {
+        setDoc(doc(firestore, "users", auth.currentUser.uid, "posts", "July"), {
+          userTasks,
+          goalNum: 28,
+        });
       })
       .catch((error) => {
         setIsValid({ bool: true, boolSnack: true, message: error.message });
@@ -92,37 +92,82 @@ const Signup = (props) => {
   };
 
   return (
-    <View style={authStyle.container}>
-      <ScrollView
-      showsVerticalScrollIndicator={false}>
-        <View style={authStyle.body}>
-          <Text style={authStyle.header}>Sign Up</Text>
+    <View style={{ marginTop: 30, backgroundColor: "white", height: "100%" }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 35,
+          }}
+        >
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "white",
+                borderRadius: 25,
+                height: 35,
+                width: 35,
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 3,
+                shadowColor: "#7F5DF0",
+                shadowOffset: {
+                  width: 0,
+                  height: 10,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.5,
+                elevation: 5,
+                marginLeft: 55,
+              }}
+              onPress={() => navigation.goBack()}
+            >
+              <AntDesign name='left' size={20} color='lightgreen' />
+            </TouchableOpacity>
+            <View style={{ flexGrow: 1 }} />
+            <AntDesign
+              name='aliwangwang-o1'
+              size={70}
+              style={{ marginRight: "50%", marginLeft: "25%" }}
+            />
+          </View>
+
+          <Text
+            style={{
+              fontSize: 40,
+              fontWeight: "600",
+              marginTop: 10,
+              marginBottom: 3,
+            }}
+          >
+            Sign Up
+          </Text>
           <TextInput
             style={authStyle.input}
             value={username}
             autoCapitalize='none'
-            mode='outlined'
             label='Username'
             onChangeText={(username) =>
               setUsername(
                 username
-                  .normalize('NFD')
-                  .replace(/[\u0300-\u036f]/g, '')
-                  .replace(/\s+/g, '')
-                  .replace(/[^a-z0-9]/gi, '')
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .replace(/\s+/g, "")
+                  .replace(/[^a-z0-9]/gi, "")
               )
             }
           />
           <TextInput
             style={authStyle.input}
-            mode='outlined'
             label='Name'
             onChangeText={(name) => setName(name)}
           />
           <TextInput
             style={authStyle.input}
             autoCapitalize='none'
-            mode='outlined'
             label='Email'
             onChangeText={(email) => setEmail(email)}
           />
@@ -130,11 +175,10 @@ const Signup = (props) => {
             style={authStyle.input}
             autoCapitalize='none'
             secureTextEntry={passwordVisible}
-            mode='outlined'
             label='Password'
             right={
               <TextInput.Icon
-                name={passwordVisible ? 'eye' : 'eye-off'}
+                name={passwordVisible ? "eye" : "eye-off"}
                 onPress={() => setPasswordVisible(!passwordVisible)}
               />
             }
@@ -144,11 +188,10 @@ const Signup = (props) => {
             style={authStyle.input}
             autoCapitalize='none'
             secureTextEntry={confirmPasswordVisible}
-            mode='outlined'
             label='Confirm Password'
             right={
               <TextInput.Icon
-                name={confirmPasswordVisible ? 'eye' : 'eye-off'}
+                name={confirmPasswordVisible ? "eye" : "eye-off"}
                 onPress={() =>
                   setConfirmPasswordVisible(!confirmPasswordVisible)
                 }
@@ -161,10 +204,10 @@ const Signup = (props) => {
             title='Signup'
             onPress={() => handleSignUp()}
           >
-            <Text>Sign up</Text>
+            <Text style={{ fontWeight: "500", fontSize: 16 }}>Sign up</Text>
           </TouchableOpacity>
           <Text
-            onPress={() => props.navigation.navigate('Login')}
+            onPress={() => navigation.navigate("Login")}
             style={authStyle.loginMessage}
           >
             Already have an account? Sign in.

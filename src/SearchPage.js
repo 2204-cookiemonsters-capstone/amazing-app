@@ -30,6 +30,7 @@ const SearchPage = ({ navigation }) => {
   const firstThreeUsers = renderedUsers.slice(0, 3);
 
   const [showAll, setShowAll] = useState(false);
+  const [showAllSearch, setShowAllSearch] = useState(false);
 
   const height = () => {
     return allUsers.length * 92 + 150;
@@ -386,6 +387,258 @@ const SearchPage = ({ navigation }) => {
                   elevation: 5,
                 }}
                 onPress={() => setShowAll(false)}
+              >
+                <Text>View Less</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        ) : searchValue !== "" && renderedUsers.length ? (
+          <View style={{ height: showAll ? height() : heightNoShowAll() }}>
+            <Text
+              style={{
+                fontWeight: "700",
+                fontSize: 17,
+                margin: 25,
+              }}
+            >
+              Add Friends
+            </Text>
+            {showAllSearch
+              ? renderedUsers.map((item) => (
+                  <TouchableOpacity
+                    key={item.userid}
+                    style={{
+                      marginLeft: 15,
+                      marginRight: 15,
+                      paddingTop: 7,
+                      paddingBottom: 0,
+                      borderColor: "#cccccc",
+                      display: "flex",
+                      flexDirection: "row",
+                      paddingLeft: 10,
+                      paddingRight: 15,
+                      borderTopLeftRadius: item === allUsers[0] ? 8 : 0,
+                      borderTopRightRadius: item === allUsers[0] ? 8 : 0,
+                      backgroundColor: "white",
+                      marginBottom: 1,
+                      shadowColor: "#7F5DF0",
+                      shadowOffset: {
+                        width: 0,
+                        height: 10,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.5,
+                      elevation: 5,
+                    }}
+                  >
+                    <TouchableOpacity>
+                      <Image
+                        source={image}
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 25,
+                          marginTop: 10,
+                          marginBottom: 10,
+                          marginRight: 5,
+                        }}
+                      />
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "42%",
+                      }}
+                    >
+                      <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                        {item.name}
+                      </Text>
+                      <Text style={{ color: "gray" }}>{item.username}</Text>
+                      <Text>3 Mutual Friends</Text>
+                    </View>
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginLeft: 25,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "#CBC3E3",
+                          borderRadius: 25,
+                          height: 30,
+                          width: 95,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <View
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Image
+                            source={require("../assets/ADDFRIEND2.png")}
+                            style={{ width: 15, height: 15 }}
+                          />
+                        </View>
+                        <Text style={{ marginLeft: 5 }}>Add</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </TouchableOpacity>
+                ))
+              : firstThreeUsers.map((item) => (
+                  <TouchableOpacity
+                    key={item.userid}
+                    style={{
+                      marginLeft: 15,
+                      marginRight: 15,
+                      paddingTop: 7,
+                      paddingBottom: 0,
+                      borderColor: "#cccccc",
+                      display: "flex",
+                      flexDirection: "row",
+                      paddingLeft: 10,
+                      paddingRight: 15,
+                      borderTopLeftRadius: item === allUsers[0] ? 8 : 0,
+                      borderTopRightRadius: item === allUsers[0] ? 8 : 0,
+                      backgroundColor: "white",
+                      marginBottom: 1,
+                      shadowColor: "#7F5DF0",
+                      shadowOffset: {
+                        width: 0,
+                        height: 10,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.5,
+                      elevation: 5,
+                    }}
+                  >
+                    <TouchableOpacity>
+                      <Image
+                        source={image}
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 25,
+                          marginTop: 10,
+                          marginBottom: 10,
+                          marginRight: 5,
+                        }}
+                      />
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "42%",
+                      }}
+                    >
+                      <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                        {item.name}
+                      </Text>
+                      <Text style={{ color: "gray" }}>{item.username}</Text>
+                      <Text>3 Mutual Friends</Text>
+                    </View>
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginLeft: 25,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "#CBC3E3",
+                          borderRadius: 25,
+                          height: 30,
+                          width: 95,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <View
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Image
+                            source={require("../assets/ADDFRIEND2.png")}
+                            style={{ width: 15, height: 15 }}
+                          />
+                        </View>
+                        <Text style={{ marginLeft: 5 }}>Add</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+            {!showAllSearch ? (
+              <TouchableOpacity
+                style={{
+                  marginLeft: 15,
+                  marginRight: 15,
+                  paddingTop: 7,
+                  paddingBottom: 7,
+                  borderColor: "#cccccc",
+                  display: "flex",
+                  flexDirection: "row",
+                  paddingLeft: 10,
+                  paddingRight: 15,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderBottomRightRadius: 8,
+                  borderBottomLeftRadius: 8,
+                  backgroundColor: "white",
+                  shadowColor: "#7F5DF0",
+                  shadowOffset: {
+                    width: 0,
+                    height: 10,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.5,
+                  elevation: 5,
+                }}
+                onPress={() => setShowAllSearch(true)}
+              >
+                <Text>View More</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={{
+                  marginLeft: 15,
+                  marginRight: 15,
+                  paddingTop: 7,
+                  paddingBottom: 7,
+                  borderColor: "#cccccc",
+                  display: "flex",
+                  flexDirection: "row",
+                  paddingLeft: 10,
+                  paddingRight: 15,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderBottomRightRadius: 8,
+                  borderBottomLeftRadius: 8,
+                  backgroundColor: "white",
+                  shadowColor: "#7F5DF0",
+                  shadowOffset: {
+                    width: 0,
+                    height: 10,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.5,
+                  elevation: 5,
+                }}
+                onPress={() => setShowAllSearch(false)}
               >
                 <Text>View Less</Text>
               </TouchableOpacity>
