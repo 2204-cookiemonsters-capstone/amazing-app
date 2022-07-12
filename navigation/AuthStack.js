@@ -1,9 +1,9 @@
-import React, { createContext } from 'react';
-import { View } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import Signup from '../src/Signup';
-import LoginScreen from '../src/LoginScreen';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import React, { createContext } from "react";
+import { View } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Signup from "../src/Signup";
+import LoginScreen from "../src/LoginScreen";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const Stack = createStackNavigator();
 
@@ -19,25 +19,7 @@ const AuthStack = () => {
       <Stack.Screen
         name='Signup'
         component={Signup}
-        options={({ navigation }) => ({
-          title: '',
-          headerStyle: {
-            backgroundColor: '#f9fafd',
-            shadowColor: '#f9fafd',
-            elevation: 0,
-          },
-          headerLeft: () => (
-            <View style={{ marginLeft: 10 }}>
-              <FontAwesome.Button
-                name='long-arrow-left'
-                size={25}
-                backgroundColor='#f9fafd'
-                color='#333'
-                onPress={() => navigation.navigate('Login')}
-              />
-            </View>
-          ),
-        })}
+        options={{ header: () => null }}
       />
     </Stack.Navigator>
   );

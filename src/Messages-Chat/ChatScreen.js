@@ -20,7 +20,6 @@ import Entypo from "react-native-vector-icons/Entypo";
 
 //doc.id gets the id
 const ChatScreen = (props) => {
-  console.log(props.route.params.chatid);
   const [allMessages, setAllMessages] = useState([]);
   const [previousMessages, setPreviousMessages] = useState([]);
 
@@ -75,7 +74,6 @@ const ChatScreen = (props) => {
       userid: messages[0].user._id,
       time: new Date(),
     };
-    // console.log(new Date());
 
     const res = await updateDoc(
       doc(firestore, "chats", props.route.params.chatid),

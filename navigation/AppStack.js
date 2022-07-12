@@ -40,13 +40,21 @@ const MessagesStack = ({ navigation }) => (
         headerLeft: () => (
           <TouchableOpacity
             style={{
-              backgroundColor: "aqua", //random vibrant color for now, style our app later
+              backgroundColor: "white",
               borderRadius: 25,
               height: 35,
               width: 35,
               alignItems: "center",
               justifyContent: "center",
               marginLeft: 13,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
             }}
             onPress={() => navigation.goBack()}
           >
@@ -56,13 +64,21 @@ const MessagesStack = ({ navigation }) => (
         headerRight: () => (
           <TouchableOpacity
             style={{
-              backgroundColor: "aqua", //random vibrant color for now, style our app later
+              backgroundColor: "white",
               borderRadius: 25,
               height: 35,
               width: 35,
               alignItems: "center",
               justifyContent: "center",
-              marginRight: 13,
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+              marginRight: 12,
             }}
             onPress={() => navigation.navigate("SingleProfile")}
           >
