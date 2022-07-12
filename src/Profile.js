@@ -1,26 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  Button,
-  Modal,
-  Touchable,
-  SafeAreaView,
-  Platform
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, Button, Modal, Touchable, SafeAreaView, Platform } from "react-native";
 import { Avatar } from "react-native-paper";
 import { auth, firestore } from "../firebase";
 import { userProfile, friendList } from "../styles";
-import {
-  doc,
-  getDoc,
-  getDocs,
-  collection,
-  deleteDoc,
-  where,
-} from "firebase/firestore";
+import { doc, getDoc, getDocs, collection, deleteDoc, where } from "firebase/firestore";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import EditProfileModal from "./EditProfileModal";
 import FriendModal from "./FriendModal";

@@ -13,9 +13,9 @@ const color = {
     blue: "#24A6D9",
     lightBlue: "#A7CBD9",
     white: "#FFFFFF",
-    gray: '#A4A4A4',
-    lightGray: '#CACACA',
-    red: '#D85963'
+    gray: "#A4A4A4",
+    lightGray: "#CACACA",
+    red: "#D85963",
   },
 };
 
@@ -40,21 +40,36 @@ const authStyle = StyleSheet.create({
     alignItems: "center",
     backgroundColor: color.background,
     textAlign: "center",
+    marginTop: 40,
   },
   input: {
-    marginTop: 20,
+    marginTop: 15,
     color: "black",
     fontWeight: "600",
     width: 280,
+    borderTopWidth: 0.3,
+    borderLeftWidth: 0.3,
+    borderRightWidth: 0.3,
+    backgroundColor: "white",
   },
   submitButton: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: color.submit,
-    width: 200,
+    backgroundColor: "white",
+    borderRadius: 25,
     height: 50,
-    marginTop: 32,
-    borderRadius: 30,
+    width: 180,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+    marginRight: 10,
+    marginLeft: 5,
   },
   loginMessage: {
     marginTop: 20,
@@ -275,58 +290,58 @@ const todoListStyle = StyleSheet.create({
       borderRadius: 6,
       height: 50,
       paddingHorizontal: 16,
-      fontSize: 18
+      fontSize: 18,
     },
-    create : {
+    create: {
       marginTop: 24,
       height: 50,
       borderRadius: 6,
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: "center",
+      justifyContent: "center",
     },
     colorSelect: {
       width: 30,
       height: 30,
-      borderRadius: 4
+      borderRadius: 4,
     },
     colorContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 12
-    }
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginTop: 12,
+    },
   },
   todoModal: {
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center'
+      justifyContent: "center",
+      alignItems: "center",
     },
     section: {
       // flex: 1,
-      alignSelf: 'stretch'
+      alignSelf: "stretch",
     },
     header: {
-      justifyContent: 'flex-end',
+      justifyContent: "flex-end",
       marginLeft: 64,
       borderBottomWidth: 3,
-      paddingTop: 16
+      paddingTop: 16,
     },
     title: {
       fontSize: 30,
       fontWeight: "800",
-      color: color.list.black
+      color: color.list.black,
     },
     taskCount: {
       marginTop: 4,
       marginBottom: 16,
       color: color.list.gray,
-      fontWeight: '600'
+      fontWeight: "600",
     },
     footer: {
       paddingHorizontal: 32,
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingVertical: 16
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 16,
     },
     input: {
       flex: 1,
@@ -334,39 +349,39 @@ const todoListStyle = StyleSheet.create({
       borderWidth: StyleSheet.hairlineWidth,
       borderRadius: 6,
       marginRight: 8,
-      paddingHorizontal: 8
+      paddingHorizontal: 8,
     },
     addTodo: {
       borderRadius: 4,
       padding: 16,
-      alignItems: 'center',
-      justifyContent: 'center'
+      alignItems: "center",
+      justifyContent: "center",
     },
     todoContainer: {
       paddingVertical: 16,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
       paddingLeft: 32,
-      paddingRight: 16
+      paddingRight: 16,
     },
     todo: {
       color: color.list.black,
-      fontWeight: '700',
-      fontSize: 16
+      fontWeight: "700",
+      fontSize: 16,
     },
     todoCheckbox: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
     },
     deleteButton: {
       flex: 1,
       backgroundColor: color.list.red,
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 100
-    }
-  }
+      justifyContent: "center",
+      alignItems: "center",
+      width: 100,
+    },
+  },
 });
 
 export { authStyle, userProfile, friendList, todoListStyle, color };

@@ -449,7 +449,7 @@ const AddFriends = ({ navigation }) => {
                   style={{ color: "darkgray" }}
                   onPress={() => navigation.navigate("FriendsList")}
                 >
-                  My Friends >
+                  My Friends 
                 </Text>
               </View>
             )}

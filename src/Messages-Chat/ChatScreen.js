@@ -27,15 +27,15 @@ const ChatScreen = (props) => {
     const docRef = doc(firestore, "chats", props.route.params.chatid);
     // const docSnap = await getDoc(docRef);
 
-    onSnapshot(docRef, async (snapShot)=>{
+    onSnapshot(docRef, async (snapShot) => {
       const chatData = [];
       const data = snapShot.data();
-  
+
       if (snapShot.exists()) {
         previousMessages !== data.messages
           ? setPreviousMessages(data.messages)
           : null;
-  
+
         for (let i = 0; i < data.messages.length; i++) {
           const message = data.messages[i];
           chatData.push({
@@ -48,17 +48,15 @@ const ChatScreen = (props) => {
             },
           });
         }
-  
+
         allMessages !== chatData ? setAllMessages(chatData) : null;
       } else {
         console.log("No Such Documents");
       }
-    })
-   
+    });
   };
 
   useEffect(() => {
-    if (!props.route.params.chatid) return;
     fetchMessages();
   }, [props.route.params.chatid]);
 
@@ -76,7 +74,6 @@ const ChatScreen = (props) => {
       userid: messages[0].user._id,
       time: new Date(),
     };
-    // console.log(new Date());
 
     const res = await updateDoc(
       doc(firestore, "chats", props.route.params.chatid),
