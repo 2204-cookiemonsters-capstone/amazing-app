@@ -16,6 +16,7 @@ class FriendToDoList extends React.Component {
   }
 
   render() {
+    const user = this.props.user;
     const list = this.props.list;
     const completedCount = list.todos.filter(
       (todo) => todo.completed == true
@@ -30,6 +31,7 @@ class FriendToDoList extends React.Component {
           onRequestClose={() => this.toggleListModal()}
         >
           <FriendTodoModal
+            user={user}
             list={list}
             closeModal={() => this.toggleListModal()}
             updateList={this.props.updateList}

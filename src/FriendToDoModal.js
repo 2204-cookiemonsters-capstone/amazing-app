@@ -9,7 +9,8 @@ import {
   FlatList,
   Keyboard
 } from "react-native";
-import { todoListStyle, color } from "../styles";
+import { Snackbar } from "react-native-paper";
+import { todoListStyle, color, authStyle } from "../styles";
 import FriendToDoItem from "./FriendToDoItem";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
@@ -17,7 +18,8 @@ export default class FriendTodoModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newTodo: ''
+      newTodo: '',
+      isValid: false
     };
   }
 
@@ -34,6 +36,17 @@ export default class FriendTodoModal extends React.Component {
   }
 
   addTodo = () => {
+    if(!this.state.newTodo) {
+      this.setState({
+        isValid: {
+          bool: true,
+          boolSnack: true,
+          message: "Please enter a task"
+        }
+      })
+      return
+    }
+    
     let list = this.props.list;
     list.todos.push({title: this.state.newTodo, completed: false, likes: 0});
 
@@ -66,7 +79,7 @@ export default class FriendTodoModal extends React.Component {
           ]}
         >
           <View>
-            <Text>FRIEND'S MODAL</Text>
+            <Text style={{fontSize: 20}}>{this.props.user.name}</Text>
             <Text style={todoListStyle.todoModal.title}>{list.name}</Text>
             <Text style={todoListStyle.todoModal.taskCount}>
               {completedCount} of {taskCount} tasks
@@ -85,6 +98,17 @@ export default class FriendTodoModal extends React.Component {
             showsVerticalScrollIndicator={false}
           />
         </View>
+        <Snackbar
+          visible={this.state.isValid.boolSnack}
+          style={authStyle.snackbarError}
+          duration={2000}
+          onDismiss={() => {
+            this.setState({ isValid: { boolSnack: false }});
+            // setIsValid({ boolSnack: false });
+          }}
+        >
+          {this.state.isValid.message}
+        </Snackbar>
         <View
           style={[
             todoListStyle.todoModal.section,
