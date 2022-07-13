@@ -10,7 +10,7 @@ import React, { Component, useState } from "react";
 import { auth, signInWithEmailAndPassword } from "../firebase";
 import { Snackbar, TextInput } from "react-native-paper";
 import { authStyle } from "../styles";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 const LoginScreen = (props) => {
   const [password, setPassword] = useState("");
@@ -50,7 +50,8 @@ const LoginScreen = (props) => {
     <View style={authStyle.container}>
       <ScrollView>
         <View style={authStyle.body}>
-          <AntDesign name='aliwangwang-o1' size={70} />
+          <Ionicons name='ios-list-circle-outline'
+              size={100} />
           <Text
             style={{
               fontSize: 40,

@@ -98,9 +98,9 @@ const Tasks = (props) => {
     }
 
 const fetchAllFriends = async () => {
-  const snapShot = await getDocs(
-    collection(firestore, 'users', auth.currentUser.uid, 'friendships')
-  );
+  // const snapShot = await getDocs(
+  onSnapshot(collection(firestore, 'users', auth.currentUser.uid, 'friendships'), async (snapShot) => {
+  // );
   const friends = [];
   snapShot.forEach((doc) => {
     if (doc.data().status === 'friends') {
@@ -112,7 +112,8 @@ const fetchAllFriends = async () => {
   );
   const friendsItems = friendDocs.map((i) => i.data());
 
-  setAllFriends(friendsItems)
+  setAllFriends(friendsItems)})
+  console.log(allFriends)
 }
 
 async function fetchFriendsPosts(id){
@@ -713,8 +714,8 @@ async function fetchFriendsPosts(id){
         {allFriends.map((item)=> 
 
          <TouchableWithoutFeedback onPress={() => handleDisplayFollowing(item.userid, item.username)} key={item.userid}>
-          <Image source={{uri: profileImagesArray[16]["url"]}} style={styles.followingItem}/>
-          <Text style={[styles.followingItemUsername, styles.center]}>{item.username}</Text>
+          <Image source={{uri: profileImagesArray[19]["url"]}} style={styles.followingItem}/>
+          <Text style={[styles.followingItemUsername, styles.center]}>{item.username.slice(0,10)}</Text>
        </TouchableWithoutFeedback>
         )
       }
