@@ -18,7 +18,8 @@ import {
   getDoc,
   setDoc,
 } from "firebase/firestore";
-import { auth, firestore } from "../firebase";
+import { auth, firestore, storage } from "../firebase";
+import { getDownloadURL, ref } from "firebase/storage";
 import { ScrollView } from "react-native-gesture-handler";
 
 const image = require("../assets/favicon.png");
@@ -55,6 +56,27 @@ const SearchPage = ({ navigation }) => {
     });
   };
 
+  const fetchPhotos = () => {
+    allUsers.forEach((userdata) => {
+      const reference = ref(
+        storage,
+        `${userdata.userid}/profilepic/${userdata.profilepic}`
+      );
+
+      const index = allUsers.indexOf(
+        allUsers.find((user) => userdata.userid === user.userid)
+      );
+
+      getDownloadURL(reference)
+        .then((x) => {
+          allUsers[index] = { ...allUsers[index], imageUrl: x };
+        })
+        .catch((e) => {
+          allUsers[index] = { ...allUsers[index], imageUrl: null };
+        });
+    });
+  };
+
   const search = (value) => {
     const filtered = allUsers.filter(
       (user) =>
@@ -74,6 +96,10 @@ const SearchPage = ({ navigation }) => {
   useEffect(() => {
     fetchAllUsers();
   }, []);
+
+  useEffect(() => {
+    fetchPhotos();
+  }, [allUsers]);
 
   return (
     <View>
@@ -178,10 +204,24 @@ const SearchPage = ({ navigation }) => {
                       shadowRadius: 3.5,
                       elevation: 5,
                     }}
+                    onPress={() => {
+                      console.log(item.name);
+                      navigation.navigate("ProfilePageNotYou", {
+                        userid: item.userid,
+                        name: item.name,
+                        score: item.score,
+                        username: item.username,
+                        from: "Search",
+                      });
+                    }}
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.imageUrl
+                            ? { uri: item.imageUrl }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
@@ -203,7 +243,7 @@ const SearchPage = ({ navigation }) => {
                         {item.name}
                       </Text>
                       <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
+                      {/* <Text>3 Mutual Friends</Text> */}
                     </View>
                     <View
                       style={{
@@ -266,10 +306,24 @@ const SearchPage = ({ navigation }) => {
                       shadowRadius: 3.5,
                       elevation: 5,
                     }}
+                    onPress={() => {
+                      console.log(item.name);
+                      navigation.navigate("ProfilePageNotYou", {
+                        userid: item.userid,
+                        name: item.name,
+                        score: item.score,
+                        username: item.username,
+                        from: "Search",
+                      });
+                    }}
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.imageUrl
+                            ? { uri: item.imageUrl }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
@@ -291,7 +345,7 @@ const SearchPage = ({ navigation }) => {
                         {item.name}
                       </Text>
                       <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
+                      {/* <Text>3 Mutual Friends</Text> */}
                     </View>
                     <View
                       style={{
@@ -430,10 +484,24 @@ const SearchPage = ({ navigation }) => {
                       shadowRadius: 3.5,
                       elevation: 5,
                     }}
+                    onPress={() => {
+                      console.log(item.name);
+                      navigation.navigate("ProfilePageNotYou", {
+                        userid: item.userid,
+                        name: item.name,
+                        score: item.score,
+                        username: item.username,
+                        from: "Search",
+                      });
+                    }}
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.imageUrl
+                            ? { uri: item.imageUrl }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
@@ -455,7 +523,7 @@ const SearchPage = ({ navigation }) => {
                         {item.name}
                       </Text>
                       <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
+                      {/* <Text>3 Mutual Friends</Text> */}
                     </View>
                     <View
                       style={{
@@ -518,10 +586,24 @@ const SearchPage = ({ navigation }) => {
                       shadowRadius: 3.5,
                       elevation: 5,
                     }}
+                    onPress={() => {
+                      console.log(item.name);
+                      navigation.navigate("ProfilePageNotYou", {
+                        userid: item.userid,
+                        name: item.name,
+                        score: item.score,
+                        username: item.username,
+                        from: "Search",
+                      });
+                    }}
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.imageUrl
+                            ? { uri: item.imageUrl }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
@@ -543,7 +625,7 @@ const SearchPage = ({ navigation }) => {
                         {item.name}
                       </Text>
                       <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
+                      {/* <Text>3 Mutual Friends</Text> */}
                     </View>
                     <View
                       style={{
@@ -651,69 +733,3 @@ const SearchPage = ({ navigation }) => {
 };
 
 export default SearchPage;
-
-/* <TouchableOpacity
-              style={{
-                marginLeft: 25,
-                marginTop: 10,
-                borderLeftWidth: 1,
-                borderRightWidth: 1,
-                borderBottomWidth: 1,
-                borderTopWidth: 1,
-                marginRight: 25,
-                borderColor: "#cccccc",
-                display: "flex",
-                flexDirection: "row",
-                paddingLeft: 10,
-                paddingRight: 15,
-              }}
-            >
-              <TouchableOpacity>
-                <Image
-                  source={image}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 25,
-                    margin: 10,
-                  }}
-                />
-              </TouchableOpacity>
-              <View style={{ display: "flex", flexDirection: "column" }}>
-                <Text>{item.name}</Text>
-                <Text>{item.username}</Text>
-                <Text>3 Mutual Friends</Text>
-              </View>
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginLeft: 30,
-                }}
-              >
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "red",
-                    borderTopLeftRadius: 10,
-                    borderBottomLeftRadius: 10,
-                    borderTopRightRadius: 10,
-                    borderBottomRightRadius: 10,
-                    height: 30,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <View style={{ marginLeft: 13, marginRight: 8 }}>
-                    <Image
-                      source={require("../assets/ADDFRIEND2.png")}
-                      style={{ width: 15, height: 15 }}
-                    />
-                  </View>
-                  <Text style={{ marginRight: 14 }}>Remove</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-
-            */
