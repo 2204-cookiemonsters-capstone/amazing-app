@@ -45,7 +45,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
   const [avatar, setAvatar] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState("");
 
   const bs = React.createRef();
@@ -72,18 +72,24 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
 
     const img = await fetch(result.uri);
     const bytes = await img.blob();
-    uploadBytes(imageRef, bytes).then(async () => {
-      const userRef = doc(firestore, "users", auth.currentUser.uid);
-      await updateDoc(
-        userRef,
-        {
-          profilepic: id,
-        },
-        { merge: true }
+    uploadBytes(imageRef, bytes).then(() => {
+      const reference = ref(
+        storage,
+        `${auth.currentUser.uid}/profilepic/${id}`
       );
-      retrievePhoto();
-      Toast.show("Profile Photo Updated", {
-        duration: Toast.durations.LONG,
+
+      getDownloadURL(reference).then((x) => {
+        const userRef = doc(firestore, "users", auth.currentUser.uid);
+        updateDoc(
+          userRef,
+          {
+            profilepic: x,
+          },
+          { merge: true }
+        );
+        Toast.show("Profile Photo Updated", {
+          duration: Toast.durations.LONG,
+        });
       });
     });
 
@@ -114,46 +120,33 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
     const bytes = await img.blob();
 
     uploadBytes(imageRef, bytes).then(() => {
-      const userRef = doc(firestore, "users", auth.currentUser.uid);
-      updateDoc(
-        userRef,
-        {
-          profilepic: id,
-        },
-        { merge: true }
-      ).then(() => retrievePhoto());
-      Toast.show("Profile Photo Updated", {
-        duration: Toast.durations.LONG,
+      const reference = ref(
+        storage,
+        `${auth.currentUser.uid}/profilepic/${id}`
+      );
+
+      getDownloadURL(reference).then((x) => {
+        console.log(x);
+        const userRef = doc(firestore, "users", auth.currentUser.uid);
+        updateDoc(
+          userRef,
+          {
+            profilepic: x,
+          },
+          { merge: true }
+        );
+        Toast.show("Profile Photo Updated", {
+          duration: Toast.durations.LONG,
+        });
       });
     });
 
     bs.current.snapTo(1);
   };
 
-  const retrievePhoto = () => {
-    if (userData === "") return;
-    const reference = ref(
-      storage,
-      `${auth.currentUser.uid}/profilepic/${userData.profilepic}`
-    );
-
-    getDownloadURL(reference)
-      .then((x) => {
-        setImageUrl(x);
-      })
-      .catch((e) => {
-        setImageUrl(null);
-      });
-    setIsLoading(false);
-  };
-
   useEffect(() => {
     getUser();
   }, []);
-
-  useEffect(() => {
-    retrievePhoto();
-  }, [userData]);
 
   const handleUpdate = async () => {
     if (userData.email !== email) {
@@ -311,8 +304,8 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
               ) : (
                 <Image
                   source={
-                    imageUrl
-                      ? { uri: imageUrl }
+                    userData.profilepic
+                      ? { uri: userData.profilepic }
                       : require("../assets/defaultprofileicon.webp")
                   }
                   style={{

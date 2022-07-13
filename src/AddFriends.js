@@ -46,6 +46,8 @@ const AddFriends = ({ navigation }) => {
 
   const [searchValue, setSearchValue] = useState("");
 
+  const [avatars, setAvatars] = useState([]);
+
   const height = () => {
     return renderedAllFriends.length * 78 + 398;
   };
@@ -84,23 +86,47 @@ const AddFriends = ({ navigation }) => {
     });
   };
 
+  // const fetchPhotos = () => {
+  //   if (!allUsers.length) return;
+  //   allUsers.forEach((userdata) => {
+  //     const reference = ref(
+  //       storage,
+  //       `${userdata.userid}/profilepic/${userdata.profilepic}`
+  //     );
+
+  //     const index = allUsers.indexOf(
+  //       allUsers.find((user) => userdata.userid === user.userid)
+  //     );
+
+  //     getDownloadURL(reference)
+  //       .then((x) => {
+  //         allUsers[index] = { ...allUsers[index], imageUrl: x };
+  //       })
+  //       .catch((e) => {
+  //         allUsers[index] = { ...allUsers[index], imageUrl: null };
+  //       });
+  //   });
+  // };
+
   const fetchPhotos = () => {
+    if (!allUsers.length) return;
+    console.log(allUsers);
     allUsers.forEach((userdata) => {
       const reference = ref(
         storage,
         `${userdata.userid}/profilepic/${userdata.profilepic}`
       );
 
-      const index = allUsers.indexOf(
-        allUsers.find((user) => userdata.userid === user.userid)
-      );
+      // const index = allUsers.indexOf(
+      //   allUsers.find((user) => userdata.userid === user.userid)
+      // );
 
       getDownloadURL(reference)
         .then((x) => {
-          allUsers[index] = { ...allUsers[index], imageUrl: x };
+          avatars.push(x);
         })
         .catch((e) => {
-          allUsers[index] = { ...allUsers[index], imageUrl: null };
+          avatars.push(null);
         });
     });
   };
@@ -196,9 +222,9 @@ const AddFriends = ({ navigation }) => {
     getFriends();
   }, []);
 
-  useEffect(() => {
-    fetchPhotos();
-  }, [allUsers]);
+  // useEffect(() => {
+  //   fetchPhotos();
+  // }, [allUsers]);
 
   const handleAddFriend = (userid) => {
     const docRef = doc(
@@ -258,7 +284,7 @@ const AddFriends = ({ navigation }) => {
     // await deleteDoc(doc(firestore, colRef2, where("userid", "==", auth.currentUser.uid)))
   };
 
-  // console.log(allUsers);
+  console.log(avatars);
   return (
     <RootSiblingParent>
       <View style={{ backgroundColor: "#F0F0F0" }}>
@@ -434,8 +460,8 @@ const AddFriends = ({ navigation }) => {
                     <TouchableOpacity>
                       <Image
                         source={
-                          item.imageUrl
-                            ? { uri: item.imageUrl }
+                          item.profilepic
+                            ? { uri: item.profilepic }
                             : require("../assets/defaultprofileicon.webp")
                         }
                         style={{
@@ -576,8 +602,8 @@ const AddFriends = ({ navigation }) => {
                       <TouchableOpacity>
                         <Image
                           source={
-                            item.imageUrl
-                              ? { uri: item.imageUrl }
+                            item.profilepic
+                              ? { uri: item.profilepic }
                               : require("../assets/defaultprofileicon.webp")
                           }
                           style={{
@@ -679,8 +705,8 @@ const AddFriends = ({ navigation }) => {
                       <TouchableOpacity>
                         <Image
                           source={
-                            item.imageUrl
-                              ? { uri: item.imageUrl }
+                            item.profilepic
+                              ? { uri: item.profilepic }
                               : require("../assets/defaultprofileicon.webp")
                           }
                           style={{
