@@ -8,12 +8,8 @@ import {
   ScrollView,
   Image,
   ImageBackground,
-<<<<<<< HEAD
+  Linking,
 } from "react-native";
-=======
-  Linking
-} from 'react-native';
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
 import {
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -43,12 +39,8 @@ const Tasks = (props) => {
   const [goalNum, setGoalNum] = useState("28");
   const [currentTask, setCurrentTask] = useState({});
   const [displayPost, setDisplayPost] = useState({});
-<<<<<<< HEAD
   const [reflection, setReflection] = useState("");
-=======
-  const [reflection, setReflection] = useState('');
   const [visibility, setVisibility] = useState("friends");
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
   const [displayPostText, setDisplayPostText] = useState(1);
   const [allFriends, setAllFriends] = useState([]);
   const [strengthsCount, setStrengthsCount] = useState([]);
@@ -101,11 +93,7 @@ const Tasks = (props) => {
       doc(firestore, "users", auth.currentUser.uid, "posts", "July")
     );
 
-<<<<<<< HEAD
     let previousPosts = snapShot.data().userTasks;
-=======
-   let userTasks = previousPosts.map((item) => item.taskId !== taskId ? item : {...item, completed: true, completedTime: Date.now(), reflection: reflection, visibility: visibility})
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
 
     let userTasks = previousPosts.map((item) =>
       item.taskId !== taskId
@@ -115,6 +103,7 @@ const Tasks = (props) => {
             completed: true,
             completedTime: Date.now(),
             reflection: reflection,
+            visibility: visibility,
           }
     );
 
@@ -246,7 +235,6 @@ const Tasks = (props) => {
         : { ...item, completed: false, completedTime: null, reflection: "" }
     );
 
-<<<<<<< HEAD
     const postsRef = await doc(
       firestore,
       "users",
@@ -258,24 +246,14 @@ const Tasks = (props) => {
     setDoc(postsRef, { userTasks }, { merge: true });
     fetchUserPosts();
   };
-=======
-    setDoc(postsRef, {userTasks}, {merge: true })
-    fetchUserPosts()
-   }
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
 
   const handlePrevious = (taskId) => {
     let previousPost = featuredPostsData.filter(
       (item) => item.taskId === taskId - 1
     );
     setDisplayPostText(1);
-<<<<<<< HEAD
     previousPost.length ? setDisplayPost(previousPost[0]) : setView("featured");
   };
-=======
-    previousPost.length ? setDisplayPost(previousPost[0]) : setView('featured')
-  }
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
 
   const handleNext = (taskId) => {
     let nextPost = featuredPostsData.filter(
@@ -302,12 +280,8 @@ const Tasks = (props) => {
     );
     updateUserPosts(taskId);
     setAllUserTasks(newUserTasks);
-<<<<<<< HEAD
     setReflection("");
-=======
-    setReflection('');
-    setVisibility('friends')
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
+    setVisibility("friends");
     setCurrentTask({});
     setView("posts");
   };
@@ -322,11 +296,7 @@ const Tasks = (props) => {
 
   useEffect(() => {
     fetchUserPosts();
-<<<<<<< HEAD
     fetchAllFriends();
-=======
-    fetchAllFriends()
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
   }, []);
 
   useEffect(() => {
@@ -619,16 +589,10 @@ const Tasks = (props) => {
           <ScrollView>
             <View>
               <Text style={styles.subheading}>the 28 tasks challenge</Text>
-<<<<<<< HEAD
 
-              <Text>
-                Consistency and kindness: two superpowers within your control.
+              <Text style={[styles.subheading, styles.fontWeight700]}>
+                what
               </Text>
-              <Text style={styles.subheading}>what</Text>
-=======
-            
-              <Text style={[styles.subheading, styles.fontWeight700]}>what</Text>
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
               <Text style={styles.aboutParagraph}>
                 Every month, we share a list of 28 tasks for all users to
                 achieve. These tasks are intended to inspire our users to spend
@@ -730,28 +694,49 @@ const Tasks = (props) => {
               <FontAwesome name="eye" size={16} color="black" />
               <Text style={{ paddingLeft: 10 }}>Who can see this post?</Text>
             </View>
-<<<<<<< HEAD
-            <View style={styles.visibilityOptions}>
-              <Text style={{ paddingLeft: 10, paddingRight: 10 }}>only me</Text>
-              <Text style={{ paddingLeft: 10, paddingRight: 10 }}>friends</Text>
-              <Text style={{ paddingLeft: 10, paddingRight: 10 }}>public</Text>
-=======
-            
-            {visibility === "private" ?
-                        <View style={styles.visibilityOptions}>
-            <Text style={{paddingLeft: 10, paddingRight: 10, fontWeight: "700"}} onPress={()=> setVisibility("private")}>only me</Text>
-            <Text style={{paddingLeft: 10, paddingRight: 10}} onPress={()=> setVisibility("friends")}>friends</Text>
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
-            </View>
-            : null}
 
-            {visibility === "friends" ?
-                        <View style={styles.visibilityOptions}>
-            <Text style={{paddingLeft: 10, paddingRight: 10}} onPress={()=> setVisibility("private")}>only me</Text>
-            <Text style={{paddingLeft: 10, paddingRight: 10, fontWeight: "700"}} onPress={()=> setVisibility("friends")}>friends</Text>
-            </View>
-            : null}
-           
+            {visibility === "private" ? (
+              <View style={styles.visibilityOptions}>
+                <Text
+                  style={{
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    fontWeight: "700",
+                  }}
+                  onPress={() => setVisibility("private")}
+                >
+                  only me
+                </Text>
+                <Text
+                  style={{ paddingLeft: 10, paddingRight: 10 }}
+                  onPress={() => setVisibility("friends")}
+                >
+                  friends
+                </Text>
+              </View>
+            ) : null}
+
+            {visibility === "friends" ? (
+              <View style={styles.visibilityOptions}>
+                <Text
+                  style={{ paddingLeft: 10, paddingRight: 10 }}
+                  onPress={() => setVisibility("private")}
+                >
+                  only me
+                </Text>
+                <Text
+                  style={{
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    fontWeight: "700",
+                  }}
+                  onPress={() => setVisibility("friends")}
+                >
+                  friends
+                </Text>
+              </View>
+            ) : null}
+
             <Text
               style={styles.submitCompletedTask}
               onPress={() => handleSubmit(currentTask.taskId)}
@@ -791,35 +776,51 @@ const Tasks = (props) => {
             </View>
 
             <View style={styles.visibility}>
-<<<<<<< HEAD
               <FontAwesome name="eye" size={16} color="black" />
               <Text style={{ paddingLeft: 10 }}>Who can see this post?</Text>
             </View>
-            <View style={styles.visibilityOptions}>
-              <Text style={{ paddingLeft: 30 }}>only me</Text>
-              <Text style={{ paddingLeft: 30 }}>friends</Text>
-              <Text style={{ paddingLeft: 30 }}>public</Text>
-=======
-            <FontAwesome name="eye" size={16} color="black" />
-            <Text style={{paddingLeft: 10}}>Who can see this post?</Text>
-            </View>
-            
-            {visibility === "private" ?
-                        <View style={styles.visibilityOptions}>
-            <Text style={{paddingLeft: 10, paddingRight: 10, fontWeight: "700"}} onPress={()=> setVisibility("private")}>only me</Text>
-            <Text style={{paddingLeft: 10, paddingRight: 10}} onPress={()=> setVisibility("friends")}>friends</Text>
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
-            </View>
-            : null}
 
-            {visibility === "friends" ?
-                        <View style={styles.visibilityOptions}>
-            <Text style={{paddingLeft: 10, paddingRight: 10}} onPress={()=> setVisibility("private")}>only me</Text>
-            <Text style={{paddingLeft: 10, paddingRight: 10, fontWeight: "700"}} onPress={()=> setVisibility("friends")}>friends</Text>
-            </View>
-            : null}
+            {visibility === "private" ? (
+              <View style={styles.visibilityOptions}>
+                <Text
+                  style={{
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    fontWeight: "700",
+                  }}
+                  onPress={() => setVisibility("private")}
+                >
+                  only me
+                </Text>
+                <Text
+                  style={{ paddingLeft: 10, paddingRight: 10 }}
+                  onPress={() => setVisibility("friends")}
+                >
+                  friends
+                </Text>
+              </View>
+            ) : null}
 
-
+            {visibility === "friends" ? (
+              <View style={styles.visibilityOptions}>
+                <Text
+                  style={{ paddingLeft: 10, paddingRight: 10 }}
+                  onPress={() => setVisibility("private")}
+                >
+                  only me
+                </Text>
+                <Text
+                  style={{
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    fontWeight: "700",
+                  }}
+                  onPress={() => setVisibility("friends")}
+                >
+                  friends
+                </Text>
+              </View>
+            ) : null}
 
             <Text
               style={styles.submitCompletedTask}
@@ -846,64 +847,69 @@ const Tasks = (props) => {
                     }
                   />
                   <View style={styles.postTitleEditContainer}>
-<<<<<<< HEAD
                     <View style={{ paddingBottom: 10 }}>
                       <Text style={styles.postTag}>{item.title}</Text>
+                      <View style={{ paddingBottom: 10 }}>
+                        {getTimeDifference(item.completedTime) < 60 ? (
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#666",
+                              marginRight: 30,
+                            }}
+                          >
+                            {getTimeDifference(item.completedTime)} minutes ago
+                          </Text>
+                        ) : getTimeDifference(item.completedTime) >= 60 &&
+                          getTimeDifference(item.completedTime) < 1440 ? (
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#666",
+                              marginRight: 30,
+                            }}
+                          >
+                            {" "}
+                            {Math.floor(
+                              getTimeDifference(item.completedTime) / 60
+                            )}{" "}
+                            {Math.floor(
+                              getTimeDifference(item.completedTime) / 60
+                            ) === 1
+                              ? "hour ago"
+                              : "hours ago"}
+                          </Text>
+                        ) : (
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#666",
+                              marginRight: 30,
+                            }}
+                          >
+                            {Math.floor(
+                              getTimeDifference(item.completedTime) / 1440
+                            )}{" "}
+                            {Math.floor(
+                              getTimeDifference(item.completedTime) / 1440
+                            ) === 1
+                              ? "day ago"
+                              : "days ago"}
+                          </Text>
+                        )}
+                      </View>
 
-                      {getTimeDifference(item.completedTime) < 60 ? (
-=======
-                    <View style={{paddingBottom: 10}}>
-                  <Text style={styles.postTag}>{item.title}</Text>
-                 <View style={{paddingBottom: 10}}>
-                  {getTimeDifference(item.completedTime) < 60 ? (
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#666",
-                            marginRight: 30,
-                          }}
-                        >
-                          {getTimeDifference(item.completedTime)} minutes ago
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        <FontAwesome name="eye" size={12} color="gray" />
+                        <Text style={[{ paddingLeft: 5, color: "gray" }]}>
+                          {item.visibility}
                         </Text>
-                      ) : getTimeDifference(item.completedTime) >= 60 &&
-                        getTimeDifference(item.completedTime) < 1440 ? (
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#666",
-                            marginRight: 30,
-                          }}
-                        >
-                          {" "}
-                          {Math.floor(
-                            getTimeDifference(item.completedTime) / 60
-                          )}{" "}
-                          {Math.floor(
-                            getTimeDifference(item.completedTime) / 60
-                          ) === 1
-                            ? "hour ago"
-                            : "hours ago"}
-                        </Text>
-                      ) : (
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#666",
-                            marginRight: 30,
-                          }}
-                        >
-                          {Math.floor(
-                            getTimeDifference(item.completedTime) / 1440
-                          )}{" "}
-                          {Math.floor(
-                            getTimeDifference(item.completedTime) / 1440
-                          ) === 1
-                            ? "day ago"
-                            : "days ago"}
-                        </Text>
-                      )}
-<<<<<<< HEAD
+                      </View>
                     </View>
                     <View style={styles.postEditDeleteContainer}>
                       <TouchableWithoutFeedback
@@ -927,22 +933,6 @@ const Tasks = (props) => {
                         />
                       </TouchableWithoutFeedback>
                     </View>
-=======
-                      </View>
-                      
-                      <View style={{flexDirection: "row", justifyContent: "flex-start"}}>
-                      <FontAwesome name="eye" size={12} color="gray"  />
-                      <Text style={[{paddingLeft: 5, color: "gray"}]}>{item.visibility}</Text>
-                      </View>
-              </View>
-                  <View style={styles.postEditDeleteContainer}>
-                    <TouchableWithoutFeedback onPress={() => handleView('submitEdit', item)}>
-                  <FontAwesome name="pencil" size={16} color="black" style={styles.postEdit}/>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={()=>handleDelete(item.taskId)}>
-                  <FontAwesome name="trash" size={16} color="black" style={styles.postEdit}/>
-                  </TouchableWithoutFeedback>
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
                   </View>
                   <Text style={styles.reflection}>{item.reflection}</Text>
                 </View>
@@ -959,7 +949,7 @@ const Tasks = (props) => {
             </Text>
 
             {friendsPosts.map((item) => {
-              return item.completed == true && item.visibility == "friends"? (
+              return item.completed == true && item.visibility == "friends" ? (
                 <View style={styles.postContainer} key={item.taskId}>
                   <Image
                     style={{ width: "auto", height: 400 }}
@@ -980,7 +970,9 @@ const Tasks = (props) => {
                 </View>
               ) : null;
             })}
-            <Text style={[styles.center, styles.padding10]}>no more posts to display</Text>
+            <Text style={[styles.center, styles.padding10]}>
+              no more posts to display
+            </Text>
           </View>
         ) : null}
 
@@ -1061,12 +1053,21 @@ const Tasks = (props) => {
               source={{ uri: displayPost.defaultImgUrl }}
             />
 
-<<<<<<< HEAD
+            <View style={styles.displayPostTitleContainer}>
+              <Text style={styles.displayPostTitle}>{displayPost.title}</Text>
+            </View>
+
             <View style={styles.previousNext}>
               <TouchableWithoutFeedback
                 onPress={() => handlePrevious(displayPost.taskId)}
               >
-                <Text style={styles.previous}></Text>
+                <Text style={styles.previous}>
+                  <FontAwesome
+                    name="chevron-left"
+                    size={18}
+                    color="rgba(255,255,255, .5)"
+                  />
+                </Text>
               </TouchableWithoutFeedback>
 
               <TouchableWithoutFeedback
@@ -1074,64 +1075,45 @@ const Tasks = (props) => {
                 onPress={() => handleDisplayPostText()}
               >
                 <Text> </Text>
-=======
-              <View style={styles.displayPostTitleContainer}>
-                <Text style={styles.displayPostTitle}>{displayPost.title}</Text>
-              </View>
-
-          <View style={styles.previousNext}>
-              <TouchableWithoutFeedback onPress={() => handlePrevious(displayPost.taskId)}>
-                 <Text style={styles.previous} >
-                 <FontAwesome name="chevron-left" size={18} color="rgba(255,255,255, .5)" /> 
-                 </Text>
-              </TouchableWithoutFeedback>  
-
-              <TouchableWithoutFeedback style={styles.showDisplayReflection} onPress={() => handleDisplayPostText()}>
-              <Text> </Text>
               </TouchableWithoutFeedback>
 
-              <TouchableWithoutFeedback onPress={() => handleNext(displayPost.taskId)} >
-                 <Text style={styles.next}> 
-                 <FontAwesome name="chevron-right" size={18} color="rgba(255,255,255, .5)" />  </Text>
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
-              </TouchableWithoutFeedback>
-
-<<<<<<< HEAD
               <TouchableWithoutFeedback
                 onPress={() => handleNext(displayPost.taskId)}
               >
-                <Text style={styles.next}> </Text>
+                <Text style={styles.next}>
+                  <FontAwesome
+                    name="chevron-right"
+                    size={18}
+                    color="rgba(255,255,255, .5)"
+                  />{" "}
+                </Text>
               </TouchableWithoutFeedback>
             </View>
 
-            {displayPostText % 3 === 1 ? (
+            {displayPostText % 2 === 1 ? (
               <View style={styles.displayPostTextContainer}>
-                <Text style={styles.displayReflection}>
+                <Text
+                  style={styles.displayReflection}
+                  onPress={() => handleDisplayPostText()}
+                >
                   {displayPost.reflection}
                 </Text>
-=======
-                
-                  {displayPostText % 2 === 1 ? 
-                   <View style={styles.displayPostTextContainer}>
-                  <Text style={styles.displayReflection} onPress={() => handleDisplayPostText()}>{displayPost.reflection}</Text> 
-                  </View> : null}
-
-                  {displayPostText % 2 === 0 ? 
-                   <View style={styles.displayPostLinkContainer}>
-                  <Text style={styles.displayReflectionLink} onPress={()=> Linking.openURL(displayPost.reflectionLink)}>
-                  <AntDesign name="paperclip" size={24} color="black" style={{paddingRight: 10}}/>
-                      {" " + displayPost.reflection2}</Text> 
-                  </View>
-                  : null}
-               
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
               </View>
             ) : null}
 
-            {displayPostText % 3 === 2 ? (
-              <View style={styles.displayPostTextContainer}>
-                <Text style={styles.displayReflection}>
-                  {displayPost.reflection2}
+            {displayPostText % 2 === 0 ? (
+              <View style={styles.displayPostLinkContainer}>
+                <Text
+                  style={styles.displayReflectionLink}
+                  onPress={() => Linking.openURL(displayPost.reflectionLink)}
+                >
+                  <AntDesign
+                    name="paperclip"
+                    size={24}
+                    color="black"
+                    style={{ paddingRight: 10 }}
+                  />
+                  {" " + displayPost.reflection2}
                 </Text>
               </View>
             ) : null}
@@ -1186,7 +1168,6 @@ const styles = StyleSheet.create({
     borderColor: "white",
   },
 
-<<<<<<< HEAD
   userDashboard: {
     justifyContent: "space-around",
     padding: 5,
@@ -1195,19 +1176,7 @@ const styles = StyleSheet.create({
   },
   dashboardRowTop: {
     flexDirection: "row",
-    // alignItems: "top",
     justifyContent: "space-around",
-=======
-userDashboard: {
-  justifyContent: "space-around",
-  padding: 5,  
-  margin: 5,
-  backgroundColor: '"#5BD858"',
-},
-dashboardRowTop : {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
     paddingTop: 15,
     paddingBottom: 10,
   },
@@ -1292,21 +1261,12 @@ dashboardRowTop : {
     borderRadius: 5,
     borderColor: "white",
   },
-<<<<<<< HEAD
   uncompletedContainer: {
     backgroundColor: "#585BD9",
     borderRadius: 5,
     margin: 5,
     width: 300,
   },
-=======
-  uncompletedContainer:{
-    backgroundColor: "#585BD9", 
-  borderRadius: 5, 
-  margin: 5, 
-  width: 300
-},
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
   submitCompletedTask: {
     textAlign: "center",
     padding: 10,
@@ -1441,35 +1401,20 @@ dashboardRowTop : {
     marginBottom: 10,
   },
   displayPostContainer: {
-<<<<<<< HEAD
     width: "100%",
-    justifyContent: "space-between",
-=======
-    width: '100%',
     height: 800,
-    justifyContent: 'space-between',
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
+    justifyContent: "space-between",
   },
   displayPostImage: {
     width: "110%",
     height: 800,
     marginLeft: -20,
     marginRight: -20,
-<<<<<<< HEAD
-  },
-
-  displayPostTextContainer: {
-    padding: 10,
-    margin: "10%",
-    position: "absolute",
-    backgroundColor: "rgba(0,0,0,.5)",
-    bottom: 30,
-=======
   },
   displayPostTitleContainer: {
     padding: 2,
     margin: "10%",
-    position: 'absolute',
+    position: "absolute",
     // backgroundColor: 'rgba(0,0,0,.1)',
     top: 10,
     borderRadius: 10,
@@ -1481,43 +1426,39 @@ dashboardRowTop : {
     textAlign: "center",
     fontWeight: "700",
     textTransform: "lowercase",
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   displayPostTextContainer: {
     padding: 10,
     margin: "10%",
-    position: 'absolute',
+    position: "absolute",
     top: 300,
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
     borderRadius: 10,
     width: "80%",
-    backgroundColor: "rgb(0,0,0)"
+    backgroundColor: "rgb(0,0,0)",
   },
   displayPostLinkContainer: {
     padding: 10,
     margin: "10%",
-    position: 'absolute',
+    position: "absolute",
     top: 300,
     borderRadius: 10,
     width: "80%",
-    backgroundColor: "rgb(255,255,255)"
+    backgroundColor: "rgb(255,255,255)",
   },
   displayReflection: {
     fontSize: 16,
     color: "white",
     textAlign: "center",
     fontWeight: "700",
-<<<<<<< HEAD
-=======
   },
   displayReflectionLink: {
     fontSize: 16,
     color: "black",
     textAlign: "center",
     fontWeight: "700",
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
   },
   previousNext: {
     position: "absolute",
@@ -1534,12 +1475,8 @@ dashboardRowTop : {
     paddingRight: 70,
     width: 110,
     marginLeft: 0,
-<<<<<<< HEAD
-=======
     justifyContent: "center",
     textAlign: "center",
-
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
   },
   showDisplayReflection: {
     paddingTop: 330,
@@ -1550,27 +1487,10 @@ dashboardRowTop : {
     paddingTop: 330,
     paddingBottom: 330,
     width: 130,
-<<<<<<< HEAD
-  },
-  backToFeatured: {
-    backgroundColor: "red",
-=======
     justifyContent: "center",
     textAlign: "center",
     paddingLeft: 40,
-},
-strengths: {
-  color: "white", 
-  paddingLeft: 5, 
-  paddingBottom: 5
-},
-strengthIconRow:{
-    flexDirection: "row", 
-    paddingRight: 15, 
-    paddingBottom: 10 
->>>>>>> 5811953af12557f8e522e5d1c9178019cb875fde
   },
-
   strengths: {
     color: "white",
     paddingLeft: 5,
