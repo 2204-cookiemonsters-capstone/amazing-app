@@ -11,7 +11,8 @@ import {
   Platform,
 } from "react-native";
 import { Avatar } from "react-native-paper";
-import { auth, firestore } from "../firebase";
+import { auth, firestore, storage } from "../firebase";
+import { ref, uploadBytes, blob, getDownloadURL } from "firebase/storage";
 import { userProfile, friendList } from "../styles";
 import {
   doc,
@@ -34,6 +35,7 @@ const Profile = ({ navigation }) => {
   const [friends, setFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
 
   const [visibilityProfile, setVisibilityProfile] = useState(false);
   const [visibilitySettings, setVisibilitySettings] = useState(false);
@@ -58,9 +60,29 @@ const Profile = ({ navigation }) => {
     });
   };
 
+  const retrievePhoto = () => {
+    if (userData === "") return;
+    const reference = ref(
+      storage,
+      `${auth.currentUser.uid}/profilepic/${userData.profilepic}`
+    );
+
+    getDownloadURL(reference)
+      .then((x) => {
+        setImageUrl(x);
+      })
+      .catch((e) => {
+        setImageUrl(null);
+      });
+  };
+
   useEffect(() => {
     getUser();
   }, []);
+
+  useEffect(() => {
+    retrievePhoto();
+  }, [userData]);
 
   const toggleEditModal = () => {
     setShowEditModal(!showEditModal);
@@ -144,8 +166,17 @@ const Profile = ({ navigation }) => {
             >
               <TouchableWithoutFeedback>
                 <Image
-                  source={require("../assets/favicon.png")}
-                  style={{ width: 60, height: 60, resizeMode: "contain" }}
+                  source={
+                    imageUrl
+                      ? { uri: imageUrl }
+                      : require("../assets/defaultprofileicon.webp")
+                  }
+                  style={{
+                    width: 60,
+                    height: 60,
+                    resizeMode: "contain",
+                    borderRadius: 40,
+                  }}
                 />
               </TouchableWithoutFeedback>
               <View
@@ -336,7 +367,6 @@ const Profile = ({ navigation }) => {
           onRequestClose={() => toggleEditModal()}
         >
           <EditProfileModal
-            userData={userData}
             setVisibilitySettings={setVisibilitySettings}
             closeModal={() => toggleEditModal()}
           />
