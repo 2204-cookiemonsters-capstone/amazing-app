@@ -1,3 +1,4 @@
+import { TouchableHighlightComponent } from "react-native";
 
 export const featuredPostsData = [
   {
@@ -9,8 +10,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'reflection',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '“Taking a moment to figure out how you really feel instead of letting old patterns decide for you is one of the most authentic things you can do." \n \n - Yung Pueblo, Clarity & Connection',
+    reflection2: "bookshop.com \n find books at your local bookstores",
+    reflectionLink: "https://bookshop.org/books/clarity-connection-9781524860486/9781524860486"
   },
   {
     taskId: 2,
@@ -21,8 +23,9 @@ export const featuredPostsData = [
       month: 'July',
       year: 2022,
       category: 'meditation',
-      reflection: "This is a sample reflection. This is a short reflection.",
-      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+      reflection: '"Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor." \n \n -Thich Nhat Hanh' ,
+      reflection2: "insighttimer.com \n free meditations",
+      reflectionLink:"https://insighttimer.com/"
   },
   {
     taskId: 3,
@@ -33,8 +36,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'nature',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '“The land knows you, even when you are lost.” \n \n -Robin Wall Kimmerer, Braiding Sweetgrass',
+    reflection2: "find trails near you: \n alltrails.com",
+    reflectionLink:"https://www.alltrails.com/"
   },
   {
     taskId: 4,
@@ -44,8 +48,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'kindness',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '"How wonderful it is to be able to write someone a letter! To feel like conveying your thoughts to a person, to sit at your desk and pick up a pen, to put your thoughts into words like this is truly marvelous." \n \n -Haruki Murakami',
+    reflection2: "stamps.com",
+    reflectionLink:"https://www.stamps.com/"
   },
   {
     taskId: 5,
@@ -56,20 +61,22 @@ export const featuredPostsData = [
       month: 'July',
       year: 2022,
       category: 'creativity',
-      reflection: "This is a sample reflection. This is a short reflection.",
-      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+      reflection: '"When words become unclear, I shall focus with photographs." \n\n -Ansel Adams',
+      reflection2: "turn your photos into photo books \n shutterfly.com",
+      reflectionLink:"https://www.shutterfly.com/photo-books/"
   },
   {
     taskId: 6,
     title: 'Connect With Community',
     description:
-      'Attend a local event or group meeting in your community',
+      'Attend a local event or group meeting in your community.',
       defaultImgUrl: 'https://i.imgur.com/8TZYNlI.jpg',
       month: 'July',
       year: 2022,
       category: 'community',
-      reflection: "This is a sample reflection. This is a short reflection.",
-      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+      reflection: '"Love is an action, never simply a feeling." -bell hooks',
+      reflection2: "meetup.com",
+      reflectionLink:"https://www.meetup.com/"
   },
   {
     taskId: 7,
@@ -80,8 +87,9 @@ export const featuredPostsData = [
       month: 'July',
       year: 2022,
       category: 'movement',
-      reflection: "This is a sample reflection. This is a short reflection.",
-      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+      reflection: `"Even if you don't have time for a big workout, stretching in the morning and night really changes your body." \n \n - Erin Heatherton`,
+      reflection2: "down dog app",
+      reflectionLink:"https://www.downdogapp.com/"
   },
   {
     taskId: 8,
@@ -91,8 +99,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'reflection',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '"It is no measure of health to be well adjusted to a profoundly sick society." \n \n -J. Krishnamurti',
+    reflection2: "values app",
+    reflectionLink:"https://values.institute/values-app/"
   },
   {
     taskId: 9,
@@ -102,8 +111,9 @@ export const featuredPostsData = [
       month: 'July',
       year: 2022,
       category: 'meditation',
-      reflection: "This is a sample reflection. This is a short reflection.",
-      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+      reflection: `“When you walk, arrive with every step. That is walking meditation. There's nothing else to it.” \n \n -Thich Nhat Hanh`,
+      reflection2: "headspace.com",
+      reflectionLink:"https://www.headspace.com/meditation/walking-meditation"
   },
   {
     taskId: 10,
@@ -114,8 +124,9 @@ export const featuredPostsData = [
       month: 'July',
       year: 2022,
       category: 'nature',
-      reflection: "This is a sample reflection. This is a short reflection.",
-      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+      reflection: '"As a rule, whatever is fluid, soft, and yielding will overcome whatever is rigid and hard. This is another paradox: what is soft is strong." \n \n -Lao Tzu',
+      reflection2: "surfline: the world's go to wave forecasting app",
+      reflectionLink:"https://go.surfline.com/app"
   },
   {
     taskId: 11,
@@ -126,8 +137,9 @@ export const featuredPostsData = [
       month: 'July',
       year: 2022,
       category: 'kindness',
-      reflection: "This is a sample reflection. This is a short reflection.",
-      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+      reflection: '"A good, sympathetic review is always a wonderful surprise." \n \n -Joyce Carol Oates',
+      reflection2: "google",
+      reflectionLink:"https://www.google.com"
   },
   {
     taskId: 12,
@@ -137,8 +149,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'creativity',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '"The question of what you want to own is actually the question of how you want to live your life." \n \n -Marie Kondo',
+    reflection2: "balancethroughsimplicity.com",
+    reflectionLink:"https://balancethroughsimplicity.com/"
   },
   {
     taskId: 13,
@@ -148,19 +161,21 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'community',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: `"Friendship is the hardest thing in the world to explain. It's not something you learn in school. But if you haven't learned the meaning of friendship, you really haven't learned anything." \n \n -Muhammad Ali`,
+    reflection2: "google",
+    reflectionLink:"https://www.google.com"
   },
   {
     taskId: 14,
     title: 'Core / Upper Body Strength',
-    description: 'Complete a core or upper body workout of some kind for 20+ minutes',
+    description: 'Complete a core or upper body workout of some kind for 20+ minutes.',
     defaultImgUrl: 'https://i.imgur.com/2usl9dm.jpg',
     month: 'July',
     year: 2022,
     category: 'movement',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: `"It is not a daily increase, but a daily decrease. Hack away at the inessentials." \n \n -Bruce Lee`,
+    reflection2: "strong app",
+    reflectionLink:"https://www.strong.app/"
   },
 {
   taskId: 15,
@@ -170,8 +185,9 @@ export const featuredPostsData = [
   month: 'July',
   year: 2022,
   category: 'reflection',
-  reflection: "This is a sample reflection. This is a short reflection.",
-  reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+  reflection: `"I am happy because I'm grateful. I choose to be grateful. That gratitude allows me to be happy." \n \n -Will Arnett`,
+  reflection2: "gratefulness.me",
+  reflectionLink:"https://gratefulness.me/"
 },
   {
     taskId: 16,
@@ -181,8 +197,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'meditation',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '"Let go of the battle. Breathe quietly and let it be. Let your body relax and your heart soften. Open to whatever you experience without fighting." \n \n -Jack Kornfield',
+    reflection2: "calm app",
+    reflectionLink:"https://www.calm.com/"
   },
   {
     taskId: 17,
@@ -192,8 +209,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'nature',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '"Many eyes go through the meadow, but few see the flowers in it." -R.W. Emerson',
+    reflection2: "inaturalist.org",
+    reflectionLink:"https://www.inaturalist.org/"
   },
   {
     taskId: 18,
@@ -204,8 +222,9 @@ export const featuredPostsData = [
       month: 'July',
       year: 2022,
       category: 'kindness',
-      reflection: "This is a sample reflection. This is a short reflection.",
-      reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+      reflection: '"Remember that the happiest people are not those getting more, but those giving more." -H. Jackson Brown Jr.',
+      reflection2: "support a classroom \n donorschoose.org.",
+      reflectionLink:"https://www.donorschoose.org/"
   },
   {
     taskId: 19,
@@ -215,8 +234,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'creativity',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection:  `"Music is healing. Music holds things together" \n \n -Prince`,
+    reflection2: "spotify",
+    reflectionLink:"https://open.spotify.com/"
   },
   {
     taskId: 20,
@@ -226,8 +246,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'community',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection:   `"Life's most persistent and urgent question is: What are you doing for others?" \n \n -Martin Luther King Jr.`,
+    reflection2: "find volunteer opportunities \n volunteermatch.org",
+    reflectionLink:"https://www.volunteermatch.org/"
   },{
     taskId: 21,
     title: 'Yoga',
@@ -236,8 +257,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'movement',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '"Yoga does not just change the way we see things, it transforms the person who sees." \n \n -B.K.S. Iyengar',
+    reflection2: "daily yoga app",
+    reflectionLink:"https://www.dailyyoga.com/#/"
   },
   {
     taskId: 22,
@@ -247,8 +269,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'reflection',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '“Tell me, what is it you plan to do with your one wild and precious life?" \n \n -Mary Oliver',
+    reflection2: "stridesapp.com",
+    reflectionLink:"https://www.stridesapp.com/"
   },
   {
     taskId: 23,
@@ -258,9 +281,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'meditation',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
-
+    reflection: '"If we learn to open our hearts, anyone, including the people who drive us crazy, can be our teacher." \n \n -Pema Chodron ',
+    reflection2: "find hundreds of meditations: tenpercent.com",
+    reflectionLink:"https://www.tenpercent.com/"
   },
   {
     taskId: 24,
@@ -270,9 +293,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'nature',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
-
+    reflection: `"Until you dig a hole, you plant a tree, you water it and make it survive, you haven't done a thing." \n \n -Wangari Maathai` ,
+    reflection2: "grow your own plants app: seedtospoon.net",
+    reflectionLink:"https://www.seedtospoon.net/"
   },
   {
     taskId: 25,
@@ -282,8 +305,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'kindness',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '"Kindness in words creates confidence. Kindness in thinking creates profoundness. Kindness in giving creates love." \n \n -Lao Tzu',
+    reflection2: "bekind.org \n an app for kindness",
+    reflectionLink:"https://bekind.org/"
   },
   {
     taskId: 26,
@@ -293,8 +317,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'creativity',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '"Nothing is absolute. Everything changes, everything moves, everything revolves, everything flies and goes away." \n \n -Frida Kahlo',
+    reflection2: "artsandculture.google.com",
+    reflectionLink:"https://artsandculture.google.com/"
   },
   {
     taskId: 27,
@@ -304,8 +329,9 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'community',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: `"Every time you spend money you're casting a vote for the kind of world you want." \n \n -Anna Lappe`,
+    reflection2: "find local farms and ranches: \n simplylocal.io",
+    reflectionLink:"https://www.simplylocal.io/home"
   },
   {
     taskId: 28,
@@ -315,7 +341,8 @@ export const featuredPostsData = [
     month: 'July',
     year: 2022,
     category: 'movement',
-    reflection: "This is a sample reflection. This is a short reflection.",
-    reflection2: "This is a sample second reflection. This reflection is a bit longer than the first one, more of a paragraph. This is a sample reflection. This reflection is a bit longer than the first one, more of a paragraph."
+    reflection: '"When the mind is controlled and spirit aligned with purpose, the body is capable of so much more than we realize." \n \n -Rich Roll, Finding Ultra',
+    reflection2: "strava.com \n track your runs",
+    reflectionLink: "https://www.strava.com/"
   },
 ];
