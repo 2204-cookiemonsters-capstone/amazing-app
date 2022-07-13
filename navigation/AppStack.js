@@ -90,7 +90,7 @@ const MessagesStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='SearchScreen'
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
@@ -186,7 +186,7 @@ const AddTaskStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='SearchAdd'
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
@@ -234,7 +234,7 @@ const ListStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='SearchList'
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
@@ -281,7 +281,7 @@ const ExploreStack = ({ navigation }) => (
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='SearchExplore'
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
@@ -325,7 +325,7 @@ const AppStack = ({ currentRoute }) => {
   const getTabBarVisibility = () => {
     if (
       currentRoute === "ChatScreen" ||
-      currentRoute === "SearchScreen" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileMessages" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -371,7 +371,7 @@ const AppStack = ({ currentRoute }) => {
   //tab bar visibility add tab
   const getTabBarVisibilityAddTab = () => {
     if (
-      currentRoute === "SearchAdd" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileAdd" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -394,7 +394,7 @@ const AppStack = ({ currentRoute }) => {
   //tab bar visibility list tab
   const getTabBarVisibilityListTab = () => {
     if (
-      currentRoute === "SearchList" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileList" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -417,7 +417,7 @@ const AppStack = ({ currentRoute }) => {
   //tab bar visibility explore tab
   const getTabBarVisibilityExploreTab = () => {
     if (
-      currentRoute === "SearchExplore" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileExplore" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -441,7 +441,7 @@ const AppStack = ({ currentRoute }) => {
   const getHeaderVisibility = () => {
     if (
       currentRoute === "ChatScreen" ||
-      currentRoute === "SearchScreen" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileMessages" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -471,7 +471,7 @@ const AppStack = ({ currentRoute }) => {
   //header visibility add tab
   const getHeaderVisibilityAddTab = () => {
     if (
-      currentRoute === "SearchAdd" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileAdd" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -486,7 +486,7 @@ const AppStack = ({ currentRoute }) => {
   //header visibility list tab
   const getHeaderVisibilityListTab = () => {
     if (
-      currentRoute === "SearchList" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileList" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -501,7 +501,7 @@ const AppStack = ({ currentRoute }) => {
   //header visibility Explore tab
   const getHeaderVisibilityExploreTab = () => {
     if (
-      currentRoute === "SearchExplore" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileExplore" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -627,7 +627,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("SearchExplore")}
+                onPress={() => navigation.navigate("Search")}
               >
                 <Image
                   source={require("../assets/search.png")}
@@ -849,7 +849,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("SearchAdd")}
+                onPress={() => navigation.navigate("Search")}
               >
                 <Image
                   source={require("../assets/search.png")}
@@ -959,7 +959,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("SearchList")}
+                onPress={() => navigation.navigate("Search")}
               >
                 <Image
                   source={require("../assets/search.png")}
@@ -1068,7 +1068,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("SearchScreen")} //test only change later
+                onPress={() => navigation.navigate("Search")} //test only change later
               >
                 <Image
                   source={require("../assets/search.png")}

@@ -12,7 +12,8 @@ import {
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
-import { auth, firestore } from "../firebase";
+import { auth, firestore, storage } from "../firebase";
+import { getDownloadURL, ref } from "firebase/storage";
 import {
   collection,
   getDocs,
@@ -70,7 +71,7 @@ const AddFriends = ({ navigation }) => {
     });
 
     onSnapshot(collection(firestore, "users"), async (snapShot) => {
-      const users = [];
+      let users = [];
       snapShot.forEach(async (doc) => {
         if (doc.data().userid !== auth.currentUser.uid) {
           if (!friends.includes(doc.data().userid)) {
@@ -78,9 +79,29 @@ const AddFriends = ({ navigation }) => {
           }
         }
       });
-
       allUsers !== users ? setAllUsers(users) : ""; //need this or else it will push to allUsers everytime we save
       setRenderedAllFriends(users);
+    });
+  };
+
+  const fetchPhotos = () => {
+    allUsers.forEach((userdata) => {
+      const reference = ref(
+        storage,
+        `${userdata.userid}/profilepic/${userdata.profilepic}`
+      );
+
+      const index = allUsers.indexOf(
+        allUsers.find((user) => userdata.userid === user.userid)
+      );
+
+      getDownloadURL(reference)
+        .then((x) => {
+          allUsers[index] = { ...allUsers[index], imageUrl: x };
+        })
+        .catch((e) => {
+          allUsers[index] = { ...allUsers[index], imageUrl: null };
+        });
     });
   };
 
@@ -175,6 +196,10 @@ const AddFriends = ({ navigation }) => {
     getFriends();
   }, []);
 
+  useEffect(() => {
+    fetchPhotos();
+  }, [allUsers]);
+
   const handleAddFriend = (userid) => {
     const docRef = doc(
       firestore,
@@ -233,6 +258,7 @@ const AddFriends = ({ navigation }) => {
     // await deleteDoc(doc(firestore, colRef2, where("userid", "==", auth.currentUser.uid)))
   };
 
+  // console.log(allUsers);
   return (
     <RootSiblingParent>
       <View style={{ backgroundColor: "#F0F0F0" }}>
@@ -396,7 +422,6 @@ const AddFriends = ({ navigation }) => {
                       elevation: 5,
                     }}
                     onPress={() => {
-                      console.log(item.name);
                       navigation.navigate("ProfilePageNotYou", {
                         userid: item.userid,
                         name: item.name,
@@ -408,7 +433,11 @@ const AddFriends = ({ navigation }) => {
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.imageUrl
+                            ? { uri: item.imageUrl }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
@@ -535,7 +564,6 @@ const AddFriends = ({ navigation }) => {
                         elevation: 5,
                       }}
                       onPress={() => {
-                        console.log(item.name);
                         navigation.navigate("ProfilePageNotYou", {
                           userid: item.userid,
                           name: item.name,
@@ -547,7 +575,11 @@ const AddFriends = ({ navigation }) => {
                     >
                       <TouchableOpacity>
                         <Image
-                          source={image}
+                          source={
+                            item.imageUrl
+                              ? { uri: item.imageUrl }
+                              : require("../assets/defaultprofileicon.webp")
+                          }
                           style={{
                             width: 50,
                             height: 50,
@@ -635,7 +667,6 @@ const AddFriends = ({ navigation }) => {
                         elevation: 5,
                       }}
                       onPress={() => {
-                        console.log(item.name);
                         navigation.navigate("ProfilePageNotYou", {
                           userid: item.userid,
                           name: item.name,
@@ -647,7 +678,11 @@ const AddFriends = ({ navigation }) => {
                     >
                       <TouchableOpacity>
                         <Image
-                          source={image}
+                          source={
+                            item.imageUrl
+                              ? { uri: item.imageUrl }
+                              : require("../assets/defaultprofileicon.webp")
+                          }
                           style={{
                             width: 50,
                             height: 50,

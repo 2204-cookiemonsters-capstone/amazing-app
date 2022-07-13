@@ -18,7 +18,8 @@ import {
   getDoc,
   setDoc,
 } from "firebase/firestore";
-import { auth, firestore } from "../firebase";
+import { auth, firestore, storage } from "../firebase";
+import { getDownloadURL, ref } from "firebase/storage";
 import { ScrollView } from "react-native-gesture-handler";
 
 const image = require("../assets/favicon.png");
@@ -55,6 +56,27 @@ const SearchPage = ({ navigation }) => {
     });
   };
 
+  const fetchPhotos = () => {
+    allUsers.forEach((userdata) => {
+      const reference = ref(
+        storage,
+        `${userdata.userid}/profilepic/${userdata.profilepic}`
+      );
+
+      const index = allUsers.indexOf(
+        allUsers.find((user) => userdata.userid === user.userid)
+      );
+
+      getDownloadURL(reference)
+        .then((x) => {
+          allUsers[index] = { ...allUsers[index], imageUrl: x };
+        })
+        .catch((e) => {
+          allUsers[index] = { ...allUsers[index], imageUrl: null };
+        });
+    });
+  };
+
   const search = (value) => {
     const filtered = allUsers.filter(
       (user) =>
@@ -74,6 +96,10 @@ const SearchPage = ({ navigation }) => {
   useEffect(() => {
     fetchAllUsers();
   }, []);
+
+  useEffect(() => {
+    fetchPhotos();
+  }, [allUsers]);
 
   return (
     <View>
@@ -185,12 +211,17 @@ const SearchPage = ({ navigation }) => {
                         name: item.name,
                         score: item.score,
                         username: item.username,
+                        from: "Search",
                       });
                     }}
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.imageUrl
+                            ? { uri: item.imageUrl }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
@@ -282,12 +313,17 @@ const SearchPage = ({ navigation }) => {
                         name: item.name,
                         score: item.score,
                         username: item.username,
+                        from: "Search",
                       });
                     }}
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.imageUrl
+                            ? { uri: item.imageUrl }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
@@ -455,12 +491,17 @@ const SearchPage = ({ navigation }) => {
                         name: item.name,
                         score: item.score,
                         username: item.username,
+                        from: "Search",
                       });
                     }}
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.imageUrl
+                            ? { uri: item.imageUrl }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
@@ -552,12 +593,17 @@ const SearchPage = ({ navigation }) => {
                         name: item.name,
                         score: item.score,
                         username: item.username,
+                        from: "Search",
                       });
                     }}
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.imageUrl
+                            ? { uri: item.imageUrl }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
