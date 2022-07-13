@@ -80,9 +80,9 @@ const Profile = ({ navigation }) => {
     getUser();
   }, []);
 
-  useEffect(() => {
-    retrievePhoto();
-  }, [userData]);
+  // useEffect(() => {
+  //   retrievePhoto();
+  // }, [userData]);
 
   const toggleEditModal = () => {
     setShowEditModal(!showEditModal);
@@ -167,8 +167,8 @@ const Profile = ({ navigation }) => {
               <TouchableWithoutFeedback>
                 <Image
                   source={
-                    imageUrl
-                      ? { uri: imageUrl }
+                    userData.profilepic
+                      ? { uri: userData.profilepic }
                       : require("../assets/defaultprofileicon.webp")
                   }
                   style={{
