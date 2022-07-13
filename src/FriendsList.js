@@ -311,8 +311,8 @@ const FriendsList = ({ navigation }) => {
                 <TouchableOpacity>
                   <Image
                     source={
-                      item.imageUrl
-                        ? { uri: item.imageUrl }
+                      item.profilepic
+                        ? { uri: item.profilepic }
                         : require("../assets/defaultprofileicon.webp")
                     }
                     style={{
