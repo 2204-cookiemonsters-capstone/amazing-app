@@ -74,7 +74,7 @@ const List = ({ navigation }) => {
       <View style={{ flexDirection: "row" }}>
         <View style={todoListStyle.divider} />
         <Text style={todoListStyle.title}>
-          Todo{" "}
+          My{" "}
           <Text style={{ fontWeight: "300", color: color.list.blue }}>
             Lists
           </Text>
