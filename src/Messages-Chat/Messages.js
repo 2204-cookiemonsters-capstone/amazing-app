@@ -233,19 +233,28 @@ const Messages = (props) => {
             marginTop: "80%",
           }}
         >
-          <Text>You have no Chats</Text>
+          <Text>You have no chats</Text>
           <TouchableOpacity
             style={{
               borderRadius: 25,
-              backgroundColor: "red",
+              backgroundColor: "white",
               width: 100,
               height: 30,
               justifyContent: "center",
               alignItems: "center",
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+              marginTop: 10,
             }}
             onPress={() => props.navigation.navigate("AddChat")}
           >
-            <Text style={{ color: "blue" }}> Add a Chat</Text>
+            <Text style={{ color: "black" }}> Add a Chat</Text>
           </TouchableOpacity>
         </View>
       )}

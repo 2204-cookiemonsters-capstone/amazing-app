@@ -1,9 +1,13 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React from "react";
+import { Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { auth } from "../firebase";
 
 const Explore = () => (
   <View>
-    <Text>Explore Page</Text>
+    <TouchableOpacity onPress={() => auth.signOut()}>
+      <Text>HERE</Text>
+    </TouchableOpacity>
   </View>
 );
 

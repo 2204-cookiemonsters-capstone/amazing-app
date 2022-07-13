@@ -5,9 +5,10 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  updateEmail
+  updateEmail,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBr95jUf8aRaCHXOTr7hUMnTkHasYSu70Q",
@@ -22,13 +23,17 @@ const firebaseConfig = {
 // Initialize Firebase
 let app;
 if (getApps().length === 0) {
-  app = initializeApp(firebaseConfig);
+  app = initializeApp(firebaseConfig, {
+    experimentalForceLongPolling: true, // this line
+    useFetchStreams: false, // and this line
+  });
 } else {
   app = getApp();
 }
 
 const firestore = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 export {
   auth,
@@ -37,5 +42,6 @@ export {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-  updateEmail
+  updateEmail,
+  storage,
 };
