@@ -9,7 +9,8 @@ import {
   FlatList,
   Keyboard,
 } from "react-native";
-import { todoListStyle, color, userProfile } from "../styles";
+import { Snackbar } from "react-native-paper";
+import { todoListStyle, color, userProfile, authStyle } from "../styles";
 import ToDoItem from "./ToDoItem";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import BottomSheet from "reanimated-bottom-sheet";
@@ -18,6 +19,7 @@ import * as ImagePicker from "expo-image-picker";
 
 const TodoModal = ({ list, updateList, closeModal }) => {
   const [newTodo, setNewTodo] = useState("");
+  const [isValid, setIsValid] = useState(false);
 
   // declare variables for bottom sheet to post photos to story
   const bs = React.createRef();
@@ -93,6 +95,15 @@ const TodoModal = ({ list, updateList, closeModal }) => {
   };
 
   const addTodo = () => {
+    if(!newTodo) {
+      setIsValid({
+        bool: true,
+        boolSnack: true,
+        message: "Please enter a task",
+      });
+      return
+    }
+
     if (!list.todos.some((todo) => todo.title === newTodo)) {
       list.todos.push({ title: newTodo, completed: false, likes: 0 });
       updateList(list);
@@ -161,6 +172,16 @@ const TodoModal = ({ list, updateList, closeModal }) => {
             showsVerticalScrollIndicator={false}
           />
         </View>
+        <Snackbar
+          visible={isValid.boolSnack}
+          style={authStyle.snackbarError}
+          duration={2000}
+          onDismiss={() => {
+            setIsValid({ boolSnack: false });
+          }}
+        >
+          {isValid.message}
+        </Snackbar>
         <View
           style={[
             todoListStyle.todoModal.section,

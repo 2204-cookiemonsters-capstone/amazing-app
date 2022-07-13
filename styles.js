@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 //Set color here and reference in stylesheets below to change color across the entire app
 const color = {
   link: "blue",
-  error: "red",
+  error: "#D85963",
   background: "white",
   inputBorder: "#BAB7C3",
   header: "black",
@@ -318,7 +318,6 @@ const todoListStyle = StyleSheet.create({
       alignItems: "center",
     },
     section: {
-      // flex: 1,
       alignSelf: "stretch",
     },
     header: {
@@ -385,4 +384,44 @@ const todoListStyle = StyleSheet.create({
   },
 });
 
-export { authStyle, userProfile, friendList, todoListStyle, color };
+const friendModal = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: color.list.white,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  divider: {
+    backgroundColor: color.list.lightBlue,
+    height: 1,
+    flex: 1,
+    alignSelf: "center",
+  },
+  title: {
+    fontSize: 38,
+    fontWeight: "800",
+    color: color.list.black,
+    paddingHorizontal: 64,
+    marginBottom: 20
+  },
+  userName: {
+    fontSize: 20,
+    marginTop: -20,
+    marginBottom: 5
+  },
+  avatar: {
+    marginBottom: 20
+  },
+  score: {
+    borderColor: color.list.lightGray,
+    borderWidth: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  }
+
+})
+
+export { authStyle, userProfile, friendList, todoListStyle, color, friendModal };
