@@ -54,24 +54,39 @@ const Messages = (props) => {
 
         userData.push({
           ...docSnap.data(),
-          lastMessage: chats.find(
-            (chat) =>
-              chat.userids.includes(docSnap.data().userid) &&
-              chat.userids.includes(auth.currentUser.uid)
-          ).messages[0].message,
+          lastMessage:
+            chats.find(
+              (chat) =>
+                chat.userids.includes(docSnap.data().userid) &&
+                chat.userids.includes(auth.currentUser.uid)
+            ).messages.length !== 0
+              ? chats.find(
+                  (chat) =>
+                    chat.userids.includes(docSnap.data().userid) &&
+                    chat.userids.includes(auth.currentUser.uid)
+                ).messages[0].message
+              : "",
+
           chatid: chats.find(
             (chat) =>
               chat.userids.includes(docSnap.data().userid) &&
               chat.userids.includes(auth.currentUser.uid)
           ).chatid,
-          timesent: chats
-            .find(
+          timesent:
+            chats.find(
               (chat) =>
                 chat.userids.includes(docSnap.data().userid) &&
                 chat.userids.includes(auth.currentUser.uid)
-            )
-            .messages[0].time.toDate()
-            .getTime(),
+            ).messages.length !== 0
+              ? chats
+                  .find(
+                    (chat) =>
+                      chat.userids.includes(docSnap.data().userid) &&
+                      chat.userids.includes(auth.currentUser.uid)
+                  )
+                  .messages[0].time.toDate()
+                  .getTime()
+              : null,
         });
       }
 
@@ -82,6 +97,7 @@ const Messages = (props) => {
     });
   };
 
+  console.log(allChatsData);
   const getTimeDifference = (timesent) => {
     const timeNow = new Date().getTime();
     const difference = (timeNow - timesent) / 1000;
@@ -134,7 +150,9 @@ const Messages = (props) => {
                     <View style={styles.userinfotext}>
                       <Text style={styles.username}>{item.name}</Text>
 
-                      {getTimeDifference(item.timesent) < 60 ? (
+                      {!item.timesent ? null : getTimeDifference(
+                          item.timesent
+                        ) < 60 ? (
                         <Text
                           style={{
                             fontSize: 12,
@@ -171,9 +189,11 @@ const Messages = (props) => {
                           }}
                         >
                           {Math.floor(getTimeDifference(item.timesent) / 1440)}{" "}
-                          {Math.floor(
-                            getTimeDifference(item.timesent) / 1440
-                          ) === 1
+                          {!item.timesent
+                            ? null
+                            : Math.floor(
+                                getTimeDifference(item.timesent) / 1440
+                              ) === 1
                             ? "day Ago"
                             : "days Ago"}
                         </Text>
@@ -181,8 +201,10 @@ const Messages = (props) => {
                     </View>
                     <View style={{ width: "65%" }}>
                       <Text style={styles.messageText}>
-                        {item.lastMessage.length <= 25 &&
-                        item.lastMessage.length > 0
+                        {!item.lastMessage.length
+                          ? ""
+                          : item.lastMessage.length <= 25 &&
+                            item.lastMessage.length > 0
                           ? item.lastMessage
                           : item.lastMessage.length > 25
                           ? item.lastMessage.slice(0, 23) + "..."
@@ -268,6 +290,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F0F0F0",
     marginTop: 0,
+    width: "100%",
   },
   userinfo: {
     flexDirection: "row",
