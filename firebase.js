@@ -23,7 +23,10 @@ const firebaseConfig = {
 // Initialize Firebase
 let app;
 if (getApps().length === 0) {
-  app = initializeApp(firebaseConfig);
+  app = initializeApp(firebaseConfig, {
+    experimentalForceLongPolling: true, // this line
+    useFetchStreams: false, // and this line
+  });
 } else {
   app = getApp();
 }

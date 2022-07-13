@@ -12,6 +12,7 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import {
   Button,
@@ -22,8 +23,8 @@ import {
 } from "react-native-paper";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { auth, firestore, signOut, updateEmail, storage } from "../firebase";
-import { ref, uploadBytes, blob } from "firebase/storage";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { ref, uploadBytes, blob, getDownloadURL } from "firebase/storage";
+import { doc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
@@ -34,20 +35,27 @@ import { v4 as uuidv4 } from "uuid";
 
 import Toast from "react-native-root-toast";
 import { RootSiblingParent } from "react-native-root-siblings";
+import { useEffect } from "react";
 
-//onPress={() => bs.current.snapTo(0)}
-const EditProfileModal = ({ userData, setVisibilitySettings }) => {
+const EditProfileModal = ({ setVisibilitySettings }) => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [avatar, setAvatar] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [userData, setUserData] = useState("");
 
   const bs = React.createRef();
   const fall = new Animated.Value(1);
 
-  const handleSignOut = () => {
-    signOut(auth);
+  const getUser = async () => {
+    const docRef = doc(firestore, "users", auth.currentUser.uid);
+    onSnapshot(docRef, async (snapShot) => {
+      setUserData(snapShot.data());
+    });
   };
 
   const pickImage = async () => {
@@ -59,19 +67,29 @@ const EditProfileModal = ({ userData, setVisibilitySettings }) => {
       base64: true,
     });
 
-    if (!result.cancelled) {
-      setAvatar(`data:image/jpeg;base64,${result.base64}`);
-    }
-
-    if (!avatar) return;
-
-    const imageRef = ref(storage, `profilepics/${"profilepic" + uuidv4()}`);
+    const id = uuidv4();
+    const imageRef = ref(storage, `${auth.currentUser.uid}/profilepic/${id}`);
 
     const img = await fetch(result.uri);
     const bytes = await img.blob();
-    uploadBytes(imageRef, bytes).then(() => {
-      console.log("successful");
+    uploadBytes(imageRef, bytes).then(async () => {
+      const userRef = doc(firestore, "users", auth.currentUser.uid);
+      await updateDoc(
+        userRef,
+        {
+          profilepic: id,
+        },
+        { merge: true }
+      );
+      retrievePhoto();
+      Toast.show("Profile Photo Updated", {
+        duration: Toast.durations.LONG,
+      });
     });
+
+    //making a reference to image to the user
+
+    bs.current.snapTo(1);
   };
 
   const takePhoto = async () => {
@@ -89,20 +107,53 @@ const EditProfileModal = ({ userData, setVisibilitySettings }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setAvatar(result.uri);
-    }
-
-    if (!avatar) return;
+    const id = uuidv4();
+    const imageRef = ref(storage, `${auth.currentUser.uid}/profilepic/${id}`);
 
     const img = await fetch(result.uri);
     const bytes = await img.blob();
 
-    const imageRef = ref(storage, `profilepics/${"profilepic" + uuidv4()}`);
     uploadBytes(imageRef, bytes).then(() => {
-      console.log("successful");
+      const userRef = doc(firestore, "users", auth.currentUser.uid);
+      updateDoc(
+        userRef,
+        {
+          profilepic: id,
+        },
+        { merge: true }
+      ).then(() => retrievePhoto());
+      Toast.show("Profile Photo Updated", {
+        duration: Toast.durations.LONG,
+      });
     });
+
+    bs.current.snapTo(1);
   };
+
+  const retrievePhoto = () => {
+    if (userData === "") return;
+    const reference = ref(
+      storage,
+      `${auth.currentUser.uid}/profilepic/${userData.profilepic}`
+    );
+
+    getDownloadURL(reference)
+      .then((x) => {
+        setImageUrl(x);
+      })
+      .catch((e) => {
+        setImageUrl(null);
+      });
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  useEffect(() => {
+    retrievePhoto();
+  }, [userData]);
 
   const handleUpdate = async () => {
     if (userData.email !== email) {
@@ -128,6 +179,20 @@ const EditProfileModal = ({ userData, setVisibilitySettings }) => {
     });
 
     setVisibilitySettings(false);
+  };
+
+  const handleRemove = async () => {
+    const userRef = doc(firestore, "users", auth.currentUser.uid);
+    await updateDoc(
+      userRef,
+      {
+        profilepic: null,
+      },
+      { merge: true }
+    );
+
+    setVisibilitySettings(false);
+    setVisibilitySettings(true);
   };
 
   const renderInner = () => (
@@ -159,201 +224,233 @@ const EditProfileModal = ({ userData, setVisibilitySettings }) => {
   );
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
-      <BottomSheet
-        ref={bs}
-        snapPoints={[300, 0]}
-        renderContent={renderInner}
-        renderHeader={renderHeader}
-        initialSnap={1}
-        callbackNode={fall}
-        enabledGestureInteraction={true}
-      />
-      <View
-        style={{
-          backgroundColor: "white",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <View
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "row",
-            backgroundColor: "white",
-            height: "8%",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              marginLeft: 10,
-            }}
-            onPress={() => setVisibilitySettings(false)}
-          >
-            <View
-              style={styles.smallButton}
-              onPress={() => setVisibilitySettings(false)}
-            >
-              <AntDesign name='left' size={20} color='lightgreen' />
-            </View>
-            <Text
-              style={{
-                fontSize: 21,
-                color: "lightgreen",
-                fontWeight: "500",
-              }}
-            >
-              Settings
-            </Text>
-          </TouchableOpacity>
-          <View style={{ flexGrow: 1 }} />
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => auth.signOut()}
-          >
-            <Text style={{ fontWeight: "500", fontSize: 17, color: "red" }}>
-              Sign Out
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ marginLeft: 20, marginTop: 10 }}>
-          <Text style={{ fontWeight: "500", fontSize: 18 }}>Avatar</Text>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Image
-              source={{ uri: avatar }}
-              style={{ width: 80, height: 80, marginTop: 12 }}
-            />
-            <TouchableOpacity
-              style={styles.signoutBut}
-              onPress={() => bs.current.snapTo(0)}
-            >
-              <Text
-                style={{
-                  fontWeight: "500",
-                  fontSize: 17,
-                  color: "skyblue",
-                }}
-              >
-                Edit
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Text style={{ fontWeight: "500", fontSize: 17, color: "gray" }}>
-                Remove
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View
-          style={{
-            borderBottomWidth: 0.3,
-            borderColor: "gray",
-            marginTop: 30,
-            marginLeft: "8%",
-            marginRight: "8%",
-          }}
+    <RootSiblingParent>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
+        <BottomSheet
+          ref={bs}
+          snapPoints={[300, 0]}
+          renderContent={renderInner}
+          renderHeader={renderHeader}
+          initialSnap={1}
+          callbackNode={fall}
+          enabledGestureInteraction={true}
         />
         <View
           style={{
+            backgroundColor: "white",
+            height: "100%",
             display: "flex",
             flexDirection: "column",
-            marginTop: 30,
           }}
         >
-          <View style={{ disply: "flex", flexDirection: "row" }}>
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              backgroundColor: "white",
+              height: "8%",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                marginLeft: 10,
+              }}
+              onPress={() => setVisibilitySettings(false)}
+            >
+              <View
+                style={styles.smallButton}
+                onPress={() => setVisibilitySettings(false)}
+              >
+                <AntDesign name='left' size={20} color='lightgreen' />
+              </View>
+              <Text
+                style={{
+                  fontSize: 21,
+                  color: "lightgreen",
+                  fontWeight: "500",
+                }}
+              >
+                Settings
+              </Text>
+            </TouchableOpacity>
+            <View style={{ flexGrow: 1 }} />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => auth.signOut()}
+            >
+              <Text style={{ fontWeight: "500", fontSize: 17, color: "red" }}>
+                Sign Out
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginLeft: 20, marginTop: 10 }}>
+            <Text style={{ fontWeight: "500", fontSize: 18 }}>Avatar</Text>
             <View
               style={{
                 display: "flex",
-                flexDirection: "column",
-                width: "44%",
-                marginLeft: 12,
+                flexDirection: "row",
+                alignItems: "center",
               }}
             >
-              <Text
-                style={{
-                  fontWeight: "500",
-                  fontSize: 17,
-                  marginBottom: 15,
-                }}
+              {isLoading ? (
+                <View
+                  style={{
+                    width: 80,
+                    height: 80,
+                    marginTop: 12,
+                    justifyContent: "center",
+                  }}
+                >
+                  <ActivityIndicator size='large' color={"blue"} />
+                </View>
+              ) : (
+                <Image
+                  source={
+                    imageUrl
+                      ? { uri: imageUrl }
+                      : require("../assets/defaultprofileicon.webp")
+                  }
+                  style={{
+                    width: 80,
+                    height: 80,
+                    marginTop: 12,
+                    borderRadius: 40,
+                  }}
+                />
+              )}
+
+              <TouchableOpacity
+                style={styles.signoutBut}
+                onPress={() => bs.current.snapTo(0)}
               >
-                Username
-              </Text>
-              <TextInput
-                style={styles.textSmall}
-                placeholder={userData.username}
-                label='Username'
-                onChangeText={(e) => setUsername(e)}
-              />
-            </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                width: "44%",
-                marginLeft: 20,
-              }}
-            >
-              <Text
-                style={{
-                  fontWeight: "500",
-                  fontSize: 17,
-                  marginBottom: 15,
-                }}
+                <Text
+                  style={{
+                    fontWeight: "500",
+                    fontSize: 17,
+                    color: "skyblue",
+                  }}
+                >
+                  Edit
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => handleRemove()}
               >
-                Full Name
-              </Text>
-              <TextInput
-                style={styles.textSmall}
-                onChangeText={(e) => setName(e)}
-                label='Name'
-                placeholder={userData.name}
-              />
+                <Text
+                  style={{ fontWeight: "500", fontSize: 17, color: "gray" }}
+                >
+                  Remove
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
+          <View
+            style={{
+              borderBottomWidth: 0.3,
+              borderColor: "gray",
+              marginTop: 30,
+              marginLeft: "8%",
+              marginRight: "8%",
+            }}
+          />
           <View
             style={{
               display: "flex",
               flexDirection: "column",
-              width: "100%",
               marginTop: 30,
-              paddingLeft: 12,
-              paddingRight: 12,
             }}
           >
-            <Text style={{ fontWeight: "500", fontSize: 17, marginBottom: 15 }}>
-              Email Address
-            </Text>
-            <TextInput
-              style={styles.textEmail}
-              placeholder={userData.email}
-              label='email'
-              onChangeText={(e) => setEmail(e)}
-            />
+            <View style={{ disply: "flex", flexDirection: "row" }}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "44%",
+                  marginLeft: 12,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "500",
+                    fontSize: 17,
+                    marginBottom: 15,
+                  }}
+                >
+                  Username
+                </Text>
+                <TextInput
+                  style={styles.textSmall}
+                  placeholder={userData.username}
+                  label='Username'
+                  onChangeText={(e) => setUsername(e)}
+                />
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "44%",
+                  marginLeft: 20,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "500",
+                    fontSize: 17,
+                    marginBottom: 15,
+                  }}
+                >
+                  Full Name
+                </Text>
+                <TextInput
+                  style={styles.textSmall}
+                  onChangeText={(e) => setName(e)}
+                  label='Name'
+                  placeholder={userData.name}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                marginTop: 30,
+                paddingLeft: 12,
+                paddingRight: 12,
+              }}
+            >
+              <Text
+                style={{ fontWeight: "500", fontSize: 17, marginBottom: 15 }}
+              >
+                Email Address
+              </Text>
+              <TextInput
+                style={styles.textEmail}
+                placeholder={userData.email}
+                label='email'
+                onChangeText={(e) => setEmail(e)}
+              />
+            </View>
+          </View>
+          <View style={styles.flexRow}>
+            <TouchableOpacity
+              style={{ ...styles.button, marginTop: 30 }}
+              disabled={username === "" && email === "" && name === ""}
+              onPress={() => handleUpdate()}
+            >
+              <Text style={{ fontWeight: "500", fontSize: 18 }}>Update</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.flexRow}>
-          <TouchableOpacity
-            style={{ ...styles.button, marginTop: 30 }}
-            disabled={username === "" && email === "" && name === ""}
-            onPress={() => handleUpdate()}
-          >
-            <Text style={{ fontWeight: "500", fontSize: 18 }}>Update</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </RootSiblingParent>
   );
 };
 
