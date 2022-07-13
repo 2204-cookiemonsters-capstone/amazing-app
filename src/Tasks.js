@@ -860,7 +860,6 @@ userDashboard: {
 },
 dashboardRowTop : {
     flexDirection: 'row',
-    alignItems: 'top',
     justifyContent: 'space-around',
     paddingTop: 15,
     paddingBottom: 10,
@@ -948,7 +947,7 @@ dashboardRowTop : {
   },
   uncompletedContainer:{
     backgroundColor: "#585BD9", 
-  borderRadius: "5", 
+  borderRadius: 5, 
   margin: 5, 
   width: 300
 },
@@ -1101,7 +1100,7 @@ dashboardRowTop : {
     position: 'absolute',
     // backgroundColor: 'rgba(0,0,0,.1)',
     top: 10,
-    borderRadius: "10",
+    borderRadius: 10,
     width: "80%",
   },
   displayPostTitle: {
@@ -1119,7 +1118,7 @@ dashboardRowTop : {
     margin: "10%",
     position: 'absolute',
     top: 300,
-    borderRadius: "10",
+    borderRadius: 10,
     width: "80%",
     backgroundColor: "rgb(0,0,0)"
   },
@@ -1128,7 +1127,7 @@ dashboardRowTop : {
     margin: "10%",
     position: 'absolute',
     top: 300,
-    borderRadius: "10",
+    borderRadius: 10,
     width: "80%",
     backgroundColor: "rgb(255,255,255)"
   },
