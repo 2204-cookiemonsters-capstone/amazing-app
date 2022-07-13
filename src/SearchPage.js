@@ -218,8 +218,8 @@ const SearchPage = ({ navigation }) => {
                     <TouchableOpacity>
                       <Image
                         source={
-                          item.imageUrl
-                            ? { uri: item.imageUrl }
+                          item.profilepic
+                            ? { uri: item.profilepic }
                             : require("../assets/defaultprofileicon.webp")
                         }
                         style={{
@@ -320,8 +320,8 @@ const SearchPage = ({ navigation }) => {
                     <TouchableOpacity>
                       <Image
                         source={
-                          item.imageUrl
-                            ? { uri: item.imageUrl }
+                          item.profilepic
+                            ? { uri: item.profilepic }
                             : require("../assets/defaultprofileicon.webp")
                         }
                         style={{
@@ -498,8 +498,8 @@ const SearchPage = ({ navigation }) => {
                     <TouchableOpacity>
                       <Image
                         source={
-                          item.imageUrl
-                            ? { uri: item.imageUrl }
+                          item.profilepic
+                            ? { uri: item.profilepic }
                             : require("../assets/defaultprofileicon.webp")
                         }
                         style={{
@@ -600,8 +600,8 @@ const SearchPage = ({ navigation }) => {
                     <TouchableOpacity>
                       <Image
                         source={
-                          item.imageUrl
-                            ? { uri: item.imageUrl }
+                          item.profilepic
+                            ? { uri: item.profilepic }
                             : require("../assets/defaultprofileicon.webp")
                         }
                         style={{

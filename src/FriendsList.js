@@ -215,18 +215,68 @@ const FriendsList = ({ navigation }) => {
             elevation: 5,
           }}
         >
-          <Image
-            source={require("../assets/search2.png")}
-            style={{
-              width: 22,
-              height: 22,
-              resizeMode: "contain",
-            }}
-          />
-          <TextInput
-            placeholder='Find Friends'
-            onChangeText={(value) => {
-              setSearchValue(value), search(value);
+
+          <Entypo name='dots-three-horizontal' color='black' size={18} />
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          marginTop: 40,
+          marginLeft: 15,
+          marginRight: 15,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          borderRadius: 50,
+          backgroundColor: "white",
+          height: 40,
+          paddingHorizontal: 16,
+          flexGrow: 1,
+          marginBottom: 5,
+          shadowColor: "#7F5DF0",
+          shadowOffset: {
+            width: 0,
+            height: 10,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.5,
+          elevation: 5,
+        }}
+      >
+        <Image
+          source={require("../assets/search2.png")}
+          style={{
+            width: 22,
+            height: 22,
+            resizeMode: "contain",
+          }}
+        />
+        <TextInput
+          placeholder='Find Friends'
+          onChangeText={(value) => {
+            setSearchValue(value), search(value);
+          }}
+          style={{
+            paddingHorizontal: 16,
+            color: "black",
+            fontWeight: "600",
+            flexGrow: 1,
+          }}
+        />
+        <TouchableOpacity
+          style={{ right: 10 }}
+          onPress={() => navigation.goBack()}
+        ></TouchableOpacity>
+      </View>
+
+      <View style={{ marginTop: 20 }}>
+        {allFriends.map((item) => (
+          <TouchableOpacity
+            key={item.userid}
+            onPress={() => {
+              toggleFriendModal();
+              setSelectedFriend(item); 
+
             }}
             style={{
               paddingHorizontal: 16,
@@ -311,8 +361,8 @@ const FriendsList = ({ navigation }) => {
                 <TouchableOpacity>
                   <Image
                     source={
-                      item.imageUrl
-                        ? { uri: item.imageUrl }
+                      item.profilepic
+                        ? { uri: item.profilepic }
                         : require("../assets/defaultprofileicon.webp")
                     }
                     style={{
