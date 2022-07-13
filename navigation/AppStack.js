@@ -15,6 +15,7 @@ import AddFriends from "../src/AddFriends";
 import FriendsList from "../src/FriendsList";
 import AddChat from "../src/Messages-Chat/AddChat";
 import SingleProfile from "../src/SingleProfile";
+import ProfilePageNotYou from "../src/ProfilePageNotYou";
 
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -121,6 +122,12 @@ const MessagesStack = ({ navigation }) => (
       component={SingleProfile}
       options={{ header: () => null }}
     />
+
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -143,7 +150,7 @@ const TasksStack = ({ navigation }) => (
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='AddFriendsTasks'
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
@@ -160,6 +167,11 @@ const TasksStack = ({ navigation }) => (
     <Stack.Screen
       name='SingleProfile'
       component={SingleProfile}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -186,7 +198,7 @@ const AddTaskStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='AddFriendsAdd'
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
@@ -203,6 +215,11 @@ const AddTaskStack = ({ navigation }) => (
     <Stack.Screen
       name='SingleProfile'
       component={SingleProfile}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -229,7 +246,7 @@ const ListStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='AddFriendsList'
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
@@ -246,6 +263,11 @@ const ListStack = ({ navigation }) => (
     <Stack.Screen
       name='SingleProfile'
       component={SingleProfile}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -271,7 +293,7 @@ const ExploreStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='AddFriendsExplore'
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
@@ -288,6 +310,11 @@ const ExploreStack = ({ navigation }) => (
     <Stack.Screen
       name='SingleProfile'
       component={SingleProfile}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -323,7 +350,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "Search" ||
       currentRoute === "ProfileTasks" ||
-      currentRoute === "AddFriendsTasks" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -346,7 +373,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "SearchAdd" ||
       currentRoute === "ProfileAdd" ||
-      currentRoute === "AddFriendsAdd" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -369,7 +396,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "SearchList" ||
       currentRoute === "ProfileList" ||
-      currentRoute === "AddFriendsList" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -392,7 +419,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "SearchExplore" ||
       currentRoute === "ProfileExplore" ||
-      currentRoute === "AddFriendsExplore" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -431,7 +458,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "Search" ||
       currentRoute === "ProfileTasks" ||
-      currentRoute === "AddFriendsTasks" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -446,7 +473,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "SearchAdd" ||
       currentRoute === "ProfileAdd" ||
-      currentRoute === "AddFriendsAdd" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -461,7 +488,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "SearchList" ||
       currentRoute === "ProfileList" ||
-      currentRoute === "AddFriendsList" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -476,7 +503,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "SearchExplore" ||
       currentRoute === "ProfileExplore" ||
-      currentRoute === "AddFriendsExplore" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -555,7 +582,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("AddFriendsExplore")}
+                onPress={() => navigation.navigate("AddFriends")}
               >
                 <Image
                   source={require("../assets/addperson.png")}
@@ -666,7 +693,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("AddFriendsTasks")}
+                onPress={() => navigation.navigate("AddFriends")}
               >
                 <Image
                   source={require("../assets/addperson.png")}
@@ -777,7 +804,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("AddFriendsAdd")}
+                onPress={() => navigation.navigate("AddFriends")}
               >
                 <Image
                   source={require("../assets/addperson.png")}
@@ -887,7 +914,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("AddFriendsList")}
+                onPress={() => navigation.navigate("AddFriends")}
               >
                 <Image
                   source={require("../assets/addperson.png")}

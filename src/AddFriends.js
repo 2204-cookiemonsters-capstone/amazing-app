@@ -318,7 +318,6 @@ const AddFriends = ({ navigation }) => {
             marginBottom: 5,
           }}
         >
-
           <Image
             source={require("../assets/search2.png")}
             style={{
@@ -356,19 +355,55 @@ const AddFriends = ({ navigation }) => {
               <View>
                 {renderedIncomingFriends.map((item) => (
                   <TouchableOpacity
+                    key={item.userid}
                     style={{
-                      marginLeft: 25,
-                      borderLeftWidth: 1,
-                      borderRightWidth: 1,
-                      borderBottomWidth: 1,
-                      borderTopWidth: 1,
-                      marginRight: 25,
+                      marginLeft: 15,
+                      marginRight: 15,
+                      paddingTop: 7,
+                      paddingBottom: 0,
                       borderColor: "#cccccc",
                       display: "flex",
                       flexDirection: "row",
                       paddingLeft: 10,
                       paddingRight: 15,
-
+                      borderTopLeftRadius:
+                        item === renderedIncomingFriends[0] ? 8 : 0,
+                      borderTopRightRadius:
+                        item === renderedIncomingFriends[0] ? 8 : 0,
+                      borderBottomRightRadius:
+                        item ===
+                        renderedIncomingFriends[
+                          renderedIncomingFriends.length - 1
+                        ]
+                          ? 8
+                          : 0,
+                      borderBottomLeftRadius:
+                        item ===
+                        renderedIncomingFriends[
+                          renderedIncomingFriends.length - 1
+                        ]
+                          ? 8
+                          : 0,
+                      backgroundColor: "white",
+                      marginBottom: 1,
+                      shadowColor: "#7F5DF0",
+                      shadowOffset: {
+                        width: 0,
+                        height: 10,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.5,
+                      elevation: 5,
+                    }}
+                    onPress={() => {
+                      console.log(item.name);
+                      navigation.navigate("ProfilePageNotYou", {
+                        userid: item.userid,
+                        name: item.name,
+                        score: item.score,
+                        username: item.username,
+                        from: "AddFriends",
+                      });
                     }}
                   >
                     <TouchableOpacity>
@@ -378,32 +413,37 @@ const AddFriends = ({ navigation }) => {
                           width: 50,
                           height: 50,
                           borderRadius: 25,
-                          margin: 10,
+                          marginTop: 10,
+                          marginBottom: 10,
+                          marginRight: 5,
                         }}
                       />
                     </TouchableOpacity>
-                    <View style={{ display: "flex", flexDirection: "column" }}>
-                      <Text>{item.name}</Text>
-                      <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
-                    </View>
-
                     <View
-
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "42%",
+                      }}
+                    >
+                      <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                        {item.name}
+                      </Text>
+                      <Text style={{ color: "gray" }}>{item.username}</Text>
+                    </View>
+                    <View
                       style={{
                         alignItems: "center",
                         justifyContent: "center",
-                        marginLeft: 30,
+                        marginLeft: 25,
                       }}
                     >
                       <TouchableOpacity
                         style={{
                           backgroundColor: "#CBC3E3",
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                          borderBottomRightRadius: 10,
+                          borderRadius: 25,
                           height: 30,
+                          width: 95,
                           justifyContent: "center",
                           alignItems: "center",
                           display: "flex",
@@ -411,17 +451,23 @@ const AddFriends = ({ navigation }) => {
                         }}
                         onPress={() => handleAcceptFriendship(item.userid)}
                       >
-                        <View style={{ marginLeft: 13, marginRight: 8 }}>
+                        <View
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "center",
+                            display: "flex",
+                            flexDirection: "row",
+                          }}
+                        >
                           <Image
-                            source={require("../assets/ADDFRIEND2.png")}
-                            style={{ width: 15, height: 15 }}
+                            source={require("../assets/friendaccept.png")}
+                            style={{ width: 15, height: 15, marginRight: 5 }}
                           />
+                          <Text>Accept</Text>
                         </View>
-                        <Text style={{ marginRight: 14 }}>Accept</Text>
                       </TouchableOpacity>
                     </View>
                   </TouchableOpacity>
-
                 ))}
               </View>
             </View>
@@ -449,7 +495,7 @@ const AddFriends = ({ navigation }) => {
                   style={{ color: "darkgray" }}
                   onPress={() => navigation.navigate("FriendsList")}
                 >
-                  My Friends 
+                  My Friends
                 </Text>
               </View>
             )}
@@ -463,11 +509,9 @@ const AddFriends = ({ navigation }) => {
             >
               {showAllQuickAdd
                 ? renderedAllFriends.map((item) => (
-
                     <TouchableOpacity
                       key={item.userid}
                       style={{
-
                         marginLeft: 15,
                         marginRight: 15,
                         paddingTop: 7,
@@ -489,12 +533,19 @@ const AddFriends = ({ navigation }) => {
                         shadowOpacity: 0.25,
                         shadowRadius: 3.5,
                         elevation: 5,
-
+                      }}
+                      onPress={() => {
+                        console.log(item.name);
+                        navigation.navigate("ProfilePageNotYou", {
+                          userid: item.userid,
+                          name: item.name,
+                          score: item.score,
+                          username: item.username,
+                          from: "AddFriends",
+                        });
                       }}
                     >
-
                       <TouchableOpacity>
-
                         <Image
                           source={image}
                           style={{
@@ -556,14 +607,11 @@ const AddFriends = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                     </TouchableOpacity>
-
                   ))
                 : firstThreeUsers.map((item) => (
-
                     <TouchableOpacity
                       key={item.userid}
                       style={{
-
                         marginLeft: 15,
                         marginRight: 15,
                         paddingTop: 7,
@@ -585,7 +633,16 @@ const AddFriends = ({ navigation }) => {
                         shadowOpacity: 0.25,
                         shadowRadius: 3.5,
                         elevation: 5,
-
+                      }}
+                      onPress={() => {
+                        console.log(item.name);
+                        navigation.navigate("ProfilePageNotYou", {
+                          userid: item.userid,
+                          name: item.name,
+                          score: item.score,
+                          username: item.username,
+                          from: "AddFriends",
+                        });
                       }}
                     >
                       <TouchableOpacity>
@@ -612,7 +669,7 @@ const AddFriends = ({ navigation }) => {
                           {item.name}
                         </Text>
                         <Text style={{ color: "gray" }}>{item.username}</Text>
-                        <Text>3 Mutual Friends</Text>
+                        {/* <Text>3 Mutual Friends</Text> */}
                       </View>
                       <View
                         style={{
@@ -686,7 +743,6 @@ const AddFriends = ({ navigation }) => {
               ) : searchValue === "" && !showAllQuickAdd ? (
                 <TouchableOpacity
                   style={{
-
                     marginLeft: 15,
                     marginRight: 15,
                     paddingTop: 7,
@@ -714,7 +770,6 @@ const AddFriends = ({ navigation }) => {
                   }}
                   onPress={() => setShowAllQuickAdd(true)}
                 >
-
                   <Text>View More</Text>
                 </TouchableOpacity>
               ) : null}
@@ -727,5 +782,3 @@ const AddFriends = ({ navigation }) => {
 };
 
 export default AddFriends;
-
-
