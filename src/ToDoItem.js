@@ -5,8 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Swipeable } from "react-native-gesture-handler";
 
 const ToDoItem = ({ todo, index, toggleTodoCompleted, deleteTodo }) => {
-  const [liked, setLiked] = useState(false);
-
+  //Functions for the swipe to delete a list item
   const rightActions = (dragX, index) => {
     const scale = dragX.interpolate({
       inputRange: [-100, 0],

@@ -11,14 +11,15 @@ import {
   Image,
   Modal
 } from "react-native";
-import {ActivityIndicator} from 'react-native-paper';
+import {ActivityIndicator, Avatar} from 'react-native-paper';
 import { firestore } from "../firebase";
 import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import FriendToDoList from "./FriendToDoList";
-import { todoListStyle, color } from "../styles";
+import { todoListStyle, color, friendModal } from "../styles";
 
 const FriendModal = ({ user, closeModal }) => {
+  const userid = user.userid;
   const [lists, setLists] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +29,7 @@ const FriendModal = ({ user, closeModal }) => {
 
   let getLists = async () => {
     const snapShot = await getDocs(
-      collection(firestore, "users", user, "Todo Lists")
+      collection(firestore, "users", userid, "Todo Lists")
     );
     console.log("FETCHED FRIEND'S TODO LISTS FROM FIRESTORE");
     let todos = [];
@@ -50,14 +51,14 @@ const FriendModal = ({ user, closeModal }) => {
   }
 
   const renderSingleList = (list) => {
-    return <FriendToDoList list={list} updateList={updateList} />;
+    return <FriendToDoList list={list} user={user} updateList={updateList} />;
   };
 
   const updateList = (list) => {
     const todoRef = doc(
       firestore,
       "users",
-      user,
+      userid,
       "Todo Lists",
       list.id
     );
@@ -76,18 +77,29 @@ const FriendModal = ({ user, closeModal }) => {
           <AntDesign name="close" size={24} color="black" />
         </TouchableOpacity>
         <ScrollView>
-          <Text>{user}</Text>
-
-          <View style={todoListStyle.container}>
+          <View style={{
+            alignItems: 'center',
+            marginTop: 80,
+            marginBottom: 40
+          }}>
+            <Avatar.Text size={100} label={user.name.charAt(0)} style={friendModal.avatar}>{user.name}</Avatar.Text>
+            <Text style={friendModal.title}>{user.name}</Text>
+            <Text style={friendModal.userName}>{user.username}</Text>
+            <View style={friendModal.score}>
+              <AntDesign name='aliwangwang-o1' size={15}/>
+              <Text style={{fontSize: 20, marginLeft: 5}}>{user.score}</Text>
+            </View>
+          </View>
+          <View style={friendModal.container}>
             <View style={{ flexDirection: "row" }}>
-              <View style={todoListStyle.divider} />
-              <Text style={todoListStyle.title}>
+              <View style={friendModal.divider} />
+              <Text style={friendModal.title}>
                 Todo{" "}
                 <Text style={{ fontWeight: "300", color: color.list.blue }}>
                   Lists
                 </Text>
               </Text>
-              <View style={todoListStyle.divider} />
+              <View style={friendModal.divider} />
             </View>
             <View style={{ height: 275, paddingLeft: 32 }}>
               <FlatList

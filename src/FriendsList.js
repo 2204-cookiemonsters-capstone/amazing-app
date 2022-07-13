@@ -194,7 +194,7 @@ const FriendsList = ({ navigation }) => {
             key={item.userid}
             onPress={() => {
               toggleFriendModal();
-              setSelectedFriend(item.userid);
+              setSelectedFriend(item); //<--------------------------------------------------------
             }}
             style={{
               marginLeft: 15,
