@@ -1,14 +1,10 @@
-import { CurrentRenderContext } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import {
   Text,
-  TextInput,
   View,
   StyleSheet,
   ScrollView,
-  Image,
-  ImageBackground,
-  Linking
+
 } from 'react-native';
 import {
   TouchableOpacity,
@@ -17,20 +13,22 @@ import {
 import { auth, firestore } from '../firebase';
 import {
   collection,
-  getDocs,
-  addDoc,
-  query,
   onSnapshot,
   doc,
   getDoc,
   setDoc,
 } from 'firebase/firestore';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { PanGestureHandler, TapGesture,  } from 'react-native-gesture-handler';
+
 import {featuredPostsData} from './assets/featuredPostsData'
-import {profileImagesArray, profileImages} from './assets/profileImages'
+import TaskIcons from './TaskIcons';
+import TaskDashboard from './TaskDashboard'
+import TaskAbout from './TaskAbout';
+import TaskSubmit from './TaskSubmit';
+import TaskEdit from './TaskEdit'
+import TaskFriendsPosts from './TaskFriendsPosts';
+import TaskPosts from './TaskPosts'
+import TaskFeatured from './TaskFeatured';
+import TaskFeaturedPostStack from './TaskFeaturedPostStack';
 
 const Tasks = (props) => {
   const [allUserTasks, setAllUserTasks] = useState([]);
@@ -257,179 +255,15 @@ async function fetchFriendsPosts(id){
       <View style={styles.container}>
         {/* top icon bar */}
         {view === 'postStack' ? null : 
-        <View style={styles.topOptions}>
-       
-       <TouchableWithoutFeedback onPress={() => handleView('featured')}>
-          <Text style={styles.subheading} >
-            {view === 'featured' ? 
-          <FontAwesome name="star-o" size={24} color="black"/> :
-          <FontAwesome name="star-o" size={24} color="gray"/> }
-          </Text>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback onPress={() => handleView('tasks')}>
-          <Text style={[styles.subheading, styles.fontWeight700]} >
-         {view === 'tasks' ?
-         <AntDesign name="dashboard" size={24} color="black"/> :
-         <AntDesign name="dashboard" size={24} color="gray"/> }
-          </Text>
-          </TouchableWithoutFeedback>
-
-          <TouchableWithoutFeedback onPress={() => handleView('posts')}>
-          <Text style={styles.subheading}>
-            {view === 'posts' ? <FontAwesome name="photo" size={24} color="black"/> :
-          <FontAwesome name="photo" size={24} color="gray"/>}
-          </Text>
-          </TouchableWithoutFeedback>
-        
-       
-        </View>}
+        <TaskIcons view={view} handleView={handleView}/>
+        }
 
         {/* your tasks section */}
         {view === 'tasks' ? (
 <View>
            
     {/* your dashboard */}
-    <Text style={[styles.center, styles.fontWeight700, styles.subheading]}>Your {allUserTasks && allUserTasks[0] ? allUserTasks[0].month : null} Dashboard</Text>
-
-    <View style={styles.dashboardContainer}>
-
-      <View style={styles.userDashboard}>         
-<View style={styles.dashboardRowTop}>
-  <View style={styles.dashboardSetYourGoal}>
-        <View >
-            <Text style={[styles.goalNum, styles.center, styles.fontWeight700]}>
-              Set Your Goal</Text>
-
-              <Text style={[styles.center, styles.white]}>
-              <Text onPress={() => handleGoalNum(7)}> 7 </Text>
-              <Text onPress={() => handleGoalNum(14)}> 14 </Text>
-              <Text onPress={() => handleGoalNum(21)}> 21 </Text>
-              <Text onPress={() => handleGoalNum(28)}> 28 </Text>
-            </Text>
-            </View>
-        </View>
-        <View style={styles.dashboardPipe}>
-        <Text> </Text>
-        </View>
-        <View style={styles.dashboardCompleted}>
-          <View>
-          <Text style={[styles.fontWeight700, styles.white]}>Completed</Text>
-          </View>
-          <View style={styles.dashboardCompletedContainer}>
-              <Text style={styles.dashboardCompletedCount}>{completed ? completed.length : null}</Text>
-              <Text style={[styles.padding10, styles.white]}>/ {goalNum}</Text>
-          </View>
-          {completed.length >= goalNum ? <Text style={styles.white}>goal reached!</Text> : null}
-          </View>
-      </View>
-
-      <View style={styles.dashboardRowBottom}>
-        
-      <View style={styles.center}>
-        <Text style={[styles.center, styles.padding10, styles.fontWeight700, styles.white]}>Your Strengths</Text>
-
-        {completed.length ? null : <Text style={styles.white}>complete tasks to see your strengths</Text>}
-
-<View style={[styles.strengthsIconContainer, styles.padding10]}>
-
-{strengthsCount.community ? 
-  <View style={styles.strengthIconRow}>
-<FontAwesome name="users" size={20} color="white"/>
-<Text style={styles.strengths}>community x {strengthsCount.community}</Text>
-  </View> : null}
-
-  {strengthsCount.creativity ? 
-    <View style={styles.strengthIconRow}>
-<FontAwesome name="lightbulb-o" size={20} color="white"/>
-<Text style={styles.strengths}>creativity x {strengthsCount.creativity}</Text>
-  </View> : null}
-
-  {strengthsCount.kindness ? 
-<View style={styles.strengthIconRow}>
-<FontAwesome name="heart" size={20} color="white"/>
-<Text style={styles.strengths}>kindness x {strengthsCount.kindness}</Text>
-  </View> : null}
-
-  {strengthsCount.meditation ? 
-    <View style={styles.strengthIconRow}>
-<FontAwesome name="gear" size={20} color="white"/> 
-<Text style={styles.strengths}>meditation x {strengthsCount.meditation}</Text>
-  </View> : null}
-
-  {strengthsCount.movement ? 
-    <View style={styles.strengthIconRow}>
-<MaterialCommunityIcons name="yoga" size={20} color="white"/>
-<Text style={styles.strengths}>movement x {strengthsCount.movement} </Text>
-  </View> : null}
-
-  {strengthsCount.nature ? 
-    <View style={styles.strengthIconRow}>
- <FontAwesome name="tree" size={20} color="white"/>
- <Text style={styles.strengths}>nature x {strengthsCount.nature}</Text>
- </View> : null}
-
-  {strengthsCount.reflection ? 
-<View style={styles.strengthIconRow}>
-<FontAwesome name="book" size={20} color="white"/>
-<Text style={styles.strengths}>reflection x {strengthsCount.reflection} </Text>
-  </View> : null}
-
-        </View>
-        </View>
-        </View>
-        </View>
-        </View>
-         
-
-    {/* remaining tasks */}
-
-            <Text style={[styles.subheading, styles.fontWeight700]}>Remaining Tasks for {allUserTasks && allUserTasks[0] ? allUserTasks[0].month : null}</Text>
-           
-            <ScrollView horizontal= {true}decelerationRate={0}
-            snapToInterval={310} //your element width
-            snapToAlignment={"center"}>
-            {!allUserTasks ? null : allUserTasks.map((item) => {
-            return (
-              item.completed !== true ? (
-                
-                <View style={[styles.uncompletedContainer, {backgroundColor: getBackgroundColor(item.category)}
-                ]} key={item.taskId}>
-                  <Text
-                    style={styles.taskTitle}
-                  >
-                    {item.title}
-                    
-                  </Text>
-                  <View style={styles.taskIconContainer}>
-                  {item.category === "meditation" ? <FontAwesome name="gear" size={42} color="white"/> : null}
-                  {item.category === "movement" ? <MaterialCommunityIcons name="yoga" size={42} color="white"/> : null}
-                  {item.category === "nature" ? <FontAwesome name="tree" size={42} color="white"/> : null}
-                  {item.category === "creativity" ? <FontAwesome name="lightbulb-o" size={42} color="white"/> : null}
-                  {item.category === "reflection" ? <FontAwesome name="book" size={42} color="white"/> : null}
-                  {item.category === "community" ? <FontAwesome name="users" size={42} color="white"/> : null}
-                  {item.category === "kindness" ? <FontAwesome name="heart" size={42} color="white"/> : null}
-                  </View>
-                <Text style={styles.taskIcon}></Text>
-                    <View>
-                      <Text style={styles.taskDescription}>
-                        {item.description}
-                      </Text>
-                      <View style={styles.goToSubmitContainer}>
-                        <Text
-                          style={styles.goToSubmit}
-                          onPress={() => handleView('submit', item)}
-                        >
-                          submit your post
-                        </Text>
-                        
-                      </View>
-                    </View>
-                  
-                </View>
-              ) : null
-              )})}
-              </ScrollView>
+   <TaskDashboard handleGoalNum={handleGoalNum} goalNum={goalNum} getBackgroundColor={getBackgroundColor} handleView={handleView} view={view} allUserTasks={allUserTasks} completed={completed} strengthsCount={strengthsCount}/>
 
             <Text style={[styles.about, styles.center]} onPress={() => handleView('about')}>
                 about
@@ -437,374 +271,41 @@ async function fetchFriendsPosts(id){
           </View>
         ) : null}
 
-        {/* about tasks view */}
+        {/* about view */}
         {view === 'about' ? (
-          <ScrollView>
-            <View>
-              <Text style={styles.subheading}>the 28 tasks challenge</Text>
-            
-              <Text style={[styles.subheading, styles.fontWeight700]}>what</Text>
-              <Text style={styles.aboutParagraph}>
-                Every month, we share a list of 28 tasks for all users to achieve. These tasks are intended to inspire our users to spend time in nature, connecting with their communities, and practicing activities proven by research to promote wellbeing and increase happiness.
-              </Text>
-              <Text style={[styles.subheading, styles.fontWeight700]}>why</Text>
-              <Text style={styles.aboutParagraph}>
-                
-                Lots of social media wants to users to stay on their devices-- endlessly scrolling, shopping, and making comparisons. Our tasks are all intended
-                to motivate our users to find balance and practice activities known to make life a little more enjoyable and meaningful.
-              </Text>
-              <Text style={[styles.subheading, styles.fontWeight700]}>how</Text>
-              <Text style={styles.aboutParagraph}>
-                All you have to do is choose a task and begin. If 28 tasks is
-                beyond your current grasp, you can adjust your monthly goal to 7, 14, or 21
-                tasks. To complete a task, simply click on that task and submit a short reflection on the activity.
-              </Text>
-            </View>
-          </ScrollView>
+          <TaskAbout />
         ) : null}
 
         {/* submit a post section */}
         {view === 'submit' ? (
         
-        <View style={styles.submitHeading}> 
-            <Text style={[styles.subheading, styles.fontWeight700]}>{currentTask.title}</Text>
-            <Text style={{padding: 20}}>{currentTask.description}</Text>
-          <Text style={[styles.center,{color:"lightgray"}]}>default image</Text>
-          <View style={{flexDirection: "row", justifyContent: "center", marginTop:10}}>
-            <Image style={{ width: 200, height: 200, marginTop: 2, marginRight: 1,}} source={{uri: currentTask.defaultImgUrl}} />
-           </View>
-
-           <View style={[styles.center, {alignItems: "center", paddingTop: 20}]}>
-           <Text style={[styles.center,{color:"lightgray", paddingBottom: 10}]}>or</Text>
-            <TouchableWithoutFeedback style={{justifyContent: "center", alignItems: "center", flexDirection: "column", width: 200, height: 200, margin: 1, marginTop: 2, borderWidth: 2, borderColor: "lightgray"}}>
-            <FontAwesome name="camera-retro" size={84} color="lightgray"/>
-            <Text style={{color: "lightgray"}}>add an image</Text>
-            </TouchableWithoutFeedback>
-            </View>
-
-          
-            
-            
-            <View>
-
-          <View style={styles.inputReflection}>
-            <TextInput
-              style={styles.addReflection}
-              placeholder='add a reflection'
-              multiline={true}
-              textAlign={'left'}
-              maxLength={1000}
-              onChangeText={(newText) => setReflection(newText)}
-              defaultValue={reflection}
-            />
-            </View>
-            </View>
-
-            <View style={styles.visibility}>
-            <FontAwesome name="eye" size={16} color="black" />
-            <Text style={{paddingLeft: 10}}>Who can see this post?</Text>
-            </View>
-            
-            {visibility === "private" ?
-                        <View style={styles.visibilityOptions}>
-            <Text style={{paddingLeft: 10, paddingRight: 10, fontWeight: "700"}} onPress={()=> setVisibility("private")}>only me</Text>
-            <Text style={{paddingLeft: 10, paddingRight: 10}} onPress={()=> setVisibility("friends")}>friends</Text>
-            </View>
-            : null}
-
-            {visibility === "friends" ?
-                        <View style={styles.visibilityOptions}>
-            <Text style={{paddingLeft: 10, paddingRight: 10}} onPress={()=> setVisibility("private")}>only me</Text>
-            <Text style={{paddingLeft: 10, paddingRight: 10, fontWeight: "700"}} onPress={()=> setVisibility("friends")}>friends</Text>
-            </View>
-            : null}
-           
-            <Text
-              style={styles.submitCompletedTask}
-              onPress={() => handleSubmit(currentTask.taskId)}
-            >
-              submit completed task
-            </Text>
-          </View>
+        <TaskSubmit handleSubmit={handleSubmit} setReflection={setReflection} reflection={reflection} setVisibility={setVisibility} visibility={visibility} currentTask={currentTask} />
         ) : null}
 
           {view === 'submitEdit' ? (
+        <TaskEdit handleSubmit={handleSubmit} setReflection={setReflection} reflection={reflection} setVisibility={setVisibility} visibility={visibility} currentTask={currentTask} />
         
-        <View style={styles.submitHeading}> 
-            <Text style={[styles.subheading, styles.fontWeight700]}>{currentTask.title}</Text>
-            <Text style={{padding: 20}}>{currentTask.description}</Text>
-
-          
-            
-            <View>
-          <Text style={[styles.center, styles.padding10, styles.fontWeight700]}>Previous reflection</Text>
-
-          <Text style={{padding: 20}}>{currentTask.reflection}</Text>
-          
-          <View style={styles.inputReflection}>
-            <TextInput
-              style={styles.addReflection}
-              placeholder={"Updated reflection..."}
-              multiline={true}
-              textAlign={'left'}
-              maxLength={1000}
-              onChangeText={(newText) => setReflection(newText)}
-              defaultValue={reflection}
-            />
-            </View>
-            </View>
-
-            <View style={styles.visibility}>
-            <FontAwesome name="eye" size={16} color="black" />
-            <Text style={{paddingLeft: 10}}>Who can see this post?</Text>
-            </View>
-            
-            {visibility === "private" ?
-                        <View style={styles.visibilityOptions}>
-            <Text style={{paddingLeft: 10, paddingRight: 10, fontWeight: "700"}} onPress={()=> setVisibility("private")}>only me</Text>
-            <Text style={{paddingLeft: 10, paddingRight: 10}} onPress={()=> setVisibility("friends")}>friends</Text>
-            </View>
-            : null}
-
-            {visibility === "friends" ?
-                        <View style={styles.visibilityOptions}>
-            <Text style={{paddingLeft: 10, paddingRight: 10}} onPress={()=> setVisibility("private")}>only me</Text>
-            <Text style={{paddingLeft: 10, paddingRight: 10, fontWeight: "700"}} onPress={()=> setVisibility("friends")}>friends</Text>
-            </View>
-            : null}
-
-
-
-            <Text
-              style={styles.submitCompletedTask}
-              onPress={() => handleSubmit(currentTask.taskId)}
-            >
-              submit
-            </Text>
-          </View>
         ) : null}
 
         {/* users posts section */}
         {view === 'posts' ? (
-          <View>
-            <Text style={[styles.subheading, styles.fontWeight700]}>Your Post History</Text>
-            {allUserTasks.map((item) => {
-
-
-              return item.completed == true ? (
-                <View style={styles.postContainer} key={item.taskId}>
-                  <Image
-                    style={{ width: 'auto', height: 400 }}
-                    source={item.defaultImgUrl ? { uri: item.defaultImgUrl } : null}
-                  />
-                  <View style={styles.postTitleEditContainer}>
-                    <View style={{paddingBottom: 10}}>
-                  <Text style={styles.postTag}>{item.title}</Text>
-                 <View style={{paddingBottom: 10}}>
-                  {getTimeDifference(item.completedTime) < 60 ? (
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#666",
-                            marginRight: 30,
-                          }}
-                        >
-                          {getTimeDifference(item.completedTime)} minutes ago
-                        </Text>
-                      ) : getTimeDifference(item.completedTime) >= 60 &&
-                        getTimeDifference(item.completedTime) < 1440 ? (
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#666",
-                            marginRight: 30,
-                          }}
-                        >
-                          {" "}
-                          {Math.floor(
-                            getTimeDifference(item.completedTime) / 60
-                          )}{" "}
-                           {Math.floor(
-                            getTimeDifference(item.completedTime) / 60
-                          ) === 1
-                            ? "hour ago"
-                            : "hours ago"}
-                        </Text>
-                      ) : (
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#666",
-                            marginRight: 30,
-                          }}
-                        >
-                          {Math.floor(getTimeDifference(item.completedTime) / 1440)}{" "}
-                          {Math.floor(
-                            getTimeDifference(item.completedTime) / 1440
-                          ) === 1
-                            ? "day ago"
-                            : "days ago"}
-                        </Text>
-                      )}
-                      </View>
-                      
-                      <View style={{flexDirection: "row", justifyContent: "flex-start"}}>
-                      <FontAwesome name="eye" size={12} color="gray"  />
-                      <Text style={[{paddingLeft: 5, color: "gray"}]}>{item.visibility}</Text>
-                      </View>
-              </View>
-                  <View style={styles.postEditDeleteContainer}>
-                    <TouchableWithoutFeedback onPress={() => handleView('submitEdit', item)}>
-                  <FontAwesome name="pencil" size={16} color="black" style={styles.postEdit}/>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={()=>handleDelete(item.taskId)}>
-                  <FontAwesome name="trash" size={16} color="black" style={styles.postEdit}/>
-                  </TouchableWithoutFeedback>
-                  </View>
-
-                  </View>
-                  <Text style={styles.reflection}>
-                    {item.reflection}
-                  </Text>
-                   
-              
-                </View>
-              ) : null;
-            })}
-          </View>
+         <TaskPosts handleView={handleView} handleDelete={handleDelete} view={view} getTimeDifference={getTimeDifference} allUserTasks={allUserTasks}/>
         ) : null}
 
          {/* users posts section */}
          {view === 'friendsPosts' ? (
-          <View>
-            <Text style={[styles.subheading, styles.fontWeight700]}>{currentFriendUsername}'s Posts</Text>
-           
-            {friendsPosts.map((item) => {
-              return item.completed == true && item.visibility == "friends"? (
-                <View style={styles.postContainer} key={item.taskId}>
-                  <Image
-                    style={{ width: 'auto', height: 400 }}
-                    source={item.defaultImgUrl ? { uri: item.defaultImgUrl } : null}
-                  />
-                  <View style={styles.friendsPostTitleCommentContainer}>
-                  <Text style={[styles.postTag]}>{item.title}</Text>
-                  <MaterialCommunityIcons name="chat-outline" size={16} color="black" style={styles.postEdit}/>
-
-                  </View>
-                  <Text style={styles.reflection}>
-                    {item.reflection}
-                  </Text>
-                   
-                </View>
-              ) : null;
-            })}
-            <Text style={[styles.center, styles.padding10]}>no more posts to display</Text>
-          </View>
+          <TaskFriendsPosts currentFriendUsername={currentFriendUsername} friendsPosts={friendsPosts}/>
         ) : null}
 
         {/* following section */}
         {view === 'featured' ? (
-          <View style={styles.featuredContainer}>
-             <View style={styles.followingSectionContainer}>
-              <Text style={[styles.subheading, styles.fontWeight700]}>Following</Text>
-              
-      {allFriends.length ? 
-        <ScrollView horizontal={true}>
-        <View style={styles.followingItemsContainer}>
-        {allFriends.map((item)=> 
-
-         <TouchableWithoutFeedback onPress={() => handleDisplayFollowing(item.userid, item.username)} key={item.userid}>
-          <Image source={{uri: profileImagesArray[19]["url"]}} style={styles.followingItem}/>
-          <Text style={[styles.followingItemUsername, styles.center]}>{item.username.slice(0,10)}</Text>
-       </TouchableWithoutFeedback>
-        )
-      }
-      </View>
-     </ScrollView> : <Text style={[styles.center, styles.padding10]}>no friend posts to display</Text>}
-     
-    </View>
-
-      {/* featured section */}
-
-            <View style={styles.featuredSectionContainer}>
-              <Text style={[styles.subheading, styles.fontWeight700]}>Featured</Text>
-
-              <ScrollView>
-                <View style={styles.featuredItemsContainer}>
-                  {featuredPostsData ? (
-                    featuredPostsData.map((item) => (
-                      <View key={item.taskId}>
-                        <TouchableWithoutFeedback
-                          style={styles.featuredItemTouch}
-                          onPress={() => handleDisplayFeaturedPost(item.taskId)}
-                        >
-                          <Image
-                            style={styles.featuredItem}
-                            source={{ uri: item.defaultImgUrl }}
-                          />
-                        </TouchableWithoutFeedback>
-                      </View>
-                    ))
-                  ) : (
-                    <text>nothing to display</text>
-                  )}
-                </View>
-              </ScrollView>
-            </View>
-          </View>
+         <TaskFeatured handleDisplayFeaturedPost={handleDisplayFeaturedPost} handleDisplayFollowing={handleDisplayFollowing} allFriends={allFriends}/>
         ) : null}
 
-
+        {/* single featured posts section */}
         {view === 'postStack' ? (
-         
-          <View style={styles.displayPostContainer}>
-                     
-              <ImageBackground
-                style={styles.displayPostImage}
-                source={{ uri: displayPost.defaultImgUrl }}
-              />
-
-              <View style={styles.displayPostTitleContainer}>
-                <Text style={styles.displayPostTitle}>{displayPost.title}</Text>
-              </View>
-
-          <View style={styles.previousNext}>
-              <TouchableWithoutFeedback onPress={() => handlePrevious(displayPost.taskId)}>
-                 <Text style={styles.previous} >
-                 <FontAwesome name="chevron-left" size={18} color="rgba(255,255,255, .5)" /> 
-                 </Text>
-              </TouchableWithoutFeedback>  
-
-              <TouchableWithoutFeedback style={styles.showDisplayReflection} onPress={() => handleDisplayPostText()}>
-              <Text> </Text>
-              </TouchableWithoutFeedback>
-
-              <TouchableWithoutFeedback onPress={() => handleNext(displayPost.taskId)} >
-                 <Text style={styles.next}> 
-                 <FontAwesome name="chevron-right" size={18} color="rgba(255,255,255, .5)" />  </Text>
-              </TouchableWithoutFeedback>
-              </View>
-
-                
-                  {displayPostText % 2 === 1 ? 
-                   <View style={styles.displayPostTextContainer}>
-                  <Text style={styles.displayReflection} onPress={() => handleDisplayPostText()}>{displayPost.reflection}</Text> 
-                  </View> : null}
-
-                  {displayPostText % 2 === 0 ? 
-                   <View style={styles.displayPostLinkContainer}>
-                  <Text style={styles.displayReflectionLink} onPress={()=> Linking.openURL(displayPost.reflectionLink)}>
-                  <AntDesign name="paperclip" size={24} color="black" style={{paddingRight: 10}}/>
-                      {" " + displayPost.reflection2}</Text> 
-                  </View>
-                  : null}
-               
-              </View>
-            
-             
+         <TaskFeaturedPostStack displayPost={displayPost} displayPostText={displayPostText} handleNext={handleNext} handlePrevious={handlePrevious} handleDisplayPostText={handleDisplayPostText}/>
         ) : null}
-
-
       </View>
     </ScrollView>
   );

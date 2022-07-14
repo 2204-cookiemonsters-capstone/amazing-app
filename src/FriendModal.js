@@ -101,16 +101,24 @@ const FriendModal = ({ user, closeModal }) => {
               </Text>
               <View style={friendModal.divider} />
             </View>
-            <View style={{ height: 275, paddingLeft: 32 }}>
-              <FlatList
-                data={lists}
-                keyExtractor={(item) => item.id}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => renderSingleList(item)}
-                keyboardShouldPersistTaps="always"
-              />
-            </View>
+            {lists.length > 0 ? (
+              <View style={{ height: 275, paddingLeft: 30 }}>
+                <FlatList
+                  data={lists}
+                  keyExtractor={(item) => item.id}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({ item }) => renderSingleList(item)}
+                  keyboardShouldPersistTaps="always"
+                />
+              </View>
+            ) : (
+              (
+                <View>
+                  <Text style={{fontSize: 20, marginTop: 30}}>{user.name} has no lists</Text>
+                </View>
+              )
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>

@@ -278,30 +278,9 @@ const AddFriends = ({ navigation }) => {
             <AntDesign name='left' color='black' size={18} />
           </TouchableOpacity>
           <View style={{ flexGrow: 1 }} />
-          <Text style={{ fontWeight: "700", fontSize: 22 }}>Add Friends</Text>
+          <Text style={{ fontWeight: "700", fontSize: 22, marginRight: 32 }}>Add Friends</Text>
           <View style={{ flexGrow: 1 }} />
-          <TouchableOpacity
-            style={{
-              backgroundColor: "white",
-              borderRadius: 25,
-              height: 35,
-              width: 35,
-              alignItems: "center",
-              justifyContent: "center",
-              marginRight: 13,
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
-            }}
-            onPress={() => navigation.goBack()}
-          >
-            <Entypo name='dots-three-horizontal' color='black' size={18} />
-          </TouchableOpacity>
+         
         </View>
 
         <View
