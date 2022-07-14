@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  Modal,
 } from "react-native";
 import {
   collection,
@@ -21,6 +22,7 @@ import {
 import { auth, firestore, storage } from "../firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { ScrollView } from "react-native-gesture-handler";
+import FriendModal from "./FriendModal";
 
 const image = require("../assets/favicon.png");
 
@@ -32,6 +34,9 @@ const SearchPage = ({ navigation }) => {
 
   const [showAll, setShowAll] = useState(false);
   const [showAllSearch, setShowAllSearch] = useState(false);
+
+  const [selectedFriend, setSelectedFriend] = useState("");
+  const [showFriendModal, setShowFriendModal] = useState(false);
 
   const height = () => {
     return allUsers.length * 92 + 150;
@@ -48,7 +53,9 @@ const SearchPage = ({ navigation }) => {
       const users = [];
 
       snapShot.forEach((doc) => {
-        users.push(doc.data());
+        if (doc.data().userid !== auth.currentUser.uid) {
+          users.push(doc.data());
+        }
       });
 
       allUsers !== users ? setAllUsers(users) : null;
@@ -91,6 +98,10 @@ const SearchPage = ({ navigation }) => {
     );
 
     setRenderedUsers(filtered);
+  };
+
+  const toggleFriendModal = () => {
+    setShowFriendModal(!showFriendModal);
   };
 
   useEffect(() => {
@@ -205,14 +216,8 @@ const SearchPage = ({ navigation }) => {
                       elevation: 5,
                     }}
                     onPress={() => {
-                      console.log(item.name);
-                      navigation.navigate("ProfilePageNotYou", {
-                        userid: item.userid,
-                        name: item.name,
-                        score: item.score,
-                        username: item.username,
-                        from: "Search",
-                      });
+                      toggleFriendModal();
+                      setSelectedFriend(item);
                     }}
                   >
                     <TouchableOpacity>
@@ -307,14 +312,8 @@ const SearchPage = ({ navigation }) => {
                       elevation: 5,
                     }}
                     onPress={() => {
-                      console.log(item.name);
-                      navigation.navigate("ProfilePageNotYou", {
-                        userid: item.userid,
-                        name: item.name,
-                        score: item.score,
-                        username: item.username,
-                        from: "Search",
-                      });
+                      toggleFriendModal();
+                      setSelectedFriend(item);
                     }}
                   >
                     <TouchableOpacity>
@@ -485,14 +484,8 @@ const SearchPage = ({ navigation }) => {
                       elevation: 5,
                     }}
                     onPress={() => {
-                      console.log(item.name);
-                      navigation.navigate("ProfilePageNotYou", {
-                        userid: item.userid,
-                        name: item.name,
-                        score: item.score,
-                        username: item.username,
-                        from: "Search",
-                      });
+                      toggleFriendModal();
+                      setSelectedFriend(item);
                     }}
                   >
                     <TouchableOpacity>
@@ -587,14 +580,8 @@ const SearchPage = ({ navigation }) => {
                       elevation: 5,
                     }}
                     onPress={() => {
-                      console.log(item.name);
-                      navigation.navigate("ProfilePageNotYou", {
-                        userid: item.userid,
-                        name: item.name,
-                        score: item.score,
-                        username: item.username,
-                        from: "Search",
-                      });
+                      toggleFriendModal();
+                      setSelectedFriend(item);
                     }}
                   >
                     <TouchableOpacity>
@@ -728,6 +715,16 @@ const SearchPage = ({ navigation }) => {
           </View>
         ) : null}
       </ScrollView>
+      <Modal
+        animationType='slide'
+        visible={showFriendModal}
+        onRequestClose={() => toggleFriendModal()}
+      >
+        <FriendModal
+          user={selectedFriend}
+          closeModal={() => toggleFriendModal()}
+        />
+      </Modal>
     </View>
   );
 };

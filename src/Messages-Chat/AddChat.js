@@ -329,7 +329,11 @@ const AddChat = ({ navigation }) => {
                     >
                       <TouchableOpacity>
                         <Image
-                          source={image}
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../../assets/defaultprofileicon.webp")
+                          }
                           style={{
                             width: 50,
                             height: 50,
@@ -420,7 +424,11 @@ const AddChat = ({ navigation }) => {
                     >
                       <TouchableOpacity>
                         <Image
-                          source={image}
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../../assets/defaultprofileicon.webp")
+                          }
                           style={{
                             width: 50,
                             height: 50,
@@ -593,7 +601,11 @@ const AddChat = ({ navigation }) => {
                     >
                       <TouchableOpacity>
                         <Image
-                          source={image}
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../../assets/defaultprofileicon.webp")
+                          }
                           style={{
                             width: 50,
                             height: 50,
@@ -694,7 +706,11 @@ const AddChat = ({ navigation }) => {
                     >
                       <TouchableOpacity>
                         <Image
-                          source={image}
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../../assets/defaultprofileicon.webp")
+                          }
                           style={{
                             width: 50,
                             height: 50,

@@ -144,7 +144,14 @@ const Messages = (props) => {
               >
                 <View style={styles.userinfo}>
                   <View style={styles.userimage}>
-                    <Image source={image} style={styles.img} />
+                    <Image
+                      source={
+                        item.profilepic || item.profilepic !== undefined
+                          ? { uri: item.profilepic }
+                          : require("../../assets/defaultprofileicon.webp")
+                      }
+                      style={styles.img}
+                    />
                   </View>
                   <View style={styles.textView}>
                     <View style={styles.userinfotext}>
