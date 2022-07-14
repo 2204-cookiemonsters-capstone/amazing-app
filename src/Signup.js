@@ -13,7 +13,7 @@ import { setDoc, doc } from "firebase/firestore";
 import { Snackbar } from "react-native-paper";
 import { authStyle } from "../styles";
 import { userTasks } from "./assets/userTasksData";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -128,9 +128,9 @@ const Signup = ({ navigation }) => {
               <AntDesign name='left' size={20} color='lightgreen' />
             </TouchableOpacity>
             <View style={{ flexGrow: 1 }} />
-            <AntDesign
-              name='aliwangwang-o1'
-              size={70}
+            <Ionicons
+              name='ios-list-circle-outline'
+              size={100}
               style={{ marginRight: "50%", marginLeft: "25%" }}
             />
           </View>

@@ -26,13 +26,13 @@ const Tab = createBottomTabNavigator();
 const MessagesStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name='MessagesScreen'
+      name="MessagesScreen"
       component={Messages}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='ChatScreen'
+      name="ChatScreen"
       component={ChatScreen}
       options={({ route, navigation }) => ({
         title: route.params.username,
@@ -59,7 +59,7 @@ const MessagesStack = ({ navigation }) => (
             }}
             onPress={() => navigation.goBack()}
           >
-            <AntDesign name='left' color='black' size={18} />
+            <AntDesign name="left" color="black" size={18} />
           </TouchableOpacity>
         ),
         headerRight: () => (
@@ -83,48 +83,48 @@ const MessagesStack = ({ navigation }) => (
             }}
             onPress={() => navigation.navigate("SingleProfile")}
           >
-            <Entypo name='dots-three-horizontal' color='black' size={18} />
+            <Entypo name="dots-three-horizontal" color="black" size={18} />
           </TouchableOpacity>
         ),
       })}
     />
 
     <Stack.Screen
-      name='Search'
+      name="Search"
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='ProfileMessages'
+      name="ProfileMessages"
       component={Profile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='AddFriends'
+      name="AddFriends"
       component={AddFriends}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='FriendsList'
+      name="FriendsList"
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='AddChat'
+      name="AddChat"
       component={AddChat}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='SingleProfile'
+      name="SingleProfile"
       component={SingleProfile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='ProfilePageNotYou'
+      name="ProfilePageNotYou"
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -134,43 +134,43 @@ const MessagesStack = ({ navigation }) => (
 const TasksStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name='TasksScreen'
+      name="TasksScreen"
       component={Tasks}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='Search'
+      name="Search"
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='ProfileTasks'
+      name="ProfileTasks"
       component={Profile}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='AddFriends'
+      name="AddFriends"
       component={AddFriends}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='FriendsList'
+      name="FriendsList"
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='AddChat'
+      name="AddChat"
       component={AddChat}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='SingleProfile'
+      name="SingleProfile"
       component={SingleProfile}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='ProfilePageNotYou'
+      name="ProfilePageNotYou"
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -180,45 +180,45 @@ const TasksStack = ({ navigation }) => (
 const AddTaskStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name='AddTaskScreen'
+      name="AddTaskScreen"
       component={AddTask}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='Search'
+      name="Search"
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='ProfileAdd'
+      name="ProfileAdd"
       component={Profile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='AddFriends'
+      name="AddFriends"
       component={AddFriends}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='FriendsList'
+      name="FriendsList"
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='AddChat'
+      name="AddChat"
       component={AddChat}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='SingleProfile'
+      name="SingleProfile"
       component={SingleProfile}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='ProfilePageNotYou'
+      name="ProfilePageNotYou"
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -228,45 +228,45 @@ const AddTaskStack = ({ navigation }) => (
 const ListStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name='ListScreen'
+      name="ListScreen"
       component={List}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='Search'
+      name="Search"
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='ProfileList'
+      name="ProfileList"
       component={Profile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='AddFriends'
+      name="AddFriends"
       component={AddFriends}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='FriendsList'
+      name="FriendsList"
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='AddChat'
+      name="AddChat"
       component={AddChat}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='SingleProfile'
+      name="SingleProfile"
       component={SingleProfile}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='ProfilePageNotYou'
+      name="ProfilePageNotYou"
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -276,44 +276,44 @@ const ListStack = ({ navigation }) => (
 const ExploreStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name='ExploreScreen'
+      name="ExploreScreen"
       component={Explore}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='Search'
+      name="Search"
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='ProfileExplore'
+      name="ProfileExplore"
       component={Profile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name='AddFriends'
+      name="AddFriends"
       component={AddFriends}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='FriendsList'
+      name="FriendsList"
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='AddChat'
+      name="AddChat"
       component={AddChat}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='SingleProfile'
+      name="SingleProfile"
       component={SingleProfile}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='ProfilePageNotYou'
+      name="ProfilePageNotYou"
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -530,41 +530,32 @@ const AppStack = ({ currentRoute }) => {
       }}
     >
       <Tab.Screen
-        name='Feed'
-        component={ExploreStack}
+        name="Messages"
+        component={MessagesStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
             <View
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 5,
+                top: 0,
               }}
             >
               <Image
-                source={require("../assets/homepng.png")}
-                resizeMode='contain'
+                source={require("../assets/chat.png")}
+                resizeMode="contain"
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#e32f45" : "#748c94", //outline of the icon, red or grey
                 }}
               />
-              <Text
-                style={{
-                  color: focused ? "#e32f45" : "#748c94",
-                  fontSize: 12,
-                }}
-              >
-                Feed
-              </Text>
             </View>
           ),
-
+          tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
+          headerShown: getHeaderVisibility(),
           headerTitleAlign: "center",
-          headerTitle: "Feed",
-          headerShown: getHeaderVisibilityExploreTab(),
-          tabBarStyle: getTabBarVisibilityExploreTab(),
+          headerTitle: "Chats",
           headerRight: () => (
             <View
               style={{
@@ -609,7 +600,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("ProfileExplore")}
+                onPress={() => navigation.navigate("ProfileMessages")}
               >
                 <Image
                   source={require("../assets/profile.png")}
@@ -627,7 +618,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("Search")}
+                onPress={() => navigation.navigate("Search")} //test only change later
               >
                 <Image
                   source={require("../assets/search.png")}
@@ -641,7 +632,7 @@ const AppStack = ({ currentRoute }) => {
       />
 
       <Tab.Screen
-        name='Tasks'
+        name="Tasks"
         component={TasksStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
@@ -654,21 +645,13 @@ const AppStack = ({ currentRoute }) => {
             >
               <Image
                 source={require("../assets/28.png")}
-                resizeMode='contain'
+                resizeMode="contain"
                 style={{
                   width: 25,
                   height: 25,
                   tintColor: focused ? "#e32f45" : "#748c94",
                 }}
               />
-              <Text
-                style={{
-                  color: focused ? "#e32f45" : "#748c94",
-                  fontSize: 12,
-                }}
-              >
-                Tasks
-              </Text>
             </View>
           ),
 
@@ -752,7 +735,7 @@ const AppStack = ({ currentRoute }) => {
       />
 
       <Tab.Screen
-        name='AddTask'
+        name="AddTask"
         component={AddTaskStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
@@ -765,21 +748,13 @@ const AppStack = ({ currentRoute }) => {
             >
               <Image
                 source={require("../assets/plus.png")}
-                resizeMode='contain'
+                resizeMode="contain"
                 style={{
                   width: 25,
                   height: 25,
                   tintColor: focused ? "#e32f45" : "#748c94",
                 }}
               />
-              <Text
-                style={{
-                  color: focused ? "#e32f45" : "#748c94",
-                  fontSize: 12,
-                }}
-              >
-                Add
-              </Text>
             </View>
           ),
 
@@ -862,7 +837,7 @@ const AppStack = ({ currentRoute }) => {
         })}
       />
       <Tab.Screen
-        name='List'
+        name="List"
         component={ListStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
@@ -875,21 +850,13 @@ const AppStack = ({ currentRoute }) => {
             >
               <Image
                 source={require("../assets/list.png")}
-                resizeMode='contain'
+                resizeMode="contain"
                 style={{
                   width: 25,
                   height: 25,
                   tintColor: focused ? "#e32f45" : "#748c94",
                 }}
               />
-              <Text
-                style={{
-                  color: focused ? "#e32f45" : "#748c94",
-                  fontSize: 12,
-                }}
-              >
-                Lists
-              </Text>
             </View>
           ),
 
@@ -972,8 +939,8 @@ const AppStack = ({ currentRoute }) => {
         })}
       />
       <Tab.Screen
-        name='Messages'
-        component={MessagesStack}
+        name="Feed"
+        component={ExploreStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
             <View
@@ -984,28 +951,21 @@ const AppStack = ({ currentRoute }) => {
               }}
             >
               <Image
-                source={require("../assets/chat.png")}
-                resizeMode='contain'
+                source={require("../assets/homepng.png")}
+                resizeMode="contain"
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94", //outline of the icon, red or grey
+                  tintColor: focused ? "#e32f45" : "#748c94",
                 }}
               />
-              <Text
-                style={{
-                  color: focused ? "#e32f45" : "#748c94",
-                  fontSize: 12,
-                }}
-              >
-                Chats
-              </Text>
             </View>
           ),
-          tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
-          headerShown: getHeaderVisibility(),
+
           headerTitleAlign: "center",
-          headerTitle: "Chats",
+          headerTitle: "Feed",
+          headerShown: getHeaderVisibilityExploreTab(),
+          tabBarStyle: getTabBarVisibilityExploreTab(),
           headerRight: () => (
             <View
               style={{
@@ -1050,7 +1010,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("ProfileMessages")}
+                onPress={() => navigation.navigate("ProfileExplore")}
               >
                 <Image
                   source={require("../assets/profile.png")}
@@ -1068,7 +1028,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("Search")} //test only change later
+                onPress={() => navigation.navigate("Search")}
               >
                 <Image
                   source={require("../assets/search.png")}
