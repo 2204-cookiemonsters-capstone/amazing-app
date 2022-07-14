@@ -238,6 +238,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
         >
           <View
             style={{
+              marginTop: 30,
               width: "100%",
               display: "flex",
               flexDirection: "row",

@@ -82,7 +82,6 @@ const FriendsList = ({ navigation }) => {
         });
     });
   };
-  console.log(allFriends);
   const handleRemoveFriend = async (userid) => {
     const ref1 = doc(
       firestore,

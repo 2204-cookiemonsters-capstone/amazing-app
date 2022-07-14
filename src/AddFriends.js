@@ -9,6 +9,7 @@ import {
   TextInput,
   StyleSheet,
   ScrollView,
+  Modal,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -25,6 +26,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import FriendModal from "./FriendModal";
 import { RootSiblingParent } from "react-native-root-siblings";
 import Toast from "react-native-root-toast";
 
@@ -46,7 +48,8 @@ const AddFriends = ({ navigation }) => {
 
   const [searchValue, setSearchValue] = useState("");
 
-  const [avatars, setAvatars] = useState([]);
+  const [selectedFriend, setSelectedFriend] = useState("");
+  const [showFriendModal, setShowFriendModal] = useState(false);
 
   const height = () => {
     return renderedAllFriends.length * 78 + 398;
@@ -83,51 +86,6 @@ const AddFriends = ({ navigation }) => {
       });
       allUsers !== users ? setAllUsers(users) : ""; //need this or else it will push to allUsers everytime we save
       setRenderedAllFriends(users);
-    });
-  };
-
-  // const fetchPhotos = () => {
-  //   if (!allUsers.length) return;
-  //   allUsers.forEach((userdata) => {
-  //     const reference = ref(
-  //       storage,
-  //       `${userdata.userid}/profilepic/${userdata.profilepic}`
-  //     );
-
-  //     const index = allUsers.indexOf(
-  //       allUsers.find((user) => userdata.userid === user.userid)
-  //     );
-
-  //     getDownloadURL(reference)
-  //       .then((x) => {
-  //         allUsers[index] = { ...allUsers[index], imageUrl: x };
-  //       })
-  //       .catch((e) => {
-  //         allUsers[index] = { ...allUsers[index], imageUrl: null };
-  //       });
-  //   });
-  // };
-
-  const fetchPhotos = () => {
-    if (!allUsers.length) return;
-    console.log(allUsers);
-    allUsers.forEach((userdata) => {
-      const reference = ref(
-        storage,
-        `${userdata.userid}/profilepic/${userdata.profilepic}`
-      );
-
-      // const index = allUsers.indexOf(
-      //   allUsers.find((user) => userdata.userid === user.userid)
-      // );
-
-      getDownloadURL(reference)
-        .then((x) => {
-          avatars.push(x);
-        })
-        .catch((e) => {
-          avatars.push(null);
-        });
     });
   };
 
@@ -279,12 +237,12 @@ const AddFriends = ({ navigation }) => {
     Toast.show("Friend Request Accepted", {
       duration: Toast.durations.SHORT,
     });
-    // const docRef2 = doc(firestore, 'users', userid);
-    // const colRef2 = collection(docRef2, 'friendships');
-    // await deleteDoc(doc(firestore, colRef2, where("userid", "==", auth.currentUser.uid)))
   };
 
-  console.log(avatars);
+  const toggleFriendModal = () => {
+    setShowFriendModal(!showFriendModal);
+  };
+
   return (
     <RootSiblingParent>
       <View style={{ backgroundColor: "#F0F0F0" }}>
@@ -320,30 +278,9 @@ const AddFriends = ({ navigation }) => {
             <AntDesign name='left' color='black' size={18} />
           </TouchableOpacity>
           <View style={{ flexGrow: 1 }} />
-          <Text style={{ fontWeight: "700", fontSize: 22 }}>Add Friends</Text>
+          <Text style={{ fontWeight: "700", fontSize: 22, marginRight: 32 }}>Add Friends</Text>
           <View style={{ flexGrow: 1 }} />
-          <TouchableOpacity
-            style={{
-              backgroundColor: "white",
-              borderRadius: 25,
-              height: 35,
-              width: 35,
-              alignItems: "center",
-              justifyContent: "center",
-              marginRight: 13,
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
-            }}
-            onPress={() => navigation.goBack()}
-          >
-            <Entypo name='dots-three-horizontal' color='black' size={18} />
-          </TouchableOpacity>
+         
         </View>
 
         <View
@@ -448,19 +385,14 @@ const AddFriends = ({ navigation }) => {
                       elevation: 5,
                     }}
                     onPress={() => {
-                      navigation.navigate("ProfilePageNotYou", {
-                        userid: item.userid,
-                        name: item.name,
-                        score: item.score,
-                        username: item.username,
-                        from: "AddFriends",
-                      });
+                      toggleFriendModal();
+                      setSelectedFriend(item);
                     }}
                   >
                     <TouchableOpacity>
                       <Image
                         source={
-                          item.profilepic
+                          item.profilepic || item.profilepic !== undefined
                             ? { uri: item.profilepic }
                             : require("../assets/defaultprofileicon.webp")
                         }
@@ -543,7 +475,7 @@ const AddFriends = ({ navigation }) => {
                 }}
               >
                 <Text style={{ fontWeight: "700", fontSize: 17 }}>
-                  Quick Add
+                  {searchValue ? "Results" : "Quick Add"}
                 </Text>
                 <View style={{ flexGrow: 1 }} />
                 <Text
@@ -590,19 +522,14 @@ const AddFriends = ({ navigation }) => {
                         elevation: 5,
                       }}
                       onPress={() => {
-                        navigation.navigate("ProfilePageNotYou", {
-                          userid: item.userid,
-                          name: item.name,
-                          score: item.score,
-                          username: item.username,
-                          from: "AddFriends",
-                        });
+                        toggleFriendModal();
+                        setSelectedFriend(item);
                       }}
                     >
                       <TouchableOpacity>
                         <Image
                           source={
-                            item.profilepic
+                            item.profilepic || item.profilepic !== undefined
                               ? { uri: item.profilepic }
                               : require("../assets/defaultprofileicon.webp")
                           }
@@ -693,19 +620,14 @@ const AddFriends = ({ navigation }) => {
                         elevation: 5,
                       }}
                       onPress={() => {
-                        navigation.navigate("ProfilePageNotYou", {
-                          userid: item.userid,
-                          name: item.name,
-                          score: item.score,
-                          username: item.username,
-                          from: "AddFriends",
-                        });
+                        toggleFriendModal();
+                        setSelectedFriend(item);
                       }}
                     >
                       <TouchableOpacity>
                         <Image
                           source={
-                            item.profilepic
+                            item.profilepic || item.profilepic !== undefined
                               ? { uri: item.profilepic }
                               : require("../assets/defaultprofileicon.webp")
                           }
@@ -837,6 +759,16 @@ const AddFriends = ({ navigation }) => {
             </View>
           </View>
         </ScrollView>
+        <Modal
+          animationType='slide'
+          visible={showFriendModal}
+          onRequestClose={() => toggleFriendModal()}
+        >
+          <FriendModal
+            user={selectedFriend}
+            closeModal={() => toggleFriendModal()}
+          />
+        </Modal>
       </View>
     </RootSiblingParent>
   );

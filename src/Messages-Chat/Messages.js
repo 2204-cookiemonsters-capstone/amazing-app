@@ -39,8 +39,6 @@ const Messages = (props) => {
         }
       });
 
-      //doc.id returns the auto genned id
-
       const userData = []; //data to be rendered on messages screen for each chat
 
       for (let i = 0; i < chats.length; i++) {
@@ -97,7 +95,6 @@ const Messages = (props) => {
     });
   };
 
-  console.log(allChatsData);
   const getTimeDifference = (timesent) => {
     const timeNow = new Date().getTime();
     const difference = (timeNow - timesent) / 1000;
@@ -144,7 +141,14 @@ const Messages = (props) => {
               >
                 <View style={styles.userinfo}>
                   <View style={styles.userimage}>
-                    <Image source={image} style={styles.img} />
+                    <Image
+                      source={
+                        item.profilepic || item.profilepic !== undefined
+                          ? { uri: item.profilepic }
+                          : require("../../assets/defaultprofileicon.webp")
+                      }
+                      style={styles.img}
+                    />
                   </View>
                   <View style={styles.textView}>
                     <View style={styles.userinfotext}>
@@ -216,30 +220,6 @@ const Messages = (props) => {
               </TouchableOpacity>
             )}
           />
-          <TouchableOpacity
-            style={{
-              width: 60,
-              height: 60,
-              backgroundColor: "#ee6e73",
-              position: "relative",
-              top: "170%",
-              left: "78%",
-              borderRadius: 70 / 2,
-              alignItems: "center",
-              justifyContent: "center",
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
-            }}
-            onPress={() => props.navigation.navigate("AddChat")}
-          >
-            <Ionicons name="add" size={26} color="white" />
-          </TouchableOpacity>
         </View>
       ) : isLoading ? (
         <View style={{ margin: "50%" }}>
@@ -280,6 +260,33 @@ const Messages = (props) => {
           </TouchableOpacity>
         </View>
       )}
+
+      {allChatsData.length !== 0 ? (
+        <TouchableOpacity
+          style={{
+            width: 60,
+            height: 60,
+            backgroundColor: "#FE6847",
+            position: "absolute",
+            bottom: 90,
+            right: 30,
+            borderRadius: 70 / 2,
+            alignItems: "center",
+            justifyContent: "center",
+            shadowColor: "#7F5DF0",
+            shadowOffset: {
+              width: 0,
+              height: 10,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.5,
+            elevation: 5,
+          }}
+          onPress={() => props.navigation.navigate("AddChat")}
+        >
+          <Ionicons name="add" size={26} color="white" />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };

@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Text, Image, ScrollView } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  Image,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -523,7 +530,7 @@ const AppStack = ({ currentRoute }) => {
             backgroundColor: "#ffffff",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            height: 60,
+            height: Platform.OS === "ios" ? 80 : 60,
           },
         ],
         initialRouteName: "AddTask",
@@ -538,7 +545,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 0,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
@@ -550,6 +557,12 @@ const AppStack = ({ currentRoute }) => {
                   tintColor: focused ? "#e32f45" : "#748c94", //outline of the icon, red or grey
                 }}
               />
+              <Text
+                style={{
+                  color: focused ? "#e32f45" : "#748c94",
+                  fontSize: 12,
+                }}
+              ></Text>
             </View>
           ),
           tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
@@ -566,7 +579,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -593,7 +606,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -611,7 +624,7 @@ const AppStack = ({ currentRoute }) => {
               <TouchableOpacity
                 style={{
                   marginLeft: 15,
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -640,7 +653,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 5,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
@@ -652,6 +665,12 @@ const AppStack = ({ currentRoute }) => {
                   tintColor: focused ? "#e32f45" : "#748c94",
                 }}
               />
+              <Text
+                style={{
+                  color: focused ? "#e32f45" : "#748c94",
+                  fontSize: 12,
+                }}
+              ></Text>
             </View>
           ),
 
@@ -669,7 +688,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -696,7 +715,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -714,7 +733,7 @@ const AppStack = ({ currentRoute }) => {
               <TouchableOpacity
                 style={{
                   marginLeft: 15,
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -743,7 +762,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 5,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
@@ -755,6 +774,12 @@ const AppStack = ({ currentRoute }) => {
                   tintColor: focused ? "#e32f45" : "#748c94",
                 }}
               />
+              <Text
+                style={{
+                  color: focused ? "#e32f45" : "#748c94",
+                  fontSize: 12,
+                }}
+              ></Text>
             </View>
           ),
 
@@ -772,7 +797,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -799,7 +824,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -817,7 +842,7 @@ const AppStack = ({ currentRoute }) => {
               <TouchableOpacity
                 style={{
                   marginLeft: 15,
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -845,7 +870,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 5,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
@@ -857,6 +882,12 @@ const AppStack = ({ currentRoute }) => {
                   tintColor: focused ? "#e32f45" : "#748c94",
                 }}
               />
+              <Text
+                style={{
+                  color: focused ? "#e32f45" : "#748c94",
+                  fontSize: 12,
+                }}
+              ></Text>
             </View>
           ),
 
@@ -874,7 +905,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -901,7 +932,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -919,7 +950,7 @@ const AppStack = ({ currentRoute }) => {
               <TouchableOpacity
                 style={{
                   marginLeft: 15,
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -947,7 +978,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 5,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
@@ -959,6 +990,12 @@ const AppStack = ({ currentRoute }) => {
                   tintColor: focused ? "#e32f45" : "#748c94",
                 }}
               />
+              <Text
+                style={{
+                  color: focused ? "#e32f45" : "#748c94",
+                  fontSize: 12,
+                }}
+              ></Text>
             </View>
           ),
 
@@ -976,7 +1013,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -1003,7 +1040,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -1021,7 +1058,7 @@ const AppStack = ({ currentRoute }) => {
               <TouchableOpacity
                 style={{
                   marginLeft: 15,
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
