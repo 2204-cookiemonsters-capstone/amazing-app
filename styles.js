@@ -218,7 +218,8 @@ const friendList = StyleSheet.create({
 const todoListStyle = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.list.white,
+    // backgroundColor: color.list.white,
+    backgroundColor: 'whitesmoke',
     alignItems: "center",
     justifyContent: "center",
   },
