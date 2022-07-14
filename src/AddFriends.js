@@ -9,10 +9,12 @@ import {
   TextInput,
   StyleSheet,
   ScrollView,
+  Modal,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
-import { auth, firestore } from "../firebase";
+import { auth, firestore, storage } from "../firebase";
+import { getDownloadURL, ref } from "firebase/storage";
 import {
   collection,
   getDocs,
@@ -24,6 +26,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import FriendModal from "./FriendModal";
 import { RootSiblingParent } from "react-native-root-siblings";
 import Toast from "react-native-root-toast";
 
@@ -44,6 +47,9 @@ const AddFriends = ({ navigation }) => {
   const [showAllQuickAdd, setShowAllQuickAdd] = useState(false);
 
   const [searchValue, setSearchValue] = useState("");
+
+  const [selectedFriend, setSelectedFriend] = useState("");
+  const [showFriendModal, setShowFriendModal] = useState(false);
 
   const height = () => {
     return renderedAllFriends.length * 78 + 398;
@@ -70,7 +76,7 @@ const AddFriends = ({ navigation }) => {
     });
 
     onSnapshot(collection(firestore, "users"), async (snapShot) => {
-      const users = [];
+      let users = [];
       snapShot.forEach(async (doc) => {
         if (doc.data().userid !== auth.currentUser.uid) {
           if (!friends.includes(doc.data().userid)) {
@@ -78,7 +84,6 @@ const AddFriends = ({ navigation }) => {
           }
         }
       });
-
       allUsers !== users ? setAllUsers(users) : ""; //need this or else it will push to allUsers everytime we save
       setRenderedAllFriends(users);
     });
@@ -175,6 +180,10 @@ const AddFriends = ({ navigation }) => {
     getFriends();
   }, []);
 
+  // useEffect(() => {
+  //   fetchPhotos();
+  // }, [allUsers]);
+
   const handleAddFriend = (userid) => {
     const docRef = doc(
       firestore,
@@ -228,9 +237,10 @@ const AddFriends = ({ navigation }) => {
     Toast.show("Friend Request Accepted", {
       duration: Toast.durations.SHORT,
     });
-    // const docRef2 = doc(firestore, 'users', userid);
-    // const colRef2 = collection(docRef2, 'friendships');
-    // await deleteDoc(doc(firestore, colRef2, where("userid", "==", auth.currentUser.uid)))
+  };
+
+  const toggleFriendModal = () => {
+    setShowFriendModal(!showFriendModal);
   };
 
   return (
@@ -268,30 +278,9 @@ const AddFriends = ({ navigation }) => {
             <AntDesign name='left' color='black' size={18} />
           </TouchableOpacity>
           <View style={{ flexGrow: 1 }} />
-          <Text style={{ fontWeight: "700", fontSize: 22 }}>Add Friends</Text>
+          <Text style={{ fontWeight: "700", fontSize: 22, marginRight: 32 }}>Add Friends</Text>
           <View style={{ flexGrow: 1 }} />
-          <TouchableOpacity
-            style={{
-              backgroundColor: "white",
-              borderRadius: 25,
-              height: 35,
-              width: 35,
-              alignItems: "center",
-              justifyContent: "center",
-              marginRight: 13,
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
-            }}
-            onPress={() => navigation.goBack()}
-          >
-            <Entypo name='dots-three-horizontal' color='black' size={18} />
-          </TouchableOpacity>
+         
         </View>
 
         <View
@@ -318,7 +307,6 @@ const AddFriends = ({ navigation }) => {
             marginBottom: 5,
           }}
         >
-
           <Image
             source={require("../assets/search2.png")}
             style={{
@@ -356,54 +344,93 @@ const AddFriends = ({ navigation }) => {
               <View>
                 {renderedIncomingFriends.map((item) => (
                   <TouchableOpacity
+                    key={item.userid}
                     style={{
-                      marginLeft: 25,
-                      borderLeftWidth: 1,
-                      borderRightWidth: 1,
-                      borderBottomWidth: 1,
-                      borderTopWidth: 1,
-                      marginRight: 25,
+                      marginLeft: 15,
+                      marginRight: 15,
+                      paddingTop: 7,
+                      paddingBottom: 0,
                       borderColor: "#cccccc",
                       display: "flex",
                       flexDirection: "row",
                       paddingLeft: 10,
                       paddingRight: 15,
-
+                      borderTopLeftRadius:
+                        item === renderedIncomingFriends[0] ? 8 : 0,
+                      borderTopRightRadius:
+                        item === renderedIncomingFriends[0] ? 8 : 0,
+                      borderBottomRightRadius:
+                        item ===
+                        renderedIncomingFriends[
+                          renderedIncomingFriends.length - 1
+                        ]
+                          ? 8
+                          : 0,
+                      borderBottomLeftRadius:
+                        item ===
+                        renderedIncomingFriends[
+                          renderedIncomingFriends.length - 1
+                        ]
+                          ? 8
+                          : 0,
+                      backgroundColor: "white",
+                      marginBottom: 1,
+                      shadowColor: "#7F5DF0",
+                      shadowOffset: {
+                        width: 0,
+                        height: 10,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.5,
+                      elevation: 5,
+                    }}
+                    onPress={() => {
+                      toggleFriendModal();
+                      setSelectedFriend(item);
                     }}
                   >
                     <TouchableOpacity>
                       <Image
-                        source={image}
+                        source={
+                          item.profilepic || item.profilepic !== undefined
+                            ? { uri: item.profilepic }
+                            : require("../assets/defaultprofileicon.webp")
+                        }
                         style={{
                           width: 50,
                           height: 50,
                           borderRadius: 25,
-                          margin: 10,
+                          marginTop: 10,
+                          marginBottom: 10,
+                          marginRight: 5,
                         }}
                       />
                     </TouchableOpacity>
-                    <View style={{ display: "flex", flexDirection: "column" }}>
-                      <Text>{item.name}</Text>
-                      <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
-                    </View>
-
                     <View
-
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "42%",
+                      }}
+                    >
+                      <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                        {item.name}
+                      </Text>
+                      <Text style={{ color: "gray" }}>{item.username}</Text>
+                    </View>
+                    <View
                       style={{
                         alignItems: "center",
                         justifyContent: "center",
-                        marginLeft: 30,
+                        marginLeft: 25,
                       }}
                     >
                       <TouchableOpacity
                         style={{
                           backgroundColor: "#CBC3E3",
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                          borderBottomRightRadius: 10,
+                          borderRadius: 25,
                           height: 30,
+                          width: 95,
                           justifyContent: "center",
                           alignItems: "center",
                           display: "flex",
@@ -411,17 +438,23 @@ const AddFriends = ({ navigation }) => {
                         }}
                         onPress={() => handleAcceptFriendship(item.userid)}
                       >
-                        <View style={{ marginLeft: 13, marginRight: 8 }}>
+                        <View
+                          style={{
+                            alignItems: "center",
+                            justifyContent: "center",
+                            display: "flex",
+                            flexDirection: "row",
+                          }}
+                        >
                           <Image
-                            source={require("../assets/ADDFRIEND2.png")}
-                            style={{ width: 15, height: 15 }}
+                            source={require("../assets/friendaccept.png")}
+                            style={{ width: 15, height: 15, marginRight: 5 }}
                           />
+                          <Text>Accept</Text>
                         </View>
-                        <Text style={{ marginRight: 14 }}>Accept</Text>
                       </TouchableOpacity>
                     </View>
                   </TouchableOpacity>
-
                 ))}
               </View>
             </View>
@@ -442,7 +475,7 @@ const AddFriends = ({ navigation }) => {
                 }}
               >
                 <Text style={{ fontWeight: "700", fontSize: 17 }}>
-                  Quick Add
+                  {searchValue ? "Results" : "Quick Add"}
                 </Text>
                 <View style={{ flexGrow: 1 }} />
                 <Text
@@ -463,11 +496,9 @@ const AddFriends = ({ navigation }) => {
             >
               {showAllQuickAdd
                 ? renderedAllFriends.map((item) => (
-
                     <TouchableOpacity
                       key={item.userid}
                       style={{
-
                         marginLeft: 15,
                         marginRight: 15,
                         paddingTop: 7,
@@ -489,14 +520,19 @@ const AddFriends = ({ navigation }) => {
                         shadowOpacity: 0.25,
                         shadowRadius: 3.5,
                         elevation: 5,
-
+                      }}
+                      onPress={() => {
+                        toggleFriendModal();
+                        setSelectedFriend(item);
                       }}
                     >
-
                       <TouchableOpacity>
-
                         <Image
-                          source={image}
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../assets/defaultprofileicon.webp")
+                          }
                           style={{
                             width: 50,
                             height: 50,
@@ -556,14 +592,11 @@ const AddFriends = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                     </TouchableOpacity>
-
                   ))
                 : firstThreeUsers.map((item) => (
-
                     <TouchableOpacity
                       key={item.userid}
                       style={{
-
                         marginLeft: 15,
                         marginRight: 15,
                         paddingTop: 7,
@@ -585,12 +618,19 @@ const AddFriends = ({ navigation }) => {
                         shadowOpacity: 0.25,
                         shadowRadius: 3.5,
                         elevation: 5,
-
+                      }}
+                      onPress={() => {
+                        toggleFriendModal();
+                        setSelectedFriend(item);
                       }}
                     >
                       <TouchableOpacity>
                         <Image
-                          source={image}
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../assets/defaultprofileicon.webp")
+                          }
                           style={{
                             width: 50,
                             height: 50,
@@ -612,7 +652,7 @@ const AddFriends = ({ navigation }) => {
                           {item.name}
                         </Text>
                         <Text style={{ color: "gray" }}>{item.username}</Text>
-                        <Text>3 Mutual Friends</Text>
+                        {/* <Text>3 Mutual Friends</Text> */}
                       </View>
                       <View
                         style={{
@@ -686,7 +726,6 @@ const AddFriends = ({ navigation }) => {
               ) : searchValue === "" && !showAllQuickAdd ? (
                 <TouchableOpacity
                   style={{
-
                     marginLeft: 15,
                     marginRight: 15,
                     paddingTop: 7,
@@ -714,18 +753,25 @@ const AddFriends = ({ navigation }) => {
                   }}
                   onPress={() => setShowAllQuickAdd(true)}
                 >
-
                   <Text>View More</Text>
                 </TouchableOpacity>
               ) : null}
             </View>
           </View>
         </ScrollView>
+        <Modal
+          animationType='slide'
+          visible={showFriendModal}
+          onRequestClose={() => toggleFriendModal()}
+        >
+          <FriendModal
+            user={selectedFriend}
+            closeModal={() => toggleFriendModal()}
+          />
+        </Modal>
       </View>
     </RootSiblingParent>
   );
 };
 
 export default AddFriends;
-
-

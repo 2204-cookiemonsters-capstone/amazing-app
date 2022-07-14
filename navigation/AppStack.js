@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Text, Image, ScrollView } from "react-native";
+import { View, TouchableOpacity, Text, Image, ScrollView, Platform } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -15,6 +15,7 @@ import AddFriends from "../src/AddFriends";
 import FriendsList from "../src/FriendsList";
 import AddChat from "../src/Messages-Chat/AddChat";
 import SingleProfile from "../src/SingleProfile";
+import ProfilePageNotYou from "../src/ProfilePageNotYou";
 
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -89,7 +90,7 @@ const MessagesStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='SearchScreen'
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
@@ -121,6 +122,12 @@ const MessagesStack = ({ navigation }) => (
       component={SingleProfile}
       options={{ header: () => null }}
     />
+
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -143,7 +150,7 @@ const TasksStack = ({ navigation }) => (
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='AddFriendsTasks'
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
@@ -160,6 +167,11 @@ const TasksStack = ({ navigation }) => (
     <Stack.Screen
       name='SingleProfile'
       component={SingleProfile}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -174,7 +186,7 @@ const AddTaskStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='SearchAdd'
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
@@ -186,7 +198,7 @@ const AddTaskStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='AddFriendsAdd'
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
@@ -203,6 +215,11 @@ const AddTaskStack = ({ navigation }) => (
     <Stack.Screen
       name='SingleProfile'
       component={SingleProfile}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -217,7 +234,7 @@ const ListStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='SearchList'
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
@@ -229,7 +246,7 @@ const ListStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='AddFriendsList'
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
@@ -246,6 +263,11 @@ const ListStack = ({ navigation }) => (
     <Stack.Screen
       name='SingleProfile'
       component={SingleProfile}
+      options={{ header: () => null }}
+    />
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
   </Stack.Navigator>
@@ -259,7 +281,7 @@ const ExploreStack = ({ navigation }) => (
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name='SearchExplore'
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
@@ -271,7 +293,7 @@ const ExploreStack = ({ navigation }) => (
     />
 
     <Stack.Screen
-      name='AddFriendsExplore'
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
@@ -290,6 +312,11 @@ const ExploreStack = ({ navigation }) => (
       component={SingleProfile}
       options={{ header: () => null }}
     />
+    <Stack.Screen
+      name='ProfilePageNotYou'
+      component={ProfilePageNotYou}
+      options={{ header: () => null }}
+    />
   </Stack.Navigator>
 );
 
@@ -298,7 +325,7 @@ const AppStack = ({ currentRoute }) => {
   const getTabBarVisibility = () => {
     if (
       currentRoute === "ChatScreen" ||
-      currentRoute === "SearchScreen" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileMessages" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -323,7 +350,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "Search" ||
       currentRoute === "ProfileTasks" ||
-      currentRoute === "AddFriendsTasks" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -344,9 +371,9 @@ const AppStack = ({ currentRoute }) => {
   //tab bar visibility add tab
   const getTabBarVisibilityAddTab = () => {
     if (
-      currentRoute === "SearchAdd" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileAdd" ||
-      currentRoute === "AddFriendsAdd" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -367,9 +394,9 @@ const AppStack = ({ currentRoute }) => {
   //tab bar visibility list tab
   const getTabBarVisibilityListTab = () => {
     if (
-      currentRoute === "SearchList" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileList" ||
-      currentRoute === "AddFriendsList" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -390,9 +417,9 @@ const AppStack = ({ currentRoute }) => {
   //tab bar visibility explore tab
   const getTabBarVisibilityExploreTab = () => {
     if (
-      currentRoute === "SearchExplore" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileExplore" ||
-      currentRoute === "AddFriendsExplore" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -414,7 +441,7 @@ const AppStack = ({ currentRoute }) => {
   const getHeaderVisibility = () => {
     if (
       currentRoute === "ChatScreen" ||
-      currentRoute === "SearchScreen" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileMessages" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
@@ -431,7 +458,7 @@ const AppStack = ({ currentRoute }) => {
     if (
       currentRoute === "Search" ||
       currentRoute === "ProfileTasks" ||
-      currentRoute === "AddFriendsTasks" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -444,9 +471,9 @@ const AppStack = ({ currentRoute }) => {
   //header visibility add tab
   const getHeaderVisibilityAddTab = () => {
     if (
-      currentRoute === "SearchAdd" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileAdd" ||
-      currentRoute === "AddFriendsAdd" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -459,9 +486,9 @@ const AppStack = ({ currentRoute }) => {
   //header visibility list tab
   const getHeaderVisibilityListTab = () => {
     if (
-      currentRoute === "SearchList" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileList" ||
-      currentRoute === "AddFriendsList" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -474,9 +501,9 @@ const AppStack = ({ currentRoute }) => {
   //header visibility Explore tab
   const getHeaderVisibilityExploreTab = () => {
     if (
-      currentRoute === "SearchExplore" ||
+      currentRoute === "Search" ||
       currentRoute === "ProfileExplore" ||
-      currentRoute === "AddFriendsExplore" ||
+      currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
       currentRoute === "AddChat" ||
       currentRoute === "SingleProfile"
@@ -496,31 +523,31 @@ const AppStack = ({ currentRoute }) => {
             backgroundColor: "#ffffff",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            height: 60,
+            height: Platform.OS === "ios" ? 80 : 60,
           },
         ],
         initialRouteName: "AddTask",
       }}
     >
       <Tab.Screen
-        name='Feed'
-        component={ExploreStack}
+        name='Messages'
+        component={MessagesStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
             <View
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 5,
+                top: Platform.OS === "ios" ? 15 : 0,
               }}
             >
               <Image
-                source={require("../assets/homepng.png")}
+                source={require("../assets/chat.png")}
                 resizeMode='contain'
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#e32f45" : "#748c94", //outline of the icon, red or grey
                 }}
               />
               <Text
@@ -529,15 +556,14 @@ const AppStack = ({ currentRoute }) => {
                   fontSize: 12,
                 }}
               >
-                Feed
+                
               </Text>
             </View>
           ),
-
+          tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
+          headerShown: getHeaderVisibility(),
           headerTitleAlign: "center",
-          headerTitle: "Feed",
-          headerShown: getHeaderVisibilityExploreTab(),
-          tabBarStyle: getTabBarVisibilityExploreTab(),
+          headerTitle: "Chats",
           headerRight: () => (
             <View
               style={{
@@ -548,14 +574,14 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("AddFriendsExplore")}
+                onPress={() => navigation.navigate("AddFriends")}
               >
                 <Image
                   source={require("../assets/addperson.png")}
@@ -575,14 +601,14 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("ProfileExplore")}
+                onPress={() => navigation.navigate("ProfileMessages")}
               >
                 <Image
                   source={require("../assets/profile.png")}
@@ -593,14 +619,14 @@ const AppStack = ({ currentRoute }) => {
               <TouchableOpacity
                 style={{
                   marginLeft: 15,
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("SearchExplore")}
+                onPress={() => navigation.navigate("Search")} //test only change later
               >
                 <Image
                   source={require("../assets/search.png")}
@@ -622,7 +648,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 5,
+                top: Platform.OS === "ios" ? 15 : 0,
               }}
             >
               <Image
@@ -640,7 +666,7 @@ const AppStack = ({ currentRoute }) => {
                   fontSize: 12,
                 }}
               >
-                Tasks
+                
               </Text>
             </View>
           ),
@@ -659,14 +685,14 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("AddFriendsTasks")}
+                onPress={() => navigation.navigate("AddFriends")}
               >
                 <Image
                   source={require("../assets/addperson.png")}
@@ -686,7 +712,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -704,7 +730,7 @@ const AppStack = ({ currentRoute }) => {
               <TouchableOpacity
                 style={{
                   marginLeft: 15,
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -733,7 +759,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: 5,
+                top: Platform.OS === "ios" ? 15 : 0,
               }}
             >
               <Image
@@ -751,7 +777,7 @@ const AppStack = ({ currentRoute }) => {
                   fontSize: 12,
                 }}
               >
-                Add
+                
               </Text>
             </View>
           ),
@@ -770,226 +796,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
-                  borderRadius: 25,
-                  height: 35,
-                  width: 35,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onPress={() => navigation.navigate("AddFriendsAdd")}
-              >
-                <Image
-                  source={require("../assets/addperson.png")}
-                  resizeMode={"contain"}
-                  style={{ width: 21, height: 21 }}
-                />
-              </TouchableOpacity>
-            </View>
-          ),
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 12,
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "whitesmoke",
-                  borderRadius: 25,
-                  height: 35,
-                  width: 35,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onPress={() => navigation.navigate("ProfileAdd")}
-              >
-                <Image
-                  source={require("../assets/profile.png")}
-                  resizeMode={"contain"}
-                  style={{ width: 21, height: 21 }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  backgroundColor: "whitesmoke",
-                  borderRadius: 25,
-                  height: 35,
-                  width: 35,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onPress={() => navigation.navigate("SearchAdd")}
-              >
-                <Image
-                  source={require("../assets/search.png")}
-                  resizeMode={"contain"}
-                  style={{ width: 21, height: 21 }}
-                />
-              </TouchableOpacity>
-            </View>
-          ),
-        })}
-      />
-      <Tab.Screen
-        name='List'
-        component={ListStack}
-        options={({ navigation }) => ({
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                top: 5,
-              }}
-            >
-              <Image
-                source={require("../assets/list.png")}
-                resizeMode='contain'
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
-                }}
-              />
-              <Text
-                style={{
-                  color: focused ? "#e32f45" : "#748c94",
-                  fontSize: 12,
-                }}
-              >
-                Lists
-              </Text>
-            </View>
-          ),
-
-          headerTitleAlign: "center",
-          headerTitle: "Lists",
-          headerShown: getHeaderVisibilityListTab(),
-          tabBarStyle: getTabBarVisibilityListTab(),
-          headerRight: () => (
-            <View
-              style={{
-                marginRight: 10,
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "whitesmoke",
-                  borderRadius: 25,
-                  height: 35,
-                  width: 35,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onPress={() => navigation.navigate("AddFriendsList")}
-              >
-                <Image
-                  source={require("../assets/addperson.png")}
-                  resizeMode={"contain"}
-                  style={{ width: 21, height: 21 }}
-                />
-              </TouchableOpacity>
-            </View>
-          ),
-          headerLeft: () => (
-            <View
-              style={{
-                marginLeft: 12,
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "whitesmoke",
-                  borderRadius: 25,
-                  height: 35,
-                  width: 35,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onPress={() => navigation.navigate("ProfileList")}
-              >
-                <Image
-                  source={require("../assets/profile.png")}
-                  resizeMode={"contain"}
-                  style={{ width: 21, height: 21 }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  backgroundColor: "whitesmoke",
-                  borderRadius: 25,
-                  height: 35,
-                  width: 35,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onPress={() => navigation.navigate("SearchList")}
-              >
-                <Image
-                  source={require("../assets/search.png")}
-                  resizeMode={"contain"}
-                  style={{ width: 21, height: 21 }}
-                />
-              </TouchableOpacity>
-            </View>
-          ),
-        })}
-      />
-      <Tab.Screen
-        name='Messages'
-        component={MessagesStack}
-        options={({ navigation }) => ({
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                top: 5,
-              }}
-            >
-              <Image
-                source={require("../assets/chat.png")}
-                resizeMode='contain'
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94", //outline of the icon, red or grey
-                }}
-              />
-              <Text
-                style={{
-                  color: focused ? "#e32f45" : "#748c94",
-                  fontSize: 12,
-                }}
-              >
-                Chats
-              </Text>
-            </View>
-          ),
-          tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
-          headerShown: getHeaderVisibility(),
-          headerTitleAlign: "center",
-          headerTitle: "Chats",
-          headerRight: () => (
-            <View
-              style={{
-                marginRight: 10,
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
@@ -1016,14 +823,14 @@ const AppStack = ({ currentRoute }) => {
             >
               <TouchableOpacity
                 style={{
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("ProfileMessages")}
+                onPress={() => navigation.navigate("ProfileAdd")}
               >
                 <Image
                   source={require("../assets/profile.png")}
@@ -1034,14 +841,234 @@ const AppStack = ({ currentRoute }) => {
               <TouchableOpacity
                 style={{
                   marginLeft: 15,
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "white",
                   borderRadius: 25,
                   height: 35,
                   width: 35,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("SearchScreen")} //test only change later
+                onPress={() => navigation.navigate("Search")}
+              >
+                <Image
+                  source={require("../assets/search.png")}
+                  resizeMode={"contain"}
+                  style={{ width: 21, height: 21 }}
+                />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
+      <Tab.Screen
+        name='List'
+        component={ListStack}
+        options={({ navigation }) => ({
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                top: Platform.OS === "ios" ? 15 : 0,
+              }}
+            >
+              <Image
+                source={require("../assets/list.png")}
+                resizeMode='contain'
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? "#e32f45" : "#748c94",
+                }}
+              />
+              <Text
+                style={{
+                  color: focused ? "#e32f45" : "#748c94",
+                  fontSize: 12,
+                }}
+              >
+                
+              </Text>
+            </View>
+          ),
+
+          headerTitleAlign: "center",
+          headerTitle: "Lists",
+          headerShown: getHeaderVisibilityListTab(),
+          tabBarStyle: getTabBarVisibilityListTab(),
+          headerRight: () => (
+            <View
+              style={{
+                marginRight: 10,
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 25,
+                  height: 35,
+                  width: 35,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => navigation.navigate("AddFriends")}
+              >
+                <Image
+                  source={require("../assets/addperson.png")}
+                  resizeMode={"contain"}
+                  style={{ width: 21, height: 21 }}
+                />
+              </TouchableOpacity>
+            </View>
+          ),
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 12,
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 25,
+                  height: 35,
+                  width: 35,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => navigation.navigate("ProfileList")}
+              >
+                <Image
+                  source={require("../assets/profile.png")}
+                  resizeMode={"contain"}
+                  style={{ width: 21, height: 21 }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  marginLeft: 15,
+                  backgroundColor: "white",
+                  borderRadius: 25,
+                  height: 35,
+                  width: 35,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => navigation.navigate("Search")}
+              >
+                <Image
+                  source={require("../assets/search.png")}
+                  resizeMode={"contain"}
+                  style={{ width: 21, height: 21 }}
+                />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
+      <Tab.Screen
+        name='Feed'
+        component={ExploreStack}
+        options={({ navigation }) => ({
+          tabBarIcon: ({ focused }) => (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                top: Platform.OS === "ios" ? 15 : 0,
+              }}
+            >
+              <Image
+                source={require("../assets/homepng.png")}
+                resizeMode='contain'
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? "#e32f45" : "#748c94",
+                }}
+              />
+              <Text
+                style={{
+                  color: focused ? "#e32f45" : "#748c94",
+                  fontSize: 12,
+                }}
+              >
+                
+              </Text>
+            </View>
+          ),
+
+          headerTitleAlign: "center",
+          headerTitle: "Feed",
+          headerShown: getHeaderVisibilityExploreTab(),
+          tabBarStyle: getTabBarVisibilityExploreTab(),
+          headerRight: () => (
+            <View
+              style={{
+                marginRight: 10,
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 25,
+                  height: 35,
+                  width: 35,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => navigation.navigate("AddFriends")}
+              >
+                <Image
+                  source={require("../assets/addperson.png")}
+                  resizeMode={"contain"}
+                  style={{ width: 21, height: 21 }}
+                />
+              </TouchableOpacity>
+            </View>
+          ),
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 12,
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 25,
+                  height: 35,
+                  width: 35,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => navigation.navigate("ProfileExplore")}
+              >
+                <Image
+                  source={require("../assets/profile.png")}
+                  resizeMode={"contain"}
+                  style={{ width: 21, height: 21 }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  marginLeft: 15,
+                  backgroundColor: "white",
+                  borderRadius: 25,
+                  height: 35,
+                  width: 35,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => navigation.navigate("Search")}
               >
                 <Image
                   source={require("../assets/search.png")}

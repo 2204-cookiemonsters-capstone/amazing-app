@@ -39,8 +39,6 @@ const Messages = (props) => {
         }
       });
 
-      //doc.id returns the auto genned id
-
       const userData = []; //data to be rendered on messages screen for each chat
 
       for (let i = 0; i < chats.length; i++) {
@@ -54,24 +52,39 @@ const Messages = (props) => {
 
         userData.push({
           ...docSnap.data(),
-          lastMessage: chats.find(
-            (chat) =>
-              chat.userids.includes(docSnap.data().userid) &&
-              chat.userids.includes(auth.currentUser.uid)
-          ).messages[0].message,
+          lastMessage:
+            chats.find(
+              (chat) =>
+                chat.userids.includes(docSnap.data().userid) &&
+                chat.userids.includes(auth.currentUser.uid)
+            ).messages.length !== 0
+              ? chats.find(
+                  (chat) =>
+                    chat.userids.includes(docSnap.data().userid) &&
+                    chat.userids.includes(auth.currentUser.uid)
+                ).messages[0].message
+              : "",
+
           chatid: chats.find(
             (chat) =>
               chat.userids.includes(docSnap.data().userid) &&
               chat.userids.includes(auth.currentUser.uid)
           ).chatid,
-          timesent: chats
-            .find(
+          timesent:
+            chats.find(
               (chat) =>
                 chat.userids.includes(docSnap.data().userid) &&
                 chat.userids.includes(auth.currentUser.uid)
-            )
-            .messages[0].time.toDate()
-            .getTime(),
+            ).messages.length !== 0
+              ? chats
+                  .find(
+                    (chat) =>
+                      chat.userids.includes(docSnap.data().userid) &&
+                      chat.userids.includes(auth.currentUser.uid)
+                  )
+                  .messages[0].time.toDate()
+                  .getTime()
+              : null,
         });
       }
 
@@ -103,7 +116,7 @@ const Messages = (props) => {
   return (
     <View style={styles.container}>
       {allChatsData.length ? (
-        <View>
+        <View style={{width:"100%"}}> 
           <FlatList
             data={allChatsData}
             keyExtractor={(chat) => chat.chatid} //might not see if we cant get the id
@@ -128,13 +141,22 @@ const Messages = (props) => {
               >
                 <View style={styles.userinfo}>
                   <View style={styles.userimage}>
-                    <Image source={image} style={styles.img} />
+                    <Image
+                      source={
+                        item.profilepic || item.profilepic !== undefined
+                          ? { uri: item.profilepic }
+                          : require("../../assets/defaultprofileicon.webp")
+                      }
+                      style={styles.img}
+                    />
                   </View>
                   <View style={styles.textView}>
                     <View style={styles.userinfotext}>
                       <Text style={styles.username}>{item.name}</Text>
 
-                      {getTimeDifference(item.timesent) < 60 ? (
+                      {!item.timesent ? null : getTimeDifference(
+                          item.timesent
+                        ) < 60 ? (
                         <Text
                           style={{
                             fontSize: 12,
@@ -171,9 +193,11 @@ const Messages = (props) => {
                           }}
                         >
                           {Math.floor(getTimeDifference(item.timesent) / 1440)}{" "}
-                          {Math.floor(
-                            getTimeDifference(item.timesent) / 1440
-                          ) === 1
+                          {!item.timesent
+                            ? null
+                            : Math.floor(
+                                getTimeDifference(item.timesent) / 1440
+                              ) === 1
                             ? "day Ago"
                             : "days Ago"}
                         </Text>
@@ -181,8 +205,10 @@ const Messages = (props) => {
                     </View>
                     <View style={{ width: "65%" }}>
                       <Text style={styles.messageText}>
-                        {item.lastMessage.length <= 25 &&
-                        item.lastMessage.length > 0
+                        {!item.lastMessage.length
+                          ? ""
+                          : item.lastMessage.length <= 25 &&
+                            item.lastMessage.length > 0
                           ? item.lastMessage
                           : item.lastMessage.length > 25
                           ? item.lastMessage.slice(0, 23) + "..."
@@ -199,9 +225,9 @@ const Messages = (props) => {
               width: 60,
               height: 60,
               backgroundColor: "#ee6e73",
-              position: "absolute",
-              bottom: 80,
-              right: 20,
+              position: "relative",
+              top: "90%",
+              left: "80%",
               borderRadius: 70 / 2,
               alignItems: "center",
               justifyContent: "center",
@@ -233,19 +259,28 @@ const Messages = (props) => {
             marginTop: "80%",
           }}
         >
-          <Text>You have no Chats</Text>
+          <Text>You have no chats</Text>
           <TouchableOpacity
             style={{
               borderRadius: 25,
-              backgroundColor: "red",
+              backgroundColor: "white",
               width: 100,
               height: 30,
               justifyContent: "center",
               alignItems: "center",
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+              marginTop: 10,
             }}
             onPress={() => props.navigation.navigate("AddChat")}
           >
-            <Text style={{ color: "blue" }}> Add a Chat</Text>
+            <Text style={{ color: "black" }}> Add a Chat</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -259,6 +294,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F0F0F0",
     marginTop: 0,
+    width: "100%",
   },
   userinfo: {
     flexDirection: "row",

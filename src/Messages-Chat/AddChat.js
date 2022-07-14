@@ -30,7 +30,6 @@ const image = require("../../assets/favicon.png");
 const AddChat = ({ navigation }) => {
   const [allFriends, setAllFriends] = useState([]);
   const [selectedChatId, setSelectedChatId] = useState("");
-  const [userName, setUserName] = useState("");
   const [searchValue, setSearchValue] = useState("");
 
   const [renderedUsers, setRenderedUsers] = useState([]);
@@ -90,20 +89,24 @@ const AddChat = ({ navigation }) => {
   useEffect(() => {
     fetchAllFriends();
     setSelectedChatId("");
-    setUserName("");
   }, []);
 
   const handleAddChat = async (userid) => {
     const q = query(
-      collection(firestore, "chats"),
-      where("userids", "array-contains", auth.currentUser.uid && userid)
+      collection(firestore, "chats")
+      // where("userids", "array-contains", auth.currentUser.uid && userid)
     );
 
     const snapShot = await getDocs(q);
 
     const selectedChat = [];
     snapShot.forEach((docs) => {
-      selectedChat.push(docs.data());
+      if (
+        docs.data().userids.includes(auth.currentUser.uid) &&
+        docs.data().userids.includes(userid)
+      ) {
+        selectedChat.push(docs.data());
+      }
     });
 
     if (!selectedChat.length) {
@@ -116,35 +119,32 @@ const AddChat = ({ navigation }) => {
 
       snap.forEach(async (docs) => {
         const ref = doc(firestore, "chats", docs.id);
-        await setDoc(ref, { chatid: docs.id }, { merge: true });
-      });
-      const index = allFriends.indexOf(
-        allFriends.find((item) => item.userid === userid)
-      );
 
-      allFriends[index] = { ...allFriends[index], chatid: snap[0].id };
-      navigation.navigate("ChatScreen", {
-        chatid: allFriends[index].chatid,
-        username: allFriends[index].username,
-      });
-    } else {
-      const index = allFriends.indexOf(
-        allFriends.find((item) => item.userid === userid)
-      );
-
-      allFriends[index] = {
-        ...allFriends[index],
-        chatid: selectedChat[0].chatid,
-      };
-      navigation.navigate("ChatScreen", {
-        chatid: allFriends[index].chatid,
-        username: allFriends[index].username,
+        if (
+          docs.data().userids.includes(auth.currentUser.uid) &&
+          docs.data().userids.includes(userid)
+        ) {
+          selectedChat.push(docs.data());
+          await setDoc(ref, { chatid: docs.id }, { merge: true });
+        }
       });
     }
 
-    const userRef = doc(firestore, "users", userid);
-    const userSnap = await getDoc(userRef);
-    setUserName(userSnap.data().name);
+    const index = allFriends.indexOf(
+      allFriends.find((item) => item.userid === userid)
+    );
+
+    allFriends[index] = {
+      ...allFriends[index],
+      chatid: selectedChat[0].chatid,
+    };
+    //allfriends[index] - undefined
+    //for some reason, allfriends does not have chatid first time, even though the code right above literally adds it to the object
+    console.log("CHATIDDDDD", allFriends[index]);
+    navigation.navigate("ChatScreen", {
+      chatid: allFriends[index].chatid,
+      username: allFriends[index].name,
+    });
   };
 
   return (
@@ -253,629 +253,594 @@ const AddChat = ({ navigation }) => {
         />
       </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-      >
-        {searchValue === "" || !searchValue ? (
-          <View
+      {!allFriends.length ? (
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "40%",
+          }}
+        >
+          <Text>You have no friends</Text>
+          <TouchableOpacity
             style={{
-              height: showAll ? height() : heightNoShowAll(),
-              marginTop: 13,
+              borderRadius: 25,
+              backgroundColor: "white",
+              width: 100,
+              height: 30,
+              justifyContent: "center",
+              alignItems: "center",
+              shadowColor: "#7F5DF0",
+              shadowOffset: {
+                width: 0,
+                height: 10,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.5,
+              elevation: 5,
+              marginTop: 10,
             }}
+            onPress={() => navigation.navigate("AddFriends")}
           >
-            {showAll
-              ? allFriends.map((item) => (
-                  <TouchableOpacity
-                    key={item.userid}
-                    style={{
-                      marginLeft: 15,
-                      marginRight: 15,
-                      paddingTop: 7,
-                      paddingBottom: 0,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
-                      borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
-                      borderTopRightRadius: item === allFriends[0] ? 8 : 0,
-                      backgroundColor: "white",
-                      marginBottom: 1,
-                      shadowColor: "#7F5DF0",
-                      shadowOffset: {
-                        width: 0,
-                        height: 10,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.5,
-                      elevation: 5,
-                    }}
-                  >
-                    <TouchableOpacity>
-                      <Image
-                        source={image}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          marginTop: 10,
-                          marginBottom: 10,
-                          marginRight: 5,
-                        }}
-                      />
-                    </TouchableOpacity>
-                    <View
+            <Text style={{ color: "black" }}> Add Friends</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
+          {searchValue === "" || !searchValue ? (
+            <View
+              style={{
+                height: showAll ? height() : heightNoShowAll(),
+                marginTop: 13,
+              }}
+            >
+              {showAll
+                ? allFriends.map((item) => (
+                    <TouchableOpacity
+                      key={item.userid}
                       style={{
+                        marginLeft: 15,
+                        marginRight: 15,
+                        paddingTop: 7,
+                        paddingBottom: 0,
+                        borderColor: "#cccccc",
                         display: "flex",
-                        flexDirection: "column",
-                        width: "42%",
+                        flexDirection: "row",
+                        paddingLeft: 10,
+                        paddingRight: 15,
+                        borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
+                        borderTopRightRadius: item === allFriends[0] ? 8 : 0,
+                        backgroundColor: "white",
+                        marginBottom: 1,
+                        shadowColor: "#7F5DF0",
+                        shadowOffset: {
+                          width: 0,
+                          height: 10,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.5,
+                        elevation: 5,
                       }}
                     >
-                      <Text style={{ fontSize: 18, fontWeight: "400" }}>
-                        {item.name}
-                      </Text>
-                      <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
-                    </View>
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 25,
-                      }}
-                    >
-                      <TouchableOpacity
+                      <TouchableOpacity>
+                        <Image
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../../assets/defaultprofileicon.webp")
+                          }
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            marginRight: 5,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <View
                         style={{
-                          backgroundColor: "#CBC3E3",
-                          borderRadius: 25,
-                          height: 30,
-                          width: 95,
-                          justifyContent: "center",
-                          alignItems: "center",
                           display: "flex",
-                          flexDirection: "row",
-                        }}
-                        onPress={() => {
-                          handleAddChat(item.userid);
+                          flexDirection: "column",
+                          width: "42%",
                         }}
                       >
-                        <View
-                          style={{
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <Image
-                            source={require("../../assets/messageimage.png")}
-                            style={{ width: 15, height: 15 }}
-                          />
-                        </View>
-                        <Text style={{ marginLeft: 5 }}>Chat</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </TouchableOpacity>
-                ))
-              : firstThreeUsers.map((item) => (
-                  <TouchableOpacity
-                    key={item.userid}
-                    style={{
-                      marginLeft: 15,
-                      marginRight: 15,
-                      paddingTop: 7,
-                      paddingBottom: 0,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
-                      borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
-                      borderTopRightRadius: item === allFriends[0] ? 8 : 0,
-                      backgroundColor: "white",
-                      marginBottom: 1,
-                      shadowColor: "#7F5DF0",
-                      shadowOffset: {
-                        width: 0,
-                        height: 10,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.5,
-                      elevation: 5,
-                    }}
-                  >
-                    <TouchableOpacity>
-                      <Image
-                        source={image}
+                        <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                          {item.name}
+                        </Text>
+                        <Text style={{ color: "gray" }}>{item.username}</Text>
+                        {/* <Text>3 Mutual Friends</Text> */}
+                      </View>
+                      <View
                         style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          marginTop: 10,
-                          marginBottom: 10,
-                          marginRight: 5,
-                        }}
-                      />
-                    </TouchableOpacity>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "42%",
-                      }}
-                    >
-                      <Text style={{ fontSize: 18, fontWeight: "400" }}>
-                        {item.name}
-                      </Text>
-                      <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
-                    </View>
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 25,
-                      }}
-                    >
-                      <TouchableOpacity
-                        style={{
-                          backgroundColor: "#CBC3E3",
-                          borderRadius: 25,
-                          height: 30,
-                          width: 95,
-                          justifyContent: "center",
                           alignItems: "center",
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                        onPress={() => {
-                          handleAddChat(item.userid);
+                          justifyContent: "center",
+                          marginLeft: 25,
                         }}
                       >
-                        <View
+                        <TouchableOpacity
                           style={{
-                            alignItems: "center",
+                            backgroundColor: "#CBC3E3",
+                            borderRadius: 25,
+                            height: 30,
+                            width: 95,
                             justifyContent: "center",
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "row",
+                          }}
+                          onPress={() => {
+                            handleAddChat(item.userid);
                           }}
                         >
-                          <Image
-                            source={require("../../assets/messageimage.png")}
-                            style={{ width: 15, height: 15 }}
-                          />
-                        </View>
-                        <Text style={{ marginLeft: 5 }}>Chat</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-            {!showAll ? (
-              <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  marginRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  borderColor: "#cccccc",
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  height: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 8,
-                  backgroundColor: "white",
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
-                onPress={() => setShowAll(true)}
-              >
-                <Text>View More</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  marginRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  borderColor: "#cccccc",
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  height: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 8,
-                  backgroundColor: "white",
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
-                onPress={() => setShowAll(false)}
-              >
-                <Text>View Less</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        ) : searchValue !== "" && renderedUsers.length ? (
-          <View
-            style={{
-              height: showAll ? height() : heightNoShowAll(),
-              marginTop: 13,
-            }}
-          >
-            {showAllSearch
-              ? renderedUsers.map((item) => (
-                  <TouchableOpacity
-                    key={item.userid}
-                    style={{
-                      marginLeft: 15,
-                      marginRight: 15,
-                      paddingTop: 7,
-                      paddingBottom: 0,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
-                      borderTopLeftRadius: item === renderedUsers[0] ? 8 : 0,
-                      borderTopRightRadius: item === renderedUsers[0] ? 8 : 0,
-                      borderBottomLeftRadius:
-                        renderedUsers.length <= 5 &&
-                        item === renderedUsers[renderedUsers.length - 1]
-                          ? 8
-                          : 0,
-                      borderBottomRightRadius:
-                        renderedUsers.length <= 5 &&
-                        item === renderedUsers[renderedUsers.length - 1]
-                          ? 8
-                          : 0,
-                      backgroundColor: "white",
-                      marginBottom: 1,
-                      shadowColor: "#7F5DF0",
-                      shadowOffset: {
-                        width: 0,
-                        height: 10,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.5,
-                      elevation: 5,
-                    }}
-                  >
-                    <TouchableOpacity>
-                      <Image
-                        source={image}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          marginTop: 10,
-                          marginBottom: 10,
-                          marginRight: 5,
-                        }}
-                      />
+                          <View
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Image
+                              source={require("../../assets/messageimage.png")}
+                              style={{ width: 15, height: 15 }}
+                            />
+                          </View>
+                          <Text style={{ marginLeft: 5 }}>Chat</Text>
+                        </TouchableOpacity>
+                      </View>
                     </TouchableOpacity>
-                    <View
+                  ))
+                : firstThreeUsers.map((item) => (
+                    <TouchableOpacity
+                      key={item.userid}
                       style={{
+                        marginLeft: 15,
+                        marginRight: 15,
+                        paddingTop: 7,
+                        paddingBottom: 0,
+                        borderColor: "#cccccc",
                         display: "flex",
-                        flexDirection: "column",
-                        width: "42%",
+                        flexDirection: "row",
+                        paddingLeft: 10,
+                        paddingRight: 15,
+                        borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
+                        borderTopRightRadius: item === allFriends[0] ? 8 : 0,
+                        backgroundColor: "white",
+                        marginBottom: 1,
+                        shadowColor: "#7F5DF0",
+                        shadowOffset: {
+                          width: 0,
+                          height: 10,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.5,
+                        elevation: 5,
                       }}
                     >
-                      <Text style={{ fontSize: 18, fontWeight: "400" }}>
-                        {item.name}
-                      </Text>
-                      <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
-                    </View>
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 25,
-                      }}
-                    >
-                      <TouchableOpacity
+                      <TouchableOpacity>
+                        <Image
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../../assets/defaultprofileicon.webp")
+                          }
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            marginRight: 5,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <View
                         style={{
-                          backgroundColor: "#CBC3E3",
-                          borderRadius: 25,
-                          height: 30,
-                          width: 95,
-                          justifyContent: "center",
-                          alignItems: "center",
                           display: "flex",
-                          flexDirection: "row",
-                        }}
-                        onPress={() => {
-                          handleAddChat(item.userid);
+                          flexDirection: "column",
+                          width: "42%",
                         }}
                       >
-                        <View
-                          style={{
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <Image
-                            source={require("../../assets/messageimage.png")}
-                            style={{ width: 15, height: 15 }}
-                          />
-                        </View>
-                        <Text style={{ marginLeft: 5 }}>Chat</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </TouchableOpacity>
-                ))
-              : firstThreeUsers.map((item) => (
-                  <TouchableOpacity
-                    key={item.userid}
-                    style={{
-                      marginLeft: 15,
-                      marginRight: 15,
-                      paddingTop: 7,
-                      paddingBottom: 0,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
-                      borderTopLeftRadius: item === renderedUsers[0] ? 8 : 0,
-                      borderTopRightRadius: item === renderedUsers[0] ? 8 : 0,
-                      borderBottomLeftRadius:
-                        renderedUsers.length <= 5 &&
-                        item === renderedUsers[renderedUsers.length - 1]
-                          ? 8
-                          : 0,
-                      borderBottomRightRadius:
-                        renderedUsers.length <= 5 &&
-                        item === renderedUsers[renderedUsers.length - 1]
-                          ? 8
-                          : 0,
-                      backgroundColor: "white",
-                      marginBottom: 1,
-                      shadowColor: "#7F5DF0",
-                      shadowOffset: {
-                        width: 0,
-                        height: 10,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.5,
-                      elevation: 5,
-                    }}
-                  >
-                    <TouchableOpacity>
-                      <Image
-                        source={image}
+                        <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                          {item.name}
+                        </Text>
+                        <Text style={{ color: "gray" }}>{item.username}</Text>
+                        {/* <Text>3 Mutual Friends</Text> */}
+                      </View>
+                      <View
                         style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          marginTop: 10,
-                          marginBottom: 10,
-                          marginRight: 5,
-                        }}
-                      />
-                    </TouchableOpacity>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "42%",
-                      }}
-                    >
-                      <Text style={{ fontSize: 18, fontWeight: "400" }}>
-                        {item.name}
-                      </Text>
-                      <Text style={{ color: "gray" }}>{item.username}</Text>
-                      <Text>3 Mutual Friends</Text>
-                    </View>
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 25,
-                      }}
-                    >
-                      <TouchableOpacity
-                        style={{
-                          backgroundColor: "#CBC3E3",
-                          borderRadius: 25,
-                          height: 30,
-                          width: 95,
-                          justifyContent: "center",
                           alignItems: "center",
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                        onPress={() => {
-                          handleAddChat(item.userid);
+                          justifyContent: "center",
+                          marginLeft: 25,
                         }}
                       >
-                        <View
+                        <TouchableOpacity
                           style={{
-                            alignItems: "center",
+                            backgroundColor: "#CBC3E3",
+                            borderRadius: 25,
+                            height: 30,
+                            width: 95,
                             justifyContent: "center",
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "row",
+                          }}
+                          onPress={() => {
+                            handleAddChat(item.userid);
                           }}
                         >
-                          <Image
-                            source={require("../../assets/messageimage.png")}
-                            style={{ width: 15, height: 15 }}
-                          />
-                        </View>
-                        <Text style={{ marginLeft: 5 }}>Chat</Text>
+                          <View
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Image
+                              source={require("../../assets/messageimage.png")}
+                              style={{ width: 15, height: 15 }}
+                            />
+                          </View>
+                          <Text style={{ marginLeft: 5 }}>Chat</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+              {!showAll ? (
+                <TouchableOpacity
+                  style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    paddingTop: 7,
+                    paddingBottom: 7,
+                    borderColor: "#cccccc",
+                    display: "flex",
+                    flexDirection: "row",
+                    paddingLeft: 10,
+                    paddingRight: 15,
+                    height: 40,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderBottomRightRadius: 8,
+                    borderBottomLeftRadius: 8,
+                    backgroundColor: "white",
+                    shadowColor: "#7F5DF0",
+                    shadowOffset: {
+                      width: 0,
+                      height: 10,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.5,
+                    elevation: 5,
+                  }}
+                  onPress={() => setShowAll(true)}
+                >
+                  <Text>View More</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    paddingTop: 7,
+                    paddingBottom: 7,
+                    borderColor: "#cccccc",
+                    display: "flex",
+                    flexDirection: "row",
+                    paddingLeft: 10,
+                    paddingRight: 15,
+                    height: 40,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderBottomRightRadius: 8,
+                    borderBottomLeftRadius: 8,
+                    backgroundColor: "white",
+                    shadowColor: "#7F5DF0",
+                    shadowOffset: {
+                      width: 0,
+                      height: 10,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.5,
+                    elevation: 5,
+                  }}
+                  onPress={() => setShowAll(false)}
+                >
+                  <Text>View Less</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ) : searchValue !== "" && renderedUsers.length ? (
+            <View
+              style={{
+                height: showAll ? height() : heightNoShowAll(),
+                marginTop: 13,
+              }}
+            >
+              {showAllSearch
+                ? renderedUsers.map((item) => (
+                    <TouchableOpacity
+                      key={item.userid}
+                      style={{
+                        marginLeft: 15,
+                        marginRight: 15,
+                        paddingTop: 7,
+                        paddingBottom: 0,
+                        borderColor: "#cccccc",
+                        display: "flex",
+                        flexDirection: "row",
+                        paddingLeft: 10,
+                        paddingRight: 15,
+                        borderTopLeftRadius: item === renderedUsers[0] ? 8 : 0,
+                        borderTopRightRadius: item === renderedUsers[0] ? 8 : 0,
+                        borderBottomLeftRadius:
+                          renderedUsers.length <= 5 &&
+                          item === renderedUsers[renderedUsers.length - 1]
+                            ? 8
+                            : 0,
+                        borderBottomRightRadius:
+                          renderedUsers.length <= 5 &&
+                          item === renderedUsers[renderedUsers.length - 1]
+                            ? 8
+                            : 0,
+                        backgroundColor: "white",
+                        marginBottom: 1,
+                        shadowColor: "#7F5DF0",
+                        shadowOffset: {
+                          width: 0,
+                          height: 10,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.5,
+                        elevation: 5,
+                      }}
+                    >
+                      <TouchableOpacity>
+                        <Image
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../../assets/defaultprofileicon.webp")
+                          }
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            marginRight: 5,
+                          }}
+                        />
                       </TouchableOpacity>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-            {!showAllSearch && renderedUsers > 5 ? (
-              <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  marginRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  borderColor: "#cccccc",
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  height: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 8,
-                  backgroundColor: "white",
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
-                onPress={() => setShowAllSearch(true)}
-              >
-                <Text>View More</Text>
-              </TouchableOpacity>
-            ) : showAllSearch && renderedUsers > 5 ? (
-              <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  marginRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  borderColor: "#cccccc",
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  height: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 8,
-                  backgroundColor: "white",
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
-                onPress={() => setShowAllSearch(false)}
-              >
-                <Text>View Less</Text>
-              </TouchableOpacity>
-            ) : null}
-          </View>
-        ) : null}
-      </ScrollView>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          width: "42%",
+                        }}
+                      >
+                        <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                          {item.name}
+                        </Text>
+                        <Text style={{ color: "gray" }}>{item.username}</Text>
+                        {/* <Text>3 Mutual Friends</Text> */}
+                      </View>
+                      <View
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginLeft: 25,
+                        }}
+                      >
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: "#CBC3E3",
+                            borderRadius: 25,
+                            height: 30,
+                            width: 95,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "row",
+                          }}
+                          onPress={() => {
+                            handleAddChat(item.userid);
+                          }}
+                        >
+                          <View
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Image
+                              source={require("../../assets/messageimage.png")}
+                              style={{ width: 15, height: 15 }}
+                            />
+                          </View>
+                          <Text style={{ marginLeft: 5 }}>Chat</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+                  ))
+                : firstThreeUsers.map((item) => (
+                    <TouchableOpacity
+                      key={item.userid}
+                      style={{
+                        marginLeft: 15,
+                        marginRight: 15,
+                        paddingTop: 7,
+                        paddingBottom: 0,
+                        borderColor: "#cccccc",
+                        display: "flex",
+                        flexDirection: "row",
+                        paddingLeft: 10,
+                        paddingRight: 15,
+                        borderTopLeftRadius: item === renderedUsers[0] ? 8 : 0,
+                        borderTopRightRadius: item === renderedUsers[0] ? 8 : 0,
+                        borderBottomLeftRadius:
+                          renderedUsers.length <= 5 &&
+                          item === renderedUsers[renderedUsers.length - 1]
+                            ? 8
+                            : 0,
+                        borderBottomRightRadius:
+                          renderedUsers.length <= 5 &&
+                          item === renderedUsers[renderedUsers.length - 1]
+                            ? 8
+                            : 0,
+                        backgroundColor: "white",
+                        marginBottom: 1,
+                        shadowColor: "#7F5DF0",
+                        shadowOffset: {
+                          width: 0,
+                          height: 10,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.5,
+                        elevation: 5,
+                      }}
+                    >
+                      <TouchableOpacity>
+                        <Image
+                          source={
+                            item.profilepic || item.profilepic !== undefined
+                              ? { uri: item.profilepic }
+                              : require("../../assets/defaultprofileicon.webp")
+                          }
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
+                            marginTop: 10,
+                            marginBottom: 10,
+                            marginRight: 5,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          width: "42%",
+                        }}
+                      >
+                        <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                          {item.name}
+                        </Text>
+                        <Text style={{ color: "gray" }}>{item.username}</Text>
+                        {/* <Text>3 Mutual Friends</Text> */}
+                      </View>
+                      <View
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginLeft: 25,
+                        }}
+                      >
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: "#CBC3E3",
+                            borderRadius: 25,
+                            height: 30,
+                            width: 95,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "row",
+                          }}
+                          onPress={() => {
+                            handleAddChat(item.userid);
+                          }}
+                        >
+                          <View
+                            style={{
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Image
+                              source={require("../../assets/messageimage.png")}
+                              style={{ width: 15, height: 15 }}
+                            />
+                          </View>
+                          <Text style={{ marginLeft: 5 }}>Chat</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+              {!showAllSearch && renderedUsers > 5 ? (
+                <TouchableOpacity
+                  style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    paddingTop: 7,
+                    paddingBottom: 7,
+                    borderColor: "#cccccc",
+                    display: "flex",
+                    flexDirection: "row",
+                    paddingLeft: 10,
+                    paddingRight: 15,
+                    height: 40,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderBottomRightRadius: 8,
+                    borderBottomLeftRadius: 8,
+                    backgroundColor: "white",
+                    shadowColor: "#7F5DF0",
+                    shadowOffset: {
+                      width: 0,
+                      height: 10,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.5,
+                    elevation: 5,
+                  }}
+                  onPress={() => setShowAllSearch(true)}
+                >
+                  <Text>View More</Text>
+                </TouchableOpacity>
+              ) : showAllSearch && renderedUsers > 5 ? (
+                <TouchableOpacity
+                  style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    paddingTop: 7,
+                    paddingBottom: 7,
+                    borderColor: "#cccccc",
+                    display: "flex",
+                    flexDirection: "row",
+                    paddingLeft: 10,
+                    paddingRight: 15,
+                    height: 40,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderBottomRightRadius: 8,
+                    borderBottomLeftRadius: 8,
+                    backgroundColor: "white",
+                    shadowColor: "#7F5DF0",
+                    shadowOffset: {
+                      width: 0,
+                      height: 10,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.5,
+                    elevation: 5,
+                  }}
+                  onPress={() => setShowAllSearch(false)}
+                >
+                  <Text>View Less</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          ) : null}
+        </ScrollView>
+      )}
     </View>
   );
 };
 
 export default AddChat;
-
-/* <TouchableOpacity
-              key={item.userid}
-              style={{
-                marginLeft: 15,
-                marginRight: 15,
-                paddingTop: 7,
-                paddingBottom: 0,
-                borderColor: "#cccccc",
-                display: "flex",
-                flexDirection: "row",
-                paddingLeft: 10,
-                paddingRight: 15,
-                borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
-                borderTopRightRadius: item === allFriends[0] ? 8 : 0,
-                backgroundColor: "white",
-                marginBottom: 1,
-                shadowColor: "#7F5DF0",
-                shadowOffset: {
-                  width: 0,
-                  height: 10,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.5,
-                elevation: 5,
-              }}
-            >
-              <TouchableOpacity>
-                <Image
-                  source={image}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 25,
-                    marginTop: 10,
-                    marginBottom: 10,
-                    marginRight: 5,
-                  }}
-                />
-              </TouchableOpacity>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "42%",
-                }}
-              >
-                <Text style={{ fontSize: 18, fontWeight: "400" }}>
-                  {item.name}
-                </Text>
-                <Text style={{ color: "gray" }}>{item.username}</Text>
-                <Text>3 Mutual Friends</Text>
-              </View>
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginLeft: 25,
-                }}
-              >
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "#CBC3E3",
-                    borderRadius: 25,
-                    height: 30,
-                    width: 95,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Image
-                      source={require("../../assets/ADDFRIEND2.png")}
-                      style={{ width: 15, height: 15 }}
-                    />
-                  </View>
-                  <Text style={{ marginLeft: 5 }}>Add</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity> */
