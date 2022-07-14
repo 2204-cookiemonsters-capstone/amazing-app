@@ -237,6 +237,28 @@ const AddFriends = ({ navigation }) => {
     Toast.show("Friend Request Accepted", {
       duration: Toast.durations.SHORT,
     });
+
+    await addDoc(collection(firestore, "chats"), {
+      userids: [auth.currentUser.uid, userid],
+      messages: [],
+    });
+
+    const q = query(
+      collection(firestore, "chats")
+      // where("userids", "array-contains", auth.currentUser.uid && userid)
+    );
+    const snap = await getDocs(q);
+
+    snap.forEach(async (docs) => {
+      const ref = doc(firestore, "chats", docs.id);
+
+      if (
+        docs.data().userids.includes(auth.currentUser.uid) &&
+        docs.data().userids.includes(userid)
+      ) {
+        await setDoc(ref, { chatid: docs.id }, { merge: true });
+      }
+    });
   };
 
   const toggleFriendModal = () => {
@@ -275,12 +297,13 @@ const AddFriends = ({ navigation }) => {
             }}
             onPress={() => navigation.goBack()}
           >
-            <AntDesign name='left' color='black' size={18} />
+            <AntDesign name="left" color="black" size={18} />
           </TouchableOpacity>
           <View style={{ flexGrow: 1 }} />
-          <Text style={{ fontWeight: "700", fontSize: 22, marginRight: 32 }}>Add Friends</Text>
+          <Text style={{ fontWeight: "700", fontSize: 22, marginRight: 32 }}>
+            Add Friends
+          </Text>
           <View style={{ flexGrow: 1 }} />
-         
         </View>
 
         <View
@@ -316,7 +339,7 @@ const AddFriends = ({ navigation }) => {
             }}
           />
           <TextInput
-            placeholder='Find Friends'
+            placeholder="Find Friends"
             onChangeText={(value) => {
               setSearchValue(value);
               search(value);
@@ -760,7 +783,7 @@ const AddFriends = ({ navigation }) => {
           </View>
         </ScrollView>
         <Modal
-          animationType='slide'
+          animationType="slide"
           visible={showFriendModal}
           onRequestClose={() => toggleFriendModal()}
         >
