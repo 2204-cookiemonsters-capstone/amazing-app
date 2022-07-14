@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Text, View, TouchableOpacity, FlatList, Modal } from "react-native";
 import {ActivityIndicator} from 'react-native-paper';
 import { auth, firestore } from "../firebase";
-import { doc, getDocs, addDoc, collection, setDoc } from "firebase/firestore";
+import { doc, getDocs, addDoc, collection, setDoc, deleteDoc } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 import ToDoList from "./ToDoList";
 import { todoListStyle, color } from "../styles";
@@ -43,7 +43,7 @@ const List = ({ navigation }) => {
   }
 
   const renderSingleList = list => {
-    return <ToDoList list={list} updateList={updateList}/>
+    return <ToDoList list={list} updateList={updateList} deleteList={deleteList}/>
   }
 
   const addList = async (list) => {
@@ -64,6 +64,12 @@ const List = ({ navigation }) => {
     setDoc(todoRef, list, {merge: true});
     //Update state here
     setLists(lists.map(item => item.id === list.id ? list : item))
+  }
+
+  const deleteList = async (list) => {
+    await deleteDoc(doc(firestore, 'users', auth.currentUser.uid, 'Todo Lists', list.id))
+    let updatedLists = [...lists].filter(item => item.id != list.id)
+    setLists(updatedLists);
   }
 
   return (
@@ -93,16 +99,26 @@ const List = ({ navigation }) => {
         <Text style={todoListStyle.add}>Add List</Text>
       </View>
 
-      <View style={{ height: 275, paddingLeft: 32 }}>
-        <FlatList
-          data={lists}
-          keyExtractor={(item) => item.id}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => renderSingleList(item)}
-          keyboardShouldPersistTaps = 'always'
-        />
-      </View>
+      {lists.length > 0 ?
+        (
+          <View style={{ height: 275, paddingLeft: 30 }}>
+            <FlatList
+              data={lists}
+              keyExtractor={(item) => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => renderSingleList(item)}
+              keyboardShouldPersistTaps = 'always'
+            />
+          </View>
+        ) :
+        (
+          <View>
+            <Text style={{fontSize: 20}}>You have no lists</Text>
+          </View>
+        )
+      }
+
     </View>
   );
 }

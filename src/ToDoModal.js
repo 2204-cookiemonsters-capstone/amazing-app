@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  TextInput,
-  SafeAreaView,
-  FlatList,
-  Keyboard,
-} from "react-native";
+import { Text, View, TouchableOpacity, KeyboardAvoidingView, TextInput, SafeAreaView, FlatList, Keyboard } from "react-native";
 import { Snackbar } from "react-native-paper";
 import { todoListStyle, color, userProfile, authStyle } from "../styles";
 import ToDoItem from "./ToDoItem";
+import { auth, firestore } from "../firebase";
+import { doc, setDoc, increment } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
@@ -88,9 +81,21 @@ const TodoModal = ({ list, updateList, closeModal }) => {
 
   const toggleTodoCompleted = (index) => {
     list.todos[index].completed = !list.todos[index].completed;
+    // update state
     updateList(list);
-    if (list.todos[index].completed) {
+    //increase user score by like count
+    if(list.todos[index].completed) {
+      const userRef = doc(firestore, 'users', auth.currentUser.uid);
+      let updatedUser = {score: increment(list.todos[index].likes)};
+      setDoc(userRef, updatedUser, {merge: true});
+    // launch bottom sheet to post to stories
       bs.current.snapTo(0);
+    }
+    //decrease user score if they mark task as not completed
+    if(!list.todos[index].completed) {
+      const userRef = doc(firestore, 'users', auth.currentUser.uid);
+      let updatedUser = {score: increment(-list.todos[index].likes)};
+      setDoc(userRef, updatedUser, {merge: true});
     }
   };
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, TouchableOpacity, Modal } from "react-native";
 import { todoListStyle } from "../styles";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import TodoModal from "./ToDoModal";
 
 class ToDoList extends React.Component {
@@ -36,26 +37,32 @@ class ToDoList extends React.Component {
           />
         </Modal>
 
-        <TouchableOpacity
+        <View
           style={[
             todoListStyle.listContainer,
             { backgroundColor: list.color || "black" },
           ]}
-          onPress={() => this.toggleListModal()}
         >
-          <Text style={todoListStyle.listTitle} numberOfLines={1}>
-            {list.name}
-          </Text>
+          <TouchableOpacity
+            style={{ position: "absolute", top: 10, right: 10 }}
+          >
+            <MaterialCommunityIcons name="delete" size={20} color="white" onPress={() => this.props.deleteList(list)}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.toggleListModal()}>
+            <Text style={todoListStyle.listTitle} numberOfLines={1}>
+              {list.name}
+            </Text>
 
-          <View style={{ alignItems: "center" }}>
-            <Text style={todoListStyle.count}>{remainingCount}</Text>
-            <Text style={todoListStyle.subtitle}>Remaining</Text>
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <Text style={todoListStyle.count}>{completedCount}</Text>
-            <Text style={todoListStyle.subtitle}>Completed</Text>
-          </View>
-        </TouchableOpacity>
+            <View style={{ alignItems: "center" }}>
+              <Text style={todoListStyle.count}>{remainingCount}</Text>
+              <Text style={todoListStyle.subtitle}>Remaining</Text>
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <Text style={todoListStyle.count}>{completedCount}</Text>
+              <Text style={todoListStyle.subtitle}>Completed</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
