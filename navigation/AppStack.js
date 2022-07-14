@@ -674,7 +674,7 @@ const AppStack = ({ currentRoute }) => {
           headerTitleAlign: "center",
           tabBarStyle: getTabBarVisibilityTasksTab(),
           headerShown: getHeaderVisibilityTasksTab(),
-          headerTitle: "28 Day Tasks",
+          headerTitle: "28 Tasks",
           headerRight: () => (
             <View
               style={{
@@ -750,7 +750,7 @@ const AppStack = ({ currentRoute }) => {
         })}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name='AddTask'
         component={AddTaskStack}
         options={({ navigation }) => ({
@@ -859,7 +859,7 @@ const AppStack = ({ currentRoute }) => {
             </View>
           ),
         })}
-      />
+      /> */}
       <Tab.Screen
         name='List'
         component={ListStack}
@@ -878,7 +878,7 @@ const AppStack = ({ currentRoute }) => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#5CD859" : "#748c94",
                 }}
               />
               <Text
@@ -886,8 +886,7 @@ const AppStack = ({ currentRoute }) => {
                   color: focused ? "#e32f45" : "#748c94",
                   fontSize: 12,
                 }}
-              >
-                
+              >         
               </Text>
             </View>
           ),

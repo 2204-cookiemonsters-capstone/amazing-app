@@ -23,13 +23,10 @@ import {
   snapshotEqual,
 } from "firebase/firestore";
 import { useTheme } from "react-navigation";
-
 const image = require("../../assets/favicon.png");
-
 const Messages = (props) => {
   const [allChatsData, setAllChatsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const fetchAllChats = async () => {
     onSnapshot(collection(firestore, "chats"), async (snapShot) => {
       const chats = []; //holds details of chat
@@ -38,9 +35,7 @@ const Messages = (props) => {
           chats.push(doc.data());
         }
       });
-
       const userData = []; //data to be rendered on messages screen for each chat
-
       for (let i = 0; i < chats.length; i++) {
         const docSnap = await getDoc(
           doc(
@@ -49,7 +44,6 @@ const Messages = (props) => {
             chats[i].userids.filter((id) => id !== auth.currentUser.uid)[0]
           )
         );
-
         userData.push({
           ...docSnap.data(),
           lastMessage:
@@ -64,7 +58,6 @@ const Messages = (props) => {
                     chat.userids.includes(auth.currentUser.uid)
                 ).messages[0].message
               : "",
-
           chatid: chats.find(
             (chat) =>
               chat.userids.includes(docSnap.data().userid) &&
@@ -87,36 +80,29 @@ const Messages = (props) => {
               : null,
         });
       }
-
       userData.sort(sorting);
-
       allChatsData !== userData ? setAllChatsData(userData) : null;
       setIsLoading(false);
     });
   };
-
   const getTimeDifference = (timesent) => {
     const timeNow = new Date().getTime();
     const difference = (timeNow - timesent) / 1000;
     const diff = difference / 60;
-
     return Math.abs(Math.round(diff));
   };
-
   function sorting(a, b) {
     if (a.timesent > b.timesent) return -1; //this function sorts the array by the time sent so the most recent message will appear first
     if (a.timesent < b.timesent) return 1;
     return 0;
   }
-
   useEffect(() => {
     fetchAllChats();
   }, []);
-
   return (
     <View style={styles.container}>
       {allChatsData.length ? (
-        <View style={{width:"100%"}}> 
+        <View style={{ width: "100%" }}>
           <FlatList
             data={allChatsData}
             keyExtractor={(chat) => chat.chatid} //might not see if we cant get the id
@@ -153,7 +139,6 @@ const Messages = (props) => {
                   <View style={styles.textView}>
                     <View style={styles.userinfotext}>
                       <Text style={styles.username}>{item.name}</Text>
-
                       {!item.timesent ? null : getTimeDifference(
                           item.timesent
                         ) < 60 ? (
@@ -220,34 +205,10 @@ const Messages = (props) => {
               </TouchableOpacity>
             )}
           />
-          <TouchableOpacity
-            style={{
-              width: 60,
-              height: 60,
-              backgroundColor: "#ee6e73",
-              position: "relative",
-              top: "90%",
-              left: "80%",
-              borderRadius: 70 / 2,
-              alignItems: "center",
-              justifyContent: "center",
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
-            }}
-            onPress={() => props.navigation.navigate("AddChat")}
-          >
-            <Ionicons name='add' size={26} color='white' />
-          </TouchableOpacity>
         </View>
       ) : isLoading ? (
         <View style={{ margin: "50%" }}>
-          <ActivityIndicator size='large' color='blue' />
+          <ActivityIndicator size="large" color="blue" />
         </View>
       ) : (
         <View
@@ -284,10 +245,35 @@ const Messages = (props) => {
           </TouchableOpacity>
         </View>
       )}
+      {allChatsData.length !== 0 ? (
+        <TouchableOpacity
+          style={{
+            width: 60,
+            height: 60,
+            backgroundColor: "#EE6E73",
+            position: "absolute",
+            bottom: 90,
+            right: 30,
+            borderRadius: 70 / 2,
+            alignItems: "center",
+            justifyContent: "center",
+            shadowColor: "#7F5DF0",
+            shadowOffset: {
+              width: 0,
+              height: 10,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.5,
+            elevation: 5,
+          }}
+          onPress={() => props.navigation.navigate("AddChat")}
+        >
+          <Ionicons name="add" size={26} color="white" />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -339,5 +325,4 @@ const styles = StyleSheet.create({
     color: "#333333",
   },
 });
-
 export default Messages;
