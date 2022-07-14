@@ -39,8 +39,6 @@ const Messages = (props) => {
         }
       });
 
-      //doc.id returns the auto genned id
-
       const userData = []; //data to be rendered on messages screen for each chat
 
       for (let i = 0; i < chats.length; i++) {
@@ -97,7 +95,6 @@ const Messages = (props) => {
     });
   };
 
-  console.log(allChatsData);
   const getTimeDifference = (timesent) => {
     const timeNow = new Date().getTime();
     const difference = (timeNow - timesent) / 1000;

@@ -30,7 +30,6 @@ const image = require("../../assets/favicon.png");
 const AddChat = ({ navigation }) => {
   const [allFriends, setAllFriends] = useState([]);
   const [selectedChatId, setSelectedChatId] = useState("");
-  const [userName, setUserName] = useState("");
   const [searchValue, setSearchValue] = useState("");
 
   const [renderedUsers, setRenderedUsers] = useState([]);
@@ -90,20 +89,24 @@ const AddChat = ({ navigation }) => {
   useEffect(() => {
     fetchAllFriends();
     setSelectedChatId("");
-    setUserName("");
   }, []);
 
   const handleAddChat = async (userid) => {
     const q = query(
-      collection(firestore, "chats"),
-      where("userids", "array-contains", auth.currentUser.uid && userid)
+      collection(firestore, "chats")
+      // where("userids", "array-contains", auth.currentUser.uid && userid)
     );
 
     const snapShot = await getDocs(q);
 
     const selectedChat = [];
     snapShot.forEach((docs) => {
-      selectedChat.push(docs.data());
+      if (
+        docs.data().userids.includes(auth.currentUser.uid) &&
+        docs.data().userids.includes(userid)
+      ) {
+        selectedChat.push(docs.data());
+      }
     });
 
     if (!selectedChat.length) {
@@ -116,35 +119,32 @@ const AddChat = ({ navigation }) => {
 
       snap.forEach(async (docs) => {
         const ref = doc(firestore, "chats", docs.id);
-        await setDoc(ref, { chatid: docs.id }, { merge: true });
-      });
-      const index = allFriends.indexOf(
-        allFriends.find((item) => item.userid === userid)
-      );
 
-      allFriends[index] = { ...allFriends[index], chatid: snap[0].id };
-      navigation.navigate("ChatScreen", {
-        chatid: allFriends[index].chatid,
-        username: allFriends[index].username,
-      });
-    } else {
-      const index = allFriends.indexOf(
-        allFriends.find((item) => item.userid === userid)
-      );
-
-      allFriends[index] = {
-        ...allFriends[index],
-        chatid: selectedChat[0].chatid,
-      };
-      navigation.navigate("ChatScreen", {
-        chatid: allFriends[index].chatid,
-        username: allFriends[index].username,
+        if (
+          docs.data().userids.includes(auth.currentUser.uid) &&
+          docs.data().userids.includes(userid)
+        ) {
+          selectedChat.push(docs.data());
+          await setDoc(ref, { chatid: docs.id }, { merge: true });
+        }
       });
     }
 
-    const userRef = doc(firestore, "users", userid);
-    const userSnap = await getDoc(userRef);
-    setUserName(userSnap.data().name);
+    const index = allFriends.indexOf(
+      allFriends.find((item) => item.userid === userid)
+    );
+
+    allFriends[index] = {
+      ...allFriends[index],
+      chatid: selectedChat[0].chatid,
+    };
+    //allfriends[index] - undefined
+    //for some reason, allfriends does not have chatid first time, even though the code right above literally adds it to the object
+    console.log("CHATIDDDDD", allFriends[index]);
+    navigation.navigate("ChatScreen", {
+      chatid: allFriends[index].chatid,
+      username: allFriends[index].name,
+    });
   };
 
   return (
