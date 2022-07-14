@@ -9,9 +9,9 @@ import {
   Keyboard,
   ScrollView,
   Image,
-  Modal
+  Modal,
 } from "react-native";
-import {ActivityIndicator, Avatar} from 'react-native-paper';
+import { ActivityIndicator, Avatar } from "react-native-paper";
 import { firestore } from "../firebase";
 import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
@@ -55,13 +55,7 @@ const FriendModal = ({ user, closeModal }) => {
   };
 
   const updateList = (list) => {
-    const todoRef = doc(
-      firestore,
-      "users",
-      userid,
-      "Todo Lists",
-      list.id
-    );
+    const todoRef = doc(firestore, "users", userid, "Todo Lists", list.id);
     setDoc(todoRef, list, { merge: true });
     //Update state here
     setLists(lists.map((item) => (item.id === list.id ? list : item)));
@@ -77,17 +71,25 @@ const FriendModal = ({ user, closeModal }) => {
           <AntDesign name="close" size={24} color="black" />
         </TouchableOpacity>
         <ScrollView>
-          <View style={{
-            alignItems: 'center',
-            marginTop: 80,
-            marginBottom: 40
-          }}>
-            <Avatar.Text size={100} label={user.name.charAt(0)} style={friendModal.avatar}>{user.name}</Avatar.Text>
+          <View
+            style={{
+              alignItems: "center",
+              marginTop: 80,
+              marginBottom: 40,
+            }}
+          >
+            <Avatar.Text
+              size={100}
+              label={user.name.charAt(0)}
+              style={friendModal.avatar}
+            >
+              {user.name}
+            </Avatar.Text>
             <Text style={friendModal.title}>{user.name}</Text>
             <Text style={friendModal.userName}>{user.username}</Text>
             <View style={friendModal.score}>
-              <AntDesign name='aliwangwang-o1' size={15}/>
-              <Text style={{fontSize: 20, marginLeft: 5}}>{user.score}</Text>
+              <AntDesign name="aliwangwang-o1" size={15} />
+              <Text style={{ fontSize: 20, marginLeft: 5 }}>{user.score}</Text>
             </View>
           </View>
           <View style={friendModal.container}>
@@ -101,16 +103,24 @@ const FriendModal = ({ user, closeModal }) => {
               </Text>
               <View style={friendModal.divider} />
             </View>
-            <View style={{ height: 275, paddingLeft: 32 }}>
-              <FlatList
-                data={lists}
-                keyExtractor={(item) => item.id}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => renderSingleList(item)}
-                keyboardShouldPersistTaps="always"
-              />
-            </View>
+            {lists.length > 0 ? (
+              <View style={{ height: 275, paddingLeft: 30 }}>
+                <FlatList
+                  data={lists}
+                  keyExtractor={(item) => item.id}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({ item }) => renderSingleList(item)}
+                  keyboardShouldPersistTaps="always"
+                />
+              </View>
+            ) : (
+              <View>
+                <Text style={{ fontSize: 20, marginTop: 30 }}>
+                  {user.name} has no lists
+                </Text>
+              </View>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>

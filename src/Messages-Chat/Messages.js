@@ -23,13 +23,10 @@ import {
   snapshotEqual,
 } from "firebase/firestore";
 import { useTheme } from "react-navigation";
-
 const image = require("../../assets/favicon.png");
-
 const Messages = (props) => {
   const [allChatsData, setAllChatsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const fetchAllChats = async () => {
     onSnapshot(collection(firestore, "chats"), async (snapShot) => {
       const chats = []; //gets all chats from firestore
@@ -38,9 +35,7 @@ const Messages = (props) => {
           chats.push(doc.data()); //pushes all chats into chats array if array includes current user id
         }
       });
-
       const userData = []; //data to be rendered on messages screen for each chat
-
       for (let i = 0; i < chats.length; i++) {
         if (!chats[i].messages.length) continue;
         const docSnap = await getDoc(
@@ -67,7 +62,6 @@ const Messages = (props) => {
                     chat.userids.includes(auth.currentUser.uid)
                 ).messages[0].message
               : "",
-
           chatid: chats.find(
             (chat) =>
               chat.userids.includes(docSnap.data().userid) &&
@@ -90,7 +84,6 @@ const Messages = (props) => {
               : null,
         });
       }
-
       userData.sort(sorting);
       userData.filter(
         (chat) => chat.lastMessage !== null && chat.lastMessage !== ""
@@ -104,25 +97,20 @@ const Messages = (props) => {
       setIsLoading(false);
     });
   };
-
   const getTimeDifference = (timesent) => {
     const timeNow = new Date().getTime();
     const difference = (timeNow - timesent) / 1000;
     const diff = difference / 60;
-
     return Math.abs(Math.round(diff));
   };
-
   function sorting(a, b) {
     if (a.timesent > b.timesent) return -1; //this function sorts the array by the time sent so the most recent message will appear first
     if (a.timesent < b.timesent) return 1;
     return 0;
   }
-
   useEffect(() => {
     fetchAllChats();
   }, []);
-
   return (
     <View style={styles.container}>
       {allChatsData.length ? (
@@ -305,7 +293,6 @@ const Messages = (props) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -357,5 +344,4 @@ const styles = StyleSheet.create({
     color: "#333333",
   },
 });
-
 export default Messages;

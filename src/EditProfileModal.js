@@ -58,6 +58,10 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
     });
   };
 
+  const handleSignOut = () => {
+    signOut(auth);
+  };
+
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -277,7 +281,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
               style={styles.button}
               onPress={() => auth.signOut()}
             >
-              <Text style={{ fontWeight: "500", fontSize: 17, color: "red" }}>
+              <Text style={{ fontWeight: "500", fontSize: 17, color: "red" }} onPress={() => handleSignOut()}>
                 Sign Out
               </Text>
             </TouchableOpacity>

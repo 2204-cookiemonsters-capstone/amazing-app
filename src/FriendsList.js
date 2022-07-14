@@ -166,7 +166,7 @@ const FriendsList = ({ navigation }) => {
             }}
             onPress={() => navigation.goBack()}
           >
-            <AntDesign name='left' color='black' size={18} />
+            <AntDesign name="left" color="black" size={18} />
           </TouchableOpacity>
           <View style={{ flexGrow: 1 }} />
           <Text style={{ fontWeight: "700", fontSize: 22 }}>My Friends</Text>
@@ -191,7 +191,7 @@ const FriendsList = ({ navigation }) => {
             }}
             onPress={() => navigation.goBack()}
           >
-            <Entypo name='dots-three-horizontal' color='black' size={18} />
+            <Entypo name="dots-three-horizontal" color="black" size={18} />
           </TouchableOpacity>
         </View>
         <View
@@ -227,7 +227,7 @@ const FriendsList = ({ navigation }) => {
             }}
           />
           <TextInput
-            placeholder='Find Friends'
+            placeholder="Find Friends"
             onChangeText={(value) => {
               setSearchValue(value), search(value);
             }}
@@ -384,7 +384,7 @@ const FriendsList = ({ navigation }) => {
         )}
 
         <Modal
-          animationType='slide'
+          animationType="slide"
           visible={showFriendModal}
           onRequestClose={() => toggleFriendModal()}
         >
