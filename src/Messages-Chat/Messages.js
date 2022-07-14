@@ -116,7 +116,7 @@ const Messages = (props) => {
   return (
     <View style={styles.container}>
       {allChatsData.length ? (
-        <View>
+        <View style={{width:"100%"}}> 
           <FlatList
             data={allChatsData}
             keyExtractor={(chat) => chat.chatid} //might not see if we cant get the id
@@ -225,9 +225,9 @@ const Messages = (props) => {
               width: 60,
               height: 60,
               backgroundColor: "#ee6e73",
-              position: "absolute",
-              bottom: 80,
-              right: 20,
+              position: "relative",
+              top: "90%",
+              left: "80%",
               borderRadius: 70 / 2,
               alignItems: "center",
               justifyContent: "center",
