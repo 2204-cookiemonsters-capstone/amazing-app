@@ -20,6 +20,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 
 //doc.id gets the id
 const ChatScreen = (props) => {
+  console.log("ROUTEEEEEEEEE", props.route.params.chatid);
   const [allMessages, setAllMessages] = useState([]);
   const [previousMessages, setPreviousMessages] = useState([]);
 

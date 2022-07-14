@@ -39,8 +39,6 @@ const Messages = (props) => {
         }
       });
 
-      //doc.id returns the auto genned id
-
       const userData = []; //data to be rendered on messages screen for each chat
 
       for (let i = 0; i < chats.length; i++) {
@@ -97,7 +95,6 @@ const Messages = (props) => {
     });
   };
 
-  console.log(allChatsData);
   const getTimeDifference = (timesent) => {
     const timeNow = new Date().getTime();
     const difference = (timeNow - timesent) / 1000;
@@ -144,7 +141,14 @@ const Messages = (props) => {
               >
                 <View style={styles.userinfo}>
                   <View style={styles.userimage}>
-                    <Image source={image} style={styles.img} />
+                    <Image
+                      source={
+                        item.profilepic || item.profilepic !== undefined
+                          ? { uri: item.profilepic }
+                          : require("../../assets/defaultprofileicon.webp")
+                      }
+                      style={styles.img}
+                    />
                   </View>
                   <View style={styles.textView}>
                     <View style={styles.userinfotext}>

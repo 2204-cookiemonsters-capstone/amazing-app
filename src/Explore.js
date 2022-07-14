@@ -1,9 +1,11 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-
+import React from "react";
+import { Text, View, TouchableOpacity } from "react-native";
+import { auth } from "../firebase";
 const Explore = () => (
   <View>
-    <Text>Explore Page</Text>
+    <TouchableOpacity onPress={() => auth.signOut()}>
+      <Text>HERE</Text>
+    </TouchableOpacity>
   </View>
 );
 
