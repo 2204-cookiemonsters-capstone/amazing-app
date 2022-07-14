@@ -529,9 +529,10 @@ const AppStack = ({ currentRoute }) => {
         initialRouteName: "AddTask",
       }}
     >
-      <Tab.Screen
-        name='Messages'
-        component={MessagesStack}
+
+<Tab.Screen
+        name='Feed'
+        component={ExploreStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
             <View
@@ -542,12 +543,12 @@ const AppStack = ({ currentRoute }) => {
               }}
             >
               <Image
-                source={require("../assets/chat.png")}
+                source={require("../assets/homepng.png")}
                 resizeMode='contain'
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94", //outline of the icon, red or grey
+                  tintColor: focused ? "#7A28CB" : "#748c94",
                 }}
               />
               <Text
@@ -560,10 +561,11 @@ const AppStack = ({ currentRoute }) => {
               </Text>
             </View>
           ),
-          tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
-          headerShown: getHeaderVisibility(),
+
           headerTitleAlign: "center",
-          headerTitle: "Chats",
+          headerTitle: "Feed",
+          headerShown: getHeaderVisibilityExploreTab(),
+          tabBarStyle: getTabBarVisibilityExploreTab(),
           headerRight: () => (
             <View
               style={{
@@ -608,7 +610,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("ProfileMessages")}
+                onPress={() => navigation.navigate("ProfileExplore")}
               >
                 <Image
                   source={require("../assets/profile.png")}
@@ -626,7 +628,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("Search")} //test only change later
+                onPress={() => navigation.navigate("Search")}
               >
                 <Image
                   source={require("../assets/search.png")}
@@ -638,6 +640,8 @@ const AppStack = ({ currentRoute }) => {
           ),
         })}
       />
+
+    
 
       <Tab.Screen
         name='Tasks'
@@ -657,7 +661,7 @@ const AppStack = ({ currentRoute }) => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#2374AB" : "#748c94",
                 }}
               />
               <Text
@@ -674,7 +678,7 @@ const AppStack = ({ currentRoute }) => {
           headerTitleAlign: "center",
           tabBarStyle: getTabBarVisibilityTasksTab(),
           headerShown: getHeaderVisibilityTasksTab(),
-          headerTitle: "28 Day Tasks",
+          headerTitle: "28 Tasks",
           headerRight: () => (
             <View
               style={{
@@ -750,7 +754,7 @@ const AppStack = ({ currentRoute }) => {
         })}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name='AddTask'
         component={AddTaskStack}
         options={({ navigation }) => ({
@@ -859,7 +863,7 @@ const AppStack = ({ currentRoute }) => {
             </View>
           ),
         })}
-      />
+      /> */}
       <Tab.Screen
         name='List'
         component={ListStack}
@@ -878,7 +882,7 @@ const AppStack = ({ currentRoute }) => {
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#5CD859" : "#748c94",
                 }}
               />
               <Text
@@ -886,8 +890,7 @@ const AppStack = ({ currentRoute }) => {
                   color: focused ? "#e32f45" : "#748c94",
                   fontSize: 12,
                 }}
-              >
-                
+              >         
               </Text>
             </View>
           ),
@@ -970,9 +973,10 @@ const AppStack = ({ currentRoute }) => {
           ),
         })}
       />
-      <Tab.Screen
-        name='Feed'
-        component={ExploreStack}
+
+<Tab.Screen
+        name='Messages'
+        component={MessagesStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
             <View
@@ -983,12 +987,12 @@ const AppStack = ({ currentRoute }) => {
               }}
             >
               <Image
-                source={require("../assets/homepng.png")}
+                source={require("../assets/chat.png")}
                 resizeMode='contain'
                 style={{
                   width: 25,
                   height: 25,
-                  tintColor: focused ? "#e32f45" : "#748c94",
+                  tintColor: focused ? "#e32f45" : "#748c94", //outline of the icon, red or grey
                 }}
               />
               <Text
@@ -1001,11 +1005,10 @@ const AppStack = ({ currentRoute }) => {
               </Text>
             </View>
           ),
-
+          tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
+          headerShown: getHeaderVisibility(),
           headerTitleAlign: "center",
-          headerTitle: "Feed",
-          headerShown: getHeaderVisibilityExploreTab(),
-          tabBarStyle: getTabBarVisibilityExploreTab(),
+          headerTitle: "Chats",
           headerRight: () => (
             <View
               style={{
@@ -1050,7 +1053,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("ProfileExplore")}
+                onPress={() => navigation.navigate("ProfileMessages")}
               >
                 <Image
                   source={require("../assets/profile.png")}
@@ -1068,7 +1071,7 @@ const AppStack = ({ currentRoute }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onPress={() => navigation.navigate("Search")}
+                onPress={() => navigation.navigate("Search")} //test only change later
               >
                 <Image
                   source={require("../assets/search.png")}
@@ -1080,6 +1083,7 @@ const AppStack = ({ currentRoute }) => {
           ),
         })}
       />
+     
     </Tab.Navigator>
   );
 };
