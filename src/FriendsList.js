@@ -172,19 +172,12 @@ const FriendsList = ({ navigation }) => {
             <AntDesign name='left' color='black' size={18} />
           </TouchableOpacity>
           <View style={{ flexGrow: 1 }} />
-          <Text style={{ fontWeight: "700", fontSize: 22 }}>My Friends</Text>
+          <Text
+            style={{ fontWeight: "700", fontSize: 22, position: "absolute" }}
+          >
+            My Friends
+          </Text>
           <View style={{ flexGrow: 1 }} />
-          <TouchableOpacity
-            style={{
-              borderRadius: 25,
-              height: 35,
-              width: 35,
-              alignItems: "center",
-              justifyContent: "center",
-              marginRight: 13,
-            }}
-            onPress={() => navigation.goBack()}
-          ></TouchableOpacity>
         </View>
         <View style={styles.textInputView}>
           <Image
