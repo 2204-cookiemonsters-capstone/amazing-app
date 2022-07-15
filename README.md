@@ -1,5 +1,5 @@
 #HappiList
-WELCOME TO OUR HAPPILIST
+WELCOME TO HAPPILIST
 
 Happilist is a mobile social media app designed for both Android and iOS mobile devices. To use HappiList, users must sign up with an email address.
 
