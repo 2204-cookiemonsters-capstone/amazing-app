@@ -27,16 +27,18 @@ const image = require("../../assets/favicon.png");
 const Messages = (props) => {
   const [allChatsData, setAllChatsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   const fetchAllChats = async () => {
     onSnapshot(collection(firestore, "chats"), async (snapShot) => {
-      const chats = []; //holds details of chat
+      const chats = []; //gets all chats from firestore
       snapShot.forEach((doc) => {
         if (doc.data().userids.includes(auth.currentUser.uid)) {
-          chats.push(doc.data());
+          chats.push(doc.data()); //pushes all chats into chats array if array includes current user id
         }
       });
       const userData = []; //data to be rendered on messages screen for each chat
       for (let i = 0; i < chats.length; i++) {
+        if (!chats[i].messages.length) continue;
         const docSnap = await getDoc(
           doc(
             firestore,
@@ -44,6 +46,9 @@ const Messages = (props) => {
             chats[i].userids.filter((id) => id !== auth.currentUser.uid)[0]
           )
         );
+
+        console.log("DATAAAAAA", docSnap.data());
+
         userData.push({
           ...docSnap.data(),
           lastMessage:
@@ -81,6 +86,14 @@ const Messages = (props) => {
         });
       }
       userData.sort(sorting);
+      userData.filter(
+        (chat) => chat.lastMessage !== null && chat.lastMessage !== ""
+      );
+
+      // console.log(userData);
+
+      // console.log(userData);
+
       allChatsData !== userData ? setAllChatsData(userData) : null;
       setIsLoading(false);
     });
@@ -111,99 +124,105 @@ const Messages = (props) => {
             contentContainerStyle={{
               paddingBottom: 80, //fix navbar does not block the last item
             }}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={{
-                  width: "100%",
-                  backgroundColor: "white",
-                  marginBottom: 1,
-                }}
-                onPress={() =>
-                  props.navigation.navigate("ChatScreen", {
-                    chatid: item.chatid,
-                    username: item.name,
-                  })
-                }
-              >
-                <View style={styles.userinfo}>
-                  <View style={styles.userimage}>
-                    <Image
-                      source={
-                        item.profilepic || item.profilepic !== undefined
-                          ? { uri: item.profilepic }
-                          : require("../../assets/defaultprofileicon.webp")
-                      }
-                      style={styles.img}
-                    />
-                  </View>
-                  <View style={styles.textView}>
-                    <View style={styles.userinfotext}>
-                      <Text style={styles.username}>{item.name}</Text>
-                      {!item.timesent ? null : getTimeDifference(
-                          item.timesent
-                        ) < 60 ? (
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#666",
-                            marginRight: 30,
-                          }}
-                        >
-                          {getTimeDifference(item.timesent)} minutes ago
-                        </Text>
-                      ) : getTimeDifference(item.timesent) >= 60 &&
-                        getTimeDifference(item.timesent) < 1440 ? (
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#666",
-                            marginRight: 30,
-                          }}
-                        >
-                          {" "}
-                          {Math.floor(
-                            getTimeDifference(item.timesent) / 60
-                          )}{" "}
-                          {Math.floor(getTimeDifference(item.timesent) / 60) ===
-                          1
-                            ? "hour Ago"
-                            : "hours Ago"}
-                        </Text>
-                      ) : (
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#666",
-                            marginRight: 30,
-                          }}
-                        >
-                          {Math.floor(getTimeDifference(item.timesent) / 1440)}{" "}
-                          {!item.timesent
-                            ? null
-                            : Math.floor(
-                                getTimeDifference(item.timesent) / 1440
-                              ) === 1
-                            ? "day Ago"
-                            : "days Ago"}
-                        </Text>
-                      )}
+            renderItem={({ item }) =>
+              item.lastMessage || item.lastMessage !== "" ? (
+                <TouchableOpacity
+                  style={{
+                    width: "100%",
+                    backgroundColor: "white",
+                    marginBottom: 1,
+                  }}
+                  onPress={() =>
+                    props.navigation.navigate("ChatScreen", {
+                      chatid: item.chatid,
+                      username: item.name,
+                    })
+                  }
+                >
+                  <View style={styles.userinfo}>
+                    <View style={styles.userimage}>
+                      <Image
+                        source={
+                          item.profilepic || item.profilepic !== undefined
+                            ? { uri: item.profilepic }
+                            : require("../../assets/defaultprofileicon.webp")
+                        }
+                        style={styles.img}
+                      />
                     </View>
-                    <View style={{ width: "65%" }}>
-                      <Text style={styles.messageText}>
-                        {!item.lastMessage.length
-                          ? ""
-                          : item.lastMessage.length <= 25 &&
-                            item.lastMessage.length > 0
-                          ? item.lastMessage
-                          : item.lastMessage.length > 25
-                          ? item.lastMessage.slice(0, 23) + "..."
-                          : null}
-                      </Text>
+                    <View style={styles.textView}>
+                      <View style={styles.userinfotext}>
+                        <Text style={styles.username}>{item.name}</Text>
+
+                        {!item.timesent ? null : getTimeDifference(
+                            item.timesent
+                          ) < 60 ? (
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#666",
+                              marginRight: 30,
+                            }}
+                          >
+                            {getTimeDifference(item.timesent)} minutes ago
+                          </Text>
+                        ) : getTimeDifference(item.timesent) >= 60 &&
+                          getTimeDifference(item.timesent) < 1440 ? (
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#666",
+                              marginRight: 30,
+                            }}
+                          >
+                            {" "}
+                            {Math.floor(
+                              getTimeDifference(item.timesent) / 60
+                            )}{" "}
+                            {Math.floor(
+                              getTimeDifference(item.timesent) / 60
+                            ) === 1
+                              ? "hour Ago"
+                              : "hours Ago"}
+                          </Text>
+                        ) : (
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#666",
+                              marginRight: 30,
+                            }}
+                          >
+                            {Math.floor(
+                              getTimeDifference(item.timesent) / 1440
+                            )}{" "}
+                            {!item.timesent
+                              ? null
+                              : Math.floor(
+                                  getTimeDifference(item.timesent) / 1440
+                                ) === 1
+                              ? "day Ago"
+                              : "days Ago"}
+                          </Text>
+                        )}
+                      </View>
+                      <View style={{ width: "65%" }}>
+                        <Text style={styles.messageText}>
+                          {!item.lastMessage.length
+                            ? ""
+                            : item.lastMessage.length <= 25 &&
+                              item.lastMessage.length > 0
+                            ? item.lastMessage
+                            : item.lastMessage.length > 25
+                            ? item.lastMessage.slice(0, 23) + "..."
+                            : null}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            )}
+                </TouchableOpacity>
+              ) : null
+            }
           />
         </View>
       ) : isLoading ? (
@@ -245,12 +264,13 @@ const Messages = (props) => {
           </TouchableOpacity>
         </View>
       )}
-      {allChatsData.length !== 0 ? (
+
+      {allChatsData.length ? (
         <TouchableOpacity
           style={{
             width: 60,
             height: 60,
-            backgroundColor: "#EE6E73",
+            backgroundColor: "#FE6847",
             position: "absolute",
             bottom: 90,
             right: 25,

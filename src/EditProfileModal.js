@@ -222,7 +222,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
 
   return (
     <RootSiblingParent>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <BottomSheet
           ref={bs}
           snapPoints={[300, 0]}
@@ -264,7 +264,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
                 style={styles.smallButton}
                 onPress={() => setVisibilitySettings(false)}
               >
-                <AntDesign name='left' size={20} color='lightgreen' />
+                <AntDesign name="left" size={20} color="lightgreen" />
               </View>
               <Text
                 style={{
@@ -307,7 +307,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <ActivityIndicator size='large' color={"blue"} />
+                  <ActivityIndicator size="large" color={"blue"} />
                 </View>
               ) : (
                 <Image
@@ -388,7 +388,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
                 <TextInput
                   style={styles.textSmall}
                   placeholder={userData.username}
-                  label='Username'
+                  label="Username"
                   onChangeText={(e) => setUsername(e)}
                 />
               </View>
@@ -412,7 +412,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
                 <TextInput
                   style={styles.textSmall}
                   onChangeText={(e) => setName(e)}
-                  label='Name'
+                  label="Name"
                   placeholder={userData.name}
                 />
               </View>
@@ -435,7 +435,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
               <TextInput
                 style={styles.textEmail}
                 placeholder={userData.email}
-                label='email'
+                label="email"
                 onChangeText={(e) => setEmail(e)}
               />
             </View>

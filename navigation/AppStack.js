@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Text, Image, ScrollView, Platform } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  Image,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -529,8 +536,7 @@ const AppStack = ({ currentRoute }) => {
         initialRouteName: "AddTask",
       }}
     >
-
-<Tab.Screen
+      <Tab.Screen
         name='Feed'
         component={ExploreStack}
         options={({ navigation }) => ({
@@ -539,7 +545,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: Platform.OS === "ios" ? 15 : 0,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
@@ -556,14 +562,12 @@ const AppStack = ({ currentRoute }) => {
                   color: focused ? "#e32f45" : "#748c94",
                   fontSize: 12,
                 }}
-              >
-                
-              </Text>
+              ></Text>
             </View>
           ),
 
           headerTitleAlign: "center",
-          headerTitle: "Feed",
+          headerTitle: "HappiList",
           headerShown: getHeaderVisibilityExploreTab(),
           tabBarStyle: getTabBarVisibilityExploreTab(),
           headerRight: () => (
@@ -641,8 +645,6 @@ const AppStack = ({ currentRoute }) => {
         })}
       />
 
-    
-
       <Tab.Screen
         name='Tasks'
         component={TasksStack}
@@ -652,7 +654,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: Platform.OS === "ios" ? 15 : 0,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
@@ -669,9 +671,7 @@ const AppStack = ({ currentRoute }) => {
                   color: focused ? "#e32f45" : "#748c94",
                   fontSize: 12,
                 }}
-              >
-                
-              </Text>
+              ></Text>
             </View>
           ),
 
@@ -763,12 +763,12 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: Platform.OS === "ios" ? 15 : 0,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
                 source={require("../assets/plus.png")}
-                resizeMode='contain'
+                resizeMode="contain"
                 style={{
                   width: 25,
                   height: 25,
@@ -780,9 +780,7 @@ const AppStack = ({ currentRoute }) => {
                   color: focused ? "#e32f45" : "#748c94",
                   fontSize: 12,
                 }}
-              >
-                
-              </Text>
+              ></Text>
             </View>
           ),
 
@@ -873,7 +871,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: Platform.OS === "ios" ? 15 : 0,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
@@ -890,8 +888,7 @@ const AppStack = ({ currentRoute }) => {
                   color: focused ? "#e32f45" : "#748c94",
                   fontSize: 12,
                 }}
-              >         
-              </Text>
+              ></Text>
             </View>
           ),
 
@@ -974,7 +971,7 @@ const AppStack = ({ currentRoute }) => {
         })}
       />
 
-<Tab.Screen
+      <Tab.Screen
         name='Messages'
         component={MessagesStack}
         options={({ navigation }) => ({
@@ -983,7 +980,7 @@ const AppStack = ({ currentRoute }) => {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
-                top: Platform.OS === "ios" ? 15 : 0,
+                top: Platform.OS === "ios" ? 15 : 9,
               }}
             >
               <Image
@@ -1000,9 +997,7 @@ const AppStack = ({ currentRoute }) => {
                   color: focused ? "#e32f45" : "#748c94",
                   fontSize: 12,
                 }}
-              >
-                
-              </Text>
+              ></Text>
             </View>
           ),
           tabBarStyle: getTabBarVisibility(), //does not show navbar on chat
@@ -1083,7 +1078,6 @@ const AppStack = ({ currentRoute }) => {
           ),
         })}
       />
-     
     </Tab.Navigator>
   );
 };

@@ -109,6 +109,20 @@ const FriendsList = ({ navigation }) => {
         duration: Toast.durations.LONG,
       })
     );
+
+    const chatRef = collection(firestore, "chats");
+    const chats = await getDocs(chatRef);
+
+    chats.forEach(async (docs) => {
+      if (
+        docs.data().userids.includes(auth.currentUser.uid) &&
+        docs.data().userids.includes(userid)
+      ) {
+        console.log("rannnnnn");
+        const id = docs.data().chatid;
+        await deleteDoc(doc(firestore, "chats", id));
+      }
+    });
   };
 
   const search = (value) => {

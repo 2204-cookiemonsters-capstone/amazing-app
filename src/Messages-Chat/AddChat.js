@@ -118,27 +118,6 @@ const AddChat = ({ navigation }) => {
       }
     });
 
-    if (!selectedChat.length) {
-      const docRef = await addDoc(collection(firestore, "chats"), {
-        userids: [auth.currentUser.uid, userid],
-        messages: [],
-      });
-
-      const snap = await getDocs(q);
-
-      snap.forEach(async (docs) => {
-        const ref = doc(firestore, "chats", docs.id);
-
-        if (
-          docs.data().userids.includes(auth.currentUser.uid) &&
-          docs.data().userids.includes(userid)
-        ) {
-          selectedChat.push(docs.data());
-          await setDoc(ref, { chatid: docs.id }, { merge: true });
-        }
-      });
-    }
-
     const index = allFriends.indexOf(
       allFriends.find((item) => item.userid === userid)
     );
