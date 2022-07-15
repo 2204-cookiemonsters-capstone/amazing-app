@@ -3,12 +3,15 @@ import { Text, View, TouchableOpacity, KeyboardAvoidingView, TextInput, SafeArea
 import { Snackbar } from "react-native-paper";
 import { todoListStyle, color, userProfile, authStyle } from "../styles";
 import ToDoItem from "./ToDoItem";
-import { auth, firestore } from "../firebase";
-import { doc, setDoc, increment } from "firebase/firestore";
+import { auth, firestore, storage } from "../firebase";
+import { ref, uploadBytes, blob, getDownloadURL } from "firebase/storage";
+import { doc, setDoc, increment, addDoc, collection } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
 import * as ImagePicker from "expo-image-picker";
+import { v4 as uuidv4 } from "uuid";
+import Toast from "react-native-root-toast";
 
 const TodoModal = ({ list, updateList, closeModal }) => {
   const [newTodo, setNewTodo] = useState("");
@@ -25,18 +28,46 @@ const TodoModal = ({ list, updateList, closeModal }) => {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
+      base64: true,
     });
 
-    if (!result.cancelled) {
-      // setImage(result.uri);
-      console.log("IMAGE FROM LIBRARY", result);
-    }
+    const id = uuidv4();
+    const imageRef = ref(storage, `${auth.currentUser.uid}/stories/${id}`);
+
+    const img = await fetch(result.uri);
+    const bytes = await img.blob();
+    uploadBytes(imageRef, bytes).then(() => {
+      const reference = ref(
+        storage,
+        `${auth.currentUser.uid}/stories/${id}`
+      );
+
+      getDownloadURL(reference).then((x) => {
+        const colRef = collection(firestore, "users", auth.currentUser.uid, "stories");
+        addDoc(
+          colRef,
+          {
+            storyImg: x,
+            userid: auth.currentUser.uid,
+            dateTime: new Date()
+          }
+        );
+        Toast.show("Added to your story", {
+          duration: Toast.durations.LONG,
+        });
+      });
+    });
+
+    bs.current.snapTo(1);
   };
+
   // Handler to launch camera
   const takePhoto = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if (permissionResult.granted === false) {
-      alert("You've denied permission to allow this app to use your camera.");
+      alert(
+        "You've denied permission to allow this app to access your camera."
+      );
       return;
     }
     const result = await ImagePicker.launchCameraAsync({
@@ -46,10 +77,37 @@ const TodoModal = ({ list, updateList, closeModal }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      console.log("IMAGE FROM CAMERA", result);
-    }
+    const id = uuidv4();
+    const imageRef = ref(storage, `${auth.currentUser.uid}/stories/${id}`);
+
+    const img = await fetch(result.uri);
+    const bytes = await img.blob();
+    uploadBytes(imageRef, bytes).then(() => {
+      const reference = ref(
+        storage,
+        `${auth.currentUser.uid}/stories/${id}`
+      );
+
+      getDownloadURL(reference).then((x) => {
+        const colRef = collection(firestore, "users", auth.currentUser.uid, "stories");
+        addDoc(
+          colRef,
+          {
+            storyImg: x,
+            userid: auth.currentUser.uid,
+            dateTime: new Date()
+          }
+        );
+        Toast.show("Added to your story", {
+          duration: Toast.durations.LONG,
+        });
+      });
+    });
+
+    bs.current.snapTo(1);
   };
+
+
 
   const renderInner = () => (
     <View style={userProfile.panel}>

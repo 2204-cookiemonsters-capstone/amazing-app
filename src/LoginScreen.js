@@ -50,8 +50,9 @@ const LoginScreen = (props) => {
     <View style={authStyle.container}>
       <ScrollView>
         <View style={authStyle.body}>
-          <Ionicons name='ios-list-circle-outline'
-              size={100} />
+         
+         
+        <Image style={{marginTop: 75, width: 175, height: 175, borderRadius: 100, marginBottom: 20}}source={require('../assets/cover.png')} />
           <Text
             style={{
               fontSize: 40,
@@ -64,12 +65,14 @@ const LoginScreen = (props) => {
           </Text>
           <TextInput
             style={authStyle.input}
+            theme={{colors: {primary: "#F24C00"}}}
             autoCapitalize='none'
             label='Email'
             onChangeText={(email) => setEmail(email)}
           />
           <TextInput
             style={authStyle.input}
+            theme={{colors: {primary: "#F24C00"}}}
             autoCapitalize='none'
             secureTextEntry={passwordVisible}
             label='Password'
@@ -86,7 +89,7 @@ const LoginScreen = (props) => {
             title='Signup'
             onPress={() => handleLogin()}
           >
-            <Text style={{ fontWeight: "500", fontSize: 16 }}>Log In</Text>
+            <Text style={{ fontWeight: "500", fontSize: 16, color: "white" }}>Sign In</Text>
           </TouchableOpacity>
           <Text
             onPress={() => props.navigation.navigate("Signup")}
