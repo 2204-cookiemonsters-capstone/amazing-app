@@ -109,27 +109,6 @@ const AddChat = ({ navigation }) => {
       }
     });
 
-    if (!selectedChat.length) {
-      const docRef = await addDoc(collection(firestore, "chats"), {
-        userids: [auth.currentUser.uid, userid],
-        messages: [],
-      });
-
-      const snap = await getDocs(q);
-
-      snap.forEach(async (docs) => {
-        const ref = doc(firestore, "chats", docs.id);
-
-        if (
-          docs.data().userids.includes(auth.currentUser.uid) &&
-          docs.data().userids.includes(userid)
-        ) {
-          selectedChat.push(docs.data());
-          await setDoc(ref, { chatid: docs.id }, { merge: true });
-        }
-      });
-    }
-
     const index = allFriends.indexOf(
       allFriends.find((item) => item.userid === userid)
     );
@@ -178,7 +157,7 @@ const AddChat = ({ navigation }) => {
           }}
           onPress={() => navigation.goBack()}
         >
-          <AntDesign name='left' color='black' size={18} />
+          <AntDesign name="left" color="black" size={18} />
         </TouchableOpacity>
         <View style={{ flexGrow: 1 }} />
         <Text style={{ fontWeight: "700", fontSize: 22 }}>New Chat</Text>
@@ -203,7 +182,7 @@ const AddChat = ({ navigation }) => {
           }}
           onPress={() => navigation.goBack()}
         >
-          <Entypo name='dots-three-horizontal' color='black' size={18} />
+          <Entypo name="dots-three-horizontal" color="black" size={18} />
         </TouchableOpacity>
       </View>
       <View
@@ -239,7 +218,7 @@ const AddChat = ({ navigation }) => {
           }}
         />
         <TextInput
-          placeholder='Find Friends'
+          placeholder="Find Friends"
           onChangeText={(value) => {
             setSearchValue(value);
             search(value);
