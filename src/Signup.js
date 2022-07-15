@@ -15,6 +15,7 @@ import { authStyle } from "../styles";
 import { userTasks } from "./assets/userTasksData";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
+
 const Signup = ({ navigation }) => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -92,18 +93,11 @@ const Signup = ({ navigation }) => {
   };
 
   return (
+    
     <View style={{ marginTop: 30, backgroundColor: "white", height: "100%" }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 35,
-          }}
-        >
-          <View style={{ display: "flex", flexDirection: "row" }}>
+      
+      <View style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", marginTop: 15, marginLeft: 15 }}>
             <TouchableOpacity
               style={{
                 backgroundColor: "white",
@@ -113,7 +107,7 @@ const Signup = ({ navigation }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 marginTop: 3,
-                shadowColor: "#7F5DF0",
+                shadowColor: "gray",
                 shadowOffset: {
                   width: 0,
                   height: 10,
@@ -121,18 +115,30 @@ const Signup = ({ navigation }) => {
                 shadowOpacity: 0.25,
                 shadowRadius: 3.5,
                 elevation: 5,
-                marginLeft: 55,
               }}
               onPress={() => navigation.goBack()}
             >
-              <AntDesign name='left' size={20} color='lightgreen' />
+              <AntDesign name='left' size={20} color="#F24C00" />
             </TouchableOpacity>
-            <View style={{ flexGrow: 1 }} />
-            <Ionicons
+            </View>
+
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 5,
+          }}
+        >
+            <View style={{ flexGrow: 1 , flexDirection: "row", justifyContent: "center"}}>
+            <View  />
+            {/* <Ionicons
               name='ios-list-circle-outline'
               size={100}
               style={{ marginRight: "50%", marginLeft: "25%" }}
-            />
+            /> */}
+            <Image style={{width: 175, height: 175, borderRadius: 100}}source={require('../assets/cover.png')} />
           </View>
 
           <Text
@@ -147,6 +153,7 @@ const Signup = ({ navigation }) => {
           </Text>
           <TextInput
             style={authStyle.input}
+            theme={{colors: {primary: "#F24C00"}}}
             value={username}
             autoCapitalize='none'
             label='Username'
@@ -162,11 +169,13 @@ const Signup = ({ navigation }) => {
           />
           <TextInput
             style={authStyle.input}
+            theme={{colors: {primary: "#F24C00"}}}
             label='Name'
             onChangeText={(name) => setName(name)}
           />
           <TextInput
             style={authStyle.input}
+            theme={{colors: {primary: "#F24C00"}}}
             autoCapitalize='none'
             label='Email'
             onChangeText={(email) => setEmail(email)}
@@ -174,6 +183,7 @@ const Signup = ({ navigation }) => {
           <TextInput
             style={authStyle.input}
             autoCapitalize='none'
+            theme={{colors: {primary: "#F24C00"}}}
             secureTextEntry={passwordVisible}
             label='Password'
             right={
@@ -187,6 +197,7 @@ const Signup = ({ navigation }) => {
           <TextInput
             style={authStyle.input}
             autoCapitalize='none'
+            theme={{colors: {primary: "#F24C00"}}}
             secureTextEntry={confirmPasswordVisible}
             label='Confirm Password'
             right={
@@ -204,7 +215,7 @@ const Signup = ({ navigation }) => {
             title='Signup'
             onPress={() => handleSignUp()}
           >
-            <Text style={{ fontWeight: "500", fontSize: 16 }}>Sign up</Text>
+            <Text style={{ fontWeight: "500", fontSize: 16, color: "white" }}>Sign up</Text>
           </TouchableOpacity>
           <Text
             onPress={() => navigation.navigate("Login")}
