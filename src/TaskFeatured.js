@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
   ScrollView,
-  Image
+  Image, Dimensions
 } from 'react-native';
 import {
   TouchableWithoutFeedback
@@ -297,14 +297,14 @@ dashboardRowTop : {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    width: '100%',
+    justifyContent: 'center',
+    width: '100%'
   },
   featuredItemTouch: {
     width: '100%',
   },
   featuredItem: {
-    width: 183,
+    width: Dimensions.get('window').width / 2.3,
     height: 250,
     padding: 1,
     margin: 1,

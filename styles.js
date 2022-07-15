@@ -53,7 +53,8 @@ const authStyle = StyleSheet.create({
     backgroundColor: "white",
   },
   submitButton: {
-    backgroundColor: "#7F5DF0",
+    backgroundColor: "#F24C00",
+    color: "white",
     borderRadius: 25,
     height: 50,
     width: 180,
@@ -61,7 +62,7 @@ const authStyle = StyleSheet.create({
     justifyContent: "center",
     marginTop: 20,
     marginBottom: 20,
-    shadowColor: "#7F5DF0",
+    shadowColor: "gray",
     shadowOffset: {
       width: 0,
       height: 10,
@@ -75,7 +76,7 @@ const authStyle = StyleSheet.create({
   loginMessage: {
     marginTop: 20,
     textAlign: "center",
-    color: color.link,
+    color: "#F24C00",
   },
   snackbarError: {
     backgroundColor: color.error,

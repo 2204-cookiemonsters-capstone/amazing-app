@@ -450,7 +450,7 @@ const AddFriends = ({ navigation }) => {
                     >
                       <TouchableOpacity
                         style={{
-                          backgroundColor: "#CBC3E3",
+                          backgroundColor: "#F24C00",
                           borderRadius: 25,
                           height: 30,
                           width: 95,
@@ -587,7 +587,7 @@ const AddFriends = ({ navigation }) => {
                       >
                         <TouchableOpacity
                           style={{
-                            backgroundColor: "#CBC3E3",
+                            backgroundColor: "#F24C00",
                             borderRadius: 25,
                             height: 30,
                             width: 95,
@@ -610,7 +610,7 @@ const AddFriends = ({ navigation }) => {
                               source={require("../assets/ADDFRIEND2.png")}
                               style={{ width: 15, height: 15, marginRight: 5 }}
                             />
-                            <Text>Add</Text>
+                            <Text style={{color: "white"}}>Add</Text>
                           </View>
                         </TouchableOpacity>
                       </View>
@@ -686,7 +686,7 @@ const AddFriends = ({ navigation }) => {
                       >
                         <TouchableOpacity
                           style={{
-                            backgroundColor: "#CBC3E3",
+                            backgroundColor: "#F24C00",
                             borderRadius: 25,
                             height: 30,
                             width: 95,
@@ -705,11 +705,12 @@ const AddFriends = ({ navigation }) => {
                               flexDirection: "row",
                             }}
                           >
+                            
                             <Image
                               source={require("../assets/ADDFRIEND2.png")}
                               style={{ width: 15, height: 15, marginRight: 5 }}
                             />
-                            <Text>Add</Text>
+                            <Text style={{color:"white"}}>Add</Text>
                           </View>
                         </TouchableOpacity>
                       </View>
