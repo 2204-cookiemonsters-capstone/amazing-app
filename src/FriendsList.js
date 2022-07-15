@@ -29,6 +29,7 @@ import FriendModal from "./FriendModal";
 
 import Toast from "react-native-root-toast";
 import { RootSiblingParent } from "react-native-root-siblings";
+import { ScrollView } from "react-native-gesture-handler";
 
 const image = require("../assets/favicon.png");
 
@@ -38,6 +39,10 @@ const FriendsList = ({ navigation }) => {
   const [searchValue, setSearchValue] = useState([""]);
   const [selectedFriend, setSelectedFriend] = useState("");
   const [showFriendModal, setShowFriendModal] = useState(false);
+
+  const height = () => {
+    return allFriends.length * 78 + 260;
+  };
 
   const fetchAllFriends = async () => {
     onSnapshot(
@@ -279,108 +284,113 @@ const FriendsList = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={{ marginTop: 20 }}>
-            {allFriends.map((item) => (
-              <TouchableOpacity
-                key={item.userid}
-                style={{
-                  marginLeft: 15,
-                  marginRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 0,
-                  borderColor: "#cccccc",
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
-                  borderTopRightRadius: item === allFriends[0] ? 8 : 0,
-                  backgroundColor: "white",
-                  marginBottom: 1,
-                  borderBottomRightRadius:
-                    item === allFriends[allFriends.length - 1] ? 8 : 0,
-                  borderBottomLeftRadius:
-                    item === allFriends[allFriends.length - 1] ? 8 : 0,
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
-                onPress={() => {
-                  toggleFriendModal();
-                  setSelectedFriend(item);
-                }}
-              >
-                <TouchableOpacity>
-                  <Image
-                    source={
-                      item.profilepic
-                        ? { uri: item.profilepic }
-                        : require("../assets/defaultprofileicon.webp")
-                    }
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: 25,
-                      marginTop: 10,
-                      marginBottom: 10,
-                      marginRight: 5,
-                    }}
-                  />
-                </TouchableOpacity>
-                <View
+          <ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={{ marginTop: 20, height: height() }}>
+              {allFriends.map((item) => (
+                <TouchableOpacity
+                  key={item.userid}
                   style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    paddingTop: 7,
+                    paddingBottom: 0,
+                    borderColor: "#cccccc",
                     display: "flex",
-                    flexDirection: "column",
-                    width: "52%",
+                    flexDirection: "row",
+                    paddingLeft: 10,
+                    paddingRight: 15,
+                    borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
+                    borderTopRightRadius: item === allFriends[0] ? 8 : 0,
+                    backgroundColor: "white",
+                    marginBottom: 1,
+                    borderBottomRightRadius:
+                      item === allFriends[allFriends.length - 1] ? 8 : 0,
+                    borderBottomLeftRadius:
+                      item === allFriends[allFriends.length - 1] ? 8 : 0,
+                    shadowColor: "#7F5DF0",
+                    shadowOffset: {
+                      width: 0,
+                      height: 10,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.5,
+                    elevation: 5,
+                  }}
+                  onPress={() => {
+                    toggleFriendModal();
+                    setSelectedFriend(item);
                   }}
                 >
-                  <Text style={{ fontSize: 18, fontWeight: "400" }}>
-                    {item.name}
-                  </Text>
-                  <Text style={{ color: "gray" }}>{item.username}</Text>
-                  {/* <Text>3 Mutual Friends</Text> */}
-                </View>
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginLeft: 25,
-                  }}
-                >
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: "red",
-                      borderRadius: 25,
-                      height: 30,
-                      width: 60,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      display: "flex",
-                      flexDirection: "row",
-                    }}
-                    onPress={() => handleRemoveFriend(item.userid)}
-                  >
-                    <View
+                  <TouchableOpacity>
+                    <Image
+                      source={
+                        item.profilepic
+                          ? { uri: item.profilepic }
+                          : require("../assets/defaultprofileicon.webp")
+                      }
                       style={{
-                        alignItems: "center",
-                        justifyContent: "center",
+                        width: 50,
+                        height: 50,
+                        borderRadius: 25,
+                        marginTop: 10,
+                        marginBottom: 10,
+                        marginRight: 5,
                       }}
-                    >
-                      <Image
-                        source={require("../assets/removefriend.png")}
-                        style={{ width: 15, height: 15 }}
-                      />
-                    </View>
+                    />
                   </TouchableOpacity>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "52%",
+                    }}
+                  >
+                    <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                      {item.name}
+                    </Text>
+                    <Text style={{ color: "gray" }}>{item.username}</Text>
+                    {/* <Text>3 Mutual Friends</Text> */}
+                  </View>
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginLeft: 25,
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "red",
+                        borderRadius: 25,
+                        height: 30,
+                        width: 60,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                      onPress={() => handleRemoveFriend(item.userid)}
+                    >
+                      <View
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image
+                          source={require("../assets/removefriend.png")}
+                          style={{ width: 15, height: 15 }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
         )}
 
         <Modal
