@@ -29,6 +29,7 @@ import {
 import FriendModal from "./FriendModal";
 import { RootSiblingParent } from "react-native-root-siblings";
 import Toast from "react-native-root-toast";
+import { render } from "react-dom";
 
 const image = require("../assets/favicon.png");
 
@@ -256,57 +257,19 @@ const AddFriends = ({ navigation }) => {
           }}
         >
           <TouchableOpacity
-            style={{
-              backgroundColor: "white",
-              borderRadius: 25,
-              height: 35,
-              width: 35,
-              alignItems: "center",
-              justifyContent: "center",
-              marginLeft: 13,
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
-            }}
+            style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
             <AntDesign name='left' color='black' size={18} />
           </TouchableOpacity>
           <View style={{ flexGrow: 1 }} />
-          <Text style={{ fontWeight: "700", fontSize: 22, marginRight: 32 }}>Add Friends</Text>
+          <Text style={{ fontWeight: "700", fontSize: 22, marginRight: 32 }}>
+            Add Friends
+          </Text>
           <View style={{ flexGrow: 1 }} />
-         
         </View>
 
-        <View
-          style={{
-            marginTop: 40,
-            marginLeft: 25,
-            marginRight: 25,
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-
-            borderRadius: 50,
-            backgroundColor: "white",
-            height: 40,
-            paddingHorizontal: 16,
-            shadowColor: "#7F5DF0",
-            shadowOffset: {
-              width: 0,
-              height: 10,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.5,
-            elevation: 5,
-            marginBottom: 5,
-          }}
-        >
+        <View style={styles.searchView}>
           <Image
             source={require("../assets/search2.png")}
             style={{
@@ -346,15 +309,7 @@ const AddFriends = ({ navigation }) => {
                   <TouchableOpacity
                     key={item.userid}
                     style={{
-                      marginLeft: 15,
-                      marginRight: 15,
-                      paddingTop: 7,
-                      paddingBottom: 0,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
+                      ...styles.incomingFriendsProfile,
                       borderTopLeftRadius:
                         item === renderedIncomingFriends[0] ? 8 : 0,
                       borderTopRightRadius:
@@ -373,23 +328,18 @@ const AddFriends = ({ navigation }) => {
                         ]
                           ? 8
                           : 0,
-                      backgroundColor: "white",
-                      marginBottom: 1,
-                      shadowColor: "#7F5DF0",
-                      shadowOffset: {
-                        width: 0,
-                        height: 10,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.5,
-                      elevation: 5,
                     }}
                     onPress={() => {
                       toggleFriendModal();
                       setSelectedFriend(item);
                     }}
                   >
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        toggleFriendModal();
+                        setSelectedFriend(item);
+                      }}
+                    >
                       <Image
                         source={
                           item.profilepic || item.profilepic !== undefined
@@ -499,34 +449,35 @@ const AddFriends = ({ navigation }) => {
                     <TouchableOpacity
                       key={item.userid}
                       style={{
-                        marginLeft: 15,
-                        marginRight: 15,
-                        paddingTop: 7,
-                        paddingBottom: 0,
-                        borderColor: "#cccccc",
-                        display: "flex",
-                        flexDirection: "row",
-                        paddingLeft: 10,
-                        paddingRight: 15,
-                        borderTopLeftRadius: item === allUsers[0] ? 8 : 0,
-                        borderTopRightRadius: item === allUsers[0] ? 8 : 0,
-                        backgroundColor: "white",
-                        marginBottom: 1,
-                        shadowColor: "#7F5DF0",
-                        shadowOffset: {
-                          width: 0,
-                          height: 10,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.5,
-                        elevation: 5,
+                        ...styles.allFriendsProfile,
+                        borderTopLeftRadius:
+                          item === renderedAllFriends[0] ? 8 : 0,
+                        borderTopRightRadius:
+                          item === renderedAllFriends[0] ? 8 : 0,
+                        borderBottomLeftRadius:
+                          searchValue !== "" &&
+                          item ===
+                            renderedAllFriends[renderedAllFriends.length - 1]
+                            ? 8
+                            : 0,
+                        borderBottomRightRadius:
+                          searchValue !== "" &&
+                          item ===
+                            renderedAllFriends[renderedAllFriends.length - 1]
+                            ? 8
+                            : 0,
                       }}
                       onPress={() => {
                         toggleFriendModal();
                         setSelectedFriend(item);
                       }}
                     >
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          toggleFriendModal();
+                          setSelectedFriend(item);
+                        }}
+                      >
                         <Image
                           source={
                             item.profilepic || item.profilepic !== undefined
@@ -597,34 +548,35 @@ const AddFriends = ({ navigation }) => {
                     <TouchableOpacity
                       key={item.userid}
                       style={{
-                        marginLeft: 15,
-                        marginRight: 15,
-                        paddingTop: 7,
-                        paddingBottom: 0,
-                        borderColor: "#cccccc",
-                        display: "flex",
-                        flexDirection: "row",
-                        paddingLeft: 10,
-                        paddingRight: 15,
-                        borderTopLeftRadius: item === allUsers[0] ? 8 : 0,
-                        borderTopRightRadius: item === allUsers[0] ? 8 : 0,
-                        backgroundColor: "white",
-                        marginBottom: 1,
-                        shadowColor: "#7F5DF0",
-                        shadowOffset: {
-                          width: 0,
-                          height: 10,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.5,
-                        elevation: 5,
+                        ...styles.firstThreeProfile,
+                        borderTopLeftRadius:
+                          item === renderedAllFriends[0] ? 8 : 0,
+                        borderTopRightRadius:
+                          item === renderedAllFriends[0] ? 8 : 0,
+                        borderBottomLeftRadius:
+                          searchValue !== "" &&
+                          item ===
+                            renderedAllFriends[renderedAllFriends.length - 1]
+                            ? 8
+                            : 0,
+                        borderBottomRightRadius:
+                          searchValue !== "" &&
+                          item ===
+                            renderedAllFriends[renderedAllFriends.length - 1]
+                            ? 8
+                            : 0,
                       }}
                       onPress={() => {
                         toggleFriendModal();
                         setSelectedFriend(item);
                       }}
                     >
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          toggleFriendModal();
+                          setSelectedFriend(item);
+                        }}
+                      >
                         <Image
                           source={
                             item.profilepic || item.profilepic !== undefined
@@ -694,63 +646,14 @@ const AddFriends = ({ navigation }) => {
                   ))}
               {showAllQuickAdd && searchValue === "" ? (
                 <TouchableOpacity
-                  style={{
-                    marginLeft: 15,
-                    marginRight: 15,
-                    paddingTop: 7,
-                    paddingBottom: 7,
-                    borderColor: "#cccccc",
-                    display: "flex",
-                    flexDirection: "row",
-                    paddingLeft: 10,
-                    paddingRight: 15,
-                    height: 40,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderBottomRightRadius: 8,
-                    borderBottomLeftRadius: 8,
-                    backgroundColor: "white",
-                    shadowColor: "#7F5DF0",
-                    shadowOffset: {
-                      width: 0,
-                      height: 10,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.5,
-                    elevation: 5,
-                  }}
+                  style={styles.viewless}
                   onPress={() => setShowAllQuickAdd(false)}
                 >
                   <Text>View Less</Text>
                 </TouchableOpacity>
               ) : searchValue === "" && !showAllQuickAdd ? (
                 <TouchableOpacity
-                  style={{
-                    marginLeft: 15,
-                    marginRight: 15,
-                    paddingTop: 7,
-                    paddingBottom: 7,
-                    borderColor: "#cccccc",
-                    display: "flex",
-                    flexDirection: "row",
-
-                    paddingLeft: 10,
-                    paddingRight: 15,
-                    height: 40,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderBottomRightRadius: 8,
-                    borderBottomLeftRadius: 8,
-                    backgroundColor: "white",
-                    shadowColor: "#7F5DF0",
-                    shadowOffset: {
-                      width: 0,
-                      height: 10,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.5,
-                    elevation: 5,
-                  }}
+                  style={styles.viewmore}
                   onPress={() => setShowAllQuickAdd(true)}
                 >
                   <Text>View More</Text>
@@ -775,3 +678,159 @@ const AddFriends = ({ navigation }) => {
 };
 
 export default AddFriends;
+
+const styles = StyleSheet.create({
+  backButton: {
+    backgroundColor: "white",
+    borderRadius: 25,
+    height: 35,
+    width: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 13,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  searchView: {
+    marginTop: 40,
+    marginLeft: 25,
+    marginRight: 25,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+
+    borderRadius: 50,
+    backgroundColor: "white",
+    height: 40,
+    paddingHorizontal: 16,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+    marginBottom: 5,
+  },
+  incomingFriendsProfile: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 0,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+    backgroundColor: "white",
+    marginBottom: 1,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  allFriendsProfile: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 0,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+    backgroundColor: "white",
+    marginBottom: 1,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  firstThreeProfile: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 0,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+    backgroundColor: "white",
+    marginBottom: 1,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  viewless: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 7,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    backgroundColor: "white",
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  viewmore: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 7,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+
+    paddingLeft: 10,
+    paddingRight: 15,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    backgroundColor: "white",
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+});

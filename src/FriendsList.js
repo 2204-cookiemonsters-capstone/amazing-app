@@ -152,23 +152,7 @@ const FriendsList = ({ navigation }) => {
           }}
         >
           <TouchableOpacity
-            style={{
-              backgroundColor: "white", //random vibrant color for now, style our app later
-              borderRadius: 25,
-              height: 35,
-              width: 35,
-              alignItems: "center",
-              justifyContent: "center",
-              marginLeft: 13,
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
-            }}
+            style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
             <AntDesign name='left' color='black' size={18} />
@@ -178,51 +162,17 @@ const FriendsList = ({ navigation }) => {
           <View style={{ flexGrow: 1 }} />
           <TouchableOpacity
             style={{
-              backgroundColor: "white", //random vibrant color for now, style our app later
               borderRadius: 25,
               height: 35,
               width: 35,
               alignItems: "center",
               justifyContent: "center",
               marginRight: 13,
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
             }}
             onPress={() => navigation.goBack()}
-          >
-            <Entypo name='dots-three-horizontal' color='black' size={18} />
-          </TouchableOpacity>
+          ></TouchableOpacity>
         </View>
-        <View
-          style={{
-            marginTop: 40,
-            marginLeft: 15,
-            marginRight: 15,
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            borderRadius: 50,
-            backgroundColor: "white",
-            height: 40,
-            paddingHorizontal: 16,
-            flexGrow: 1,
-            marginBottom: 5,
-            shadowColor: "#7F5DF0",
-            shadowOffset: {
-              width: 0,
-              height: 10,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.5,
-            elevation: 5,
-          }}
-        >
+        <View style={styles.textInputView}>
           <Image
             source={require("../assets/search2.png")}
             style={{
@@ -261,23 +211,7 @@ const FriendsList = ({ navigation }) => {
           >
             <Text>You have no friends</Text>
             <TouchableOpacity
-              style={{
-                borderRadius: 25,
-                backgroundColor: "white",
-                width: 100,
-                height: 30,
-                justifyContent: "center",
-                alignItems: "center",
-                shadowColor: "#7F5DF0",
-                shadowOffset: {
-                  width: 0,
-                  height: 10,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.5,
-                elevation: 5,
-                marginTop: 10,
-              }}
+              style={styles.addFriendsButton}
               onPress={() => navigation.navigate("AddFriends")}
             >
               <Text style={{ color: "black" }}> Add Friends</Text>
@@ -293,31 +227,13 @@ const FriendsList = ({ navigation }) => {
                 <TouchableOpacity
                   key={item.userid}
                   style={{
-                    marginLeft: 15,
-                    marginRight: 15,
-                    paddingTop: 7,
-                    paddingBottom: 0,
-                    borderColor: "#cccccc",
-                    display: "flex",
-                    flexDirection: "row",
-                    paddingLeft: 10,
-                    paddingRight: 15,
-                    borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
-                    borderTopRightRadius: item === allFriends[0] ? 8 : 0,
-                    backgroundColor: "white",
-                    marginBottom: 1,
                     borderBottomRightRadius:
                       item === allFriends[allFriends.length - 1] ? 8 : 0,
                     borderBottomLeftRadius:
                       item === allFriends[allFriends.length - 1] ? 8 : 0,
-                    shadowColor: "#7F5DF0",
-                    shadowOffset: {
-                      width: 0,
-                      height: 10,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.5,
-                    elevation: 5,
+                    borderTopLeftRadius: item === allFriends[0] ? 8 : 0,
+                    borderTopRightRadius: item === allFriends[0] ? 8 : 0,
+                    ...styles.profile,
                   }}
                   onPress={() => {
                     toggleFriendModal();
@@ -362,16 +278,7 @@ const FriendsList = ({ navigation }) => {
                     }}
                   >
                     <TouchableOpacity
-                      style={{
-                        backgroundColor: "red",
-                        borderRadius: 25,
-                        height: 30,
-                        width: 60,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
+                      style={styles.removeButton}
                       onPress={() => handleRemoveFriend(item.userid)}
                     >
                       <View
@@ -409,3 +316,95 @@ const FriendsList = ({ navigation }) => {
 };
 
 export default FriendsList;
+
+const styles = StyleSheet.create({
+  profile: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 0,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+
+    backgroundColor: "white",
+    marginBottom: 1,
+
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  removeButton: {
+    backgroundColor: "red",
+    borderRadius: 25,
+    height: 30,
+    width: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+  },
+  addFriendsButton: {
+    borderRadius: 25,
+    backgroundColor: "white",
+    width: 100,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+    marginTop: 10,
+  },
+  backButton: {
+    backgroundColor: "white",
+    borderRadius: 25,
+    height: 35,
+    width: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 13,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  textInputView: {
+    marginTop: 40,
+    marginLeft: 15,
+    marginRight: 15,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 50,
+    backgroundColor: "white",
+    height: 40,
+    paddingHorizontal: 16,
+    flexGrow: 1,
+    marginBottom: 5,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+});

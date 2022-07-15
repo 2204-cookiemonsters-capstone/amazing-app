@@ -208,7 +208,7 @@ const Messages = (props) => {
         </View>
       ) : isLoading ? (
         <View style={{ margin: "50%" }}>
-          <ActivityIndicator size="large" color="blue" />
+          <ActivityIndicator size='large' color='blue' />
         </View>
       ) : (
         <View
@@ -253,7 +253,7 @@ const Messages = (props) => {
             backgroundColor: "#EE6E73",
             position: "absolute",
             bottom: 90,
-            right: 30,
+            right: 25,
             borderRadius: 70 / 2,
             alignItems: "center",
             justifyContent: "center",
@@ -268,7 +268,7 @@ const Messages = (props) => {
           }}
           onPress={() => props.navigation.navigate("AddChat")}
         >
-          <Ionicons name="add" size={26} color="white" />
+          <Ionicons name='add' size={26} color='white' />
         </TouchableOpacity>
       ) : null}
     </View>

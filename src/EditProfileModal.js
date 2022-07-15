@@ -242,7 +242,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
         >
           <View
             style={{
-              marginTop: 30,
+              marginTop: Platform.OS === "ios" ? 30 : 5,
               width: "100%",
               display: "flex",
               flexDirection: "row",
@@ -281,7 +281,10 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
               style={styles.button}
               onPress={() => auth.signOut()}
             >
-              <Text style={{ fontWeight: "500", fontSize: 17, color: "red" }} onPress={() => handleSignOut()}>
+              <Text
+                style={{ fontWeight: "500", fontSize: 17, color: "red" }}
+                onPress={() => handleSignOut()}
+              >
                 Sign Out
               </Text>
             </TouchableOpacity>
@@ -445,6 +448,18 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
             >
               <Text style={{ fontWeight: "500", fontSize: 18 }}>Update</Text>
             </TouchableOpacity>
+          </View>
+          <View style={{ flexGrow: 1 }} />
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 10 }}>HappiList v1.1.0</Text>
+            <Text style={{ fontSize: 10 }}>Made in Chicago</Text>
           </View>
         </View>
       </KeyboardAvoidingView>
