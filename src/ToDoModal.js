@@ -136,77 +136,77 @@ const TodoModal = ({ list, updateList, closeModal }) => {
         callbackNode={fall}
         enabledGestureInteraction={true}
       />
-      <SafeAreaView style={todoListStyle.todoModal.container}>
-        <TouchableOpacity
-          style={{ position: "absolute", top: 64, right: 32, zIndex: 10 }}
-          onPress={closeModal}
-        >
-          <AntDesign name="close" size={24} color={color.list.black} />
-        </TouchableOpacity>
-        <View
-          style={[
-            todoListStyle.todoModal.section,
-            todoListStyle.todoModal.header,
-            { borderBottomColor: list.color },
-          ]}
-        >
-          <View>
-            <Text style={todoListStyle.todoModal.title}>{list.name}</Text>
-            <Text style={todoListStyle.todoModal.taskCount}>
-              {completedCount} of {taskCount} tasks
-            </Text>
-          </View>
-        </View>
-        <View
-          style={[
-            todoListStyle.todoModal.section,
-            { flex: 3, marginVertical: 16 },
-          ]}
-        >
-          <FlatList
-            data={list.todos}
-            renderItem={({ item, index }) => (
-              <ToDoItem
-                todo={item}
-                index={index}
-                toggleTodoCompleted={toggleTodoCompleted}
-                deleteTodo={deleteTodo}
-              />
-            )}
-            keyExtractor={(item) => item.title}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
-        <Snackbar
-          visible={isValid.boolSnack}
-          style={authStyle.snackbarError}
-          duration={2000}
-          onDismiss={() => {
-            setIsValid({ boolSnack: false });
-          }}
-        >
-          {isValid.message}
-        </Snackbar>
-        <View
-          style={[
-            todoListStyle.todoModal.section,
-            todoListStyle.todoModal.footer,
-          ]}
-        >
-          <TextInput
-            style={[todoListStyle.todoModal.input, { borderColor: list.color }]}
-            onChangeText={(text) => setNewTodo(text)}
-            value={newTodo}
-          />
+        <SafeAreaView style={todoListStyle.todoModal.container}>
           <TouchableOpacity
-            style={[todoListStyle.todoModal.addTodo, { backgroundColor: list.color },
-            ]}
-            onPress={() => addTodo()}
+            style={{ position: "absolute", top: 64, right: 32, zIndex: 10 }}
+            onPress={closeModal}
           >
-            <AntDesign name="plus" size={16} color={color.list.white} />
+            <AntDesign name="close" size={24} color={color.list.black} />
           </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+          <View
+            style={[
+              todoListStyle.todoModal.section,
+              todoListStyle.todoModal.header,
+              { borderBottomColor: list.color },
+            ]}
+          >
+            <View>
+              <Text style={todoListStyle.todoModal.title}>{list.name}</Text>
+              <Text style={todoListStyle.todoModal.taskCount}>
+                {completedCount} of {taskCount} tasks
+              </Text>
+            </View>
+          </View>
+          <View
+            style={[
+              todoListStyle.todoModal.section,
+              { flex: 3, marginVertical: 16 },
+            ]}
+          >
+            <FlatList
+              data={list.todos}
+              renderItem={({ item, index }) => (
+                <ToDoItem
+                  todo={item}
+                  index={index}
+                  toggleTodoCompleted={toggleTodoCompleted}
+                  deleteTodo={deleteTodo}
+                />
+              )}
+              keyExtractor={(item) => item.title}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
+          <Snackbar
+            visible={isValid.boolSnack}
+            style={authStyle.snackbarError}
+            duration={2000}
+            onDismiss={() => {
+              setIsValid({ boolSnack: false });
+            }}
+          >
+            {isValid.message}
+          </Snackbar>
+          <View
+            style={[
+              todoListStyle.todoModal.section,
+              todoListStyle.todoModal.footer,
+            ]}
+          >
+            <TextInput
+              style={[todoListStyle.todoModal.input, { borderColor: list.color }]}
+              onChangeText={(text) => setNewTodo(text)}
+              value={newTodo}
+            />
+            <TouchableOpacity
+              style={[todoListStyle.todoModal.addTodo, { backgroundColor: list.color },
+              ]}
+              onPress={() => addTodo()}
+            >
+              <AntDesign name="plus" size={16} color={color.list.white} />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };

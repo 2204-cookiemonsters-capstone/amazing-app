@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, SafeAreaView } from "react-native";
 import { auth, firestore } from "../firebase";
 import { onSnapshot, collection, getDoc, doc, getDocs, where, query } from "firebase/firestore";
 import Stories from "./Stories";
@@ -45,9 +45,9 @@ const Explore = () => {
   // }, []);
 
   return (
-    <View>
-      <Stories />
-    </View>
+    <SafeAreaView style={{flex: 1}}>
+      <Stories/>
+    </SafeAreaView>
   );
 };
 
