@@ -48,6 +48,8 @@ const SinglePost = (props) => {
     return Math.abs(Math.round(diff));
   };
 
+  const addLike = () => {};
+
   useEffect(() => {
     fetchUser();
   }, []);

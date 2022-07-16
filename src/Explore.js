@@ -126,7 +126,7 @@ const Explore = () => {
           ) : (
             <View>
               {posts.map((post) => (
-                <SinglePost post={post} />
+                <SinglePost key={post.postid} post={post} />
               ))}
             </View>
           )}

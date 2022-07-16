@@ -173,6 +173,10 @@ const AddPostModal = (props) => {
         timeposted: new Date(),
         likes: [],
         comments: [],
+      }).then(async function (docref) {
+        await updateDoc(doc(firestore, "posts", docref.id), {
+          postid: docref.id,
+        });
       });
       props.setAddPostVisible(false);
       setLoading(false);
