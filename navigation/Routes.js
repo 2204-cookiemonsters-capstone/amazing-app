@@ -20,6 +20,7 @@ const Routes = () => {
       }
     });
   }, [user]);
+  console.log(user);
 
   return (
     <NavigationContainer

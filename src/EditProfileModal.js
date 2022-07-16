@@ -283,7 +283,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
             >
               <Text
                 style={{ fontWeight: "500", fontSize: 17, color: "red" }}
-                onPress={() => handleSignOut()}
+                // onPress={() => handleSignOut()}
               >
                 Sign Out
               </Text>
