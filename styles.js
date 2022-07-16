@@ -7,7 +7,7 @@ const color = {
   background: "white",
   inputBorder: "#BAB7C3",
   header: "black",
-  submit: "#9075E3",
+  submit: "#F24C00",
   list: {
     black: "#2D3436",
     blue: "#24A6D9",

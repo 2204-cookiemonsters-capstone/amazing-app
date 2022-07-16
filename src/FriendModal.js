@@ -82,6 +82,7 @@ const FriendModal = ({ user, closeModal }) => {
               size={100}
               label={user.name.charAt(0)}
               style={friendModal.avatar}
+              theme={{colors: {primary: "#F24C00"}}}
             >
               {user.name}
             </Avatar.Text>
