@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import { auth, firestore } from "../firebase";
 import SinglePost from "./SinglePost";
@@ -14,6 +15,7 @@ const Explore = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [friendIds, setFriendIds] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const currentuser = auth.currentUser ? auth.currentUser.uid : "";
 
   const fetchFriends = async () => {
@@ -33,22 +35,25 @@ const Explore = () => {
       console.log(friends);
     });
     friendIds !== friends ? setFriendIds(friends) : null;
-    fetchPosts();
+    // fetchPosts();
   };
 
   const fetchPosts = async () => {
+    setLoading(true);
     const reference = collection(firestore, "posts");
-    const snapshot = await getDocs(reference);
+    onSnapshot(reference, (snapshot) => {
+      const postList = [];
 
-    const postList = [];
+      snapshot.forEach((docs) => {
+        if (friendIds.includes(docs.data().userid)) {
+          postList.push(docs.data());
+          console.log(docs.data());
+        }
+      });
 
-    snapshot.forEach((docs) => {
-      if (friendIds.includes(docs.data().userid)) {
-        postList.push(docs.data());
-      }
+      posts !== postList ? setPosts(postList) : null;
+      setLoading(false);
     });
-
-    posts !== postList ? setPosts(postList) : null;
   };
 
   const wait = (timeout) => {
@@ -64,6 +69,10 @@ const Explore = () => {
     fetchFriends();
   }, [currentuser]);
   console.log(posts);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [friendIds]);
 
   return (
     <View>
@@ -81,11 +90,20 @@ const Explore = () => {
             display: "flex",
             flexDirection: "column",
             marginBottom: 50,
+            height: "100%",
           }}
         >
-          {posts.map((post) => (
-            <SingleProfile post={post} />
-          ))}
+          {loading ? (
+            <View style={{ marginTop: 30 }}>
+              <ActivityIndicator size='large' />
+            </View>
+          ) : (
+            <View>
+              {posts.map((post) => (
+                <SinglePost post={post} />
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>

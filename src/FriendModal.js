@@ -45,7 +45,7 @@ const FriendModal = ({ user, closeModal }) => {
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={color.list.blue} />
+        <ActivityIndicator size='large' color={color.list.blue} />
       </View>
     );
   }
@@ -62,13 +62,21 @@ const FriendModal = ({ user, closeModal }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-      <SafeAreaView>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
+      <SafeAreaView
+        style={{
+          width: "100%",
+
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
         <TouchableOpacity
           style={{ position: "absolute", top: 64, right: 32, zIndex: 10 }}
           onPress={closeModal}
         >
-          <AntDesign name="close" size={24} color="black" />
+          <AntDesign name='close' size={24} color='black' />
         </TouchableOpacity>
         <ScrollView>
           <View
@@ -76,6 +84,7 @@ const FriendModal = ({ user, closeModal }) => {
               alignItems: "center",
               marginTop: 80,
               marginBottom: 40,
+              justifyContent: "center",
             }}
           >
             <Avatar.Text
@@ -85,10 +94,14 @@ const FriendModal = ({ user, closeModal }) => {
             >
               {user.name}
             </Avatar.Text>
-            <Text style={friendModal.title}>{user.name}</Text>
+            <View>
+              <Text style={friendModal.title}>{user.name}</Text>
+            </View>
+
             <Text style={friendModal.userName}>{user.username}</Text>
+
             <View style={friendModal.score}>
-              <AntDesign name="aliwangwang-o1" size={15} />
+              <AntDesign name='aliwangwang-o1' size={15} />
               <Text style={{ fontSize: 20, marginLeft: 5 }}>{user.score}</Text>
             </View>
           </View>
@@ -111,7 +124,7 @@ const FriendModal = ({ user, closeModal }) => {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                   renderItem={({ item }) => renderSingleList(item)}
-                  keyboardShouldPersistTaps="always"
+                  keyboardShouldPersistTaps='always'
                 />
               </View>
             ) : (

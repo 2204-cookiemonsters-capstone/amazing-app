@@ -4,14 +4,45 @@ import {
   FontAwesome,
   Octicons,
 } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Text, View, TouchableOpacity, Image } from "react-native";
-import { auth } from "../firebase";
-const SinglePost = () => {
+
+import { doc, getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { Text, View, TouchableOpacity, Image, Modal } from "react-native";
+import { firestore, auth } from "../firebase";
+import FriendModal from "./FriendModal";
+
+const SinglePost = (props) => {
+  const post = props.post;
   const [caption, setCaption] = useState(
     "Hello! How was your day? My day was great. Hope yours is going well too. This was my image from the beach today. It was alot of fun. I hope to do this again soon!"
   );
   const [showAllCaption, setShowAllCaption] = useState(false);
+  const [userData, setUserData] = useState("");
+
+  const [selectedFriend, setSelectedFriend] = useState("");
+  const [showFriendModal, setShowFriendModal] = useState(false);
+
+  const toggleFriendModal = () => {
+    setShowFriendModal(!showFriendModal);
+  };
+
+  const fetchUser = async () => {
+    const reference = doc(firestore, "users", post.userid);
+    const snapshot = await getDoc(reference);
+
+    let user = "";
+    if (snapshot.exists()) {
+      user = snapshot.data();
+    } else {
+      console.log("No Such Documents");
+    }
+
+    userData !== user ? setUserData(user) : null;
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <View
@@ -33,14 +64,23 @@ const SinglePost = () => {
         }}
       >
         <Image
-          source={require("../assets/favicon.png")}
+          source={
+            userData.profilepic
+              ? { uri: userData.profilepic }
+              : require("../assets/defaultprofileicon.webp")
+          }
           style={{ width: 40, height: 40, borderRadius: 70, marginLeft: 10 }}
         />
-        <Text style={{ fontSize: 16, marginLeft: 3 }}>Name Here</Text>
+        <Text
+          style={{ fontSize: 16, marginLeft: 3, fontWeight: "500" }}
+          onPress={() => toggleFriendModal()}
+        >
+          {userData.username}
+        </Text>
       </View>
       <View style={{ width: "100%", height: 410 }}>
         <Image
-          source={require("../assets/favicon.png")}
+          source={{ uri: post.imageurl }}
           style={{ height: "100%", width: "100%" }}
         />
       </View>
@@ -64,7 +104,9 @@ const SinglePost = () => {
         </TouchableOpacity>
       </View>
       <View style={{ marginLeft: 13 }}>
-        <Text style={{ fontWeight: "500", fontSize: 15 }}>231 likes</Text>
+        <Text style={{ fontWeight: "500", fontSize: 15 }}>
+          {post.likes.length} likes
+        </Text>
       </View>
       <View
         style={{
@@ -83,10 +125,10 @@ const SinglePost = () => {
           }}
         >
           <Text style={{ flexShrink: 1 }}>
-            <Text style={{ fontWeight: "500" }}>username: </Text>
-            {caption.length > 80 && !showAllCaption ? (
+            <Text style={{ fontWeight: "500" }}>{userData.username}: </Text>
+            {post.caption.length > 80 && !showAllCaption ? (
               <Text>
-                {caption.slice(0, 80)}
+                {post.caption.slice(0, 80)}
                 <Text
                   style={{ color: "gray" }}
                   onPress={() => setShowAllCaption(true)}
@@ -94,14 +136,29 @@ const SinglePost = () => {
                   ...more
                 </Text>
               </Text>
-            ) : caption.length > 80 && showAllCaption ? (
-              <Text>{caption}</Text>
-            ) : caption.length < 80 ? (
-              <Text>{caption}</Text>
+            ) : post.caption.length > 80 && showAllCaption ? (
+              <Text>{post.caption}</Text>
+            ) : post.caption.length < 80 ? (
+              <Text>{post.caption}</Text>
             ) : null}
           </Text>
         </View>
+        <View style={{ marginTop: -11 }}>
+          <Text style={{ color: "darkgray" }}>
+            View {post.comments.length} comments
+          </Text>
+        </View>
+        <View style={{ marginTop: 2 }}>
+          <Text style={{ fontSize: 12, color: "darkgray" }}>11 hours ago</Text>
+        </View>
       </View>
+      <Modal
+        animationType='slide'
+        visible={showFriendModal}
+        onRequestClose={() => toggleFriendModal()}
+      >
+        <FriendModal user={userData} closeModal={() => toggleFriendModal()} />
+      </Modal>
     </View>
   );
 };

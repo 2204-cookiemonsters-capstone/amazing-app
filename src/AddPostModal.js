@@ -171,7 +171,7 @@ const AddPostModal = (props) => {
         imageurl: imageUrl,
         userid: auth.currentUser.uid,
         timeposted: new Date(),
-        likes: 0,
+        likes: [],
         comments: [],
       });
       props.setAddPostVisible(false);
