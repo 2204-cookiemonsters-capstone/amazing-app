@@ -233,7 +233,7 @@ const TaskDashboard = ({
         onRequestClose={() => setAddPostVisible(!addPostVisible)}
         animationType='slide'
       >
-        <AddPostModal />
+        <AddPostModal setAddPostVisible={setAddPostVisible} />
       </Modal>
     </>
   );

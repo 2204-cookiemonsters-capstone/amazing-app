@@ -264,7 +264,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
                 style={styles.smallButton}
                 onPress={() => setVisibilitySettings(false)}
               >
-                <AntDesign name='left' size={20} color='lightgreen' />
+                <AntDesign name='down' size={20} color='lightgreen' />
               </View>
               <Text
                 style={{

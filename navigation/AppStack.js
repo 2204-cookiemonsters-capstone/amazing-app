@@ -21,7 +21,7 @@ import SearchPage from "../src/SearchPage";
 import AddFriends from "../src/AddFriends";
 import FriendsList from "../src/FriendsList";
 import AddChat from "../src/Messages-Chat/AddChat";
-import SingleProfile from "../src/SingleProfile";
+
 import ProfilePageNotYou from "../src/ProfilePageNotYou";
 
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -88,7 +88,6 @@ const MessagesStack = ({ navigation }) => (
               elevation: 5,
               marginRight: 12,
             }}
-            onPress={() => navigation.navigate("SingleProfile")}
           >
             <Entypo name='dots-three-horizontal' color='black' size={18} />
           </TouchableOpacity>
@@ -122,11 +121,6 @@ const MessagesStack = ({ navigation }) => (
     <Stack.Screen
       name='AddChat'
       component={AddChat}
-      options={{ header: () => null }}
-    />
-    <Stack.Screen
-      name='SingleProfile'
-      component={SingleProfile}
       options={{ header: () => null }}
     />
 
@@ -171,11 +165,7 @@ const TasksStack = ({ navigation }) => (
       component={AddChat}
       options={{ header: () => null }}
     />
-    <Stack.Screen
-      name='SingleProfile'
-      component={SingleProfile}
-      options={{ header: () => null }}
-    />
+
     <Stack.Screen
       name='ProfilePageNotYou'
       component={ProfilePageNotYou}
@@ -219,11 +209,7 @@ const AddTaskStack = ({ navigation }) => (
       component={AddChat}
       options={{ header: () => null }}
     />
-    <Stack.Screen
-      name='SingleProfile'
-      component={SingleProfile}
-      options={{ header: () => null }}
-    />
+
     <Stack.Screen
       name='ProfilePageNotYou'
       component={ProfilePageNotYou}
@@ -267,11 +253,7 @@ const ListStack = ({ navigation }) => (
       component={AddChat}
       options={{ header: () => null }}
     />
-    <Stack.Screen
-      name='SingleProfile'
-      component={SingleProfile}
-      options={{ header: () => null }}
-    />
+
     <Stack.Screen
       name='ProfilePageNotYou'
       component={ProfilePageNotYou}
@@ -314,11 +296,7 @@ const ExploreStack = ({ navigation }) => (
       component={AddChat}
       options={{ header: () => null }}
     />
-    <Stack.Screen
-      name='SingleProfile'
-      component={SingleProfile}
-      options={{ header: () => null }}
-    />
+
     <Stack.Screen
       name='ProfilePageNotYou'
       component={ProfilePageNotYou}
@@ -336,8 +314,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileMessages" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -359,8 +336,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileTasks" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -382,8 +358,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileAdd" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -405,8 +380,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileList" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -428,8 +402,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileExplore" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -452,8 +425,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileMessages" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -467,8 +439,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileTasks" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -482,8 +453,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileAdd" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -497,8 +467,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileList" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -512,8 +481,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileExplore" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -567,7 +535,12 @@ const AppStack = ({ currentRoute }) => {
           ),
 
           headerTitleAlign: "center",
-          headerTitle: "HappiList",
+          headerTitle: () => (
+            <Image
+              source={require("../assets/happilist.png")}
+              style={{ width: 130, height: 25, resizeMode: "contain" }}
+            />
+          ),
           headerShown: getHeaderVisibilityExploreTab(),
           tabBarStyle: getTabBarVisibilityExploreTab(),
           headerRight: () => (
