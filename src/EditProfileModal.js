@@ -50,6 +50,7 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
 
   const bs = React.createRef();
   const fall = new Animated.Value(1);
+  console.log(auth.currentUser);
 
   const getUser = async () => {
     const docRef = doc(firestore, "users", auth.currentUser.uid);
@@ -58,8 +59,8 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
     });
   };
 
-  const handleSignOut = () => {
-    signOut(auth);
+  const handleSignOut = async () => {
+    await auth.signOut();
   };
 
   const pickImage = async () => {
@@ -279,12 +280,9 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
             <View style={{ flexGrow: 1 }} />
             <TouchableOpacity
               style={styles.button}
-              onPress={() => auth.signOut()}
+              onPress={() => handleSignOut()}
             >
-              <Text
-                style={{ fontWeight: "500", fontSize: 17, color: "red" }}
-                // onPress={() => handleSignOut()}
-              >
+              <Text style={{ fontWeight: "500", fontSize: 17, color: "red" }}>
                 Sign Out
               </Text>
             </TouchableOpacity>

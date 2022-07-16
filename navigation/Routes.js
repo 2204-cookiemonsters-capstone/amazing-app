@@ -7,20 +7,32 @@ import {
 import { auth, onAuthStateChanged } from "../firebase";
 import AuthStack from "./AuthStack";
 import AppStack from "./AppStack";
+import { ActivityIndicator, View } from "react-native";
 
 const Routes = () => {
-  const [user, setUser] = useState(1); // tutorial used usecontext, we can change later. Not 100% sure what context is yet
+  const [user, setUser] = useState(null); // tutorial used usecontext, we can change later. Not 100% sure what context is yet
   const [currentRoute, setCurrentRoute] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigationRef = useNavigationContainerRef();
 
   useEffect(() => {
+    // setLoading(true);
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        setLoading(false);
+      } else {
+        setUser(false);
+        setLoading(false);
       }
     });
   }, [user]);
-  console.log(user);
+
+  const LoadingScreen = () => (
+    <View style={{ marginTop: "50%" }}>
+      <ActivityIndicator size='large' />
+    </View>
+  );
 
   return (
     <NavigationContainer
@@ -29,7 +41,13 @@ const Routes = () => {
         setCurrentRoute(navigationRef.getCurrentRoute().name)
       }
     >
-      {user ? <AppStack currentRoute={currentRoute} /> : <AuthStack />}
+      {loading ? (
+        <LoadingScreen />
+      ) : user ? (
+        <AppStack currentRoute={currentRoute} />
+      ) : (
+        <AuthStack />
+      )}
     </NavigationContainer>
   );
 };

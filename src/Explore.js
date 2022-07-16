@@ -7,6 +7,7 @@ import {
   ScrollView,
   RefreshControl,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { auth, firestore } from "../firebase";
 import SinglePost from "./SinglePost";
@@ -75,7 +76,7 @@ const Explore = () => {
   }, [friendIds]);
 
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -86,16 +87,34 @@ const Explore = () => {
         <View
           style={{
             width: "100%",
-            backgroundColor: "white",
             display: "flex",
             flexDirection: "column",
             marginBottom: 50,
-            height: "100%",
+            height: !posts.length ? 630 : "100%",
+            justifyContent: !posts.length ? "center" : null,
+            alignItems: !posts.length ? "center" : null,
+            backgroundColor: "white",
           }}
         >
           {loading ? (
             <View style={{ marginTop: 30 }}>
               <ActivityIndicator size='large' />
+            </View>
+          ) : posts.length === 0 ? (
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={require("../assets/sadface.png")}
+                style={{ height: 70, width: 70 }}
+              />
+              <Text style={{ fontSize: 18, marginTop: 20 }}>
+                No posts to show
+              </Text>
             </View>
           ) : (
             <View>
