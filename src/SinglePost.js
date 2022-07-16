@@ -40,6 +40,14 @@ const SinglePost = (props) => {
     userData !== user ? setUserData(user) : null;
   };
 
+  const getTimeDifference = (timesent) => {
+    timesent = timesent.toDate();
+    const timeNow = new Date().getTime();
+    const difference = (timeNow - timesent) / 1000;
+    const diff = difference / 60;
+    return Math.abs(Math.round(diff));
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -143,13 +151,36 @@ const SinglePost = (props) => {
             ) : null}
           </Text>
         </View>
-        <View style={{ marginTop: -11 }}>
+        <View style={{ marginTop: 5 }}>
           <Text style={{ color: "darkgray" }}>
             View {post.comments.length} comments
           </Text>
         </View>
         <View style={{ marginTop: 2 }}>
-          <Text style={{ fontSize: 12, color: "darkgray" }}>11 hours ago</Text>
+          {getTimeDifference(post.timeposted) < 60 ? (
+            <View>
+              <Text style={{ fontSize: 12, color: "darkgray" }}>
+                {getTimeDifference(post.timeposted)} minutes ago
+              </Text>
+            </View>
+          ) : getTimeDifference(post.timeposted) >= 60 &&
+            getTimeDifference(post.timeposted) < 1440 ? (
+            <Text style={{ fontSize: 12, color: "darkgray" }}>
+              {Math.floor(getTimeDifference(post.timeposted) / 60)}{" "}
+              {Math.floor(getTimeDifference(post.timeposted) / 60) === 1
+                ? "hour Ago"
+                : "hours Ago"}
+            </Text>
+          ) : (
+            <Text style={{ fontSize: 12, color: "darkgray" }}>
+              {Math.floor(getTimeDifference(post.timeposted) / 1440)}{" "}
+              {!post.timeposted
+                ? null
+                : Math.floor(getTimeDifference(post.timeposted) / 1440) === 1
+                ? "day ago"
+                : "days ago"}
+            </Text>
+          )}
         </View>
       </View>
       <Modal

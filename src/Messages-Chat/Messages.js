@@ -98,17 +98,20 @@ const Messages = (props) => {
       setIsLoading(false);
     });
   };
+
   const getTimeDifference = (timesent) => {
     const timeNow = new Date().getTime();
     const difference = (timeNow - timesent) / 1000;
     const diff = difference / 60;
     return Math.abs(Math.round(diff));
   };
+
   function sorting(a, b) {
     if (a.timesent > b.timesent) return -1; //this function sorts the array by the time sent so the most recent message will appear first
     if (a.timesent < b.timesent) return 1;
     return 0;
   }
+
   useEffect(() => {
     fetchAllChats();
   }, []);
@@ -182,8 +185,8 @@ const Messages = (props) => {
                             {Math.floor(
                               getTimeDifference(item.timesent) / 60
                             ) === 1
-                              ? "hour Ago"
-                              : "hours Ago"}
+                              ? "hour ago"
+                              : "hours ago"}
                           </Text>
                         ) : (
                           <Text
@@ -201,8 +204,8 @@ const Messages = (props) => {
                               : Math.floor(
                                   getTimeDifference(item.timesent) / 1440
                                 ) === 1
-                              ? "day Ago"
-                              : "days Ago"}
+                              ? "day ago"
+                              : "days ago"}
                           </Text>
                         )}
                       </View>

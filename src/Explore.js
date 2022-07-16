@@ -27,16 +27,16 @@ const Explore = () => {
       auth.currentUser.uid,
       "friendships"
     );
-    const snapshot = await getDocs(reference);
-    const friends = [];
-    snapshot.forEach((docs) => {
-      if (docs.data().status === "friends") {
-        friends.push(docs.data().userid);
-      }
-      console.log(friends);
+    onSnapshot(reference, async (snapshot) => {
+      const friends = [];
+      snapshot.forEach((docs) => {
+        if (docs.data().status === "friends") {
+          friends.push(docs.data().userid);
+        }
+        console.log(friends);
+      });
+      friendIds !== friends ? setFriendIds(friends) : null;
     });
-    friendIds !== friends ? setFriendIds(friends) : null;
-    // fetchPosts();
   };
 
   const fetchPosts = async () => {
@@ -52,6 +52,7 @@ const Explore = () => {
         }
       });
 
+      postList.sort(sorting);
       posts !== postList ? setPosts(postList) : null;
       setLoading(false);
     });
@@ -65,6 +66,12 @@ const Explore = () => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  function sorting(a, b) {
+    if (a.timeposted > b.timeposted) return -1; //this function sorts the array by the time sent so the most recent message will appear first
+    if (a.timeposted < b.timeposted) return 1;
+    return 0;
+  }
 
   useEffect(() => {
     fetchFriends();
