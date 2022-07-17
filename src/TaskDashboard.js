@@ -16,6 +16,7 @@ const TaskDashboard = ({
   strengthsCount,
 }) => {
   const [addPostVisible, setAddPostVisible] = useState(false);
+  const [initialValue, setInitialValue] = useState("");
 
   return (
     <>
@@ -218,7 +219,10 @@ const TaskDashboard = ({
                     <View style={styles.goToSubmitContainer}>
                       <Text
                         style={styles.goToSubmit}
-                        onPress={() => setAddPostVisible(true)}
+                        onPress={() => {
+                          setAddPostVisible(true);
+                          setInitialValue(item.title);
+                        }}
                       >
                         submit your post
                       </Text>
@@ -233,7 +237,10 @@ const TaskDashboard = ({
         onRequestClose={() => setAddPostVisible(!addPostVisible)}
         animationType='slide'
       >
-        <AddPostModal setAddPostVisible={setAddPostVisible} />
+        <AddPostModal
+          setAddPostVisible={setAddPostVisible}
+          initialValue={initialValue}
+        />
       </Modal>
     </>
   );
