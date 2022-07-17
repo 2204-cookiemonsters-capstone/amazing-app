@@ -16,6 +16,7 @@ import { firestore } from "../firebase";
 import { doc, setDoc, getDocs, collection, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import FriendToDoList from "./FriendToDoList";
+import StoriesModal from "./StoriesModal";
 import { todoListStyle, color, friendModal } from "../styles";
 
 const FriendModal = ({ user, closeModal }) => {
@@ -28,11 +29,8 @@ const FriendModal = ({ user, closeModal }) => {
 
   useEffect(() => {
     getLists();
-  }, [loading]);
-
-  useEffect(() => {
     fetchStories();
-  }, []);
+  }, [loading]);
 
   const getLists = async () => {
     const snapShot = await getDocs(
@@ -46,7 +44,7 @@ const FriendModal = ({ user, closeModal }) => {
       todos.push(todo);
     });
     setLists(todos);
-    setLoading(false);
+
   };
 
   const fetchStories = async () => {
@@ -57,11 +55,12 @@ const FriendModal = ({ user, closeModal }) => {
         snapShot.forEach((doc) => {
           stories.push(doc.data())
         });
-        stories.sort((a, b) => b.dateTime.seconds - a.dateTime.seconds)
+        stories.sort((a, b) => a.dateTime.seconds - b.dateTime.seconds)
         setStories(stories);
         console.log('FETCHED STORIES FROM FRIEND MODAL')
       }
     );
+    setLoading(false);
   };
   // console.log(stories)
 
@@ -155,19 +154,8 @@ const FriendModal = ({ user, closeModal }) => {
           visible={showStories}
           onRequestClose={() => toggleStoryModal()}
         >
-        {/* <FriendTodoModal
-            user={user}
-            list={list}
-            closeModal={() => this.toggleListModal()}
-            updateList={this.props.updateList}
-          /> */}
-          <Text>Modal</Text>
-          <TouchableOpacity
-          style={{ position: "absolute", top: 64, right: 32, zIndex: 10 }}
-          onPress={() => toggleStoryModal()}
-        >
-          <AntDesign name="close" size={24} color="black" />
-        </TouchableOpacity>
+          <StoriesModal stories={stories} toggleStoryModal={toggleStoryModal}/>
+
         </Modal>
       </SafeAreaView>
     </KeyboardAvoidingView>

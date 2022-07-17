@@ -27,7 +27,7 @@ const TodoModal = ({ list, updateList, closeModal }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1,
+      quality: 0.6,
       base64: true,
     });
 
@@ -74,7 +74,7 @@ const TodoModal = ({ list, updateList, closeModal }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1,
+      quality: 0.6,
     });
 
     const id = uuidv4();
