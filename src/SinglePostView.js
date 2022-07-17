@@ -7,21 +7,23 @@ import {
 
 import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity, Image, Modal } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Modal,
+  Touchable,
+  StyleSheet,
+} from "react-native";
 import { firestore, auth } from "../firebase";
 import FriendModal from "./FriendModal";
 
-const SinglePost = (props) => {
+const SinglePostView = (props) => {
   const post = props.post;
 
   const [showAllCaption, setShowAllCaption] = useState(false);
   const [userData, setUserData] = useState("");
-
-  const [showFriendModal, setShowFriendModal] = useState(false);
-
-  const toggleFriendModal = () => {
-    setShowFriendModal(!showFriendModal);
-  };
 
   const fetchUser = async () => {
     const reference = doc(firestore, "users", post.userid);
@@ -60,6 +62,14 @@ const SinglePost = (props) => {
         marginBottom: 20,
       }}
     >
+      <View style={{ marginTop: 20, marginBottom: 20 }}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => props.setShowSinglePost(false)}
+        >
+          <AntDesign name='left' size={18} />
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           display: "flex",
@@ -76,10 +86,7 @@ const SinglePost = (props) => {
           }
           style={{ width: 40, height: 40, borderRadius: 70, marginLeft: 10 }}
         />
-        <Text
-          style={{ fontSize: 16, marginLeft: 5, fontWeight: "500" }}
-          onPress={() => toggleFriendModal()}
-        >
+        <Text style={{ fontSize: 16, marginLeft: 5, fontWeight: "500" }}>
           {userData.username}
         </Text>
       </View>
@@ -191,15 +198,28 @@ const SinglePost = (props) => {
           )}
         </View>
       </View>
-      <Modal
-        animationType='slide'
-        visible={showFriendModal}
-        onRequestClose={() => toggleFriendModal()}
-      >
-        <FriendModal user={userData} closeModal={() => toggleFriendModal()} />
-      </Modal>
     </View>
   );
 };
 
-export default SinglePost;
+export default SinglePostView;
+
+const styles = StyleSheet.create({
+  backButton: {
+    backgroundColor: "white",
+    borderRadius: 25,
+    height: 35,
+    width: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 13,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+});

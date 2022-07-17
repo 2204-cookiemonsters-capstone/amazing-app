@@ -28,6 +28,7 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import FriendToDoList from "./FriendToDoList";
 import { todoListStyle, color, friendModal } from "../styles";
 import { ScrollView as GestureHandlerScrollView } from "react-native-gesture-handler";
+import SinglePostView from "./SinglePostView";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -42,6 +43,9 @@ const FriendModal = ({ user, closeModal }) => {
 
   const [images, setImages] = useState([]);
   const [profilepic, setProfilepic] = useState(null);
+
+  const [showSinglePost, setShowSinglePost] = useState(false);
+  const [selectedPost, setSelectedPost] = useState("");
 
   useEffect(() => {
     getLists();
@@ -107,6 +111,11 @@ const FriendModal = ({ user, closeModal }) => {
     // Divide the horizontal offset by the width of the view to see which page is visible
     let pageNum = Math.floor(contentOffset.x / viewSize.width);
     setPageNumber(pageNum);
+  };
+
+  const handleSelectPost = (post) => {
+    setSelectedPost(post);
+    setShowSinglePost(true);
   };
 
   const moveBody = (index) => {
@@ -206,6 +215,8 @@ const FriendModal = ({ user, closeModal }) => {
                 borderBottomWidth: pageNumber === 0 ? 1 : 0,
                 width: "50%",
                 alignItems: "center",
+                height: 35,
+                justifyContent: "center",
               }}
               onPress={() => {
                 scrollViewRef.current.scrollTo({ x: 0 });
@@ -221,6 +232,7 @@ const FriendModal = ({ user, closeModal }) => {
                 width: "50%",
                 alignItems: "center",
                 paddingBottom: 10,
+                justifyContent: "center",
               }}
               onPress={() => {
                 scrollViewRef.current.scrollTo({ x: screenWidth });
@@ -248,12 +260,26 @@ const FriendModal = ({ user, closeModal }) => {
               }}
             >
               {images.map((image) => (
-                <View
+                <TouchableOpacity
                   style={{
-                    width: screenWidth / 3 - 1,
+                    width:
+                      (images.indexOf(images.find((img) => img === image)) %
+                        3) +
+                        1 ===
+                      0
+                        ? screenWidth / 3
+                        : screenWidth / 3 - 1,
                     height: screenWidth / 3,
-                    marginRight: 1,
+                    marginRight:
+                      (images.indexOf(images.find((img) => img === image)) %
+                        3) +
+                        1 ===
+                      0
+                        ? 0
+                        : 1,
+                    marginBottom: 1,
                   }}
+                  onPress={() => handleSelectPost(image)}
                 >
                   <Image
                     source={{ uri: image.imageurl }}
@@ -262,7 +288,7 @@ const FriendModal = ({ user, closeModal }) => {
                       height: "100%",
                     }}
                   />
-                </View>
+                </TouchableOpacity>
               ))}
             </View>
 
@@ -295,10 +321,7 @@ const FriendModal = ({ user, closeModal }) => {
                       showsHorizontalScrollIndicator={false}
                     >
                       {lists.map((item) => (
-                        <TouchableWithoutFeedback
-                          onPressIn={() => setEnableScrolling(false)}
-                          onPressOut={() => setEnableScrolling(true)}
-                        >
+                        <TouchableWithoutFeedback>
                           {renderSingleList(item)}
                         </TouchableWithoutFeedback>
                       ))}
@@ -315,6 +338,16 @@ const FriendModal = ({ user, closeModal }) => {
             </View>
           </ScrollView>
         </ScrollView>
+        <Modal
+          visible={showSinglePost}
+          onRequestClose={() => setShowSinglePost(false)}
+          animationType='slide'
+        >
+          <SinglePostView
+            post={selectedPost}
+            setShowSinglePost={setShowSinglePost}
+          />
+        </Modal>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
