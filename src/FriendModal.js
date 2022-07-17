@@ -62,7 +62,6 @@ const FriendModal = ({ user, closeModal }) => {
     );
     setLoading(false);
   };
-  // console.log(stories)
 
   const renderSingleList = (list) => {
     return <FriendToDoList list={list} user={user} updateList={updateList} />;
@@ -154,7 +153,7 @@ const FriendModal = ({ user, closeModal }) => {
           visible={showStories}
           onRequestClose={() => toggleStoryModal()}
         >
-          <StoriesModal stories={stories} toggleStoryModal={toggleStoryModal}/>
+          <StoriesModal stories={stories} toggleStoryModal={toggleStoryModal} user={user}/>
 
         </Modal>
       </SafeAreaView>

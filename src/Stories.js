@@ -1,41 +1,49 @@
-import { View, Text, Image, ScrollView, StyleSheet} from 'react-native';
+import { View, Text, Image, StyleSheet } from "react-native";
+import React, {useState, useEffect} from "react";
 import { Avatar } from "react-native-paper";
+import { firestore } from "../firebase";
+import { doc, setDoc, getDocs, collection, getDoc, onSnapshot, query, where } from "firebase/firestore";
 
-import React from 'react'
+export default function UserStoriesBubble({friend}) {
+  const [loading, setLoading] = useState(true);
+  const [stories, setStories] = useState([]);
+  const [showStories, setShowStories] = useState(false);
 
-const stories = [
-  {
-    name: 'User 1',
-    dateTime: new Date(),
-    storyImg: 'https://firebasestorage.googleapis.com/v0/b/capstone-b8471.appspot.com/o/BOEh8LS6vwbxVDZIpLxrYbUScUC3%2Fstories%2F0e951132-d2b2-49e0-bdd2-b641c824dd48?alt=media&token=57610bd1-a6d0-47b7-8392-89b38d102454',
-    userid: 'BOEh8LS6vwbxVDZIpLxrYbUScUC3'
-  },
-  {
-    name: 'User 2',
-    dateTime: new Date(),
-    storyImg: 'https://firebasestorage.googleapis.com/v0/b/capstone-b8471.appspot.com/o/BOEh8LS6vwbxVDZIpLxrYbUScUC3%2Fstories%2F76de72c6-5723-4bba-9b2b-dbe3e88fe0e0?alt=media&token=29268491-d2f3-474f-bcf5-6853a39c33f4',
-    userid: 'EINX1vfWuPYGymrD9K5mn0SS67j2'
-  },
-  {
-    name: 'USer 3',
-    dateTime: new Date(),
-    storyImg: 'https://firebasestorage.googleapis.com/v0/b/capstone-b8471.appspot.com/o/BOEh8LS6vwbxVDZIpLxrYbUScUC3%2Fstories%2F1d8582ce-7c2c-49be-8260-4d8adc55b0d4?alt=media&token=ac7fe27c-fcfa-4cb4-82f4-f1564ace484f',
-    userid: 'Lut57KwDW1MBiJY3GrPG1RA3Uxh2'
-  },
+  useEffect(() => {
+    fetchStories();
+  }, [loading])
 
-]
+  const fetchStories = async () => {
+    const yesterday = new Date(Date.now() - 86400000);
+    const q = query(collection(firestore, "users", friend.userid, "stories"), where("dateTime", '>=', yesterday))
+    onSnapshot(q, async (snapShot) => {
+        const stories = [];
+        snapShot.forEach((doc) => {
+          stories.push(doc.data())
+        });
+        stories.sort((a, b) => a.dateTime.seconds - b.dateTime.seconds)
+        setStories(stories);
+        console.log('FETCHED STORIES FROM STORIES.JS FOR', friend.name)
+      }
+    );
+    setLoading(false);
+    setLoading(false);
+  };
 
-export default function Stories() {
   return (
-    <ScrollView style={{flex: 1}} horizontal>
-      {stories.map((item, index) => (
-        <View style={styles.story}>
-          <Avatar.Image source={{uri: item.storyImg}} size={80}/>
-          <Text style={styles.username}>{item.name}</Text>
-        </View>
-      ))}
-    </ScrollView>
-  )
+    <View style={styles.story}>
+      {friend.profilepic ? (
+        <Avatar.Image source={{ uri: friend.profilepic }} size={80} />
+      ) : (
+        <Avatar.Text
+          size={80}
+          label={friend.name.charAt(0)}
+          theme={{ colors: { primary: "#F24C00" } }}
+        />
+      )}
+      <Text style={styles.username}>{friend.name}</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -52,4 +60,3 @@ const styles = StyleSheet.create({
     marginTop: 5
   }
 })
-

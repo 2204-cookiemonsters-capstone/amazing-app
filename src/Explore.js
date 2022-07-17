@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, SafeAreaView } from "react-native";
+import { Text, View, TouchableOpacity, SafeAreaView, ScrollView } from "react-native";
 import { auth, firestore } from "../firebase";
 import { onSnapshot, collection, getDoc, doc, getDocs, where, query } from "firebase/firestore";
 import Stories from "./Stories";
@@ -22,7 +22,7 @@ const Explore = () => {
         const friendDocs = await Promise.all(
           friends.map((f) => getDoc(doc(firestore, "users", f.userid)))
         );
-
+        console.log("GOT FRIENDS FOR STORIES")
         const friendItems = friendDocs.map((i) => i.data());
 
         setAllFriends(friendItems);
@@ -30,23 +30,17 @@ const Explore = () => {
     );
   };
 
-  // console.log("fetched friends for stories", allFriends);
-  const fetchStories = async () => {
-    const yesterday = new Date(Date.now() - 86400000);
-
-
-  };
-
   useEffect(() => {
     fetchAllFriends();
   }, []);
-  // useEffect(() => {
-  //   fetchStories();
-  // }, []);
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Stories/>
+      <ScrollView style={{flex: 1}} horizontal>
+        {allFriends.map((friend, index) => (
+          <Stories friend={friend}/>
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 };
