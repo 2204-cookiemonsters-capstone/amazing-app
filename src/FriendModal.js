@@ -38,7 +38,6 @@ const FriendModal = ({ user, closeModal }) => {
   const [lists, setLists] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [enableScrolling, setEnableScrolling] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
 
   const [images, setImages] = useState([]);
@@ -86,7 +85,6 @@ const FriendModal = ({ user, closeModal }) => {
         user={user}
         updateList={updateList}
         key={list.id}
-        setEnableScrolling={setEnableScrolling}
       />
     );
   };
@@ -144,6 +142,7 @@ const FriendModal = ({ user, closeModal }) => {
     fetchProfilepic();
   }, []);
 
+  //this has to be below every single react hook or you will get error
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -315,7 +314,7 @@ const FriendModal = ({ user, closeModal }) => {
                     // paddingLeft: 30,
                   }}
                 >
-                  <View onPress={() => setEnableScrolling(false)}>
+                  <View>
                     <ScrollView
                       horizontal
                       showsHorizontalScrollIndicator={false}

@@ -38,7 +38,9 @@ import { RootSiblingParent } from "react-native-root-siblings";
 
 const AddPostModal = (props) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null); //value of selected task
+  const [value, setValue] = useState(
+    props.initialValue ? props.initialValue : null
+  ); //value of selected task
   const [items, setItems] = useState([]);
 
   const [imageURI, setImageURI] = useState(null);

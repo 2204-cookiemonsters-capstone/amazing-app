@@ -259,7 +259,7 @@ const SearchPage = ({ navigation }) => {
                     >
                       <TouchableOpacity
                         style={{
-                          backgroundColor: "#CBC3E3",
+                          backgroundColor: "#F24C00",
                           borderRadius: 25,
                           height: 30,
                           width: 95,
@@ -276,7 +276,7 @@ const SearchPage = ({ navigation }) => {
                           }}
                         >
                           <Image
-                            source={require("../assets/ADDFRIEND2.png")}
+                            source={require("../assets/addfriendclear.png")}
                             style={{ width: 15, height: 15 }}
                           />
                         </View>
@@ -355,7 +355,7 @@ const SearchPage = ({ navigation }) => {
                     >
                       <TouchableOpacity
                         style={{
-                          backgroundColor: "#CBC3E3",
+                          backgroundColor: "#F24C00",
                           borderRadius: 25,
                           height: 30,
                           width: 95,
@@ -372,7 +372,7 @@ const SearchPage = ({ navigation }) => {
                           }}
                         >
                           <Image
-                            source={require("../assets/ADDFRIEND2.png")}
+                            source={require("../assets/addfriendclear.png")}
                             style={{ width: 15, height: 15 }}
                           />
                         </View>
@@ -527,7 +527,7 @@ const SearchPage = ({ navigation }) => {
                     >
                       <TouchableOpacity
                         style={{
-                          backgroundColor: "#CBC3E3",
+                          backgroundColor: "#F24C00",
                           borderRadius: 25,
                           height: 30,
                           width: 95,
@@ -544,7 +544,7 @@ const SearchPage = ({ navigation }) => {
                           }}
                         >
                           <Image
-                            source={require("../assets/ADDFRIEND2.png")}
+                            source={require("../assets/addfriendclear.png")}
                             style={{ width: 15, height: 15 }}
                           />
                         </View>
@@ -623,7 +623,7 @@ const SearchPage = ({ navigation }) => {
                     >
                       <TouchableOpacity
                         style={{
-                          backgroundColor: "#CBC3E3",
+                          backgroundColor: "#F24C00",
                           borderRadius: 25,
                           height: 30,
                           width: 95,
@@ -640,7 +640,7 @@ const SearchPage = ({ navigation }) => {
                           }}
                         >
                           <Image
-                            source={require("../assets/ADDFRIEND2.png")}
+                            source={require("../assets/addfriendclear.png")}
                             style={{ width: 15, height: 15 }}
                           />
                         </View>

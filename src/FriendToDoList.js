@@ -44,8 +44,6 @@ class FriendToDoList extends React.Component {
             { backgroundColor: list.color || "black" },
           ]}
           onPress={() => this.toggleListModal()}
-          onPressIn={() => this.props.setEnableScrolling(false)}
-          onPressOut={() => this.props.setEnableScrolling(true)}
         >
           <Text style={todoListStyle.listTitle} numberOfLines={1}>
             {list.name}

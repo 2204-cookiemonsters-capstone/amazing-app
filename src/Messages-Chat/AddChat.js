@@ -275,7 +275,7 @@ const AddChat = ({ navigation }) => {
                       >
                         <TouchableOpacity
                           style={{
-                            backgroundColor: "#CBC3E3",
+                            backgroundColor: "#F24C00",
                             borderRadius: 25,
                             height: 30,
                             width: 95,
@@ -358,7 +358,7 @@ const AddChat = ({ navigation }) => {
                       >
                         <TouchableOpacity
                           style={{
-                            backgroundColor: "#CBC3E3",
+                            backgroundColor: "#F24C00",
                             borderRadius: 25,
                             height: 30,
                             width: 95,
@@ -493,7 +493,7 @@ const AddChat = ({ navigation }) => {
                       >
                         <TouchableOpacity
                           style={{
-                            backgroundColor: "#CBC3E3",
+                            backgroundColor: "#F24C00",
                             borderRadius: 25,
                             height: 30,
                             width: 95,
@@ -586,7 +586,7 @@ const AddChat = ({ navigation }) => {
                       >
                         <TouchableOpacity
                           style={{
-                            backgroundColor: "#CBC3E3",
+                            backgroundColor: "#F24C00",
                             borderRadius: 25,
                             height: 30,
                             width: 95,

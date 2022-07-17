@@ -557,7 +557,7 @@ const AddFriends = ({ navigation }) => {
                             }}
                           >
                             <Image
-                              source={require("../assets/ADDFRIEND2.png")}
+                              source={require("../assets/addfriendclear.png")}
                               style={{ width: 15, height: 15, marginRight: 5 }}
                             />
                             <Text style={{ color: "white" }}>Add</Text>
@@ -657,7 +657,7 @@ const AddFriends = ({ navigation }) => {
                             }}
                           >
                             <Image
-                              source={require("../assets/ADDFRIEND2.png")}
+                              source={require("../assets/addfriendclear.png")}
                               style={{ width: 15, height: 15, marginRight: 5 }}
                             />
                             <Text style={{ color: "white" }}>Add</Text>
