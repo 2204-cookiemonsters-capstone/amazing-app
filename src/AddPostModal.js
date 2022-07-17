@@ -185,6 +185,7 @@ const AddPostModal = (props) => {
         duration: Toast.durations.LONG,
       });
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -249,7 +250,7 @@ const AddPostModal = (props) => {
             <View style={{ flexGrow: 1 }} />
             <TouchableOpacity
               onPress={() => handleSubmit()}
-              disabled={!value || !imageUrl || !caption}
+              disabled={!value || !imageUrl || !caption || loading}
             >
               <AntDesign
                 name='arrowright'

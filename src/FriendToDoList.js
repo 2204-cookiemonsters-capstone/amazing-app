@@ -26,7 +26,7 @@ class FriendToDoList extends React.Component {
     return (
       <View>
         <Modal
-          animationType="slide"
+          animationType='slide'
           visible={this.state.showListVisible}
           onRequestClose={() => this.toggleListModal()}
         >
@@ -44,6 +44,8 @@ class FriendToDoList extends React.Component {
             { backgroundColor: list.color || "black" },
           ]}
           onPress={() => this.toggleListModal()}
+          onPressIn={() => this.props.setEnableScrolling(false)}
+          onPressOut={() => this.props.setEnableScrolling(true)}
         >
           <Text style={todoListStyle.listTitle} numberOfLines={1}>
             {list.name}

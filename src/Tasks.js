@@ -302,8 +302,16 @@ const Tasks = (props) => {
   }, [allUserTasks]);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+    >
+      <View
+        style={{
+          ...styles.container,
+          backgroundColor: view === "posts" ? "white" : null,
+        }}
+      >
         {/* top icon bar */}
         {view === "postStack" ? null : (
           <TaskIcons view={view} handleView={handleView} />

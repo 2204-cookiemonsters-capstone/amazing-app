@@ -68,8 +68,6 @@ const SinglePost = (props) => {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          borderBottomWidth: 0.2,
-          borderBottomColor: "aliceblue",
           height: 55,
         }}
       >
@@ -88,6 +86,17 @@ const SinglePost = (props) => {
           {userData.username}
         </Text>
       </View>
+
+      <View
+        style={{
+          marginLeft: 15,
+          marginTop: -7,
+          marginBottom: 5,
+        }}
+      >
+        <Text style={{ fontSize: 12, color: "darkgray" }}>{post.taskname}</Text>
+      </View>
+
       <View style={{ width: "100%", height: 410 }}>
         <Image
           source={{ uri: post.imageurl }}
