@@ -560,7 +560,7 @@ const AddFriends = ({ navigation }) => {
                               source={require("../assets/addfriendclear.png")}
                               style={{ width: 15, height: 15, marginRight: 5 }}
                             />
-                            <Text style={{ color: "white" }}>Add</Text>
+                            <Text style={{ color: "black" }}>Add</Text>
                           </View>
                         </TouchableOpacity>
                       </View>
@@ -660,7 +660,7 @@ const AddFriends = ({ navigation }) => {
                               source={require("../assets/addfriendclear.png")}
                               style={{ width: 15, height: 15, marginRight: 5 }}
                             />
-                            <Text style={{ color: "white" }}>Add</Text>
+                            <Text style={{ color: "black" }}>Add</Text>
                           </View>
                         </TouchableOpacity>
                       </View>

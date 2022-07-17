@@ -116,13 +116,6 @@ const FriendModal = ({ user, closeModal }) => {
     setShowSinglePost(true);
   };
 
-  const moveBody = (index) => {
-    scrollViewRef.current.scrollTo({
-      x: index * screenWidth,
-      animation: false,
-    });
-  };
-
   useEffect(() => {
     const fetchPosts = async () => {
       const reference = collection(firestore, "posts");
