@@ -80,7 +80,7 @@ const SinglePost = (props) => {
           style={{ width: 40, height: 40, borderRadius: 70, marginLeft: 10 }}
         />
         <Text
-          style={{ fontSize: 16, marginLeft: 3, fontWeight: "500" }}
+          style={{ fontSize: 16, marginLeft: 5, fontWeight: "500" }}
           onPress={() => toggleFriendModal()}
         >
           {userData.username}

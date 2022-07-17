@@ -213,6 +213,7 @@ const AddPostModal = (props) => {
             height: "100%",
             backgroundColor: !loading ? "white" : "black",
             opacity: loading ? 0.5 : null,
+            marginTop: Platform.OS === "ios" ? 20 : 0,
           }}
         >
           {loading ? (

@@ -15,7 +15,15 @@ import {
 } from "react-native";
 import { ActivityIndicator, Avatar } from "react-native-paper";
 import { firestore } from "../firebase";
-import { doc, setDoc, getDocs, collection } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  where,
+  query,
+  getDoc,
+} from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import FriendToDoList from "./FriendToDoList";
 import { todoListStyle, color, friendModal } from "../styles";
@@ -31,6 +39,9 @@ const FriendModal = ({ user, closeModal }) => {
 
   const [enableScrolling, setEnableScrolling] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
+
+  const [images, setImages] = useState([]);
+  const [profilepic, setProfilepic] = useState(null);
 
   useEffect(() => {
     getLists();
@@ -51,13 +62,18 @@ const FriendModal = ({ user, closeModal }) => {
     setLoading(false);
   };
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size='large' color={color.list.blue} />
-      </View>
-    );
-  }
+  const fetchProfilepic = async () => {
+    const reference = doc(firestore, "users", userid);
+    const snapshot = await getDoc(reference);
+
+    console.log(snapshot.data().profilepic);
+    if (snapshot.exists()) {
+      console.log("rann");
+      setProfilepic(snapshot.data().profilepic);
+    } else {
+      console.log("No Such Documents");
+    }
+  };
 
   const renderSingleList = (list) => {
     return (
@@ -78,6 +94,12 @@ const FriendModal = ({ user, closeModal }) => {
     setLists(lists.map((item) => (item.id === list.id ? list : item)));
   };
 
+  function sorting(a, b) {
+    if (a.timeposted > b.timeposted) return -1; //this function sorts the array by the time sent so the most recent message will appear first
+    if (a.timeposted < b.timeposted) return 1;
+    return 0;
+  }
+
   let onScrollEnd = (e) => {
     let contentOffset = e.nativeEvent.contentOffset;
     let viewSize = e.nativeEvent.layoutMeasurement;
@@ -94,8 +116,33 @@ const FriendModal = ({ user, closeModal }) => {
     });
   };
 
-  console.log(scrollViewRef.current);
-  // console.log(setEnableScrolling);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const reference = collection(firestore, "posts");
+      const q = query(reference, where("userid", "==", userid));
+      const snapShot = await getDocs(q);
+
+      const result = [];
+      snapShot.forEach((docs) => {
+        result.push(docs.data());
+      });
+
+      result.sort(sorting);
+      images !== result ? setImages(result) : null;
+    };
+
+    fetchPosts();
+    fetchProfilepic();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size='large' color={color.list.blue} />
+      </View>
+    );
+  }
+
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
       <SafeAreaView
@@ -109,7 +156,7 @@ const FriendModal = ({ user, closeModal }) => {
       >
         <TouchableOpacity
           style={{ position: "absolute", top: 64, right: 32, zIndex: 10 }}
-          onPress={closeModal}
+          onPress={() => closeModal()}
         >
           <AntDesign name='close' size={24} color='black' />
         </TouchableOpacity>
@@ -122,13 +169,20 @@ const FriendModal = ({ user, closeModal }) => {
               justifyContent: "center",
             }}
           >
-            <Avatar.Text
-              size={100}
-              label={user.name.charAt(0)}
-              style={friendModal.avatar}
-            >
-              {user.name}
-            </Avatar.Text>
+            {!profilepic ? (
+              <Avatar.Text
+                size={100}
+                label={user.name.charAt(0)}
+                style={friendModal.avatar}
+              >
+                {user.name}
+              </Avatar.Text>
+            ) : (
+              <Image
+                source={{ uri: profilepic }}
+                style={{ width: 105, height: 105, borderRadius: 100 }}
+              />
+            )}
             <View>
               <Text style={friendModal.title}>{user.name}</Text>
             </View>
@@ -144,8 +198,7 @@ const FriendModal = ({ user, closeModal }) => {
             style={{
               display: "flex",
               flexDirection: "row",
-
-              marginBottom: 30,
+              marginBottom: pageNumber === 1 ? 30 : 0,
             }}
           >
             <TouchableOpacity
@@ -190,16 +243,27 @@ const FriendModal = ({ user, closeModal }) => {
                 display: "flex",
                 flexDirection: "row",
                 flexWrap: "wrap",
-                marginTop: 30,
+                marginTop: 7,
                 width: screenWidth,
               }}
             >
-              <View style={{ width: screenWidth / 3 }}>
-                <Image
-                  source={require("../assets/favicon.png")}
-                  style={{ width: "100%", height: 100 }}
-                />
-              </View>
+              {images.map((image) => (
+                <View
+                  style={{
+                    width: screenWidth / 3 - 1,
+                    height: screenWidth / 3,
+                    marginRight: 1,
+                  }}
+                >
+                  <Image
+                    source={{ uri: image.imageurl }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  />
+                </View>
+              ))}
             </View>
 
             <View

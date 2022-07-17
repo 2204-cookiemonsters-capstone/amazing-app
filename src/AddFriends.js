@@ -282,7 +282,7 @@ const AddFriends = ({ navigation }) => {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <AntDesign name="left" color="black" size={18} />
+            <AntDesign name='left' color='black' size={18} />
           </TouchableOpacity>
           <View style={{ flexGrow: 1 }} />
           <Text style={{ fontWeight: "700", fontSize: 22, marginRight: 32 }}>
@@ -301,7 +301,7 @@ const AddFriends = ({ navigation }) => {
             }}
           />
           <TextInput
-            placeholder="Find Friends"
+            placeholder='Find Friends'
             onChangeText={(value) => {
               setSearchValue(value);
               search(value);
@@ -560,7 +560,7 @@ const AddFriends = ({ navigation }) => {
                               source={require("../assets/ADDFRIEND2.png")}
                               style={{ width: 15, height: 15, marginRight: 5 }}
                             />
-                            <Text style={{color: "white"}}>Add</Text>
+                            <Text style={{ color: "white" }}>Add</Text>
                           </View>
                         </TouchableOpacity>
                       </View>
@@ -656,12 +656,11 @@ const AddFriends = ({ navigation }) => {
                               flexDirection: "row",
                             }}
                           >
-                            
                             <Image
                               source={require("../assets/ADDFRIEND2.png")}
                               style={{ width: 15, height: 15, marginRight: 5 }}
                             />
-                            <Text style={{color:"white"}}>Add</Text>
+                            <Text style={{ color: "white" }}>Add</Text>
                           </View>
                         </TouchableOpacity>
                       </View>
@@ -686,7 +685,7 @@ const AddFriends = ({ navigation }) => {
           </View>
         </ScrollView>
         <Modal
-          animationType="slide"
+          animationType='slide'
           visible={showFriendModal}
           onRequestClose={() => toggleFriendModal()}
         >
