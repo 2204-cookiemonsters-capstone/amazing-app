@@ -1,5 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
-import { useRef, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
 import {
   View,
   Image,
@@ -11,11 +12,16 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from "react-native";
+import { auth, firestore } from "../firebase";
 
 const screenwidth = Dimensions.get("window").width;
 const screenheight = Dimensions.get("window").height;
 
-const TaskFeaturedImageModal = ({ featuredPostsData, setShowImageModal }) => {
+const TaskFeaturedImageModal = ({
+  featuredPostsData,
+  setShowImageModal,
+  selectedPost,
+}) => {
   const scrollRef = useRef();
   const [counter, setCounter] = useState(0);
   const counterPlus = counter + 1;
@@ -34,6 +40,20 @@ const TaskFeaturedImageModal = ({ featuredPostsData, setShowImageModal }) => {
     scrollRef.current.scrollTo({ x: counterPlus * screenwidth });
     console.log(counter);
   };
+
+  const fetchFeaturedPost = () => {
+    const reference = doc(firestore, "users", auth.currentUser.uid);
+    getDoc(reference).then((x) => {
+      scrollRef.current.scrollTo({
+        x: (x.data().selectedFeaturedPost.taskId - 1) * screenwidth,
+      });
+      setCounter(x.data().selectedFeaturedPost.taskId - 1);
+    });
+  };
+
+  useEffect(() => {
+    fetchFeaturedPost();
+  }, []);
 
   return (
     <View style={{ width: screenwidth, height: screenheight }}>

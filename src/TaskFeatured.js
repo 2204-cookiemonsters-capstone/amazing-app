@@ -13,6 +13,8 @@ import TaskFeaturedImageModal from "./TaskFeaturedImageModal";
 
 import { featuredPostsData } from "./assets/featuredPostsData";
 import { profileImagesArray } from "./assets/profileImages";
+import { auth, firestore } from "../firebase";
+import { updateDoc, doc } from "firebase/firestore";
 
 function TaskFeatured({
   handleDisplayFollowing,
@@ -20,6 +22,13 @@ function TaskFeatured({
   allFriends,
 }) {
   const [showImageModal, setShowImageModal] = useState(false);
+
+  const handleSelectItem = (item) => {
+    const reference = doc(firestore, "users", auth.currentUser.uid);
+    updateDoc(reference, {
+      selectedFeaturedPost: item,
+    }).then(setShowImageModal(true));
+  };
   return (
     <View style={styles.featuredContainer}>
       {/* featured section */}
@@ -34,7 +43,9 @@ function TaskFeatured({
                 <View key={item.taskId}>
                   <TouchableWithoutFeedback
                     style={styles.featuredItemTouch}
-                    onPress={() => setShowImageModal(true)}
+                    onPress={() => {
+                      handleSelectItem(item);
+                    }}
                   >
                     <Image
                       style={styles.featuredItem}
