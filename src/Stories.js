@@ -61,7 +61,7 @@ export default function Stories({ friend, handleSelectFriend }) {
           <Avatar.Text
             size={80}
             label={friend.name.charAt(0)}
-            theme={{ colors: { primary: "#FF7F50" } }}
+            theme={{ colors: { primary: "#F24C00" } }}
           />
         )}
         <Text style={styles.username}>{friend.name}</Text>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   unseenStory: {
     padding: 2,
     borderRadius: 60,
-    borderColor: "#FF7F50",
+    borderColor: "#F24C00",
     borderWidth: 3,
     height: 90,
     marginLeft: 5,
