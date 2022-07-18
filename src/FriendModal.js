@@ -20,12 +20,14 @@ import {
   setDoc,
   getDocs,
   collection,
-  where,
-  query,
   getDoc,
+  onSnapshot,
+  query,
+  where,
 } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import FriendToDoList from "./FriendToDoList";
+import StoriesModal from "./StoriesModal";
 import { todoListStyle, color, friendModal } from "../styles";
 import { ScrollView as GestureHandlerScrollView } from "react-native-gesture-handler";
 import SinglePostView from "./SinglePostView";
@@ -37,6 +39,9 @@ const FriendModal = ({ user, closeModal }) => {
   const userid = user.userid;
   const [lists, setLists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [friends, setFriends] = useState([]);
+  const [stories, setStories] = useState([]);
+  const [showStories, setShowStories] = useState(false);
 
   const [pageNumber, setPageNumber] = useState(0);
 
@@ -48,9 +53,10 @@ const FriendModal = ({ user, closeModal }) => {
 
   useEffect(() => {
     getLists();
+    fetchStories();
   }, [loading]);
 
-  let getLists = async () => {
+  const getLists = async () => {
     const snapShot = await getDocs(
       collection(firestore, "users", userid, "Todo Lists")
     );
@@ -62,7 +68,6 @@ const FriendModal = ({ user, closeModal }) => {
       todos.push(todo);
     });
     setLists(todos);
-    setLoading(false);
   };
 
   const fetchProfilepic = async () => {
@@ -75,6 +80,25 @@ const FriendModal = ({ user, closeModal }) => {
       console.log("No Such Documents");
     }
   };
+
+  const fetchStories = async () => {
+    const yesterday = new Date(Date.now() - 86400000);
+    const q = query(
+      collection(firestore, "users", userid, "stories"),
+      where("dateTime", ">=", yesterday)
+    );
+    onSnapshot(q, async (snapShot) => {
+      const stories = [];
+      snapShot.forEach((doc) => {
+        stories.push(doc.data());
+      });
+      stories.sort((a, b) => a.dateTime.seconds - b.dateTime.seconds);
+      setStories(stories);
+      console.log("FETCHED STORIES FROM FRIEND MODAL");
+    });
+    setLoading(false);
+  };
+  // console.log(stories)
 
   const renderSingleList = (list) => {
     return (
@@ -134,6 +158,11 @@ const FriendModal = ({ user, closeModal }) => {
   }, []);
 
   //this has to be below every single react hook or you will get error
+
+  const toggleStoryModal = () => {
+    setShowStories(!showStories);
+  };
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -168,24 +197,39 @@ const FriendModal = ({ user, closeModal }) => {
               justifyContent: "center",
             }}
           >
-            {!profilepic ? (
-              <Avatar.Text
-                size={100}
-                label={user.name.charAt(0)}
-                style={friendModal.avatar}
+            <TouchableOpacity
+              onPress={() => {
+                stories.length > 0 && toggleStoryModal();
+              }}
+            >
+              <View
+                style={
+                  stories.length > 0 && {
+                    padding: 5,
+                    height: 115,
+                    borderRadius: 60,
+                    borderColor: "#F24C00",
+                    borderWidth: 3,
+                  }
+                }
               >
-                {user.name}
-              </Avatar.Text>
-            ) : (
-              <Image
-                source={{ uri: profilepic }}
-                style={{ width: 105, height: 105, borderRadius: 100 }}
-              />
-            )}
-            <View>
-              <Text style={friendModal.title}>{user.name}</Text>
-            </View>
-
+                {user.profilepic ? (
+                  <Avatar.Image
+                    source={{ uri: user.profilepic }}
+                    size={100}
+                    theme={{ colors: { primary: "black" } }}
+                  />
+                ) : (
+                  <Avatar.Text
+                    size={100}
+                    label={user.name.charAt(0)}
+                    style={friendModal.avatar}
+                    theme={{ colors: { primary: "#F24C00" } }}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+            <Text style={friendModal.title}>{user.name}</Text>
             <Text style={friendModal.userName}>{user.username}</Text>
 
             <View style={friendModal.score}>
@@ -336,6 +380,17 @@ const FriendModal = ({ user, closeModal }) => {
           <SinglePostView
             post={selectedPost}
             setShowSinglePost={setShowSinglePost}
+          />
+        </Modal>
+        <Modal
+          animationType='slide'
+          visible={showStories}
+          onRequestClose={() => toggleStoryModal()}
+        >
+          <StoriesModal
+            stories={stories}
+            toggleStoryModal={toggleStoryModal}
+            user={user}
           />
         </Modal>
       </SafeAreaView>

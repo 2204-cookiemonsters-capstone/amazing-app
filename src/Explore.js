@@ -1,4 +1,12 @@
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
   Text,
@@ -8,9 +16,12 @@ import {
   RefreshControl,
   ActivityIndicator,
   Image,
+  Modal,
 } from "react-native";
 import { auth, firestore } from "../firebase";
 import SinglePost from "./SinglePost";
+import Stories from "./Stories";
+import StoriesModal from "./StoriesModal";
 
 const Explore = () => {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -18,6 +29,58 @@ const Explore = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const currentuser = auth.currentUser ? auth.currentUser.uid : "";
+
+  const [stories, setStories] = useState([]);
+  const [allFriends, setAllFriends] = useState([]);
+  const [selectedFriend, setSelectedFriend] = useState({});
+  const [showStories, setShowStories] = useState(false);
+
+  const fetchAllFriends = async () => {
+    onSnapshot(
+      collection(firestore, "users", auth.currentUser.uid, "friendships"),
+      async (snapShot) => {
+        const friends = [];
+        snapShot.forEach((doc) => {
+          if (doc.data().status === "friends") {
+            friends.push(doc.data());
+          }
+        });
+
+        const friendDocs = await Promise.all(
+          friends.map((f) => getDoc(doc(firestore, "users", f.userid)))
+        );
+        console.log("GOT FRIENDS FOR STORIES");
+        const friendItems = friendDocs.map((i) => i.data());
+
+        setAllFriends(friendItems);
+      }
+    );
+  };
+
+  const handleSelectFriend = async (friend) => {
+    setSelectedFriend(friend);
+    //Retrieve stories for selected friend, set stories to state
+    const yesterday = new Date(Date.now() - 86400000);
+    const q = query(
+      collection(firestore, "users", friend.userid, "stories"),
+      where("dateTime", ">=", yesterday)
+    );
+    onSnapshot(q, async (snapShot) => {
+      const stories = [];
+      snapShot.forEach((doc) => {
+        stories.push(doc.data());
+      });
+      stories.sort((a, b) => a.dateTime.seconds - b.dateTime.seconds);
+      setStories(stories);
+      console.log("FETCHED STORIES FROM EXPLORE.JS FOR", friend.name);
+    });
+
+    toggleStoryModal();
+  };
+
+  const toggleStoryModal = () => {
+    setShowStories(!showStories);
+  };
 
   const fetchFriends = async () => {
     if (!auth.currentUser) return;
@@ -76,6 +139,10 @@ const Explore = () => {
   }, [currentuser]);
 
   useEffect(() => {
+    fetchAllFriends();
+  }, []);
+
+  useEffect(() => {
     fetchPosts();
   }, [friendIds]);
 
@@ -88,6 +155,17 @@ const Explore = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+        {allFriends.length ? (
+          <ScrollView style={{ flex: 1 }} horizontal>
+            {allFriends.map((friend, index) => (
+              <Stories
+                friend={friend}
+                handleSelectFriend={handleSelectFriend}
+                key={index}
+              />
+            ))}
+          </ScrollView>
+        ) : null}
         <View
           style={{
             width: "100%",
@@ -129,6 +207,17 @@ const Explore = () => {
           )}
         </View>
       </ScrollView>
+      <Modal
+        animationType='slide'
+        visible={showStories}
+        onRequestClose={() => toggleStoryModal()}
+      >
+        <StoriesModal
+          stories={stories}
+          toggleStoryModal={toggleStoryModal}
+          user={selectedFriend}
+        />
+      </Modal>
     </View>
   );
 };
