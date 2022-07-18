@@ -171,7 +171,7 @@ const Explore = () => {
             backgroundColor: "white",
           }}
         >
-          <ScrollView style={{ flex: 1, backgroundColor: "red" }} horizontal>
+          <ScrollView style={{ flex: 1 }} horizontal>
             {allFriends.map((friend, index) => (
               <Stories
                 friend={friend}
