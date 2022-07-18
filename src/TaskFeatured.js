@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Text,
   View,
@@ -6,36 +6,49 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  Modal,
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import TaskFeaturedImageModal from "./TaskFeaturedImageModal";
-
 import { featuredPostsData } from "./assets/featuredPostsData";
 import { profileImagesArray } from "./assets/profileImages";
-import { auth, firestore } from "../firebase";
-import { updateDoc, doc } from "firebase/firestore";
-
 function TaskFeatured({
   handleDisplayFollowing,
   handleDisplayFeaturedPost,
   allFriends,
 }) {
-  const [showImageModal, setShowImageModal] = useState(false);
-
-  const handleSelectItem = (item) => {
-    const reference = doc(firestore, "users", auth.currentUser.uid);
-    updateDoc(reference, {
-      selectedFeaturedPost: item,
-    }).then(setShowImageModal(true));
-  };
   return (
     <View style={styles.featuredContainer}>
+      <View style={styles.followingSectionContainer}>
+        <Text style={[styles.subheading, styles.fontWeight700]}>Following</Text>
+        {allFriends.length ? (
+          <ScrollView horizontal={true}>
+            <View style={styles.followingItemsContainer}>
+              {allFriends.map((item) => (
+                <TouchableWithoutFeedback
+                  onPress={() =>
+                    handleDisplayFollowing(item.userid, item.username)
+                  }
+                  key={item.userid}
+                >
+                  <Image
+                    source={{ uri: profileImagesArray[19]["url"] }}
+                    style={styles.followingItem}
+                  />
+                  <Text style={[styles.followingItemUsername, styles.center]}>
+                    {item.username.slice(0, 10)}
+                  </Text>
+                </TouchableWithoutFeedback>
+              ))}
+            </View>
+          </ScrollView>
+        ) : (
+          <Text style={[styles.center, styles.padding10]}>
+            no friend posts to display
+          </Text>
+        )}
+      </View>
       {/* featured section */}
-
       <View style={styles.featuredSectionContainer}>
         <Text style={[styles.subheading, styles.fontWeight700]}>Featured</Text>
-
         <ScrollView>
           <View style={styles.featuredItemsContainer}>
             {featuredPostsData ? (
@@ -43,9 +56,7 @@ function TaskFeatured({
                 <View key={item.taskId}>
                   <TouchableWithoutFeedback
                     style={styles.featuredItemTouch}
-                    onPress={() => {
-                      handleSelectItem(item);
-                    }}
+                    onPress={() => handleDisplayFeaturedPost(item.taskId)}
                   >
                     <Image
                       style={styles.featuredItem}
@@ -55,27 +66,15 @@ function TaskFeatured({
                 </View>
               ))
             ) : (
-              <Text>nothing to display</Text>
+              <text>nothing to display</text>
             )}
           </View>
         </ScrollView>
       </View>
-      <Modal
-        visible={showImageModal}
-        onRequestClose={() => setShowImageModal(false)}
-        animationType='fade'
-      >
-        <TaskFeaturedImageModal
-          featuredPostsData={featuredPostsData}
-          setShowImageModal={setShowImageModal}
-        />
-      </Modal>
     </View>
   );
 }
-
 export default TaskFeatured;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -108,7 +107,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
   },
-
   dashboardContainer: {
     borderColor: "black",
     backgroundColor: "#3F88C5",
@@ -119,7 +117,6 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderColor: "white",
   },
-
   userDashboard: {
     justifyContent: "space-around",
     padding: 5,
@@ -141,7 +138,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: "white",
   },
-
   dashboardCompletedCount: {
     fontSize: 40,
     textAlign: "center",
@@ -190,7 +186,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
   },
-
   taskDescription: {
     textAlign: "center",
     padding: 15,
@@ -253,7 +248,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 50,
   },
-
   featuredContainer: {
     flexDirection: "column",
   },
@@ -299,7 +293,6 @@ const styles = StyleSheet.create({
     color: "black",
     paddingLeft: 5,
   },
-
   featuredSectionContainer: {
     flex: 1,
   },
@@ -322,7 +315,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
-
   imageContainer: {
     flex: 1,
     backgroundColor: "#fff",
@@ -330,7 +322,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "column",
   },
-
   imageBackground: {
     flex: 1,
     alignItems: "center",
@@ -453,7 +444,6 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingBottom: 10,
   },
-
   strengthsIconContainer: {
     flexDirection: "row",
     justifyContent: "center",

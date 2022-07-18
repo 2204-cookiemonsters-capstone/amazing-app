@@ -12,6 +12,10 @@ import {
   doc,
   getDoc,
   setDoc,
+  query,
+  where,
+  getDocs,
+  updateDoc,
 } from "firebase/firestore";
 
 import { featuredPostsData } from "./assets/featuredPostsData";
@@ -108,6 +112,23 @@ const Tasks = (props) => {
     );
 
     setDoc(postsRef, { userTasks }, { merge: true });
+
+    const q = query(
+      collection(firestore, "posts"),
+      where("userid", "==", auth.currentUser.uid)
+    );
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach(async (docs) => {
+      if (docs.data().taskid === taskId) {
+        const ref = doc(firestore, "posts", docs.data().postid);
+        await updateDoc(ref, {
+          completexdTime: Date.now(),
+          caption: reflection,
+          visibility: visibility,
+        });
+      }
+    });
   }
 
   // updates goal num to 7, 14, 21, or 28
@@ -375,6 +396,7 @@ const Tasks = (props) => {
             view={view}
             getTimeDifference={getTimeDifference}
             allUserTasks={allUserTasks}
+            getBackgroundColor={getBackgroundColor}
           />
         ) : null}
 
@@ -392,6 +414,7 @@ const Tasks = (props) => {
             handleDisplayFeaturedPost={handleDisplayFeaturedPost}
             handleDisplayFollowing={handleDisplayFollowing}
             allFriends={allFriends}
+            handleView={handleView}
           />
         ) : null}
 
@@ -403,6 +426,7 @@ const Tasks = (props) => {
             handleNext={handleNext}
             handlePrevious={handlePrevious}
             handleDisplayPostText={handleDisplayPostText}
+            handleView={handleView}
           />
         ) : null}
       </View>

@@ -70,14 +70,14 @@ const LoginScreen = (props) => {
           </Text>
           <TextInput
             style={authStyle.input}
-            theme={{ colors: { primary: "#F24C00" } }}
+            theme={{ colors: { primary: "#FF7F50" } }}
             autoCapitalize='none'
             label='Email'
             onChangeText={(email) => setEmail(email)}
           />
           <TextInput
             style={authStyle.input}
-            theme={{ colors: { primary: "#F24C00" } }}
+            theme={{ colors: { primary: "#FF7F50" } }}
             autoCapitalize='none'
             secureTextEntry={passwordVisible}
             label='Password'

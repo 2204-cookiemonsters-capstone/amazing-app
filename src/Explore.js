@@ -109,7 +109,9 @@ const Explore = () => {
 
       snapshot.forEach((docs) => {
         if (friendIds.includes(docs.data().userid)) {
-          postList.push(docs.data());
+          if (docs.data().visibility !== "private") {
+            postList.push(docs.data());
+          }
         }
       });
 

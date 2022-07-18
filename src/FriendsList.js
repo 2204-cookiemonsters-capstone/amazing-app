@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   removeButton: {
-    backgroundColor: "red",
+    backgroundColor: "rgba(210, 43, 43, .8)",
     borderRadius: 25,
     height: 30,
     width: 60,

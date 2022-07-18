@@ -15,6 +15,7 @@ import {
   ScrollView,
 } from "react-native";
 import BottomSheet from "reanimated-bottom-sheet";
+import { FontAwesome } from "@expo/vector-icons";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -40,8 +41,10 @@ import { RootSiblingParent } from "react-native-root-siblings";
 const AddPostModal = (props) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(
+    //name of the task
     props.initialValue ? props.initialValue : null
   ); //value of selected task
+
   const [items, setItems] = useState([]);
 
   const [imageURI, setImageURI] = useState(null);
@@ -50,6 +53,8 @@ const AddPostModal = (props) => {
   const [caption, setCaption] = useState("");
 
   const [loading, setLoading] = useState(false);
+
+  const [visibility, setVisibility] = useState("friends");
 
   const bs = useRef(null);
   const fall = new Animated.Value(1);
@@ -70,6 +75,7 @@ const AddPostModal = (props) => {
         label: docs.completed ? docs.title + " -completed" : docs.title,
         value: docs.title,
         disabled: docs.completed ? true : false,
+        taskid: docs.taskId,
       };
       itemarr.push(item);
     });
@@ -136,6 +142,36 @@ const AddPostModal = (props) => {
     bs.current.snapTo(1);
   };
 
+  async function updateUserPosts(taskId) {
+    const snapShot = await getDoc(
+      doc(firestore, "users", auth.currentUser.uid, "posts", "July")
+    );
+
+    let previousPosts = snapShot.data().userTasks;
+
+    let userTasks = previousPosts.map((item) =>
+      item.taskId !== taskId
+        ? item
+        : {
+            ...item,
+            completed: true,
+            completedTime: Date.now(),
+            reflection: caption,
+            visibility: visibility,
+          }
+    );
+
+    const postsRef = await doc(
+      firestore,
+      "users",
+      auth.currentUser.uid,
+      "posts",
+      "July"
+    );
+
+    setDoc(postsRef, { userTasks }, { merge: true });
+  }
+
   const renderInner = () => (
     <View style={userProfile.panel}>
       <View style={{ alignItems: "center" }}>
@@ -176,11 +212,17 @@ const AddPostModal = (props) => {
         timeposted: new Date(),
         likes: [],
         comments: [],
-      }).then(async function (docref) {
-        await updateDoc(doc(firestore, "posts", docref.id), {
-          postid: docref.id,
+        visibility: visibility,
+        taskid: items.find((item) => item.value === value).taskid,
+      })
+        .then(async function (docref) {
+          await updateDoc(doc(firestore, "posts", docref.id), {
+            postid: docref.id,
+          });
+        })
+        .then(async () => {
+          updateUserPosts(items.find((item) => item.value === value).taskid);
         });
-      });
       props.setAddPostVisible(false);
       setLoading(false);
     } catch (error) {
@@ -295,7 +337,7 @@ const AddPostModal = (props) => {
             )}
 
             {/*DESCRIPTION*/}
-            <View style={{ width: "100%", height: 300 }}>
+            <View style={{ width: "100%", height: 370 }}>
               <View
                 style={{
                   width: "50%",
@@ -332,18 +374,64 @@ const AddPostModal = (props) => {
                     marginTop: 15,
                   }}
                 >
-                  Caption
+                  Reflection
                 </Text>
               </View>
               <View style={{ width: "95%", marginLeft: 10 }}>
                 <TextInput
                   style={styles.textEmail}
-                  placeholder='Add a caption!'
+                  placeholder='Add a reflection'
                   label='caption'
                   onChangeText={(e) => setCaption(e)}
                   multiline
                 />
               </View>
+              <View style={styles.visibility}>
+                <FontAwesome name='eye' size={16} color='black' />
+                <Text style={{ paddingLeft: 10 }}>Who can see this post?</Text>
+              </View>
+
+              {visibility === "private" ? (
+                <View style={styles.visibilityOptions}>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      paddingRight: 10,
+                      fontWeight: "700",
+                    }}
+                    onPress={() => setVisibility("private")}
+                  >
+                    only me
+                  </Text>
+                  <Text
+                    style={{ paddingLeft: 10, paddingRight: 10 }}
+                    onPress={() => setVisibility("friends")}
+                  >
+                    friends
+                  </Text>
+                </View>
+              ) : null}
+
+              {visibility === "friends" ? (
+                <View style={styles.visibilityOptions}>
+                  <Text
+                    style={{ paddingLeft: 10, paddingRight: 10 }}
+                    onPress={() => setVisibility("private")}
+                  >
+                    only me
+                  </Text>
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      paddingRight: 10,
+                      fontWeight: "700",
+                    }}
+                    onPress={() => setVisibility("friends")}
+                  >
+                    friends
+                  </Text>
+                </View>
+              ) : null}
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -382,5 +470,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderBottomWidth: 0.5,
+  },
+  visibilityOptions: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingTop: 30,
+    paddingBottom: 30,
+  },
+  visibility: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
   },
 });

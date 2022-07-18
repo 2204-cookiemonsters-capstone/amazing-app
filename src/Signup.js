@@ -122,7 +122,7 @@ const Signup = ({ navigation }) => {
             }}
             onPress={() => navigation.goBack()}
           >
-            <AntDesign name='left' size={20} color='#F24C00' />
+            <AntDesign name='left' size={20} color='#FF7F50' />
           </TouchableOpacity>
         </View>
 
@@ -166,7 +166,7 @@ const Signup = ({ navigation }) => {
           </Text>
           <TextInput
             style={authStyle.input}
-            theme={{ colors: { primary: "#F24C00" } }}
+            theme={{ colors: { primary: "#FF7F50" } }}
             value={username}
             autoCapitalize='none'
             label='Username'
@@ -182,13 +182,13 @@ const Signup = ({ navigation }) => {
           />
           <TextInput
             style={authStyle.input}
-            theme={{ colors: { primary: "#F24C00" } }}
+            theme={{ colors: { primary: "#FF7F50" } }}
             label='Name'
             onChangeText={(name) => setName(name)}
           />
           <TextInput
             style={authStyle.input}
-            theme={{ colors: { primary: "#F24C00" } }}
+            theme={{ colors: { primary: "#FF7F50" } }}
             autoCapitalize='none'
             label='Email'
             onChangeText={(email) => setEmail(email)}
@@ -196,7 +196,7 @@ const Signup = ({ navigation }) => {
           <TextInput
             style={authStyle.input}
             autoCapitalize='none'
-            theme={{ colors: { primary: "#F24C00" } }}
+            theme={{ colors: { primary: "#FF7F50" } }}
             secureTextEntry={passwordVisible}
             label='Password'
             right={
@@ -210,7 +210,7 @@ const Signup = ({ navigation }) => {
           <TextInput
             style={authStyle.input}
             autoCapitalize='none'
-            theme={{ colors: { primary: "#F24C00" } }}
+            theme={{ colors: { primary: "#FF7F50" } }}
             secureTextEntry={confirmPasswordVisible}
             label='Confirm Password'
             right={

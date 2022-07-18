@@ -208,7 +208,7 @@ const FriendModal = ({ user, closeModal }) => {
                     padding: 5,
                     height: 115,
                     borderRadius: 60,
-                    borderColor: "#F24C00",
+                    borderColor: "#FF7F50",
                     borderWidth: 3,
                   }
                 }
@@ -224,7 +224,7 @@ const FriendModal = ({ user, closeModal }) => {
                     size={100}
                     label={user.name.charAt(0)}
                     style={friendModal.avatar}
-                    theme={{ colors: { primary: "#F24C00" } }}
+                    theme={{ colors: { primary: "#FF7F50" } }}
                   />
                 )}
               </View>
@@ -345,16 +345,7 @@ const FriendModal = ({ user, closeModal }) => {
                 width: screenWidth,
               }}
             >
-              <View style={{ flexDirection: "row" }}>
-                <View style={friendModal.divider} />
-                <Text style={friendModal.title}>
-                  Todo{" "}
-                  <Text style={{ fontWeight: "300", color: color.list.blue }}>
-                    Lists
-                  </Text>
-                </Text>
-                <View style={friendModal.divider} />
-              </View>
+              <View style={{ flexDirection: "row" }}></View>
               {lists.length > 0 ? (
                 <View
                   style={{

@@ -1,80 +1,121 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React from "react";
+import { Text, View, StyleSheet, Image } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { auth, firestore } from "../firebase";
-import YourSinglePost from "./YourSinglePost";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
-import AddPostModal from "./AddPostModal";
-
 const TaskPosts = ({
   getTimeDifference,
   handleView,
   allUserTasks,
   handleDelete,
+  getBackgroundColor,
 }) => {
-  const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState([]);
-
-  const fetchPosts = async () => {
-    setLoading(true);
-    const reference = collection(firestore, "posts");
-    onSnapshot(reference, (snapshot) => {
-      const postList = [];
-
-      snapshot.forEach((docs) => {
-        if (docs.data().userid === auth.currentUser.uid) {
-          postList.push(docs.data());
-          console.log(docs.data());
-        }
-      });
-
-      postList.sort(sorting);
-      posts !== postList ? setPosts(postList) : null;
-      setLoading(false);
-    });
-  };
-
-  function sorting(a, b) {
-    if (a.timeposted > b.timeposted) return -1; //this function sorts the array by the time sent so the most recent message will appear first
-    if (a.timeposted < b.timeposted) return 1;
-    return 0;
-  }
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
   return (
-    <View style={{ height: "100%", backgroundColor: "white" }}>
-      <View
-        style={{
-          justifyContent: "center",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontSize: 18 }}>Your Post History</Text>
-      </View>
-      {posts.length ? (
-        <View>
-          {posts.map((post) => (
-            <YourSinglePost key={post.postid} post={post} />
-          ))}
-        </View>
-      ) : (
-        <View style={{ alignItems: "center", marginTop: 100 }}>
-          <Text>You have no posts</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text>Add a post</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+    <View>
+      <Text style={[styles.subheading, styles.fontWeight700]}>
+        Your Post History
+      </Text>
+      {allUserTasks.map((item) => {
+        return item.completed == true ? (
+          <View style={styles.postContainer} key={item.taskId}>
+            <Image
+              style={{
+                width: "auto",
+                height: 400,
+                borderWidth: 5,
+                borderColor: getBackgroundColor(item.category),
+              }}
+              source={item.defaultImgUrl ? { uri: item.defaultImgUrl } : null}
+            />
+            <View style={styles.postTitleEditContainer}>
+              <View style={{ paddingBottom: 10 }}>
+                <Text style={styles.postTag}>{item.title}</Text>
+                <View style={{ paddingBottom: 10 }}>
+                  {getTimeDifference(item.completedTime) < 60 ? (
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#666",
+                        marginRight: 30,
+                      }}
+                    >
+                      {getTimeDifference(item.completedTime)} minutes ago
+                    </Text>
+                  ) : getTimeDifference(item.completedTime) >= 60 &&
+                    getTimeDifference(item.completedTime) < 1440 ? (
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#666",
+                        marginRight: 30,
+                      }}
+                    >
+                      {" "}
+                      {Math.floor(
+                        getTimeDifference(item.completedTime) / 60
+                      )}{" "}
+                      {Math.floor(
+                        getTimeDifference(item.completedTime) / 60
+                      ) === 1
+                        ? "hour ago"
+                        : "hours ago"}
+                    </Text>
+                  ) : (
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#666",
+                        marginRight: 30,
+                      }}
+                    >
+                      {Math.floor(getTimeDifference(item.completedTime) / 1440)}{" "}
+                      {Math.floor(
+                        getTimeDifference(item.completedTime) / 1440
+                      ) === 1
+                        ? "day ago"
+                        : "days ago"}
+                    </Text>
+                  )}
+                </View>
+                <View
+                  style={{ flexDirection: "row", justifyContent: "flex-start" }}
+                >
+                  <FontAwesome name='eye' size={12} color='gray' />
+                  <Text style={[{ paddingLeft: 5, color: "gray" }]}>
+                    {item.visibility}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.postEditDeleteContainer}>
+                <TouchableWithoutFeedback
+                  onPress={() => handleView("submitEdit", item)}
+                >
+                  <FontAwesome
+                    name='pencil'
+                    size={16}
+                    color='black'
+                    style={styles.postEdit}
+                  />
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  onPress={() => handleDelete(item.taskId)}
+                >
+                  <FontAwesome
+                    name='trash'
+                    size={16}
+                    color='black'
+                    style={styles.postEdit}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            </View>
+            <Text style={styles.reflection}>{item.reflection}</Text>
+          </View>
+        ) : null;
+      })}
     </View>
   );
 };
-
 export default TaskPosts;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -107,7 +148,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
   },
-
   dashboardContainer: {
     borderColor: "black",
     backgroundColor: "#3F88C5",
@@ -118,7 +158,6 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderColor: "white",
   },
-
   userDashboard: {
     justifyContent: "space-around",
     padding: 5,
@@ -140,7 +179,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: "white",
   },
-
   dashboardCompletedCount: {
     fontSize: 40,
     textAlign: "center",
@@ -189,7 +227,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
   },
-
   taskDescription: {
     textAlign: "center",
     padding: 15,
@@ -252,7 +289,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 50,
   },
-
   featuredContainer: {
     flexDirection: "column",
   },
@@ -298,7 +334,6 @@ const styles = StyleSheet.create({
     color: "black",
     paddingLeft: 5,
   },
-
   featuredSectionContainer: {
     flex: 1,
   },
@@ -321,7 +356,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
-
   imageContainer: {
     flex: 1,
     backgroundColor: "#fff",
@@ -329,7 +363,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "column",
   },
-
   imageBackground: {
     flex: 1,
     alignItems: "center",
@@ -452,7 +485,6 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingBottom: 10,
   },
-
   strengthsIconContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -489,109 +521,4 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 30,
   },
-  button: {
-    borderRadius: 25,
-    backgroundColor: "white",
-    width: 100,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#7F5DF0",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 5,
-    marginTop: 10,
-  },
 });
-
-/* <View>
-    <Text style={[styles.subheading, styles.fontWeight700]}>Your Post History</Text>
-    {allUserTasks.map((item) => {
-
-
-      return item.completed == true ? (
-        <View style={styles.postContainer} key={item.taskId}>
-          <Image
-            style={{ width: 'auto', height: 400 }}
-            source={item.defaultImgUrl ? { uri: item.defaultImgUrl } : null}
-          />
-          <View style={styles.postTitleEditContainer}>
-            <View style={{paddingBottom: 10}}>
-          <Text style={styles.postTag}>{item.title}</Text>
-         <View style={{paddingBottom: 10}}>
-          {getTimeDifference(item.completedTime) < 60 ? (
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#666",
-                    marginRight: 30,
-                  }}
-                >
-                  {getTimeDifference(item.completedTime)} minutes ago
-                </Text>
-              ) : getTimeDifference(item.completedTime) >= 60 &&
-                getTimeDifference(item.completedTime) < 1440 ? (
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#666",
-                    marginRight: 30,
-                  }}
-                >
-                  {" "}
-                  {Math.floor(
-                    getTimeDifference(item.completedTime) / 60
-                  )}{" "}
-                   {Math.floor(
-                    getTimeDifference(item.completedTime) / 60
-                  ) === 1
-                    ? "hour ago"
-                    : "hours ago"}
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#666",
-                    marginRight: 30,
-                  }}
-                >
-                  {Math.floor(getTimeDifference(item.completedTime) / 1440)}{" "}
-                  {Math.floor(
-                    getTimeDifference(item.completedTime) / 1440
-                  ) === 1
-                    ? "day ago"
-                    : "days ago"}
-                </Text>
-              )}
-              </View>
-              
-              <View style={{flexDirection: "row", justifyContent: "flex-start"}}>
-              <FontAwesome name="eye" size={12} color="gray"  />
-              <Text style={[{paddingLeft: 5, color: "gray"}]}>{item.visibility}</Text>
-              </View>
-      </View>
-          <View style={styles.postEditDeleteContainer}>
-            <TouchableWithoutFeedback onPress={() => handleView('submitEdit', item)}>
-          <FontAwesome name="pencil" size={16} color="black" style={styles.postEdit}/>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={()=>handleDelete(item.taskId)}>
-          <FontAwesome name="trash" size={16} color="black" style={styles.postEdit}/>
-          </TouchableWithoutFeedback>
-          </View>
-
-          </View>
-          <Text style={styles.reflection}>
-            {item.reflection}
-          </Text>
-           
-      
-        </View>
-      ) : null;
-    })}
-  </View>
-  */

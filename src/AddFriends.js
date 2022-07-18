@@ -399,7 +399,7 @@ const AddFriends = ({ navigation }) => {
                     >
                       <TouchableOpacity
                         style={{
-                          backgroundColor: "#F24C00",
+                          backgroundColor: "#FF7F50",
                           borderRadius: 25,
                           height: 30,
                           width: 95,
@@ -537,7 +537,7 @@ const AddFriends = ({ navigation }) => {
                       >
                         <TouchableOpacity
                           style={{
-                            backgroundColor: "#F24C00",
+                            backgroundColor: "#FF7F50",
                             borderRadius: 25,
                             height: 30,
                             width: 95,
@@ -637,7 +637,7 @@ const AddFriends = ({ navigation }) => {
                       >
                         <TouchableOpacity
                           style={{
-                            backgroundColor: "#F24C00",
+                            backgroundColor: "#FF7F50",
                             borderRadius: 25,
                             height: 30,
                             width: 95,
