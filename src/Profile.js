@@ -249,6 +249,9 @@ const Profile = ({ navigation }) => {
                 shadowRadius: 3.5,
                 elevation: 5,
               }}
+              onPress={() =>
+                navigation.navigate("List", { screen: "ListScreen" })
+              }
             >
               <SimpleLineIcons
                 name='camera'

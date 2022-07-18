@@ -44,7 +44,7 @@ export default function Stories({ friend, handleSelectFriend }) {
   if (loading) {
     return (
       <View style={styles.story}>
-        <ActivityIndicator size="medium" color={"blue"} />
+        <ActivityIndicator size='medium' color={"blue"} />
       </View>
     );
   }

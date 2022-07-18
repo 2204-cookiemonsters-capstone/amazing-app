@@ -69,29 +69,29 @@ const MessagesStack = ({ navigation }) => (
             <AntDesign name='left' color='black' size={18} />
           </TouchableOpacity>
         ),
-        headerRight: () => (
-          <TouchableOpacity
-            style={{
-              backgroundColor: "white",
-              borderRadius: 25,
-              height: 35,
-              width: 35,
-              alignItems: "center",
-              justifyContent: "center",
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
-              marginRight: 12,
-            }}
-          >
-            <Entypo name='dots-three-horizontal' color='black' size={18} />
-          </TouchableOpacity>
-        ),
+        // headerRight: () => (
+        //   <TouchableOpacity
+        //     style={{
+        //       backgroundColor: "white",
+        //       borderRadius: 25,
+        //       height: 35,
+        //       width: 35,
+        //       alignItems: "center",
+        //       justifyContent: "center",
+        //       shadowColor: "#7F5DF0",
+        //       shadowOffset: {
+        //         width: 0,
+        //         height: 10,
+        //       },
+        //       shadowOpacity: 0.25,
+        //       shadowRadius: 3.5,
+        //       elevation: 5,
+        //       marginRight: 12,
+        //     }}
+        //   >
+        //     <Entypo name='dots-three-horizontal' color='black' size={18} />
+        //   </TouchableOpacity>
+        // ),
       })}
     />
 

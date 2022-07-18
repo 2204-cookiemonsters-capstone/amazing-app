@@ -293,37 +293,50 @@ const FriendModal = ({ user, closeModal }) => {
                 width: screenWidth,
               }}
             >
-              {images.map((image) => (
-                <TouchableOpacity
+              {!images.length ? (
+                <View
                   style={{
-                    width:
-                      (images.indexOf(images.find((img) => img === image)) %
-                        3) +
-                        1 ===
-                      0
-                        ? screenWidth / 3
-                        : screenWidth / 3 - 1,
-                    height: screenWidth / 3,
-                    marginRight:
-                      (images.indexOf(images.find((img) => img === image)) %
-                        3) +
-                        1 ===
-                      0
-                        ? 0
-                        : 1,
-                    marginBottom: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: screenWidth,
+                    height: 300,
                   }}
-                  onPress={() => handleSelectPost(image)}
                 >
-                  <Image
-                    source={{ uri: image.imageurl }}
+                  <Text>This user has no posts</Text>
+                </View>
+              ) : (
+                images.map((image) => (
+                  <TouchableOpacity
                     style={{
-                      width: "100%",
-                      height: "100%",
+                      width:
+                        (images.indexOf(images.find((img) => img === image)) %
+                          3) +
+                          1 ===
+                        0
+                          ? screenWidth / 3
+                          : screenWidth / 3 - 1,
+                      height: screenWidth / 3,
+                      marginRight:
+                        (images.indexOf(images.find((img) => img === image)) %
+                          3) +
+                          1 ===
+                        0
+                          ? 0
+                          : 1,
+                      marginBottom: 1,
                     }}
-                  />
-                </TouchableOpacity>
-              ))}
+                    onPress={() => handleSelectPost(image)}
+                  >
+                    <Image
+                      source={{ uri: image.imageurl }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    />
+                  </TouchableOpacity>
+                ))
+              )}
             </View>
 
             <View

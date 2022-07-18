@@ -147,7 +147,9 @@ const Explore = () => {
   }, [friendIds]);
 
   return (
-    <View style={{ height: "100%" }}>
+    <View
+      style={{ height: "100%", paddingBottom: 70, backgroundColor: "white" }}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -155,7 +157,18 @@ const Explore = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {allFriends.length ? (
+        <View
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: 30,
+            height: !posts.length ? 630 : "100%",
+            justifyContent: !posts.length ? "center" : null,
+            alignItems: !posts.length ? "center" : null,
+            backgroundColor: "white",
+          }}
+        >
           <ScrollView style={{ flex: 1 }} horizontal>
             {allFriends.map((friend, index) => (
               <Stories
@@ -165,19 +178,6 @@ const Explore = () => {
               />
             ))}
           </ScrollView>
-        ) : null}
-        <View
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            marginBottom: 50,
-            height: !posts.length ? 630 : "100%",
-            justifyContent: !posts.length ? "center" : null,
-            alignItems: !posts.length ? "center" : null,
-            backgroundColor: "white",
-          }}
-        >
           {loading ? (
             <View style={{ marginTop: 30 }}>
               <ActivityIndicator size='large' />

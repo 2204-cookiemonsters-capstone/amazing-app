@@ -118,13 +118,6 @@ const SinglePostView = (props) => {
         <TouchableOpacity>
           <AntDesign name='hearto' size={26} style={{ marginLeft: 13 }} />
         </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Image
-            source={require("../assets/commenting.png")}
-            style={{ width: 25, height: 25, marginLeft: 24 }}
-          />
-        </TouchableOpacity>
       </View>
       <View style={{ marginLeft: 13 }}>
         <Text style={{ fontWeight: "500", fontSize: 15 }}>
@@ -166,11 +159,7 @@ const SinglePostView = (props) => {
             ) : null}
           </Text>
         </View>
-        <View style={{ marginTop: 5 }}>
-          <Text style={{ color: "darkgray" }}>
-            View {post.comments.length} comments
-          </Text>
-        </View>
+
         <View style={{ marginTop: 2 }}>
           {getTimeDifference(post.timeposted) < 60 ? (
             <View>
