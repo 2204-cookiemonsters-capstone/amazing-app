@@ -29,10 +29,17 @@ function TaskFeatured({
                   }
                   key={item.userid}
                 >
+                  {!item.profilepic ? 
                   <Image
                     source={{ uri: profileImagesArray[19]["url"] }}
                     style={styles.followingItem}
+                  /> :
+                  <Image
+                    source={{ uri: item.profilepic }}
+                    style={styles.followingItem}
                   />
+
+}
                   <Text style={[styles.followingItemUsername, styles.center]}>
                     {item.username.slice(0, 10)}
                   </Text>
