@@ -165,13 +165,13 @@ const Explore = () => {
             display: "flex",
             flexDirection: "column",
             marginBottom: 30,
-            height: !posts.length ? 630 : "100%",
+            height: !posts.length ? 350 : "100%",
             justifyContent: !posts.length ? "center" : null,
             alignItems: !posts.length ? "center" : null,
             backgroundColor: "white",
           }}
         >
-          <ScrollView style={{ flex: 1 }} horizontal>
+          <ScrollView style={{ flex: 1, backgroundColor: "red" }} horizontal>
             {allFriends.map((friend, index) => (
               <Stories
                 friend={friend}
