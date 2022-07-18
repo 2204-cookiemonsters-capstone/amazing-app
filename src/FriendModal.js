@@ -62,6 +62,7 @@ const FriendModal = ({ user, closeModal }) => {
     );
     setLoading(false);
   };
+  // console.log(stories)
 
   const renderSingleList = (list) => {
     return <FriendToDoList list={list} user={user} updateList={updateList} />;
@@ -104,7 +105,7 @@ const FriendModal = ({ user, closeModal }) => {
             }}
           >
           <TouchableOpacity onPress={() => {stories.length > 0 && toggleStoryModal()}}>
-          <View style={stories.length > 0 && {padding: 5, borderRadius: 60, borderColor: '#F24C00', borderWidth: 3}}>
+          <View style={stories.length > 0 && {padding: 5, height: 115,borderRadius: 60, borderColor: '#F24C00', borderWidth: 3}}>
             {user.profilepic ?
             <Avatar.Image source={{uri: user.profilepic}} size={100} theme={{colors: {primary: "black"}}}/> :
             <Avatar.Text size={100} label={user.name.charAt(0)} style={friendModal.avatar} theme={{colors: {primary: "#F24C00"}}}/>}
