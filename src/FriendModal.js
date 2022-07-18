@@ -13,21 +13,26 @@ import {
 } from "react-native";
 import { ActivityIndicator, Avatar } from "react-native-paper";
 import { firestore } from "../firebase";
-import { doc, setDoc, getDocs, collection } from "firebase/firestore";
+import { doc, setDoc, getDocs, collection, getDoc, onSnapshot, query, where } from "firebase/firestore";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import FriendToDoList from "./FriendToDoList";
+import StoriesModal from "./StoriesModal";
 import { todoListStyle, color, friendModal } from "../styles";
 
 const FriendModal = ({ user, closeModal }) => {
   const userid = user.userid;
   const [lists, setLists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [friends, setFriends] = useState([]);
+  const [stories, setStories] = useState([]);
+  const [showStories, setShowStories] = useState(false);
 
   useEffect(() => {
     getLists();
+    fetchStories();
   }, [loading]);
 
-  let getLists = async () => {
+  const getLists = async () => {
     const snapShot = await getDocs(
       collection(firestore, "users", userid, "Todo Lists")
     );
@@ -39,16 +44,25 @@ const FriendModal = ({ user, closeModal }) => {
       todos.push(todo);
     });
     setLists(todos);
-    setLoading(false);
+
   };
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={color.list.blue} />
-      </View>
+  const fetchStories = async () => {
+    const yesterday = new Date(Date.now() - 86400000);
+    const q = query(collection(firestore, "users", userid, "stories"), where("dateTime", '>=', yesterday))
+    onSnapshot(q, async (snapShot) => {
+        const stories = [];
+        snapShot.forEach((doc) => {
+          stories.push(doc.data())
+        });
+        stories.sort((a, b) => a.dateTime.seconds - b.dateTime.seconds)
+        setStories(stories);
+        console.log('FETCHED STORIES FROM FRIEND MODAL')
+      }
     );
-  }
+    setLoading(false);
+  };
+  // console.log(stories)
 
   const renderSingleList = (list) => {
     return <FriendToDoList list={list} user={user} updateList={updateList} />;
@@ -60,6 +74,18 @@ const FriendModal = ({ user, closeModal }) => {
     //Update state here
     setLists(lists.map((item) => (item.id === list.id ? list : item)));
   };
+
+  const toggleStoryModal = () => {
+    setShowStories(!showStories)
+  }
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={color.list.blue} />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
@@ -78,13 +104,13 @@ const FriendModal = ({ user, closeModal }) => {
               marginBottom: 40,
             }}
           >
-            <Avatar.Text
-              size={100}
-              label={user.name.charAt(0)}
-              style={friendModal.avatar}
-            >
-              {user.name}
-            </Avatar.Text>
+          <TouchableOpacity onPress={() => {stories.length > 0 && toggleStoryModal()}}>
+          <View style={stories.length > 0 && {padding: 5, height: 115,borderRadius: 60, borderColor: '#F24C00', borderWidth: 3}}>
+            {user.profilepic ?
+            <Avatar.Image source={{uri: user.profilepic}} size={100} theme={{colors: {primary: "black"}}}/> :
+            <Avatar.Text size={100} label={user.name.charAt(0)} style={friendModal.avatar} theme={{colors: {primary: "#F24C00"}}}/>}
+          </View>
+          </TouchableOpacity>
             <Text style={friendModal.title}>{user.name}</Text>
             <Text style={friendModal.userName}>{user.username}</Text>
             <View style={friendModal.score}>
@@ -123,6 +149,14 @@ const FriendModal = ({ user, closeModal }) => {
             )}
           </View>
         </ScrollView>
+        <Modal
+          animationType="slide"
+          visible={showStories}
+          onRequestClose={() => toggleStoryModal()}
+        >
+          <StoriesModal stories={stories} toggleStoryModal={toggleStoryModal} user={user}/>
+
+        </Modal>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
