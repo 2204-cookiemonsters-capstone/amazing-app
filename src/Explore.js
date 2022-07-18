@@ -53,7 +53,7 @@ const Explore = () => {
         });
         stories.sort((a, b) => a.dateTime.seconds - b.dateTime.seconds)
         setStories(stories);
-        console.log('FETCHED STORIES FROM STORIES.JS FOR', friend.name)
+        console.log('FETCHED STORIES FROM EXPLORE.JS FOR', friend.name)
       }
     );
 
@@ -64,7 +64,7 @@ const Explore = () => {
     <SafeAreaView style={{flex: 1}}>
       <ScrollView style={{flex: 1}} horizontal>
         {allFriends.map((friend, index) => (
-          <Stories friend={friend} handleSelectFriend={handleSelectFriend}/>
+          <Stories friend={friend} handleSelectFriend={handleSelectFriend} key={index}/>
         ))}
       </ScrollView>
       <Modal
