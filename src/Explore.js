@@ -33,7 +33,6 @@ const Explore = () => {
         if (docs.data().status === "friends") {
           friends.push(docs.data().userid);
         }
-        console.log(friends);
       });
       friendIds !== friends ? setFriendIds(friends) : null;
     });
@@ -48,7 +47,6 @@ const Explore = () => {
       snapshot.forEach((docs) => {
         if (friendIds.includes(docs.data().userid)) {
           postList.push(docs.data());
-          console.log(docs.data());
         }
       });
 
@@ -76,7 +74,6 @@ const Explore = () => {
   useEffect(() => {
     fetchFriends();
   }, [currentuser]);
-  console.log(posts);
 
   useEffect(() => {
     fetchPosts();

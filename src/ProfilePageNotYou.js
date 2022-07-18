@@ -16,7 +16,6 @@ const ProfilePageNotYou = (props) => {
   const { userid, name, score, username } = props.route.params;
 
   const [visible, setVisible] = useState(false);
-  console.log("PROPSSS", name);
 
   const getWidthScore = () => {
     return Number(30 + String(score).length * 9);

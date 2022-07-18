@@ -50,7 +50,6 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
 
   const bs = React.createRef();
   const fall = new Animated.Value(1);
-  console.log(auth.currentUser);
 
   const getUser = async () => {
     const docRef = doc(firestore, "users", auth.currentUser.uid);
@@ -131,7 +130,6 @@ const EditProfileModal = ({ setVisibilitySettings }) => {
       );
 
       getDownloadURL(reference).then((x) => {
-        console.log(x);
         const userRef = doc(firestore, "users", auth.currentUser.uid);
         updateDoc(
           userRef,

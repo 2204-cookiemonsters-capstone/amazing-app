@@ -38,8 +38,6 @@ const LoginScreen = (props) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log("Login successful");
-        //UPDATE THIS TO MOVE SCREEN FORWARD IF LOGIN SUCCESSFUL
       })
       .catch((error) => {
         setIsValid({ bool: true, boolSnack: true, message: error.message });

@@ -126,9 +126,6 @@ const AddChat = ({ navigation }) => {
       ...allFriends[index],
       chatid: selectedChat[0].chatid,
     };
-    //allfriends[index] - undefined
-    //for some reason, allfriends does not have chatid first time, even though the code right above literally adds it to the object
-    console.log("CHATIDDDDD", allFriends[index]);
     navigation.navigate("ChatScreen", {
       chatid: allFriends[index].chatid,
       username: allFriends[index].name,

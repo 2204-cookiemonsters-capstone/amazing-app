@@ -29,6 +29,7 @@ const image = require("../assets/favicon.png");
 const SearchPage = ({ navigation }) => {
   const [searchValue, setSearchValue] = useState("");
   const [allUsers, setAllUsers] = useState([]);
+  const allUsersQA = allUsers.length >= 10 ? allUsers.slice(0, 10) : allUsers;
   const [renderedUsers, setRenderedUsers] = useState([]);
   const firstThreeUsers = renderedUsers.slice(0, 3);
 
@@ -117,30 +118,7 @@ const SearchPage = ({ navigation }) => {
       <View
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
-        <View
-          style={{
-            marginTop: 40,
-            marginLeft: 15,
-            marginRight: 25,
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            borderRadius: 50,
-            backgroundColor: "white",
-            height: 40,
-            paddingHorizontal: 16,
-            flexGrow: 1,
-            marginBottom: 5,
-            shadowColor: "#7F5DF0",
-            shadowOffset: {
-              width: 0,
-              height: 10,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.5,
-            elevation: 5,
-          }}
-        >
+        <View style={styles.textInputView}>
           <Image
             source={require("../assets/search2.png")}
             style={{
@@ -189,31 +167,13 @@ const SearchPage = ({ navigation }) => {
               Quick Add
             </Text>
             {showAll
-              ? allUsers.map((item) => (
+              ? allUsersQA.map((item) => (
                   <TouchableOpacity
                     key={item.userid}
                     style={{
-                      marginLeft: 15,
-                      marginRight: 15,
-                      paddingTop: 7,
-                      paddingBottom: 0,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
+                      ...styles.user1,
                       borderTopLeftRadius: item === allUsers[0] ? 8 : 0,
                       borderTopRightRadius: item === allUsers[0] ? 8 : 0,
-                      backgroundColor: "white",
-                      marginBottom: 1,
-                      shadowColor: "#7F5DF0",
-                      shadowOffset: {
-                        width: 0,
-                        height: 10,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.5,
-                      elevation: 5,
                     }}
                     onPress={() => {
                       toggleFriendModal();
@@ -289,27 +249,9 @@ const SearchPage = ({ navigation }) => {
                   <TouchableOpacity
                     key={item.userid}
                     style={{
-                      marginLeft: 15,
-                      marginRight: 15,
-                      paddingTop: 7,
-                      paddingBottom: 0,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
+                      ...styles.user2,
                       borderTopLeftRadius: item === allUsers[0] ? 8 : 0,
                       borderTopRightRadius: item === allUsers[0] ? 8 : 0,
-                      backgroundColor: "white",
-                      marginBottom: 1,
-                      shadowColor: "#7F5DF0",
-                      shadowOffset: {
-                        width: 0,
-                        height: 10,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.5,
-                      elevation: 5,
                     }}
                     onPress={() => {
                       toggleFriendModal();
@@ -383,62 +325,14 @@ const SearchPage = ({ navigation }) => {
                 ))}
             {!showAll ? (
               <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  marginRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  borderColor: "#cccccc",
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  height: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 8,
-                  backgroundColor: "white",
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
+                style={styles.viewMore}
                 onPress={() => setShowAll(true)}
               >
                 <Text>View More</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  marginRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  borderColor: "#cccccc",
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  height: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 8,
-                  backgroundColor: "white",
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
+                style={styles.viewLess}
                 onPress={() => setShowAll(false)}
               >
                 <Text>View Less</Text>
@@ -461,27 +355,9 @@ const SearchPage = ({ navigation }) => {
                   <TouchableOpacity
                     key={item.userid}
                     style={{
-                      marginLeft: 15,
-                      marginRight: 15,
-                      paddingTop: 7,
-                      paddingBottom: 0,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
+                      ...styles.user3,
                       borderTopLeftRadius: item === allUsers[0] ? 8 : 0,
                       borderTopRightRadius: item === allUsers[0] ? 8 : 0,
-                      backgroundColor: "white",
-                      marginBottom: 1,
-                      shadowColor: "#7F5DF0",
-                      shadowOffset: {
-                        width: 0,
-                        height: 10,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.5,
-                      elevation: 5,
                     }}
                     onPress={() => {
                       toggleFriendModal();
@@ -557,27 +433,9 @@ const SearchPage = ({ navigation }) => {
                   <TouchableOpacity
                     key={item.userid}
                     style={{
-                      marginLeft: 15,
-                      marginRight: 15,
-                      paddingTop: 7,
-                      paddingBottom: 0,
-                      borderColor: "#cccccc",
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingLeft: 10,
-                      paddingRight: 15,
+                      ...styles.user4,
                       borderTopLeftRadius: item === allUsers[0] ? 8 : 0,
                       borderTopRightRadius: item === allUsers[0] ? 8 : 0,
-                      backgroundColor: "white",
-                      marginBottom: 1,
-                      shadowColor: "#7F5DF0",
-                      shadowOffset: {
-                        width: 0,
-                        height: 10,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.5,
-                      elevation: 5,
                     }}
                     onPress={() => {
                       toggleFriendModal();
@@ -651,62 +509,14 @@ const SearchPage = ({ navigation }) => {
                 ))}
             {!showAllSearch ? (
               <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  marginRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  borderColor: "#cccccc",
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  height: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 8,
-                  backgroundColor: "white",
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
+                style={styles.viewMore2}
                 onPress={() => setShowAllSearch(true)}
               >
                 <Text>View More</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                style={{
-                  marginLeft: 15,
-                  marginRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  borderColor: "#cccccc",
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  height: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 8,
-                  backgroundColor: "white",
-                  shadowColor: "#7F5DF0",
-                  shadowOffset: {
-                    width: 0,
-                    height: 10,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.5,
-                  elevation: 5,
-                }}
+                style={styles.viewLess2}
                 onPress={() => setShowAllSearch(false)}
               >
                 <Text>View Less</Text>
@@ -730,3 +540,216 @@ const SearchPage = ({ navigation }) => {
 };
 
 export default SearchPage;
+
+const styles = StyleSheet.create({
+  textInputView: {
+    marginTop: 40,
+    marginLeft: 15,
+    marginRight: 25,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 50,
+    backgroundColor: "white",
+    height: 40,
+    paddingHorizontal: 16,
+    flexGrow: 1,
+    marginBottom: 5,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  user1: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 0,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+
+    backgroundColor: "white",
+    marginBottom: 1,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  user2: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 0,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+
+    backgroundColor: "white",
+    marginBottom: 1,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  viewMore: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 7,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    backgroundColor: "white",
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  viewLess: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 7,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    backgroundColor: "white",
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  user3: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 0,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+
+    backgroundColor: "white",
+    marginBottom: 1,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  user4: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 0,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+
+    backgroundColor: "white",
+    marginBottom: 1,
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  viewMore2: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 7,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    backgroundColor: "white",
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  viewLess2: {
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 7,
+    paddingBottom: 7,
+    borderColor: "#cccccc",
+    display: "flex",
+    flexDirection: "row",
+    paddingLeft: 10,
+    paddingRight: 15,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    backgroundColor: "white",
+    shadowColor: "#7F5DF0",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+});

@@ -54,7 +54,7 @@ const FriendModal = ({ user, closeModal }) => {
     const snapShot = await getDocs(
       collection(firestore, "users", userid, "Todo Lists")
     );
-    console.log("FETCHED FRIEND'S TODO LISTS FROM FIRESTORE");
+
     let todos = [];
     snapShot.forEach((doc) => {
       let todo = doc.data();
@@ -69,9 +69,7 @@ const FriendModal = ({ user, closeModal }) => {
     const reference = doc(firestore, "users", userid);
     const snapshot = await getDoc(reference);
 
-    console.log(snapshot.data().profilepic);
     if (snapshot.exists()) {
-      console.log("rann");
       setProfilepic(snapshot.data().profilepic);
     } else {
       console.log("No Such Documents");

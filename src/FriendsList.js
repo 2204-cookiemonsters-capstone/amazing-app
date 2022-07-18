@@ -118,7 +118,6 @@ const FriendsList = ({ navigation }) => {
         docs.data().userids.includes(auth.currentUser.uid) &&
         docs.data().userids.includes(userid)
       ) {
-        console.log("rannnnnn");
         const id = docs.data().chatid;
         await deleteDoc(doc(firestore, "chats", id));
       }

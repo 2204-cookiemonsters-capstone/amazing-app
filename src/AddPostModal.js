@@ -267,15 +267,7 @@ const AddPostModal = (props) => {
 
           {!imageURI ? (
             <TouchableOpacity
-              style={{
-                height: 410,
-                width: "100%",
-                backgroundColor: "white",
-                justifyContent: "center",
-                alignItems: "center",
-                borderBottomWidth: 0.5,
-                marginTop: 20, //remove
-              }}
+              style={styles.addImage}
               onPress={() => bs.current.snapTo(0)}
             >
               <SimpleLineIcons name='camera' size={40} />
@@ -366,5 +358,13 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     justifyContent: "center",
     alignItems: "center",
+  },
+  addImage: {
+    height: 410,
+    width: "100%",
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomWidth: 0.5,
   },
 });
