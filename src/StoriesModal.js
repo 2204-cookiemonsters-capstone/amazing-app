@@ -1,4 +1,12 @@
-import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Dimensions,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { Avatar } from "react-native-paper";
 // import GestureRecognizer, {swipeDirections} from "react-native-swipe-gestures";
@@ -32,16 +40,16 @@ export default function StoriesModal({ stories, toggleStoryModal, user }) {
         style={{ position: "absolute", top: 50, right: 20, zIndex: 10 }}
         onPress={() => toggleStoryModal()}
       >
-        <AntDesign name="close" size={24} color="whitesmoke" />
+        <AntDesign name='close' size={24} color='whitesmoke' />
       </TouchableOpacity>
       <TouchableOpacity style={styles.rightButton} onPress={() => handleNext()}>
-        <AntDesign name="right" size={24} color="whitesmoke" />
+        <AntDesign name='right' size={24} color='whitesmoke' />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.leftButton}
         onPress={() => handlePrevious()}
       >
-        <AntDesign name="left" size={24} color="whitesmoke" />
+        <AntDesign name='left' size={24} color='whitesmoke' />
       </TouchableOpacity>
       <View
         style={{
@@ -54,7 +62,7 @@ export default function StoriesModal({ stories, toggleStoryModal, user }) {
       >
         <Avatar.Text label={user.name.charAt(0)} size={50} />
         <View style={{ justifyContent: "center" }}>
-          <Text style={[styles.text, { fontSize: "20" }]}>{user.name}</Text>
+          <Text style={[styles.text, { fontSize: 20 }]}>{user.name}</Text>
           <Text style={styles.text}>@{user.username}</Text>
         </View>
       </View>

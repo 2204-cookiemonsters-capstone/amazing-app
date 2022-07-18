@@ -33,6 +33,7 @@ if (getApps().length === 0) {
 
 const firestore = getFirestore(app);
 const auth = getAuth(app);
+
 const storage = getStorage(app);
 
 export {

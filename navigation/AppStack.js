@@ -21,7 +21,7 @@ import SearchPage from "../src/SearchPage";
 import AddFriends from "../src/AddFriends";
 import FriendsList from "../src/FriendsList";
 import AddChat from "../src/Messages-Chat/AddChat";
-import SingleProfile from "../src/SingleProfile";
+
 import ProfilePageNotYou from "../src/ProfilePageNotYou";
 
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -33,13 +33,13 @@ const Tab = createBottomTabNavigator();
 const MessagesStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="MessagesScreen"
+      name='MessagesScreen'
       component={Messages}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="ChatScreen"
+      name='ChatScreen'
       component={ChatScreen}
       options={({ route, navigation }) => ({
         title: route.params.username,
@@ -55,83 +55,77 @@ const MessagesStack = ({ navigation }) => (
               alignItems: "center",
               justifyContent: "center",
               marginLeft: 13,
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
+              // shadowColor: "#7F5DF0",
+              // shadowOffset: {
+              //   width: 0,
+              //   height: 10,
+              // },
+              // shadowOpacity: 0.25,
+              // shadowRadius: 3.5,
+              // elevation: 5,
             }}
             onPress={() => navigation.goBack()}
           >
-            <AntDesign name="left" color="black" size={18} />
+            <AntDesign name='left' color='black' size={18} />
           </TouchableOpacity>
         ),
-        headerRight: () => (
-          <TouchableOpacity
-            style={{
-              backgroundColor: "white",
-              borderRadius: 25,
-              height: 35,
-              width: 35,
-              alignItems: "center",
-              justifyContent: "center",
-              shadowColor: "#7F5DF0",
-              shadowOffset: {
-                width: 0,
-                height: 10,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.5,
-              elevation: 5,
-              marginRight: 12,
-            }}
-            onPress={() => navigation.navigate("SingleProfile")}
-          >
-            <Entypo name="dots-three-horizontal" color="black" size={18} />
-          </TouchableOpacity>
-        ),
+        // headerRight: () => (
+        //   <TouchableOpacity
+        //     style={{
+        //       backgroundColor: "white",
+        //       borderRadius: 25,
+        //       height: 35,
+        //       width: 35,
+        //       alignItems: "center",
+        //       justifyContent: "center",
+        //       shadowColor: "#7F5DF0",
+        //       shadowOffset: {
+        //         width: 0,
+        //         height: 10,
+        //       },
+        //       shadowOpacity: 0.25,
+        //       shadowRadius: 3.5,
+        //       elevation: 5,
+        //       marginRight: 12,
+        //     }}
+        //   >
+        //     <Entypo name='dots-three-horizontal' color='black' size={18} />
+        //   </TouchableOpacity>
+        // ),
       })}
     />
 
     <Stack.Screen
-      name="Search"
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="ProfileMessages"
+      name='ProfileMessages'
       component={Profile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="AddFriends"
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="FriendsList"
+      name='FriendsList'
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="AddChat"
+      name='AddChat'
       component={AddChat}
-      options={{ header: () => null }}
-    />
-    <Stack.Screen
-      name="SingleProfile"
-      component={SingleProfile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="ProfilePageNotYou"
+      name='ProfilePageNotYou'
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -141,43 +135,39 @@ const MessagesStack = ({ navigation }) => (
 const TasksStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="TasksScreen"
+      name='TasksScreen'
       component={Tasks}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="Search"
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="ProfileTasks"
+      name='ProfileTasks'
       component={Profile}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="AddFriends"
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="FriendsList"
+      name='FriendsList'
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="AddChat"
+      name='AddChat'
       component={AddChat}
       options={{ header: () => null }}
     />
+
     <Stack.Screen
-      name="SingleProfile"
-      component={SingleProfile}
-      options={{ header: () => null }}
-    />
-    <Stack.Screen
-      name="ProfilePageNotYou"
+      name='ProfilePageNotYou'
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -187,45 +177,41 @@ const TasksStack = ({ navigation }) => (
 const AddTaskStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="AddTaskScreen"
+      name='AddTaskScreen'
       component={AddTask}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="Search"
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="ProfileAdd"
+      name='ProfileAdd'
       component={Profile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="AddFriends"
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="FriendsList"
+      name='FriendsList'
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="AddChat"
+      name='AddChat'
       component={AddChat}
       options={{ header: () => null }}
     />
+
     <Stack.Screen
-      name="SingleProfile"
-      component={SingleProfile}
-      options={{ header: () => null }}
-    />
-    <Stack.Screen
-      name="ProfilePageNotYou"
+      name='ProfilePageNotYou'
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -235,45 +221,41 @@ const AddTaskStack = ({ navigation }) => (
 const ListStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="ListScreen"
+      name='ListScreen'
       component={List}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="Search"
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="ProfileList"
+      name='ProfileList'
       component={Profile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="AddFriends"
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="FriendsList"
+      name='FriendsList'
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="AddChat"
+      name='AddChat'
       component={AddChat}
       options={{ header: () => null }}
     />
+
     <Stack.Screen
-      name="SingleProfile"
-      component={SingleProfile}
-      options={{ header: () => null }}
-    />
-    <Stack.Screen
-      name="ProfilePageNotYou"
+      name='ProfilePageNotYou'
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -283,44 +265,40 @@ const ListStack = ({ navigation }) => (
 const ExploreStack = ({ navigation }) => (
   <Stack.Navigator>
     <Stack.Screen
-      name="ExploreScreen"
+      name='ExploreScreen'
       component={Explore}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="Search"
+      name='Search'
       component={SearchPage}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="ProfileExplore"
+      name='ProfileExplore'
       component={Profile}
       options={{ header: () => null }}
     />
 
     <Stack.Screen
-      name="AddFriends"
+      name='AddFriends'
       component={AddFriends}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="FriendsList"
+      name='FriendsList'
       component={FriendsList}
       options={{ header: () => null }}
     />
     <Stack.Screen
-      name="AddChat"
+      name='AddChat'
       component={AddChat}
       options={{ header: () => null }}
     />
+
     <Stack.Screen
-      name="SingleProfile"
-      component={SingleProfile}
-      options={{ header: () => null }}
-    />
-    <Stack.Screen
-      name="ProfilePageNotYou"
+      name='ProfilePageNotYou'
       component={ProfilePageNotYou}
       options={{ header: () => null }}
     />
@@ -336,8 +314,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileMessages" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -359,8 +336,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileTasks" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -382,8 +358,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileAdd" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -405,8 +380,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileList" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -428,8 +402,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileExplore" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return {
         display: "none",
@@ -452,8 +425,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileMessages" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -467,8 +439,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileTasks" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -482,8 +453,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileAdd" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -497,8 +467,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileList" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -512,8 +481,7 @@ const AppStack = ({ currentRoute }) => {
       currentRoute === "ProfileExplore" ||
       currentRoute === "AddFriends" ||
       currentRoute === "FriendsList" ||
-      currentRoute === "AddChat" ||
-      currentRoute === "SingleProfile"
+      currentRoute === "AddChat"
     ) {
       return false;
     }
@@ -537,7 +505,7 @@ const AppStack = ({ currentRoute }) => {
       }}
     >
       <Tab.Screen
-        name="Feed"
+        name='Feed'
         component={ExploreStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
@@ -550,7 +518,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <Image
                 source={require("../assets/homepng.png")}
-                resizeMode="contain"
+                resizeMode='contain'
                 style={{
                   width: 25,
                   height: 25,
@@ -567,7 +535,12 @@ const AppStack = ({ currentRoute }) => {
           ),
 
           headerTitleAlign: "center",
-          headerTitle: "Feed",
+          headerTitle: () => (
+            <Image
+              source={require("../assets/happilist.png")}
+              style={{ width: 130, height: 25, resizeMode: "contain" }}
+            />
+          ),
           headerShown: getHeaderVisibilityExploreTab(),
           tabBarStyle: getTabBarVisibilityExploreTab(),
           headerRight: () => (
@@ -646,7 +619,7 @@ const AppStack = ({ currentRoute }) => {
       />
 
       <Tab.Screen
-        name="Tasks"
+        name='Tasks'
         component={TasksStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
@@ -659,7 +632,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <Image
                 source={require("../assets/28.png")}
-                resizeMode="contain"
+                resizeMode='contain'
                 style={{
                   width: 25,
                   height: 25,
@@ -863,7 +836,7 @@ const AppStack = ({ currentRoute }) => {
         })}
       /> */}
       <Tab.Screen
-        name="List"
+        name='List'
         component={ListStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
@@ -876,7 +849,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <Image
                 source={require("../assets/list.png")}
-                resizeMode="contain"
+                resizeMode='contain'
                 style={{
                   width: 25,
                   height: 25,
@@ -972,7 +945,7 @@ const AppStack = ({ currentRoute }) => {
       />
 
       <Tab.Screen
-        name="Messages"
+        name='Messages'
         component={MessagesStack}
         options={({ navigation }) => ({
           tabBarIcon: ({ focused }) => (
@@ -985,7 +958,7 @@ const AppStack = ({ currentRoute }) => {
             >
               <Image
                 source={require("../assets/chat.png")}
-                resizeMode="contain"
+                resizeMode='contain'
                 style={{
                   width: 25,
                   height: 25,

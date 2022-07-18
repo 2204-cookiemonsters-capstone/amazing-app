@@ -26,7 +26,7 @@ class FriendToDoList extends React.Component {
     return (
       <View>
         <Modal
-          animationType="slide"
+          animationType='slide'
           visible={this.state.showListVisible}
           onRequestClose={() => this.toggleListModal()}
         >

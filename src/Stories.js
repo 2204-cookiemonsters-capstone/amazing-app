@@ -1,100 +1,117 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState, useEffect } from "react";
-import { Avatar, ActivityIndicator } from "react-native-paper";
-import { firestore } from "../firebase";
 import {
-  doc,
-  setDoc,
-  getDocs,
-  collection,
-  getDoc,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Dimensions,
+} from "react-native";
+import React, { useState, useEffect } from "react";
+import { Avatar } from "react-native-paper";
+// import GestureRecognizer, {swipeDirections} from "react-native-swipe-gestures";
+import { AntDesign } from "@expo/vector-icons";
 
-export default function Stories({ friend, handleSelectFriend }) {
-  const [loading, setLoading] = useState(true);
-  const [stories, setStories] = useState([]);
-  const [showStories, setShowStories] = useState(false);
-  const [storySeen, setStorySeen] = useState(false);
+const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get("window").width;
 
-  useEffect(() => {
-    fetchStories();
-  }, []);
+export default function StoriesModal({ stories, toggleStoryModal, user }) {
+  const [story, setStory] = useState(stories[0]);
+  const [storyIndex, setStoryIndex] = useState(0);
 
-  const fetchStories = async () => {
-    const yesterday = new Date(Date.now() - 86400000);
-    const q = query(
-      collection(firestore, "users", friend.userid, "stories"),
-      where("dateTime", ">=", yesterday)
-    );
-    onSnapshot(q, async (snapShot) => {
-      const stories = [];
-      snapShot.forEach((doc) => {
-        stories.push(doc.data());
-      });
-      stories.sort((a, b) => a.dateTime.seconds - b.dateTime.seconds);
-      setStories(stories);
-      console.log("FETCHED STORIES FROM STORIES.JS FOR", friend.name);
-    });
-    setLoading(false);
+  const handleNext = () => {
+    if (storyIndex + 2 > stories.length) {
+      toggleStoryModal();
+    }
+    setStory(stories[storyIndex + 1]);
+    setStoryIndex(storyIndex + 1);
+  };
+  const handlePrevious = () => {
+    if (storyIndex < 1) {
+      toggleStoryModal();
+    }
+    setStory(stories[storyIndex - 1]);
+    setStoryIndex(storyIndex - 1);
   };
 
-  if (loading) {
-    return (
-      <View style={styles.story}>
-        <ActivityIndicator size="medium" color={"blue"} />
-      </View>
-    );
-  }
-
-  if (stories.length > 0) {
-    return (
+  return (
+    <SafeAreaView style={styles.container}>
       <TouchableOpacity
-        style={storySeen == false ? styles.unseenStory : styles.seenStory}
-        onPress={() => handleSelectFriend(friend)}
+        style={{ position: "absolute", top: 50, right: 20, zIndex: 10 }}
+        onPress={() => toggleStoryModal()}
       >
-        {friend.profilepic ? (
-          <Avatar.Image source={{ uri: friend.profilepic }} size={80} />
-        ) : (
-          <Avatar.Text
-            size={80}
-            label={friend.name.charAt(0)}
-            theme={{ colors: { primary: "#F24C00" } }}
-          />
-        )}
-        <Text style={styles.username}>{friend.name}</Text>
+        <AntDesign name='close' size={24} color='whitesmoke' />
       </TouchableOpacity>
-    );
-  } else {
-    return null;
-  }
+      <TouchableOpacity style={styles.rightButton} onPress={() => handleNext()}>
+        <AntDesign name='right' size={24} color='whitesmoke' />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.leftButton}
+        onPress={() => handlePrevious()}
+      >
+        <AntDesign name='left' size={24} color='whitesmoke' />
+      </TouchableOpacity>
+      <View
+        style={{
+          position: "absolute",
+          top: 50,
+          left: 20,
+          zIndex: 10,
+          flexDirection: "row",
+        }}
+      >
+        <Avatar.Text label={user.name.charAt(0)} size={50} />
+        <View style={{ justifyContent: "center" }}>
+          <Text style={[styles.text, { fontSize: 20 }]}>{user.name}</Text>
+          <Text style={styles.text}>@{user.username}</Text>
+        </View>
+      </View>
+      <View style={{ position: "absolute", top: 90, right: 22, zIndex: 10 }}>
+        <Text style={styles.text}>
+          {storyIndex + 1}/{stories.length}
+        </Text>
+      </View>
+      <View>
+        {story && (
+          <Image source={{ uri: story.storyImg }} style={styles.image} />
+        )}
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
-  unseenStory: {
-    padding: 2,
-    borderRadius: 60,
-    borderColor: "#F24C00",
-    borderWidth: 3,
-    height: 90,
-    marginLeft: 5,
-    marginTop: 5,
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
   },
-  seenStory: {
-    padding: 2,
-    borderRadius: 60,
-    borderColor: "#B7B8B7",
-    borderWidth: 3,
-    height: 90,
-    marginLeft: 5,
-    marginTop: 5,
+  image: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").width,
   },
-  username: {
-    textAlign: "center",
-    fontSize: 12,
-    textTransform: "lowercase",
-    marginTop: 5,
+  text: {
+    color: "white",
+    marginBottom: 3,
+    marginLeft: 5,
+  },
+  leftButton: {
+    position: "absolute",
+    left: 10,
+    zIndex: 10,
+    height: windowHeight,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    width: windowWidth / 3,
+  },
+  rightButton: {
+    position: "absolute",
+    right: 10,
+    zIndex: 9,
+    height: windowHeight,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    width: windowWidth / 3,
   },
 });

@@ -29,6 +29,7 @@ import FriendModal from "./FriendModal";
 import OctIcons from "react-native-vector-icons/Octicons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import AddPostModal from "./AddPostModal";
 
 const Profile = ({ navigation }) => {
   const [userData, setUserData] = useState("");
@@ -39,6 +40,7 @@ const Profile = ({ navigation }) => {
 
   const [visibilityProfile, setVisibilityProfile] = useState(false);
   const [visibilitySettings, setVisibilitySettings] = useState(false);
+  const [visibilityAddPost, setVisibilityAddPost] = useState(false);
 
   useEffect(() => {
     setVisibilityProfile(true);
@@ -247,6 +249,9 @@ const Profile = ({ navigation }) => {
                 shadowRadius: 3.5,
                 elevation: 5,
               }}
+              onPress={() =>
+                navigation.navigate("List", { screen: "ListScreen" })
+              }
             >
               <SimpleLineIcons
                 name='camera'
@@ -254,7 +259,7 @@ const Profile = ({ navigation }) => {
                 style={{ marginLeft: 20 }}
               />
               <Text style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}>
-                Add To My Story
+                Add to my Story
               </Text>
               <View style={{ flexGrow: 1 }} />
               <AntDesign
@@ -264,6 +269,45 @@ const Profile = ({ navigation }) => {
                 style={{ marginRight: 15 }}
               />
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                marginTop: 20,
+                backgroundColor: "white",
+                marginRight: 15,
+                marginLeft: 15,
+                height: 55,
+                alignItems: "center",
+                borderRadius: 15,
+                shadowColor: "#7F5DF0",
+                shadowOffset: {
+                  width: 0,
+                  height: 10,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.5,
+                elevation: 5,
+              }}
+              onPress={() => setVisibilityAddPost(true)}
+            >
+              <Image
+                source={require("../assets/addpost.png")}
+                style={{ width: 30, height: 30, marginLeft: 20 }}
+              />
+              <Text style={{ marginLeft: 15, fontSize: 18, fontWeight: "300" }}>
+                Add a Post
+              </Text>
+              <View style={{ flexGrow: 1 }} />
+              <AntDesign
+                name='right'
+                size={18}
+                color='lightgray'
+                style={{ marginRight: 15 }}
+              />
+            </TouchableOpacity>
+
             <View style={{ marginTop: 25, marginLeft: 15 }}>
               <Text style={{ fontWeight: "700", fontSize: 18 }}>Friends</Text>
             </View>
@@ -370,6 +414,13 @@ const Profile = ({ navigation }) => {
             setVisibilitySettings={setVisibilitySettings}
             closeModal={() => toggleEditModal()}
           />
+        </Modal>
+        <Modal
+          animationType='slide'
+          visible={visibilityAddPost}
+          onRequestClose={() => setVisibilityAddPost(false)}
+        >
+          <AddPostModal setAddPostVisible={setVisibilityAddPost} />
         </Modal>
       </Modal>
     </SafeAreaView>

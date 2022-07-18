@@ -152,7 +152,7 @@ const userProfile = StyleSheet.create({
   panelButton: {
     padding: 13,
     borderRadius: 10,
-    backgroundColor: color.submit,
+    backgroundColor: "#F24C00",
     alignItems: "center",
     marginVertical: 7,
   },
@@ -221,7 +221,7 @@ const todoListStyle = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: color.list.white,
-    backgroundColor: 'whitesmoke',
+    backgroundColor: "whitesmoke",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -404,16 +404,16 @@ const friendModal = StyleSheet.create({
     fontSize: 38,
     fontWeight: "800",
     color: color.list.black,
-    paddingHorizontal: 64,
-    marginBottom: 20
+    // paddingHorizontal: 64,
+    marginBottom: 20,
   },
   userName: {
     fontSize: 20,
     marginTop: -20,
-    marginBottom: 5
+    marginBottom: 5,
   },
   avatar: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   score: {
     borderColor: color.list.lightGray,
@@ -421,10 +421,16 @@ const friendModal = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  }
+    flexDirection: "row",
+    alignItems: "center",
+  },
+});
 
-})
-
-export { authStyle, userProfile, friendList, todoListStyle, color, friendModal };
+export {
+  authStyle,
+  userProfile,
+  friendList,
+  todoListStyle,
+  color,
+  friendModal,
+};
