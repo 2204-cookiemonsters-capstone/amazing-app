@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import BottomSheet from "reanimated-bottom-sheet";
 
@@ -218,118 +219,133 @@ const AddPostModal = (props) => {
             marginTop: Platform.OS === "ios" ? 20 : 0,
           }}
         >
-          {loading ? (
+          <ScrollView>
+            {loading ? (
+              <View
+                style={{
+                  position: "absolute",
+                  zIndex: 10000,
+                  top: 330,
+                  left: 50,
+                  right: 50,
+                  bottom: 50,
+                }}
+              >
+                <ActivityIndicator size='large' />
+              </View>
+            ) : null}
             <View
               style={{
-                position: "absolute",
-                zIndex: 10000,
-                top: 330,
-                left: 50,
-                right: 50,
-                bottom: 50,
-              }}
-            >
-              <ActivityIndicator size='large' />
-            </View>
-          ) : null}
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              height: 60,
-              backgroundColor: "white",
-            }}
-          >
-            <TouchableOpacity
-              style={{ marginLeft: 10 }}
-              onPress={() => props.setAddPostVisible(false)}
-            >
-              <AntDesign name='close' size={28} />
-            </TouchableOpacity>
-            <Text style={{ fontSize: 19, fontWeight: "500", marginLeft: 25 }}>
-              New post
-            </Text>
-            <View style={{ flexGrow: 1 }} />
-            <TouchableOpacity
-              onPress={() => handleSubmit()}
-              disabled={!value || !imageUrl || !caption || loading}
-            >
-              <AntDesign
-                name='arrowright'
-                size={26}
-                style={{ marginRight: 10 }}
-              />
-            </TouchableOpacity>
-          </View>
-
-          {/*IMAGE BACKGROUND*/}
-
-          {!imageURI ? (
-            <TouchableOpacity
-              style={styles.addImage}
-              onPress={() => bs.current.snapTo(0)}
-            >
-              <SimpleLineIcons name='camera' size={40} />
-              <Text style={{ fontSize: 21 }}>Add an image</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={{
-                height: 365,
-                width: "100%",
-                backgroundColor: "white",
-                justifyContent: "center",
+                display: "flex",
+                flexDirection: "row",
                 alignItems: "center",
-                borderBottomWidth: 0.5,
-              }}
-              onPress={() => bs.current.snapTo(0)}
-            >
-              <Image
-                source={{ uri: imageURI }}
-                style={{ height: 365, width: "100%" }}
-              />
-            </TouchableOpacity>
-          )}
-
-          {/*DESCRIPTION*/}
-
-          <View style={{ width: "50%", marginTop: 20, marginLeft: 10 }}>
-            <Text style={{ fontWeight: "500", fontSize: 17, marginBottom: 15 }}>
-              Task
-            </Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              placeholder='Pick a task'
-              flatListProps={{
-                initialNumToRender: 10,
-              }}
-            />
-            <Text
-              style={{
-                fontWeight: "500",
-                fontSize: 17,
-                marginBottom: 15,
-                marginTop: 15,
+                height: 60,
+                backgroundColor: "white",
               }}
             >
-              Caption
-            </Text>
-          </View>
-          <View style={{ width: "95%", marginLeft: 10 }}>
-            <TextInput
-              style={styles.textEmail}
-              placeholder='Add a caption!'
-              label='caption'
-              onChangeText={(e) => setCaption(e)}
-              multiline
-            />
-          </View>
+              <TouchableOpacity
+                style={{ marginLeft: 10 }}
+                onPress={() => props.setAddPostVisible(false)}
+              >
+                <AntDesign name='close' size={28} />
+              </TouchableOpacity>
+              <Text style={{ fontSize: 19, fontWeight: "500", marginLeft: 25 }}>
+                New post
+              </Text>
+              <View style={{ flexGrow: 1 }} />
+              <TouchableOpacity
+                onPress={() => handleSubmit()}
+                disabled={!value || !imageUrl || !caption || loading}
+              >
+                <AntDesign
+                  name='arrowright'
+                  size={26}
+                  style={{ marginRight: 10 }}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/*IMAGE BACKGROUND*/}
+
+            {!imageURI ? (
+              <TouchableOpacity
+                style={styles.addImage}
+                onPress={() => bs.current.snapTo(0)}
+              >
+                <SimpleLineIcons name='camera' size={40} />
+                <Text style={{ fontSize: 21 }}>Add an image</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={{
+                  height: 365,
+                  width: "100%",
+                  backgroundColor: "white",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderBottomWidth: 0.5,
+                }}
+                onPress={() => bs.current.snapTo(0)}
+              >
+                <Image
+                  source={{ uri: imageURI }}
+                  style={{ height: 365, width: "100%" }}
+                />
+              </TouchableOpacity>
+            )}
+
+            {/*DESCRIPTION*/}
+            <View style={{ width: "100%", height: 300 }}>
+              <View
+                style={{
+                  width: "50%",
+                  marginTop: Platform.OS === "ios" ? 10 : 20,
+                  marginLeft: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "500",
+                    fontSize: 17,
+                    marginBottom: Platform.OS === "ios" ? 0 : 15,
+                  }}
+                >
+                  Task
+                </Text>
+                <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  placeholder='Pick a task'
+                  flatListProps={{
+                    initialNumToRender: 10,
+                  }}
+                />
+                <Text
+                  style={{
+                    fontWeight: "500",
+                    fontSize: 17,
+                    marginBottom: Platform.OS === "ios" ? 5 : 15,
+                    marginTop: 15,
+                  }}
+                >
+                  Caption
+                </Text>
+              </View>
+              <View style={{ width: "95%", marginLeft: 10 }}>
+                <TextInput
+                  style={styles.textEmail}
+                  placeholder='Add a caption!'
+                  label='caption'
+                  onChangeText={(e) => setCaption(e)}
+                  multiline
+                />
+              </View>
+            </View>
+          </ScrollView>
         </KeyboardAvoidingView>
       </RootSiblingParent>
     </View>
