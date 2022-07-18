@@ -16,7 +16,7 @@ const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 export default function StoriesModal({ stories, toggleStoryModal, user }) {
-  const [story, setStory] = useState(stories[0]);
+  const [story, setStory] = useState(stories[0] ? stories[0] : null);
   const [storyIndex, setStoryIndex] = useState(0);
 
   const handleNext = () => {
