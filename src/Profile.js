@@ -249,9 +249,10 @@ const Profile = ({ navigation }) => {
                 shadowRadius: 3.5,
                 elevation: 5,
               }}
-              onPress={() =>
-                navigation.navigate("List", { screen: "ListScreen" })
-              }
+              onPress={() => {
+                navigation.navigate("List", { screen: "ListScreen" });
+                setVisibilityProfile(false);
+              }}
             >
               <SimpleLineIcons
                 name='camera'
