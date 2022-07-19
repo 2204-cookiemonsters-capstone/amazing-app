@@ -261,54 +261,54 @@ const AddPostModal = (props) => {
             marginTop: Platform.OS === "ios" ? 30 : 0,
           }}
         >
-          <ScrollView>
-            {loading ? (
-              <View
-                style={{
-                  position: "absolute",
-                  zIndex: 10000,
-                  top: 330,
-                  left: 50,
-                  right: 50,
-                  bottom: 50,
-                }}
-              >
-                <ActivityIndicator size='large' />
-              </View>
-            ) : null}
+          {loading ? (
             <View
               style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                height: 60,
-                backgroundColor: "white",
+                position: "absolute",
+                zIndex: 10000,
+                top: 330,
+                left: 50,
+                right: 50,
+                bottom: 50,
               }}
             >
-              <TouchableOpacity
-                style={{ marginLeft: 10 }}
-                onPress={() => props.setAddPostVisible(false)}
-              >
-                <AntDesign name='close' size={28} />
-              </TouchableOpacity>
-              <Text style={{ fontSize: 19, fontWeight: "500", marginLeft: 25 }}>
-                New post
-              </Text>
-              <View style={{ flexGrow: 1 }} />
-              <TouchableOpacity
-                onPress={() => handleSubmit()}
-                disabled={!value || !imageUrl || !caption || loading}
-              >
-                <AntDesign
-                  name='arrowright'
-                  size={26}
-                  style={{ marginRight: 10 }}
-                />
-              </TouchableOpacity>
+              <ActivityIndicator size='large' />
             </View>
+          ) : null}
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              height: 60,
+              backgroundColor: "white",
+              position: "sticky",
+            }}
+          >
+            <TouchableOpacity
+              style={{ marginLeft: 10 }}
+              onPress={() => props.setAddPostVisible(false)}
+            >
+              <AntDesign name='close' size={28} />
+            </TouchableOpacity>
+            <Text style={{ fontSize: 19, fontWeight: "500", marginLeft: 25 }}>
+              New post
+            </Text>
+            <View style={{ flexGrow: 1 }} />
+            <TouchableOpacity
+              onPress={() => handleSubmit()}
+              disabled={!value || !imageUrl || !caption || loading}
+            >
+              <AntDesign
+                name='arrowright'
+                size={26}
+                style={{ marginRight: 10 }}
+              />
+            </TouchableOpacity>
+          </View>
 
-            {/*IMAGE BACKGROUND*/}
-
+          {/*IMAGE BACKGROUND*/}
+          <ScrollView keyboardShouldPersistTaps='handled'>
             {!imageURI ? (
               <TouchableOpacity
                 style={styles.addImage}
