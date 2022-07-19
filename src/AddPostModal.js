@@ -343,6 +343,7 @@ const AddPostModal = (props) => {
                   width: "50%",
                   marginTop: Platform.OS === "ios" ? 10 : 20,
                   marginLeft: 10,
+                  zIndex: 1,
                 }}
               >
                 <Text
@@ -355,6 +356,12 @@ const AddPostModal = (props) => {
                   Task
                 </Text>
                 <DropDownPicker
+                  style={{
+                    backgroundColor: Platform.OS === "ios" ? "white" : null,
+                    opacity: 1,
+                    // zIndex: 1000,
+                  }}
+                  zIndex={1000}
                   open={open}
                   value={value}
                   items={items}
