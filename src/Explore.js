@@ -166,8 +166,6 @@ const Explore = () => {
             flexDirection: "column",
             marginBottom: 30,
             height: !posts.length ? 350 : "100%",
-            justifyContent: !posts.length ? "center" : null,
-            alignItems: !posts.length ? "center" : null,
             backgroundColor: "white",
           }}
         >
